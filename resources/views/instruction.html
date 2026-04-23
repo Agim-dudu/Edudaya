@@ -305,99 +305,113 @@
 
 <body class="sasirangan-bg">
     <!-- ============================================================ -->
-    <!-- 4. REGISTER SISWA                                           -->
+    <!-- 7. PETUNJUK PENGGUNAAN                                       -->
     <!-- ============================================================ -->
-    <div id="register" class="page active">
-        <div class="min-h-screen flex">
-            <div class="hidden lg:flex flex-col justify-center items-center w-5/12 sasirangan-header p-12 relative">
-                <div class="relative z-10 text-center">
-                    <div class="wiggle-anim inline-block mb-4 text-8xl">✏️</div>
-                    <h1 class="font-fredoka text-4xl text-white mb-2">Daftar Sekarang!</h1>
-                    <p class="text-white/80 text-base">Bergabunglah dan mulai perjalanan<br>belajar numerasimu!</p>
-                    <div class="mt-8 grid grid-cols-3 gap-3">
-                        <div class="bg-white/20 rounded-xl p-3 text-center text-white">
-                            <div class="text-2xl mb-1">🎯</div>
-                            <div class="text-xs">Materi Seru</div>
-                        </div>
-                        <div class="bg-white/20 rounded-xl p-3 text-center text-white">
-                            <div class="text-2xl mb-1">🏆</div>
-                            <div class="text-xs">Raih Nilai</div>
-                        </div>
-                        <div class="bg-white/20 rounded-xl p-3 text-center text-white">
-                            <div class="text-2xl mb-1">🌺</div>
-                            <div class="text-xs">Budaya Kalsel</div>
-                        </div>
+    <div id="petunjuk" class="page active">
+        <nav class="sasirangan-header sticky top-0 z-40 shadow-lg">
+            <div class="relative z-10 max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+                <a href="/" class="text-white font-700">← Kembali</a>
+                <span class="font-fredoka text-xl text-white">❓ Petunjuk Penggunaan</span>
+                <div></div>
+            </div>
+            <div class="motif-strip opacity-70"></div>
+        </nav>
+
+        <div class="max-w-4xl mx-auto px-4 py-8">
+            <!-- Hero petunjuk -->
+            <div class="bg-white rounded-3xl shadow-lg overflow-hidden mb-8">
+                <div class="sasirangan-header p-8 text-center relative">
+                    <div class="relative z-10">
+                        <div class="text-6xl mb-3">📖</div>
+                        <h1 class="font-fredoka text-4xl text-white mb-2">Cara Menggunakan Edudaya.id</h1>
+                        <p class="text-white/80">Ikuti langkah-langkah berikut agar bisa belajar dengan seru!</p>
                     </div>
                 </div>
             </div>
-            <div class="flex-1 flex flex-col justify-center items-center p-8">
-                <div class="w-full max-w-lg">
-                    <div class="motif-strip rounded-t-2xl"></div>
-                    <div class="bg-white rounded-b-2xl shadow-xl p-8">
-                        <h2 class="font-fredoka text-2xl text-cokelat-DEFAULT mb-6 text-center">📝 Formulir Pendaftaran
-                            Siswa</h2>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="col-span-2">
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Nama Lengkap <span
-                                        class="text-merah-DEFAULT">*</span></label>
-                                <input type="text" placeholder="Nama lengkap sesuai rapor"
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Jenis Kelamin</label>
-                                <select
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition bg-white">
-                                    <option>Laki-laki</option>
-                                    <option>Perempuan</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Kelas</label>
-                                <select
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition bg-white">
-                                    <option>Kelas 1</option>
-                                    <option>Kelas 2</option>
-                                    <option>Kelas 3</option>
-                                    <option>Kelas 4</option>
-                                    <option>Kelas 5</option>
-                                    <option>Kelas 6</option>
-                                </select>
-                            </div>
-                            <div class="col-span-2">
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Nama Sekolah <span
-                                        class="text-merah-DEFAULT">*</span></label>
-                                <input type="text" placeholder="SDN ..."
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Token Kelas <span
-                                        class="text-merah-DEFAULT">*</span></label>
-                                <input type="text" placeholder="Dari gurumu"
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition tracking-widest">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Kata Sandi</label>
-                                <input type="password" placeholder="Min. 6 karakter"
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
-                            </div>
-                            <div class="col-span-2">
-                                <label class="flex items-start gap-2 cursor-pointer text-sm text-gray-600">
-                                    <input type="checkbox" class="accent-kuning-DEFAULT mt-0.5">
-                                    <span>Saya setuju dengan <a href="#" class="text-biru-DEFAULT underline">Syarat &
-                                            Ketentuan</a> penggunaan platform Edudaya.id</span>
-                                </label>
-                            </div>
-                            <div class="col-span-2">
-                                <button onclick="showPage('home')"
-                                    class="w-full bg-kuning-DEFAULT hover:bg-kuning-dark text-white font-800 py-3 rounded-xl text-lg shadow-md transition hover:-translate-y-0.5">
-                                    🎉 Daftar Sekarang!
-                                </button>
-                            </div>
-                        </div>
-                        <p class="text-center text-sm text-gray-500 mt-4">Sudah punya akun? <button
-                                onclick="showPage('login-siswa')"
-                                class="text-kuning-dark font-700 hover:underline">Masuk di sini</button></p>
+
+            <!-- Steps -->
+            <div class="space-y-4">
+                <div class="bg-white rounded-2xl shadow p-6 flex items-start gap-4 card-hover">
+                    <div
+                        class="w-12 h-12 bg-kuning-dark rounded-2xl flex items-center justify-center text-white font-fredoka text-xl shrink-0">
+                        1</div>
+                    <div>
+                        <h3 class="font-fredoka text-xl text-cokelat-DEFAULT mb-1">🎟️ Dapatkan Token dari Gurumu</h3>
+                        <p class="text-gray-600 font-600">Minta token akses kepada guru kelasmu. Token berupa kode unik
+                            yang akan digunakan untuk masuk ke platform Edudaya.id.</p>
                     </div>
+                </div>
+                <div class="bg-white rounded-2xl shadow p-6 flex items-start gap-4 card-hover">
+                    <div
+                        class="w-12 h-12 bg-merah-dark rounded-2xl flex items-center justify-center text-white font-fredoka text-xl shrink-0">
+                        2</div>
+                    <div>
+                        <h3 class="font-fredoka text-xl text-cokelat-DEFAULT mb-1">📝 Daftar atau Masuk</h3>
+                        <p class="text-gray-600 font-600">Jika belum punya akun, klik "Daftar" lalu isi formulir
+                            pendaftaran. Jika sudah punya akun, langsung masuk dengan token dan namamu.</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl shadow p-6 flex items-start gap-4 card-hover">
+                    <div
+                        class="w-12 h-12 bg-hijau-dark rounded-2xl flex items-center justify-center text-white font-fredoka text-xl shrink-0">
+                        3</div>
+                    <div>
+                        <h3 class="font-fredoka text-xl text-cokelat-DEFAULT mb-1">📚 Pilih Materi</h3>
+                        <p class="text-gray-600 font-600">Pilih materi yang tersedia sesuai kelasmu. Materi yang
+                            terkunci akan terbuka setelah kamu menyelesaikan materi sebelumnya.</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl shadow p-6 flex items-start gap-4 card-hover">
+                    <div
+                        class="w-12 h-12 bg-biru-dark rounded-2xl flex items-center justify-center text-white font-fredoka text-xl shrink-0">
+                        4</div>
+                    <div>
+                        <h3 class="font-fredoka text-xl text-cokelat-DEFAULT mb-1">🎮 Mulai Belajar</h3>
+                        <p class="text-gray-600 font-600">Di halaman belajar, kamu akan melihat kartu-kartu yang bisa
+                            dibalik (decoding). Pelajari konten di setiap kartu dengan teliti.</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl shadow p-6 flex items-start gap-4 card-hover">
+                    <div
+                        class="w-12 h-12 bg-ungu-dark rounded-2xl flex items-center justify-center text-white font-fredoka text-xl shrink-0">
+                        5</div>
+                    <div>
+                        <h3 class="font-fredoka text-xl text-cokelat-DEFAULT mb-1">🧩 Kerjakan Latihan</h3>
+                        <p class="text-gray-600 font-600">Setelah belajar, kerjakan soal latihan untuk mengukur
+                            pemahamanmu. Jawab dengan teliti dan lihat hasilnya di akhir!</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl shadow p-6 flex items-start gap-4 card-hover">
+                    <div
+                        class="w-12 h-12 bg-kuning-dark rounded-2xl flex items-center justify-center text-white font-fredoka text-xl shrink-0">
+                        6</div>
+                    <div>
+                        <h3 class="font-fredoka text-xl text-cokelat-DEFAULT mb-1">🏆 Lihat Nilaimu</h3>
+                        <p class="text-gray-600 font-600">Cek nilaimu di dashboard siswa. Nilai akan otomatis tersimpan
+                            dan bisa dilihat oleh gurumu. Raih nilai tertinggi!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="bg-white rounded-2xl shadow p-6 mt-8">
+                <h2 class="font-fredoka text-2xl text-cokelat-DEFAULT mb-4">💬 Pertanyaan Umum</h2>
+                <div class="space-y-3">
+                    <details class="border border-gray-200 rounded-xl p-4 cursor-pointer">
+                        <summary class="font-700 text-cokelat-DEFAULT">Bagaimana jika lupa token?</summary>
+                        <p class="mt-2 text-sm text-gray-600">Hubungi gurumu untuk mendapatkan token baru. Token dibuat
+                            oleh guru di panel admin kelas.</p>
+                    </details>
+                    <details class="border border-gray-200 rounded-xl p-4 cursor-pointer">
+                        <summary class="font-700 text-cokelat-DEFAULT">Apakah bisa diakses dari HP?</summary>
+                        <p class="mt-2 text-sm text-gray-600">Ya! Edudaya.id dapat diakses dari browser HP, tablet,
+                            maupun komputer.</p>
+                    </details>
+                    <details class="border border-gray-200 rounded-xl p-4 cursor-pointer">
+                        <summary class="font-700 text-cokelat-DEFAULT">Nilai apakah disimpan otomatis?</summary>
+                        <p class="mt-2 text-sm text-gray-600">Ya, nilai tersimpan otomatis ke server setelah kamu
+                            menyelesaikan setiap latihan.</p>
+                    </details>
                 </div>
             </div>
         </div>
