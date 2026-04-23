@@ -11,6 +11,10 @@ def index():
 def login_page():
     return render_template('login.html')
 
+@app.route('/list_course', methods=['GET'])
+def list_course():
+    return render_template('list_course.html')
+
 @app.route('/login', methods=['POST'])
 def logins():
     return UserController.login()

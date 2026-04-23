@@ -1,72 +1,489 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Veldora Framework</title>
+  <title>Edudaya</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            // Palet Sasirangan Kalimantan Selatan
+            kuning: {
+              DEFAULT: '#F5A623',
+              light: '#FEF3DB',
+              dark: '#C47D0E'
+            },
+            merah: {
+              DEFAULT: '#C0392B',
+              light: '#FDECEA',
+              dark: '#922B21'
+            },
+            hijau: {
+              DEFAULT: '#27AE60',
+              light: '#E8F8F0',
+              dark: '#1E8449'
+            },
+            biru: {
+              DEFAULT: '#2980B9',
+              light: '#EAF4FB',
+              dark: '#1A5276'
+            },
+            ungu: {
+              DEFAULT: '#8E44AD',
+              light: '#F5EEF8',
+              dark: '#6C3483'
+            },
+            cokelat: {
+              DEFAULT: '#6D4C41',
+              light: '#EFEBE9',
+              dark: '#4E342E'
+            },
+            krem: {
+              DEFAULT: '#FFF8EE',
+              dark: '#F5E6CC'
+            },
+          },
+          fontFamily: {
+            nunito: ['Nunito', 'sans-serif'],
+            fredoka: ['Fredoka One', 'cursive'],
+            poppins: ['Poppins', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    /* ===== GLOBAL ===== */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #FFF8EE;
+    }
+
+    .page {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* ===== SASIRANGAN PATTERN ===== */
+    .sasirangan-bg {
+      background-color: #FFF8EE;
+      background-image:
+        repeating-linear-gradient(45deg, rgba(245, 166, 35, 0.08) 0px, rgba(245, 166, 35, 0.08) 2px, transparent 2px, transparent 20px),
+        repeating-linear-gradient(-45deg, rgba(192, 57, 43, 0.06) 0px, rgba(192, 57, 43, 0.06) 2px, transparent 2px, transparent 20px);
+    }
+
+    .sasirangan-header {
+      background: linear-gradient(135deg, #C0392B 0%, #8E44AD 50%, #2980B9 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sasirangan-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 16px),
+        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 16px);
+    }
+
+    .motif-border {
+      border-image: repeating-linear-gradient(90deg, #C0392B, #F5A623 20px, #27AE60 40px, #2980B9 60px, #8E44AD 80px, #C0392B 100px) 4;
+      border-style: solid;
+      border-width: 4px;
+    }
+
+    .motif-strip {
+      height: 8px;
+      background: repeating-linear-gradient(90deg, #C0392B 0px, #C0392B 16px, #F5A623 16px, #F5A623 32px, #27AE60 32px, #27AE60 48px, #2980B9 48px, #2980B9 64px, #8E44AD 64px, #8E44AD 80px);
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 260px;
+      min-height: 100vh;
+    }
+
+    .sidebar-link {
+      transition: all 0.2s;
+    }
+
+    .sidebar-link:hover {
+      transform: translateX(4px);
+    }
+
+    .sidebar-link.active {
+      background: rgba(255, 255, 255, 0.2);
+      border-left: 4px solid #F5A623;
+    }
+
+    /* ===== CARDS ===== */
+    .card-hover {
+      transition: all 0.25s;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    /* ===== BUBBLES DECORATION ===== */
+    .bubble-dec {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-10px)
+      }
+    }
+
+    @keyframes wiggle {
+
+      0%,
+      100% {
+        transform: rotate(-3deg)
+      }
+
+      50% {
+        transform: rotate(3deg)
+      }
+    }
+
+    @keyframes pulse-ring {
+      0% {
+        box-shadow: 0 0 0 0 rgba(245, 166, 35, 0.5)
+      }
+
+      100% {
+        box-shadow: 0 0 0 16px rgba(245, 166, 35, 0)
+      }
+    }
+
+    .float-anim {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .wiggle-anim {
+      animation: wiggle 2s ease-in-out infinite;
+    }
+
+    .pulse-anim {
+      animation: pulse-ring 1.5s ease-out infinite;
+    }
+
+    /* ===== DECODING GAME ===== */
+    .decode-card {
+      perspective: 600px;
+    }
+
+    .decode-inner {
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      position: relative;
+    }
+
+    .decode-card.flipped .decode-inner {
+      transform: rotateY(180deg);
+    }
+
+    .decode-front,
+    .decode-back {
+      backface-visibility: hidden;
+      position: absolute;
+      inset: 0;
+    }
+
+    .decode-back {
+      transform: rotateY(180deg);
+    }
+
+    /* ===== PROGRESS BAR ===== */
+    .progress-bar {
+      height: 14px;
+      border-radius: 99px;
+      overflow: hidden;
+      background: #E5E7EB;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #27AE60, #F5A623);
+      transition: width 0.5s ease;
+    }
+
+    /* ===== QUIZ ===== */
+    .quiz-option {
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .quiz-option:hover {
+      transform: scale(1.02);
+    }
+
+    .quiz-option.correct {
+      background: #E8F8F0 !important;
+      border-color: #27AE60 !important;
+    }
+
+    .quiz-option.wrong {
+      background: #FDECEA !important;
+      border-color: #C0392B !important;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #C0392B;
+      border-radius: 99px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #FFF8EE;
+    }
+
+    /* nav tab */
+    .tab-btn {
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      border-bottom: 3px solid #C0392B;
+      color: #C0392B;
+      font-weight: 800;
+    }
+
+    /* input focus */
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: 2px solid #F5A623;
+      outline-offset: 2px;
+    }
+
+    /* badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+  </style>
 </head>
-<body class="bg-gray-900 text-white">
 
-  <!-- Navbar -->
-  <nav class="flex justify-between items-center p-6 bg-gray-800 shadow-lg">
-    <h1 class="text-2xl font-bold text-indigo-400">Veldora</h1>
-    <ul class="flex gap-6 text-gray-300">
-      <li><a href="#" class="hover:text-white">Home</a></li>
-      <li><a href="#" class="hover:text-white">Docs</a></li>
-      <li><a href="#" class="hover:text-white">Features</a></li>
-      <li><a href="#" class="hover:text-white">GitHub</a></li>
-    </ul>
-  </nav>
+<body class="sasirangan-bg">
+  <!-- ============================================================ -->
+  <!-- 5. HOME / BERANDA                                            -->
+  <!-- ============================================================ -->
+  <div id="home" class="page active">
+    <!-- Top Nav -->
+    <nav class="sasirangan-header sticky top-0 z-40 shadow-lg">
+      <div class="relative z-10 max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-2xl">🦅</div>
+          <span class="font-fredoka text-2xl text-white">Edudaya</span>
+        </div>
+        <div class="hidden md:flex items-center gap-6">
+          <button onclick="showPage('home')"
+            class="text-white/80 hover:text-white font-600 text-sm transition">Beranda</button>
+          <a href="/list_course"
+            class="text-white/80 hover:text-white font-600 text-sm transition">Materi</a>
+          <button onclick="showPage('petunjuk')"
+            class="text-white/80 hover:text-white font-600 text-sm transition">Petunjuk</button>
+          <button onclick="showPage('latihan')"
+            class="text-white/80 hover:text-white font-600 text-sm transition">Latihan</button>
+        </div>
+        <div class="flex items-center gap-2">
+          <div
+            class="w-9 h-9 bg-kuning-DEFAULT rounded-full flex items-center justify-center text-white font-800 text-sm">
+            AN</div>
+          <button onclick="showPage('dash-siswa')"
+            class="hidden md:block bg-yellow-400 hover:bg-white/30 text-white text-sm px-3 py-1.5 rounded-lg font-600 transition">Dashboard</button>
+        </div>
+      </div>
+      <div class="motif-strip opacity-70"></div>
+    </nav>
 
-  <!-- Hero Section -->
-  <section class="text-center py-24 px-6">
-    <h2 class="text-5xl font-extrabold mb-6">Build Faster with Veldora</h2>
-    <p class="text-gray-400 text-lg mb-8">A modern MVC framework built on Flask for scalable and clean web development.</p>
-    <div class="flex justify-center gap-4">
-      <button class="bg-indigo-500 hover:bg-indigo-600 px-6 py-3 rounded-xl">Get Started</button>
-      <button class="border border-gray-600 px-6 py-3 rounded-xl hover:bg-gray-800">Documentation</button>
+    <!-- Hero -->
+    <div class="max-w-6xl mx-auto px-4 py-12">
+      <div class="flex flex-col lg:flex-row items-center gap-10 mb-16">
+        <div class="flex-1">
+          <div class="badge bg-kuning-light text-kuning-dark mb-4">🌺 Berbasis Budaya Kalimantan Selatan</div>
+          <h1 class="font-fredoka text-5xl text-cokelat-DEFAULT leading-tight mb-4">
+            Belajar Numerasi<br>
+            <span class="text-merah-DEFAULT">Seru</span> & <span class="text-hijau-DEFAULT">Menyenangkan!</span>
+          </h1>
+          <p class="text-gray-600 text-lg mb-8 font-600">Jelajahi dunia angka lewat cerita rakyat, motif
+            Sasirangan,<br>dan kearifan lokal Banua Kita!</p>
+          <div class="flex flex-wrap gap-3">
+            <button onclick="showPage('list-materi')"
+              class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
+              📚 Mulai Belajar
+            </button>
+            <button onclick="showPage('petunjuk')"
+              class="bg-white hover:bg-gray-50 text-cokelat-DEFAULT font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
+              ❓ Cara Pakai
+            </button>
+          </div>
+        </div>
+        <div class="flex-1 flex justify-center">
+          <div class="relative">
+            <div
+              class="float-anim w-64 h-64 bg-gradient-to-br from-kuning-light to-merah-light rounded-3xl flex items-center justify-center text-9xl shadow-2xl border-4 border-kuning-DEFAULT/30">
+              🦜
+            </div>
+            <div
+              class="absolute -top-4 -right-4 w-16 h-16 bg-hijau-DEFAULT rounded-2xl flex items-center justify-center text-3xl shadow-lg wiggle-anim">
+              ➕</div>
+            <div
+              class="absolute -bottom-4 -left-4 w-16 h-16 bg-biru-DEFAULT rounded-2xl flex items-center justify-center text-3xl shadow-lg"
+              style="animation:float 4s ease-in-out infinite">✖️</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+        <div class="bg-white rounded-2xl p-4 text-center shadow card-hover">
+          <div class="text-3xl mb-1">📖</div>
+          <div class="font-fredoka text-3xl text-merah-DEFAULT">24</div>
+          <div class="text-sm text-gray-500 font-600">Materi</div>
+        </div>
+        <div class="bg-white rounded-2xl p-4 text-center shadow card-hover">
+          <div class="text-3xl mb-1">🧩</div>
+          <div class="font-fredoka text-3xl text-biru-DEFAULT">120</div>
+          <div class="text-sm text-gray-500 font-600">Soal Latihan</div>
+        </div>
+        <div class="bg-white rounded-2xl p-4 text-center shadow card-hover">
+          <div class="text-3xl mb-1">👩‍🎓</div>
+          <div class="font-fredoka text-3xl text-hijau-DEFAULT">850+</div>
+          <div class="text-sm text-gray-500 font-600">Siswa Aktif</div>
+        </div>
+        <div class="bg-white rounded-2xl p-4 text-center shadow card-hover">
+          <div class="text-3xl mb-1">🏫</div>
+          <div class="font-fredoka text-3xl text-kuning-DEFAULT">42</div>
+          <div class="text-sm text-gray-500 font-600">Sekolah</div>
+        </div>
+      </div>
+
+      <!-- Materi Featured -->
+      <h2 class="font-fredoka text-3xl text-cokelat-DEFAULT mb-6">🌟 Materi Unggulan</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="bg-white rounded-2xl overflow-hidden shadow card-hover cursor-pointer"
+          onclick="showPage('belajar')">
+          <div class="h-36 flex items-center justify-center text-6xl"
+            style="background:linear-gradient(135deg,#FEF3DB,#FFF8EE)">🛶</div>
+          <div class="p-4">
+            <div class="badge bg-merah-light text-merah-DEFAULT mb-2">Kelas 3</div>
+            <h3 class="font-fredoka text-lg text-cokelat-DEFAULT">Penjumlahan ala Pasar Terapung</h3>
+            <p class="text-sm text-gray-500 mt-1 font-600">Belajar penjumlahan lewat jual beli di pasar terapung
+              Banjarmasin!</p>
+            <div class="progress-bar mt-3">
+              <div class="progress-fill" style="width:65%"></div>
+            </div>
+            <div class="flex justify-between mt-1 text-xs text-gray-400 font-600"><span>65% selesai</span><span>13/20
+                sesi</span></div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl overflow-hidden shadow card-hover cursor-pointer"
+          onclick="showPage('belajar')">
+          <div class="h-36 flex items-center justify-center text-6xl"
+            style="background:linear-gradient(135deg,#E8F8F0,#FFF8EE)">🦎</div>
+          <div class="p-4">
+            <div class="badge bg-hijau-light text-hijau-dark mb-2">Kelas 4</div>
+            <h3 class="font-fredoka text-lg text-cokelat-DEFAULT">Perkalian Motif Sasirangan</h3>
+            <p class="text-sm text-gray-500 mt-1 font-600">Temukan pola perkalian dalam motif kain tradisional
+              Sasirangan!</p>
+            <div class="progress-bar mt-3">
+              <div class="progress-fill" style="width:30%"></div>
+            </div>
+            <div class="flex justify-between mt-1 text-xs text-gray-400 font-600"><span>30% selesai</span><span>6/20
+                sesi</span></div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl overflow-hidden shadow card-hover cursor-pointer"
+          onclick="showPage('belajar')">
+          <div class="h-36 flex items-center justify-center text-6xl"
+            style="background:linear-gradient(135deg,#EAF4FB,#FFF8EE)">🌾</div>
+          <div class="p-4">
+            <div class="badge bg-biru-light text-biru-dark mb-2">Kelas 5</div>
+            <h3 class="font-fredoka text-lg text-cokelat-DEFAULT">Pecahan dalam Balapan Habsy</h3>
+            <p class="text-sm text-gray-500 mt-1 font-600">Memahami pecahan melalui tradisi kesenian Habsy Kalimantan!
+            </p>
+            <div class="progress-bar mt-3">
+              <div class="progress-fill" style="width:0%"></div>
+            </div>
+            <div class="flex justify-between mt-1 text-xs text-gray-400 font-600"><span>Belum dimulai</span><span>0/20
+                sesi</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leaderboard mini -->
+      <div class="bg-white rounded-2xl shadow p-6">
+        <h3 class="font-fredoka text-2xl text-cokelat-DEFAULT mb-4">🏆 Juara Pekan Ini</h3>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 p-3 bg-kuning-light rounded-xl">
+            <span class="text-2xl">🥇</span>
+            <div class="flex-1">
+              <div class="font-700">Ahmad Fauzi</div>
+              <div class="text-xs text-gray-500">SDN Banjarmasin 1 · Kelas 5</div>
+            </div>
+            <div class="font-fredoka text-xl text-kuning-dark">980</div>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+            <span class="text-2xl">🥈</span>
+            <div class="flex-1">
+              <div class="font-700">Siti Rahma</div>
+              <div class="text-xs text-gray-500">SDN Martapura 3 · Kelas 6</div>
+            </div>
+            <div class="font-fredoka text-xl text-gray-500">875</div>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-orange-50 rounded-xl">
+            <span class="text-2xl">🥉</span>
+            <div class="flex-1">
+              <div class="font-700">Budi Santoso</div>
+              <div class="text-xs text-gray-500">SDN Banjarbaru 2 · Kelas 4</div>
+            </div>
+            <div class="font-fredoka text-xl text-orange-400">820</div>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
-
-  <!-- Features -->
-  <section class="grid md:grid-cols-3 gap-8 px-10 py-16">
-    <div class="bg-gray-800 p-6 rounded-2xl shadow">
-      <h3 class="text-xl font-semibold mb-2">MVC Architecture</h3>
-      <p class="text-gray-400">Organized structure with Models, Views, and Controllers.</p>
-    </div>
-    <div class="bg-gray-800 p-6 rounded-2xl shadow">
-      <h3 class="text-xl font-semibold mb-2">Lightweight</h3>
-      <p class="text-gray-400">Built on top of Flask, keeping things simple and fast.</p>
-    </div>
-    <div class="bg-gray-800 p-6 rounded-2xl shadow">
-      <h3 class="text-xl font-semibold mb-2">Scalable</h3>
-      <p class="text-gray-400">Designed for small to large applications.</p>
-    </div>
-  </section>
-
-  <!-- Code Example -->
-  <section class="px-10 py-16">
-    <h3 class="text-2xl font-bold mb-6 text-center">Quick Example</h3>
-    <pre class="bg-black p-6 rounded-xl overflow-x-auto text-sm">
-<code>
-from veldora import App
-
-app = App()
-
-@app.route('/')
-def home():
-    return "Hello from Veldora 🚀"
-
-app.run()
-</code>
-    </pre>
-  </section>
-
-  <!-- Footer -->
-  <footer class="text-center py-6 text-gray-500">
-    © 2026 Veldora Framework. Built with ❤️ by agimdudu using Flask.
-  </footer>
+  </div>
 
 </body>
+
 </html>

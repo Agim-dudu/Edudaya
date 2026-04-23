@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Edudaya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Palet Sasirangan Kalimantan Selatan
+                        kuning: {
+                            DEFAULT: '#F5A623',
+                            light: '#FEF3DB',
+                            dark: '#C47D0E'
+                        },
+                        merah: {
+                            DEFAULT: '#C0392B',
+                            light: '#FDECEA',
+                            dark: '#922B21'
+                        },
+                        hijau: {
+                            DEFAULT: '#27AE60',
+                            light: '#E8F8F0',
+                            dark: '#1E8449'
+                        },
+                        biru: {
+                            DEFAULT: '#2980B9',
+                            light: '#EAF4FB',
+                            dark: '#1A5276'
+                        },
+                        ungu: {
+                            DEFAULT: '#8E44AD',
+                            light: '#F5EEF8',
+                            dark: '#6C3483'
+                        },
+                        cokelat: {
+                            DEFAULT: '#6D4C41',
+                            light: '#EFEBE9',
+                            dark: '#4E342E'
+                        },
+                        krem: {
+                            DEFAULT: '#FFF8EE',
+                            dark: '#F5E6CC'
+                        },
+                    },
+                    fontFamily: {
+                        nunito: ['Nunito', 'sans-serif'],
+                        fredoka: ['Fredoka One', 'cursive'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* ===== GLOBAL ===== */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #FFF8EE;
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* ===== SASIRANGAN PATTERN ===== */
+        .sasirangan-bg {
+            background-color: #FFF8EE;
+            background-image:
+                repeating-linear-gradient(45deg, rgba(245, 166, 35, 0.08) 0px, rgba(245, 166, 35, 0.08) 2px, transparent 2px, transparent 20px),
+                repeating-linear-gradient(-45deg, rgba(192, 57, 43, 0.06) 0px, rgba(192, 57, 43, 0.06) 2px, transparent 2px, transparent 20px);
+        }
+
+        .sasirangan-header {
+            background: linear-gradient(135deg, #C0392B 0%, #8E44AD 50%, #2980B9 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sasirangan-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 16px),
+                repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 16px);
+        }
+
+        .motif-border {
+            border-image: repeating-linear-gradient(90deg, #C0392B, #F5A623 20px, #27AE60 40px, #2980B9 60px, #8E44AD 80px, #C0392B 100px) 4;
+            border-style: solid;
+            border-width: 4px;
+        }
+
+        .motif-strip {
+            height: 8px;
+            background: repeating-linear-gradient(90deg, #C0392B 0px, #C0392B 16px, #F5A623 16px, #F5A623 32px, #27AE60 32px, #27AE60 48px, #2980B9 48px, #2980B9 64px, #8E44AD 64px, #8E44AD 80px);
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+        }
+
+        .sidebar-link {
+            transition: all 0.2s;
+        }
+
+        .sidebar-link:hover {
+            transform: translateX(4px);
+        }
+
+        .sidebar-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-left: 4px solid #F5A623;
+        }
+
+        /* ===== CARDS ===== */
+        .card-hover {
+            transition: all 0.25s;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ===== BUBBLES DECORATION ===== */
+        .bubble-dec {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.12;
+            pointer-events: none;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-10px)
+            }
+        }
+
+        @keyframes wiggle {
+
+            0%,
+            100% {
+                transform: rotate(-3deg)
+            }
+
+            50% {
+                transform: rotate(3deg)
+            }
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                box-shadow: 0 0 0 0 rgba(245, 166, 35, 0.5)
+            }
+
+            100% {
+                box-shadow: 0 0 0 16px rgba(245, 166, 35, 0)
+            }
+        }
+
+        .float-anim {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .wiggle-anim {
+            animation: wiggle 2s ease-in-out infinite;
+        }
+
+        .pulse-anim {
+            animation: pulse-ring 1.5s ease-out infinite;
+        }
+
+        /* ===== DECODING GAME ===== */
+        .decode-card {
+            perspective: 600px;
+        }
+
+        .decode-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .decode-card.flipped .decode-inner {
+            transform: rotateY(180deg);
+        }
+
+        .decode-front,
+        .decode-back {
+            backface-visibility: hidden;
+            position: absolute;
+            inset: 0;
+        }
+
+        .decode-back {
+            transform: rotateY(180deg);
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-bar {
+            height: 14px;
+            border-radius: 99px;
+            overflow: hidden;
+            background: #E5E7EB;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #27AE60, #F5A623);
+            transition: width 0.5s ease;
+        }
+
+        /* ===== QUIZ ===== */
+        .quiz-option {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .quiz-option:hover {
+            transform: scale(1.02);
+        }
+
+        .quiz-option.correct {
+            background: #E8F8F0 !important;
+            border-color: #27AE60 !important;
+        }
+
+        .quiz-option.wrong {
+            background: #FDECEA !important;
+            border-color: #C0392B !important;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #C0392B;
+            border-radius: 99px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FFF8EE;
+        }
+
+        /* nav tab */
+        .tab-btn {
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            border-bottom: 3px solid #C0392B;
+            color: #C0392B;
+            font-weight: 800;
+        }
+
+        /* input focus */
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: 2px solid #F5A623;
+            outline-offset: 2px;
+        }
+
+        /* badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 10px;
+            border-radius: 99px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body class="sasirangan-bg">
+    <!-- ============================================================ -->
+    <!-- 4. REGISTER SISWA                                           -->
+    <!-- ============================================================ -->
+    <div id="register" class="page active">
+        <div class="min-h-screen flex">
+            <div class="hidden lg:flex flex-col justify-center items-center w-5/12 sasirangan-header p-12 relative">
+                <div class="relative z-10 text-center">
+                    <div class="wiggle-anim inline-block mb-4 text-8xl">✏️</div>
+                    <h1 class="font-fredoka text-4xl text-white mb-2">Daftar Sekarang!</h1>
+                    <p class="text-white/80 text-base">Bergabunglah dan mulai perjalanan<br>belajar numerasimu!</p>
+                    <div class="mt-8 grid grid-cols-3 gap-3">
+                        <div class="bg-white/20 rounded-xl p-3 text-center text-white">
+                            <div class="text-2xl mb-1">🎯</div>
+                            <div class="text-xs">Materi Seru</div>
+                        </div>
+                        <div class="bg-white/20 rounded-xl p-3 text-center text-white">
+                            <div class="text-2xl mb-1">🏆</div>
+                            <div class="text-xs">Raih Nilai</div>
+                        </div>
+                        <div class="bg-white/20 rounded-xl p-3 text-center text-white">
+                            <div class="text-2xl mb-1">🌺</div>
+                            <div class="text-xs">Budaya Kalsel</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 flex flex-col justify-center items-center p-8">
+                <div class="w-full max-w-lg">
+                    <div class="motif-strip rounded-t-2xl"></div>
+                    <div class="bg-white rounded-b-2xl shadow-xl p-8">
+                        <h2 class="font-fredoka text-2xl text-cokelat-DEFAULT mb-6 text-center">📝 Formulir Pendaftaran
+                            Siswa</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="col-span-2">
+                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Nama Lengkap <span
+                                        class="text-merah-DEFAULT">*</span></label>
+                                <input type="text" placeholder="Nama lengkap sesuai rapor"
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Jenis Kelamin</label>
+                                <select
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition bg-white">
+                                    <option>Laki-laki</option>
+                                    <option>Perempuan</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Kelas</label>
+                                <select
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition bg-white">
+                                    <option>Kelas 1</option>
+                                    <option>Kelas 2</option>
+                                    <option>Kelas 3</option>
+                                    <option>Kelas 4</option>
+                                    <option>Kelas 5</option>
+                                    <option>Kelas 6</option>
+                                </select>
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Nama Sekolah <span
+                                        class="text-merah-DEFAULT">*</span></label>
+                                <input type="text" placeholder="SDN ..."
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Token Kelas <span
+                                        class="text-merah-DEFAULT">*</span></label>
+                                <input type="text" placeholder="Dari gurumu"
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition tracking-widest">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Kata Sandi</label>
+                                <input type="password" placeholder="Min. 6 karakter"
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">No. HP Orang Tua
+                                    (opsional)</label>
+                                <input type="tel" placeholder="08xxxxxxxxxx"
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
+                            </div>
+                            <div class="col-span-2">
+                                <label class="flex items-start gap-2 cursor-pointer text-sm text-gray-600">
+                                    <input type="checkbox" class="accent-kuning-DEFAULT mt-0.5">
+                                    <span>Saya setuju dengan <a href="#" class="text-biru-DEFAULT underline">Syarat &
+                                            Ketentuan</a> penggunaan platform Edudaya.id</span>
+                                </label>
+                            </div>
+                            <div class="col-span-2">
+                                <button onclick="showPage('home')"
+                                    class="w-full bg-kuning-DEFAULT hover:bg-kuning-dark text-white font-800 py-3 rounded-xl text-lg shadow-md transition hover:-translate-y-0.5">
+                                    🎉 Daftar Sekarang!
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-center text-sm text-gray-500 mt-4">Sudah punya akun? <button
+                                onclick="showPage('login-siswa')"
+                                class="text-kuning-dark font-700 hover:underline">Masuk di sini</button></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
