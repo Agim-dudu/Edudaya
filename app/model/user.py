@@ -20,6 +20,9 @@ class User(db.Model, UserMixin):
     
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relasi
+    class_relation = db.relationship('UserClasses', backref='user', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'<User {self.username}>'

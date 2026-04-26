@@ -306,35 +306,33 @@
 <body class="sasirangan-bg">
 
     <!-- ============================================================ -->
-    <!-- 1. LOGIN SISWA                                               -->
+    <!-- 2. LOGIN GURU                                                -->
     <!-- ============================================================ -->
-    <div id="login-siswa" class="page active">
+    <div id="login-guru" class="page active">
         <div class="min-h-screen flex">
-            <!-- Left panel -->
-            <div class="hidden lg:flex flex-col justify-center items-center w-1/2 sasirangan-header p-12 relative">
-                <div class="bubble-dec w-64 h-64 bg-kuning-DEFAULT top-[-32px] left-[-32px]"></div>
-                <div class="bubble-dec w-40 h-40 bg-biru-DEFAULT bottom-16 right-[-20px]"></div>
+            <div class="hidden lg:flex flex-col justify-center items-center w-1/2 p-12 relative"
+                style="background:linear-gradient(135deg,#27AE60,#2980B9)">
+                <div class="bubble-dec w-56 h-56 bg-white top-0 right-0"></div>
+                <div class="bubble-dec w-32 h-32 bg-kuning-DEFAULT bottom-12 left-8"></div>
                 <div class="relative z-10 text-center">
                     <div class="float-anim inline-block mb-6">
                         <div
                             class="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center text-7xl shadow-2xl">
-                            🦅</div>
+                            👨‍🏫</div>
                     </div>
-                    <h1 class="font-fredoka text-5xl text-white leading-tight mb-3">Edudaya</h1>
-                    <p class="text-white/80 text-lg font-nunito font-600">Belajar Numerasi dengan Kearifan
-                        Lokal<br>Kalimantan Selatan</p>
-                    <div class="motif-strip rounded-full mt-8 w-48 mx-auto opacity-70"></div>
+                    <h1 class="font-fredoka text-4xl text-white mb-3">Portal Guru</h1>
+                    <p class="text-white/80 font-600">Kelola kelas & pantau perkembangan<br>murid-muridmu</p>
+                    <div class="motif-strip rounded-full mt-8 w-40 mx-auto opacity-60"></div>
                 </div>
             </div>
-            <!-- Right panel -->
             <div class="flex-1 flex flex-col justify-center items-center p-8">
                 <div class="w-full max-w-md">
                     <div class="motif-strip rounded-t-2xl"></div>
                     <div class="bg-white rounded-b-2xl shadow-xl p-8">
                         <div class="text-center mb-8">
-                            <span class="text-5xl">👧</span>
-                            <h2 class="font-fredoka text-3xl text-cokelat-DEFAULT mt-2">Masuk sebagai Siswa</h2>
-                            <p class="text-gray-500 text-sm mt-1">Hayo, siap belajar hari ini?</p>
+                            <span class="text-5xl">🏫</span>
+                            <h2 class="font-fredoka text-3xl text-hijau-dark mt-2">Masuk sebagai Guru</h2>
+                            <p class="text-gray-500 text-sm mt-1">Selamat datang, Bapak/Ibu Guru!</p>
                         </div>
                         <!-- Flash Message Section -->
                         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -350,7 +348,7 @@
                         {% endif %}
                         {% endwith %}
                         <div class="space-y-4">
-                            <form action="/login" method="POST" class="space-y-6">
+                            <form action="/login_teacher" method="POST" class="space-y-6">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                 <div>
                                     <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Username</label>
@@ -365,23 +363,18 @@
                                 </div>
                                 <button onclick="showPage('home')"
                                     class="w-full bg-yellow-500 hover:bg-kuning-dark text-white font-800 py-3 rounded-xl text-lg shadow-md transition hover:-translate-y-0.5 active:translate-y-0">
-                                    🚀 Mulai Belajar!
+                                    🔑 Masuk
                                 </button>
                             </form>
                         </div>
-
                         <div class="mt-6 flex gap-2 justify-center">
-                            <a href="/login_teacher"
-                                class="text-sm text-biru-DEFAULT hover:underline font-600">Login Guru</a>
+                            <button onclick="showPage('login-siswa')"
+                                class="text-sm text-kuning-dark hover:underline font-600">Login Siswa</button>
                             <span class="text-gray-300">|</span>
-                            <a href="/login_admin"
-                                class="text-sm text-merah-DEFAULT hover:underline font-600">Login Admin</a>
-                            <span class="text-gray-300">|</span>
-                            <a href="/register" class="text-sm text-hijau-DEFAULT hover:underline font-600">Daftar</a>
+                            <button onclick="showPage('login-admin')"
+                                class="text-sm text-merah-DEFAULT hover:underline font-600">Admin</button>
                         </div>
                     </div>
-                    <p class="text-center text-xs text-gray-400 mt-4">© 2024 Edudaya.id — Numerasi Berbasis Budaya
-                        Kalimantan Selatan</p>
                 </div>
             </div>
         </div>

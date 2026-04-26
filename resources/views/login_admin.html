@@ -306,83 +306,62 @@
 <body class="sasirangan-bg">
 
     <!-- ============================================================ -->
-    <!-- 1. LOGIN SISWA                                               -->
+    <!-- 3. LOGIN SUPER ADMIN                                         -->
     <!-- ============================================================ -->
-    <div id="login-siswa" class="page active">
-        <div class="min-h-screen flex">
-            <!-- Left panel -->
-            <div class="hidden lg:flex flex-col justify-center items-center w-1/2 sasirangan-header p-12 relative">
-                <div class="bubble-dec w-64 h-64 bg-kuning-DEFAULT top-[-32px] left-[-32px]"></div>
-                <div class="bubble-dec w-40 h-40 bg-biru-DEFAULT bottom-16 right-[-20px]"></div>
-                <div class="relative z-10 text-center">
-                    <div class="float-anim inline-block mb-6">
+    <div id="login-admin" class="page active">
+        <div class="min-h-screen flex items-center justify-center p-8"
+            style="background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)">
+            <div class="w-full max-w-md">
+                <!-- top motif strip -->
+                <div class="motif-strip rounded-t-2xl"></div>
+                <div class="bg-white/10 backdrop-blur border border-white/20 rounded-b-2xl p-8 text-white">
+                    <div class="text-center mb-8">
                         <div
-                            class="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center text-7xl shadow-2xl">
-                            🦅</div>
+                            class="w-20 h-20 bg-merah-DEFAULT/20 border-2 border-merah-DEFAULT rounded-2xl flex items-center justify-center text-5xl mx-auto mb-3">
+                            🛡️</div>
+                        <h2 class="font-fredoka text-3xl">Super Admin</h2>
+                        <p class="text-white/60 text-sm mt-1">Akses Sistem Edudaya.id</p>
                     </div>
-                    <h1 class="font-fredoka text-5xl text-white leading-tight mb-3">Edudaya</h1>
-                    <p class="text-white/80 text-lg font-nunito font-600">Belajar Numerasi dengan Kearifan
-                        Lokal<br>Kalimantan Selatan</p>
-                    <div class="motif-strip rounded-full mt-8 w-48 mx-auto opacity-70"></div>
-                </div>
-            </div>
-            <!-- Right panel -->
-            <div class="flex-1 flex flex-col justify-center items-center p-8">
-                <div class="w-full max-w-md">
-                    <div class="motif-strip rounded-t-2xl"></div>
-                    <div class="bg-white rounded-b-2xl shadow-xl p-8">
-                        <div class="text-center mb-8">
-                            <span class="text-5xl">👧</span>
-                            <h2 class="font-fredoka text-3xl text-cokelat-DEFAULT mt-2">Masuk sebagai Siswa</h2>
-                            <p class="text-gray-500 text-sm mt-1">Hayo, siap belajar hari ini?</p>
+                    <!-- Flash Message Section -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <div id="flash-messages" class="mb-4 space-y-2 transition duration-300">
+                        {% for category, message in messages %}
+                        <div
+                            class="text-white px-4 py-2 rounded-lg shadow-md animate-pulse {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-gray-500{% endif %}">
+                            {{ message }}
                         </div>
-                        <!-- Flash Message Section -->
-                        {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                        <div id="flash-messages" class="mb-4 space-y-2 transition duration-300">
-                            {% for category, message in messages %}
-                            <div
-                                class="text-white px-4 py-2 rounded-lg shadow-md animate-pulse {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-gray-500{% endif %}">
-                                {{ message }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                    <div class="space-y-4">
+                        <form action="/login_admin" method="POST" class="space-y-6">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <div>
+                                <label class="block text-sm font-700 text-white/80 mb-1">Username Admin</label>
+                                <input type="text" placeholder="superadmin" id="username" name="username" required
+                                    class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 font-nunito">
                             </div>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                        {% endwith %}
-                        <div class="space-y-4">
-                            <form action="/login" method="POST" class="space-y-6">
-                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                <div>
-                                    <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Username</label>
-                                    <input type="text" placeholder="Masukkan Username" id="username" name="username"
-                                        required
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 font-nunito text-base focus:border-kuning-DEFAULT transition">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Password</label>
-                                    <input type="password" placeholder="Password" id="password" name="password" required
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 font-nunito text-base focus:border-kuning-DEFAULT transition">
-                                </div>
-                                <button onclick="showPage('home')"
-                                    class="w-full bg-yellow-500 hover:bg-kuning-dark text-white font-800 py-3 rounded-xl text-lg shadow-md transition hover:-translate-y-0.5 active:translate-y-0">
-                                    🚀 Mulai Belajar!
-                                </button>
-                            </form>
-                        </div>
-
-                        <div class="mt-6 flex gap-2 justify-center">
-                            <a href="/login_teacher"
-                                class="text-sm text-biru-DEFAULT hover:underline font-600">Login Guru</a>
-                            <span class="text-gray-300">|</span>
-                            <a href="/login_admin"
-                                class="text-sm text-merah-DEFAULT hover:underline font-600">Login Admin</a>
-                            <span class="text-gray-300">|</span>
-                            <a href="/register" class="text-sm text-hijau-DEFAULT hover:underline font-600">Daftar</a>
-                        </div>
+                            <div>
+                                <label class="block text-sm font-700 text-white/80 mb-1">Kata Sandi</label>
+                                <input type="password" placeholder="••••••••" id="password" name="password" required
+                                    class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 font-nunito">
+                            </div>
+                            <button
+                                class="w-full bg-red-500 hover:bg-merah-dark text-white font-800 py-3 rounded-xl text-lg shadow-lg transition hover:-translate-y-0.5">
+                                🔐 Masuk ke Sistem
+                            </button>
+                        </form>
                     </div>
-                    <p class="text-center text-xs text-gray-400 mt-4">© 2024 Edudaya.id — Numerasi Berbasis Budaya
-                        Kalimantan Selatan</p>
+                    <div class="mt-6 text-center">
+                        <button onclick="showPage('login-guru')"
+                            class="text-white/50 text-sm hover:text-white/80 transition">← Kembali ke Login
+                            Guru</button>
+                    </div>
                 </div>
+                <p class="text-center text-white/30 text-xs mt-4">Edudaya.id v1.0 — Akses terbatas, hanya untuk
+                    administrator</p>
             </div>
         </div>
     </div>

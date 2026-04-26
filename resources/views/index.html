@@ -334,20 +334,20 @@
     </nav>
 
     <div class="absolute flex justify-center items-center w-full z-10 mt-2">
-    <!-- Flash Message Section -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <div id="flash-messages" class="mx-auto mt-4 ">
-      {% for category, message in messages %}
-      <div
-        class="text-white text-center px-20 py-1 rounded-lg mb-2 {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-gray-500{% endif %} shadow-md animate-bounce">
-        {{ message }}
+      <!-- Flash Message Section -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div id="flash-messages" class="mx-auto mt-4 ">
+        {% for category, message in messages %}
+        <div
+          class="text-white text-center px-20 py-1 rounded-lg mb-2 {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-gray-500{% endif %} shadow-md animate-bounce">
+          {{ message }}
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
+      {% endif %}
+      {% endwith %}
     </div>
-    {% endif %}
-    {% endwith %}
-  </div>
 
     <!-- Hero -->
     <div class="max-w-6xl mx-auto px-4 py-12">
@@ -361,14 +361,41 @@
           <p class="text-gray-600 text-lg mb-8 font-600">Jelajahi dunia angka lewat cerita rakyat, motif
             Sasirangan,<br>dan kearifan lokal Banua Kita!</p>
           <div class="flex flex-wrap gap-3">
-            <button onclick="showPage('list-materi')"
+            {% if current_user.is_authenticated %}
+            {% if current_user.level == 1 %}
+              <a href=""
+                class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
+                📚 Mulai Belajar
+              </a>
+              <a href=""
+                class="bg-white hover:bg-gray-50 text-cokelat-DEFAULT font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
+                Halaman Guru
+              </a>
+            {% elif current_user.level == 0 %}
+            <a href="/dashboard_student/{{ current_user.id }}"
               class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
               📚 Mulai Belajar
-            </button>
-            <button onclick="showPage('petunjuk')"
+            </a>
+            <a href="/dashboard_student/{{ current_user.id }}"
               class="bg-white hover:bg-gray-50 text-cokelat-DEFAULT font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
-              ❓ Cara Pakai
-            </button>
+              Halaman Siswa
+            </a>
+            {% elif current_user.level == 2 %}
+            <a href=""
+              class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
+              📚 Mulai Belajar
+            </a>
+            <a href=""
+              class="bg-white hover:bg-gray-50 text-cokelat-DEFAULT font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
+              Halaman Admin
+            </a>
+            {% endif %}
+            {% else %}
+            <a href=""
+              class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
+              📚 Mulai Belajar
+            </a>
+            {% endif %}
           </div>
         </div>
         <div class="flex-1 flex justify-center">
