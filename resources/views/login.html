@@ -336,22 +336,40 @@
                             <h2 class="font-fredoka text-3xl text-cokelat-DEFAULT mt-2">Masuk sebagai Siswa</h2>
                             <p class="text-gray-500 text-sm mt-1">Hayo, siap belajar hari ini?</p>
                         </div>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Username</label>
-                                <input type="text" placeholder="Masukkan Username"
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 font-nunito text-base focus:border-kuning-DEFAULT transition">
+                        <!-- Flash Message Section -->
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        <div id="flash-messages" class="mb-4 space-y-2 transition duration-300">
+                            {% for category, message in messages %}
+                            <div
+                                class="text-white px-4 py-2 rounded-lg shadow-md animate-pulse {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-gray-500{% endif %}">
+                                {{ message }}
                             </div>
-                            <div>
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Password</label>
-                                <input type="password" placeholder="Password"
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 font-nunito text-base focus:border-kuning-DEFAULT transition">
-                            </div>
-                            <button onclick="showPage('home')"
-                                class="w-full bg-yellow-300 hover:bg-kuning-dark text-white font-800 py-3 rounded-xl text-lg shadow-md transition hover:-translate-y-0.5 active:translate-y-0">
-                                🚀 Mulai Belajar!
-                            </button>
+                            {% endfor %}
                         </div>
+                        {% endif %}
+                        {% endwith %}
+                        <div class="space-y-4">
+                            <form action="/login" method="POST" class="space-y-6">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <div>
+                                    <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Username</label>
+                                    <input type="text" placeholder="Masukkan Username" id="username" name="username"
+                                        required
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 font-nunito text-base focus:border-kuning-DEFAULT transition">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Password</label>
+                                    <input type="password" placeholder="Password" id="password" name="password" required
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 font-nunito text-base focus:border-kuning-DEFAULT transition">
+                                </div>
+                                <button onclick="showPage('home')"
+                                    class="w-full bg-yellow-500 hover:bg-kuning-dark text-white font-800 py-3 rounded-xl text-lg shadow-md transition hover:-translate-y-0.5 active:translate-y-0">
+                                    🚀 Mulai Belajar!
+                                </button>
+                            </form>
+                        </div>
+
                         <div class="mt-6 flex gap-2 justify-center">
                             <button onclick="showPage('login-guru')"
                                 class="text-sm text-biru-DEFAULT hover:underline font-600">Login Guru</button>
@@ -359,8 +377,7 @@
                             <button onclick="showPage('login-admin')"
                                 class="text-sm text-merah-DEFAULT hover:underline font-600">Login Admin</button>
                             <span class="text-gray-300">|</span>
-                            <a href="/register"
-                                class="text-sm text-hijau-DEFAULT hover:underline font-600">Daftar</a>
+                            <a href="/register" class="text-sm text-hijau-DEFAULT hover:underline font-600">Daftar</a>
                         </div>
                     </div>
                     <p class="text-center text-xs text-gray-400 mt-4">© 2024 Edudaya.id — Numerasi Berbasis Budaya
@@ -369,6 +386,27 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Tunggu sampai halaman selesai dimuat
+        document.addEventListener('DOMContentLoaded', function () {
+            const flashContainer = document.getElementById('flash-messages');
+
+            if (flashContainer) {
+                // Setel waktu tunggu (misal: 3000ms = 3 detik)
+                setTimeout(function () {
+                    // Tambahkan efek transisi halus (opacity 0)
+                    flashContainer.style.transition = "opacity 0.6s ease";
+                    flashContainer.style.opacity = "0";
+
+                    // Hapus elemen sepenuhnya dari layout setelah transisi selesai
+                    setTimeout(function () {
+                        flashContainer.remove();
+                    }, 600);
+                }, 3000);
+            }
+        });
+    </script>
 
 </body>
 

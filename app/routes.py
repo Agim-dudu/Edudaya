@@ -1,6 +1,7 @@
-from app import app, response
+from app import app, response, csrf
 from app.controller import UserController
 from flask import request, jsonify,render_template
+from flask_login import current_user, login_required, logout_user
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 @app.route('/')
@@ -19,9 +20,17 @@ def list_course():
 def instruction():
     return render_template('instruction.html')
 
-@app.route('/login', methods=['POST'])
-def logins():
-    return UserController.login()
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "GET":
+        return render_template("login.html")
+    else:
+        return UserController.login_siswa()
+    
+@app.route("/logout")
+@login_required
+def logout():
+    return UserController.logout()
 
 @app.route('/register', methods=['GET'])
 def register_page():

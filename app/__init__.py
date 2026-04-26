@@ -26,7 +26,7 @@ seeder.init_app(app, db)
 
 # Pengaturan session cookie dan waktu kadaluarsa
 app.config['SESSION_COOKIE_NAME'] = 'your_session_cookie_name'  # Nama cookie sesi
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)  # Durasi sesi tetap aktif selama 2hari
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)  # Durasi sesi tetap aktif selama 2hari
 
 
 jwt = JWTManager(app)
@@ -36,7 +36,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-from app.model import Classes, User, Token
+from app.model import Classes, User, Token, UserClasses
 
 # from app.model.scores import Score
 # from app.model.class_users import UserClasses
