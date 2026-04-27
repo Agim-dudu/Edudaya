@@ -1,3 +1,4 @@
+from .HomeController import *
 from .UserController import *
 from .dashboard.AdminDashboardController import *
 from .dashboard.StudentDashboardController import *

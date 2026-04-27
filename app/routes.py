@@ -8,7 +8,14 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    
+    amount_classes=get_amount_classes()
+    amount_teacher=get_amount_teacher()
+    amount_student=get_amount_student()
+    
+    print(amount_student)
+    
+    return render_template("index.html", ac=amount_classes, at=amount_teacher, ast=amount_student)
 
 
 @app.route("/login", methods=["GET"])
