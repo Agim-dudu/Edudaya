@@ -1,0 +1,240 @@
+/* ===== GLOBAL ===== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background: #FFF8EE;
+}
+
+.page {
+    display: none;
+    min-height: 100vh;
+}
+
+.page.active {
+    display: block;
+}
+
+/* ===== SASIRANGAN PATTERN ===== */
+.sasirangan-bg {
+    background-color: #FFF8EE;
+    background-image:
+        repeating-linear-gradient(45deg, rgba(245, 166, 35, 0.08) 0px, rgba(245, 166, 35, 0.08) 2px, transparent 2px, transparent 20px),
+        repeating-linear-gradient(-45deg, rgba(192, 57, 43, 0.06) 0px, rgba(192, 57, 43, 0.06) 2px, transparent 2px, transparent 20px);
+}
+
+.sasirangan-header {
+    background: linear-gradient(135deg, #C0392B 0%, #8E44AD 50%, #2980B9 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.sasirangan-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 16px),
+        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 16px);
+}
+
+.motif-border {
+    border-image: repeating-linear-gradient(90deg, #C0392B, #F5A623 20px, #27AE60 40px, #2980B9 60px, #8E44AD 80px, #C0392B 100px) 4;
+    border-style: solid;
+    border-width: 4px;
+}
+
+.motif-strip {
+    height: 8px;
+    background: repeating-linear-gradient(90deg, #C0392B 0px, #C0392B 16px, #F5A623 16px, #F5A623 32px, #27AE60 32px, #27AE60 48px, #2980B9 48px, #2980B9 64px, #8E44AD 64px, #8E44AD 80px);
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+}
+
+.sidebar-link {
+    transition: all 0.2s;
+}
+
+.sidebar-link:hover {
+    transform: translateX(4px);
+}
+
+.sidebar-link.active {
+    background: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #F5A623;
+}
+
+/* ===== CARDS ===== */
+.card-hover {
+    transition: all 0.25s;
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== BUBBLES DECORATION ===== */
+.bubble-dec {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.12;
+    pointer-events: none;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0)
+    }
+
+    50% {
+        transform: translateY(-10px)
+    }
+}
+
+@keyframes wiggle {
+
+    0%,
+    100% {
+        transform: rotate(-3deg)
+    }
+
+    50% {
+        transform: rotate(3deg)
+    }
+}
+
+@keyframes pulse-ring {
+    0% {
+        box-shadow: 0 0 0 0 rgba(245, 166, 35, 0.5)
+    }
+
+    100% {
+        box-shadow: 0 0 0 16px rgba(245, 166, 35, 0)
+    }
+}
+
+.float-anim {
+    animation: float 3s ease-in-out infinite;
+}
+
+.wiggle-anim {
+    animation: wiggle 2s ease-in-out infinite;
+}
+
+.pulse-anim {
+    animation: pulse-ring 1.5s ease-out infinite;
+}
+
+/* ===== DECODING GAME ===== */
+.decode-card {
+    perspective: 600px;
+}
+
+.decode-inner {
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.decode-card.flipped .decode-inner {
+    transform: rotateY(180deg);
+}
+
+.decode-front,
+.decode-back {
+    backface-visibility: hidden;
+    position: absolute;
+    inset: 0;
+}
+
+.decode-back {
+    transform: rotateY(180deg);
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar {
+    height: 14px;
+    border-radius: 99px;
+    overflow: hidden;
+    background: #E5E7EB;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #27AE60, #F5A623);
+    transition: width 0.5s ease;
+}
+
+/* ===== QUIZ ===== */
+.quiz-option {
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.quiz-option:hover {
+    transform: scale(1.02);
+}
+
+.quiz-option.correct {
+    background: #E8F8F0 !important;
+    border-color: #27AE60 !important;
+}
+
+.quiz-option.wrong {
+    background: #FDECEA !important;
+    border-color: #C0392B !important;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #C0392B;
+    border-radius: 99px;
+}
+
+::-webkit-scrollbar-track {
+    background: #FFF8EE;
+}
+
+/* nav tab */
+.tab-btn {
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    border-bottom: 3px solid #C0392B;
+    color: #C0392B;
+    font-weight: 800;
+}
+
+/* input focus */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid #F5A623;
+    outline-offset: 2px;
+}
+
+/* badge */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+}

@@ -9,6 +9,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap"
     rel="stylesheet">
+  <link rel="stylesheet" href="/resources/css/main.css">
   <script>
     tailwind.config = {
       theme: {
@@ -16,37 +17,37 @@
           colors: {
             // Palet Sasirangan Kalimantan Selatan
             kuning: {
-              DEFAULT: '#F5A623',
+              general: '#F5A623',
               light: '#FEF3DB',
               dark: '#C47D0E'
             },
             merah: {
-              DEFAULT: '#C0392B',
+              general: '#C0392B',
               light: '#FDECEA',
               dark: '#922B21'
             },
             hijau: {
-              DEFAULT: '#27AE60',
+              general: '#27AE60',
               light: '#E8F8F0',
               dark: '#1E8449'
             },
             biru: {
-              DEFAULT: '#2980B9',
+              general: '#2980B9',
               light: '#EAF4FB',
               dark: '#1A5276'
             },
             ungu: {
-              DEFAULT: '#8E44AD',
+              general: '#8E44AD',
               light: '#F5EEF8',
               dark: '#6C3483'
             },
             cokelat: {
-              DEFAULT: '#6D4C41',
+              general: '#6D4C41',
               light: '#EFEBE9',
               dark: '#4E342E'
             },
             krem: {
-              DEFAULT: '#FFF8EE',
+              general: '#FFF8EE',
               dark: '#F5E6CC'
             },
           },
@@ -59,248 +60,6 @@
       }
     }
   </script>
-  <style>
-    /* ===== GLOBAL ===== */
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: #FFF8EE;
-    }
-
-    .page {
-      display: none;
-      min-height: 100vh;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    /* ===== SASIRANGAN PATTERN ===== */
-    .sasirangan-bg {
-      background-color: #FFF8EE;
-      background-image:
-        repeating-linear-gradient(45deg, rgba(245, 166, 35, 0.08) 0px, rgba(245, 166, 35, 0.08) 2px, transparent 2px, transparent 20px),
-        repeating-linear-gradient(-45deg, rgba(192, 57, 43, 0.06) 0px, rgba(192, 57, 43, 0.06) 2px, transparent 2px, transparent 20px);
-    }
-
-    .sasirangan-header {
-      background: linear-gradient(135deg, #C0392B 0%, #8E44AD 50%, #2980B9 100%);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .sasirangan-header::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 16px),
-        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 16px);
-    }
-
-    .motif-border {
-      border-image: repeating-linear-gradient(90deg, #C0392B, #F5A623 20px, #27AE60 40px, #2980B9 60px, #8E44AD 80px, #C0392B 100px) 4;
-      border-style: solid;
-      border-width: 4px;
-    }
-
-    .motif-strip {
-      height: 8px;
-      background: repeating-linear-gradient(90deg, #C0392B 0px, #C0392B 16px, #F5A623 16px, #F5A623 32px, #27AE60 32px, #27AE60 48px, #2980B9 48px, #2980B9 64px, #8E44AD 64px, #8E44AD 80px);
-    }
-
-    /* ===== SIDEBAR ===== */
-    .sidebar {
-      width: 260px;
-      min-height: 100vh;
-    }
-
-    .sidebar-link {
-      transition: all 0.2s;
-    }
-
-    .sidebar-link:hover {
-      transform: translateX(4px);
-    }
-
-    .sidebar-link.active {
-      background: rgba(255, 255, 255, 0.2);
-      border-left: 4px solid #F5A623;
-    }
-
-    /* ===== CARDS ===== */
-    .card-hover {
-      transition: all 0.25s;
-    }
-
-    .card-hover:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-    }
-
-    /* ===== BUBBLES DECORATION ===== */
-    .bubble-dec {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0.12;
-      pointer-events: none;
-    }
-
-    /* ===== ANIMATIONS ===== */
-    @keyframes float {
-
-      0%,
-      100% {
-        transform: translateY(0)
-      }
-
-      50% {
-        transform: translateY(-10px)
-      }
-    }
-
-    @keyframes wiggle {
-
-      0%,
-      100% {
-        transform: rotate(-3deg)
-      }
-
-      50% {
-        transform: rotate(3deg)
-      }
-    }
-
-    @keyframes pulse-ring {
-      0% {
-        box-shadow: 0 0 0 0 rgba(245, 166, 35, 0.5)
-      }
-
-      100% {
-        box-shadow: 0 0 0 16px rgba(245, 166, 35, 0)
-      }
-    }
-
-    .float-anim {
-      animation: float 3s ease-in-out infinite;
-    }
-
-    .wiggle-anim {
-      animation: wiggle 2s ease-in-out infinite;
-    }
-
-    .pulse-anim {
-      animation: pulse-ring 1.5s ease-out infinite;
-    }
-
-    /* ===== DECODING GAME ===== */
-    .decode-card {
-      perspective: 600px;
-    }
-
-    .decode-inner {
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-      position: relative;
-    }
-
-    .decode-card.flipped .decode-inner {
-      transform: rotateY(180deg);
-    }
-
-    .decode-front,
-    .decode-back {
-      backface-visibility: hidden;
-      position: absolute;
-      inset: 0;
-    }
-
-    .decode-back {
-      transform: rotateY(180deg);
-    }
-
-    /* ===== PROGRESS BAR ===== */
-    .progress-bar {
-      height: 14px;
-      border-radius: 99px;
-      overflow: hidden;
-      background: #E5E7EB;
-    }
-
-    .progress-fill {
-      height: 100%;
-      border-radius: 99px;
-      background: linear-gradient(90deg, #27AE60, #F5A623);
-      transition: width 0.5s ease;
-    }
-
-    /* ===== QUIZ ===== */
-    .quiz-option {
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-
-    .quiz-option:hover {
-      transform: scale(1.02);
-    }
-
-    .quiz-option.correct {
-      background: #E8F8F0 !important;
-      border-color: #27AE60 !important;
-    }
-
-    .quiz-option.wrong {
-      background: #FDECEA !important;
-      border-color: #C0392B !important;
-    }
-
-    /* ===== SCROLLBAR ===== */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #C0392B;
-      border-radius: 99px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #FFF8EE;
-    }
-
-    /* nav tab */
-    .tab-btn {
-      transition: all 0.2s;
-    }
-
-    .tab-btn.active {
-      border-bottom: 3px solid #C0392B;
-      color: #C0392B;
-      font-weight: 800;
-    }
-
-    /* input focus */
-    input:focus,
-    select:focus,
-    textarea:focus {
-      outline: 2px solid #F5A623;
-      outline-offset: 2px;
-    }
-
-    /* badge */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 2px 10px;
-      border-radius: 99px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-  </style>
 </head>
 
 <body class="sasirangan-bg">
@@ -354,30 +113,30 @@
       <div class="flex flex-col lg:flex-row items-center gap-10 mb-16">
         <div class="flex-1">
           <div class="badge bg-kuning-light text-kuning-dark mb-4">🌺 Berbasis Budaya Kalimantan Selatan</div>
-          <h1 class="font-fredoka text-5xl text-cokelat-DEFAULT leading-tight mb-4">
+          <h1 class="font-fredoka text-5xl text-cokelat-general leading-tight mb-4">
             Belajar Numerasi<br>
-            <span class="text-merah-DEFAULT">Seru</span> & <span class="text-hijau-DEFAULT">Menyenangkan!</span>
+            <span class="text-merah-general">Seru</span> & <span class="text-hijau-general">Menyenangkan!</span>
           </h1>
           <p class="text-gray-600 text-lg mb-8 font-600">Jelajahi dunia angka lewat cerita rakyat, motif
             Sasirangan,<br>dan kearifan lokal Banua Kita!</p>
           <div class="flex flex-wrap gap-3">
             {% if current_user.is_authenticated %}
             {% if current_user.level == 1 %}
-              <a href=""
-                class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
-                📚 Mulai Belajar
-              </a>
-              <a href=""
-                class="bg-white hover:bg-gray-50 text-cokelat-DEFAULT font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
-                Halaman Guru
-              </a>
+            <a href=""
+              class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
+              📚 Mulai Belajar
+            </a>
+            <a href="/dashboard_teacher/{{ current_user.id }}"
+              class="bg-white hover:bg-gray-50 text-cokelat-general font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
+              Halaman Guru
+            </a>
             {% elif current_user.level == 0 %}
             <a href="/dashboard_student/{{ current_user.id }}"
               class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
               📚 Mulai Belajar
             </a>
             <a href="/dashboard_student/{{ current_user.id }}"
-              class="bg-white hover:bg-gray-50 text-cokelat-DEFAULT font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
+              class="bg-white hover:bg-gray-50 text-cokelat-general font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
               Halaman Siswa
             </a>
             {% elif current_user.level == 2 %}
@@ -386,7 +145,7 @@
               📚 Mulai Belajar
             </a>
             <a href=""
-              class="bg-white hover:bg-gray-50 text-cokelat-DEFAULT font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
+              class="bg-white hover:bg-gray-50 text-cokelat-general font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
               Halaman Admin
             </a>
             {% endif %}
@@ -401,14 +160,14 @@
         <div class="flex-1 flex justify-center">
           <div class="relative">
             <div
-              class="float-anim w-64 h-64 bg-gradient-to-br from-kuning-light to-merah-light rounded-3xl flex items-center justify-center text-9xl shadow-2xl border-4 border-kuning-DEFAULT/30">
+              class="float-anim w-64 h-64 bg-gradient-to-br from-kuning-light to-merah-light rounded-3xl flex items-center justify-center text-9xl shadow-2xl border-4 border-kuning-general/30">
               🦜
             </div>
             <div
-              class="absolute -top-4 -right-4 w-16 h-16 bg-hijau-DEFAULT rounded-2xl flex items-center justify-center text-3xl shadow-lg wiggle-anim">
+              class="absolute -top-4 -right-4 w-16 h-16 bg-hijau-general rounded-2xl flex items-center justify-center text-3xl shadow-lg wiggle-anim">
               ➕</div>
             <div
-              class="absolute -bottom-4 -left-4 w-16 h-16 bg-biru-DEFAULT rounded-2xl flex items-center justify-center text-3xl shadow-lg"
+              class="absolute -bottom-4 -left-4 w-16 h-16 bg-biru-general rounded-2xl flex items-center justify-center text-3xl shadow-lg"
               style="animation:float 4s ease-in-out infinite">✖️</div>
           </div>
         </div>
@@ -418,36 +177,36 @@
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
         <div class="bg-white rounded-2xl p-4 text-center shadow card-hover">
           <div class="text-3xl mb-1">📖</div>
-          <div class="font-fredoka text-3xl text-merah-DEFAULT">24</div>
+          <div class="font-fredoka text-3xl text-merah-general">24</div>
           <div class="text-sm text-gray-500 font-600">Materi</div>
         </div>
         <div class="bg-white rounded-2xl p-4 text-center shadow card-hover">
           <div class="text-3xl mb-1">🧩</div>
-          <div class="font-fredoka text-3xl text-biru-DEFAULT">120</div>
+          <div class="font-fredoka text-3xl text-biru-general">120</div>
           <div class="text-sm text-gray-500 font-600">Soal Latihan</div>
         </div>
         <div class="bg-white rounded-2xl p-4 text-center shadow card-hover">
           <div class="text-3xl mb-1">👩‍🎓</div>
-          <div class="font-fredoka text-3xl text-hijau-DEFAULT">850+</div>
+          <div class="font-fredoka text-3xl text-hijau-general">850+</div>
           <div class="text-sm text-gray-500 font-600">Siswa Aktif</div>
         </div>
         <div class="bg-white rounded-2xl p-4 text-center shadow card-hover">
           <div class="text-3xl mb-1">🏫</div>
-          <div class="font-fredoka text-3xl text-kuning-DEFAULT">42</div>
+          <div class="font-fredoka text-3xl text-kuning-general">42</div>
           <div class="text-sm text-gray-500 font-600">Sekolah</div>
         </div>
       </div>
 
       <!-- Materi Featured -->
-      <h2 class="font-fredoka text-3xl text-cokelat-DEFAULT mb-6">🌟 Materi Unggulan</h2>
+      <h2 class="font-fredoka text-3xl text-cokelat-general mb-6">🌟 Materi Unggulan</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div class="bg-white rounded-2xl overflow-hidden shadow card-hover cursor-pointer"
           onclick="showPage('belajar')">
           <div class="h-36 flex items-center justify-center text-6xl"
             style="background:linear-gradient(135deg,#FEF3DB,#FFF8EE)">🛶</div>
           <div class="p-4">
-            <div class="badge bg-merah-light text-merah-DEFAULT mb-2">Kelas 3</div>
-            <h3 class="font-fredoka text-lg text-cokelat-DEFAULT">Penjumlahan ala Pasar Terapung</h3>
+            <div class="badge bg-merah-light text-merah-general mb-2">Kelas 3</div>
+            <h3 class="font-fredoka text-lg text-cokelat-general">Penjumlahan ala Pasar Terapung</h3>
             <p class="text-sm text-gray-500 mt-1 font-600">Belajar penjumlahan lewat jual beli di pasar terapung
               Banjarmasin!</p>
             <div class="progress-bar mt-3">
@@ -463,7 +222,7 @@
             style="background:linear-gradient(135deg,#E8F8F0,#FFF8EE)">🦎</div>
           <div class="p-4">
             <div class="badge bg-hijau-light text-hijau-dark mb-2">Kelas 4</div>
-            <h3 class="font-fredoka text-lg text-cokelat-DEFAULT">Perkalian Motif Sasirangan</h3>
+            <h3 class="font-fredoka text-lg text-cokelat-general">Perkalian Motif Sasirangan</h3>
             <p class="text-sm text-gray-500 mt-1 font-600">Temukan pola perkalian dalam motif kain tradisional
               Sasirangan!</p>
             <div class="progress-bar mt-3">
@@ -479,7 +238,7 @@
             style="background:linear-gradient(135deg,#EAF4FB,#FFF8EE)">🌾</div>
           <div class="p-4">
             <div class="badge bg-biru-light text-biru-dark mb-2">Kelas 5</div>
-            <h3 class="font-fredoka text-lg text-cokelat-DEFAULT">Pecahan dalam Balapan Habsy</h3>
+            <h3 class="font-fredoka text-lg text-cokelat-general">Pecahan dalam Balapan Habsy</h3>
             <p class="text-sm text-gray-500 mt-1 font-600">Memahami pecahan melalui tradisi kesenian Habsy Kalimantan!
             </p>
             <div class="progress-bar mt-3">
@@ -493,7 +252,7 @@
 
       <!-- Leaderboard mini -->
       <div class="bg-white rounded-2xl shadow p-6">
-        <h3 class="font-fredoka text-2xl text-cokelat-DEFAULT mb-4">🏆 Juara Pekan Ini</h3>
+        <h3 class="font-fredoka text-2xl text-cokelat-general mb-4">🏆 Juara Pekan Ini</h3>
         <div class="space-y-3">
           <div class="flex items-center gap-3 p-3 bg-kuning-light rounded-xl">
             <span class="text-2xl">🥇</span>

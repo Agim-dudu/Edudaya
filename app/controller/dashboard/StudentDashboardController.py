@@ -1,4 +1,4 @@
-from app.model import User  
+from app.model import *
 from sqlalchemy import func, desc, literal_column, case
 from sqlalchemy.orm import aliased
 from sqlalchemy.sql import over 

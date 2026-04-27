@@ -1,2 +1,3 @@
-from .UserController import login_siswa, logout
-from .dashboard.StudentDashboardController import get_user_by_id
+from .UserController import *
+from .dashboard.StudentDashboardController import *
+from .dashboard.TeacherDashboardController import *
