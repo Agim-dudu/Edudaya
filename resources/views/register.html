@@ -334,69 +334,72 @@
                 <div class="w-full max-w-lg">
                     <div class="motif-strip rounded-t-2xl"></div>
                     <div class="bg-white rounded-b-2xl shadow-xl p-8">
-                        <h2 class="font-fredoka text-2xl text-cokelat-DEFAULT mb-6 text-center">📝 Formulir Pendaftaran
+                        <h2 class="font-fredoka text-2xl text-amber-900 mb-6 text-center">📝 Formulir Pendaftaran
                             Siswa</h2>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="col-span-2">
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Nama Lengkap <span
-                                        class="text-merah-DEFAULT">*</span></label>
-                                <input type="text" placeholder="Nama lengkap sesuai rapor"
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
+                        <!-- Flash Message Section -->
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        <div id="flash-messages" class="mb-4 space-y-2 transition duration-300">
+                            {% for category, message in messages %}
+                            <div
+                                class="text-white px-4 py-2 rounded-lg shadow-md animate-pulse {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-gray-500{% endif %}">
+                                {{ message }}
                             </div>
-                            <div>
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Jenis Kelamin</label>
-                                <select
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition bg-white">
-                                    <option>Laki-laki</option>
-                                    <option>Perempuan</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Kelas</label>
-                                <select
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition bg-white">
-                                    <option>Kelas 1</option>
-                                    <option>Kelas 2</option>
-                                    <option>Kelas 3</option>
-                                    <option>Kelas 4</option>
-                                    <option>Kelas 5</option>
-                                    <option>Kelas 6</option>
-                                </select>
-                            </div>
-                            <div class="col-span-2">
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Nama Sekolah <span
-                                        class="text-merah-DEFAULT">*</span></label>
-                                <input type="text" placeholder="SDN ..."
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Token Kelas <span
-                                        class="text-merah-DEFAULT">*</span></label>
-                                <input type="text" placeholder="Dari gurumu"
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition tracking-widest">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Kata Sandi</label>
-                                <input type="password" placeholder="Min. 6 karakter"
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
-                            </div>
-                            <div class="col-span-2">
-                                <label class="flex items-start gap-2 cursor-pointer text-sm text-gray-600">
-                                    <input type="checkbox" class="accent-kuning-DEFAULT mt-0.5">
-                                    <span>Saya setuju dengan <a href="#" class="text-biru-DEFAULT underline">Syarat &
-                                            Ketentuan</a> penggunaan platform Edudaya.id</span>
-                                </label>
-                            </div>
-                            <div class="col-span-2">
-                                <button onclick="showPage('home')"
-                                    class="w-full bg-kuning-DEFAULT hover:bg-kuning-dark text-white font-800 py-3 rounded-xl text-lg shadow-md transition hover:-translate-y-0.5">
-                                    🎉 Daftar Sekarang!
-                                </button>
-                            </div>
+                            {% endfor %}
                         </div>
-                        <p class="text-center text-sm text-gray-500 mt-4">Sudah punya akun? <button
-                                onclick="showPage('login-siswa')"
-                                class="text-kuning-dark font-700 hover:underline">Masuk di sini</button></p>
+                        {% endif %}
+                        {% endwith %}
+                        <form action="/register" method="POST" class="space-y-6">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="col-span-2">
+                                    <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Nama Lengkap</label>
+                                    <input type="text" placeholder="Nama lengkap sesuai rapor" id="full_name"
+                                        name="full_name" required
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Username</label>
+                                    <input type="text" placeholder="Username" id="username" name="username" required
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Jenis
+                                        Kelamin</label>
+                                    <select id="gender" name="gender"
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition bg-white">
+                                        <option value="L">Laki-laki</option>
+                                        <option value="P">Perempuan</option>
+                                    </select>
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Token Kelas</label>
+                                    <input type="text" placeholder="Dari gurumu" id="token" name="token" required
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition tracking-widest">
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Kata Sandi</label>
+                                    <input type="password" placeholder="Min. 6 karakter" id="password" name="password"
+                                        required
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-sm font-700 text-cokelat-DEFAULT mb-1">Ulangi Kata
+                                        Sandi</label>
+                                    <input type="password" placeholder="Masukkan Ulang Kata Sandi" id="confirm_password"
+                                        name="confirm_password" required
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm transition">
+                                </div>
+                                <div class="col-span-2">
+                                    <button
+                                        class="w-full bg-yellow-500 hover:bg-kuning-dark text-white font-800 py-3 rounded-xl text-lg shadow-md transition hover:-translate-y-0.5">
+                                        🎉 Daftar Sekarang!
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <p class="text-center text-sm text-gray-500 mt-4">Sudah punya akun? <a href="/login"
+                                class="text-kuning-dark font-700 hover:underline">Masuk di sini</a></p>
                     </div>
                 </div>
             </div>

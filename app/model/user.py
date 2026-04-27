@@ -11,6 +11,7 @@ class User(db.Model, UserMixin):
     full_name = db.Column(db.String(50), unique=False, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     level = db.Column(db.Integer, nullable=False)
+    gender = db.Column(db.String(5), nullable=False)
     image = db.Column(db.String(255), nullable=True, default='default.jpg')
     recommendation = db.Column(db.String(255), nullable=True)
     star = db.Column(db.Integer, nullable=True)

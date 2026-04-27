@@ -26,10 +26,14 @@ with app.app_context():
     ]
 
     # Pairing nama kelas dan kkm dengan zip
-    for class_name, school_name, class_token, kkm_value in zip(sample_classes, sample_school, sample_token, sample_kkm):
+    for class_name, school_name, class_token, kkm_value in zip(
+        sample_classes, sample_school, sample_token, sample_kkm
+    ):
         existing_class = Classes.query.filter_by(classes=class_name).first()
         if not existing_class:
-            kelas = Classes(classes=class_name, school=school_name, token=class_token, kkm=kkm_value)
+            kelas = Classes(
+                classes=class_name, school=school_name, token=class_token, kkm=kkm_value
+            )
             db.session.add(kelas)
 
     db.session.commit()
