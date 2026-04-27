@@ -426,12 +426,12 @@
 
     <script>
           // ---- Guru tabs ----
-  function switchGuruTab(tabId) {
-    document.querySelectorAll('.guru-tab').forEach(t => t.classList.add('hidden'));
-    document.getElementById(tabId)?.classList.remove('hidden');
-    document.querySelectorAll('#dash-guru .sidebar-link').forEach(b => b.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-  }
+        function switchGuruTab(tabId) {
+            document.querySelectorAll('.guru-tab').forEach(t => t.classList.add('hidden'));
+            document.getElementById(tabId)?.classList.remove('hidden');
+            document.querySelectorAll('#dash-guru .sidebar-link').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
     </script>
 
 </body>

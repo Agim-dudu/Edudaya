@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/resources/css/main.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Palet Sasirangan Kalimantan Selatan
+                        kuning: {
+                            general: '#F5A623',
+                            light: '#FEF3DB',
+                            dark: '#C47D0E'
+                        },
+                        merah: {
+                            general: '#C0392B',
+                            light: '#FDECEA',
+                            dark: '#922B21'
+                        },
+                        hijau: {
+                            general: '#27AE60',
+                            light: '#E8F8F0',
+                            dark: '#1E8449'
+                        },
+                        biru: {
+                            general: '#2980B9',
+                            light: '#EAF4FB',
+                            dark: '#1A5276'
+                        },
+                        ungu: {
+                            general: '#8E44AD',
+                            light: '#F5EEF8',
+                            dark: '#6C3483'
+                        },
+                        cokelat: {
+                            general: '#6D4C41',
+                            light: '#EFEBE9',
+                            dark: '#4E342E'
+                        },
+                        krem: {
+                            general: '#FFF8EE',
+                            dark: '#F5E6CC'
+                        },
+                    },
+                    fontFamily: {
+                        nunito: ['Nunito', 'sans-serif'],
+                        fredoka: ['Fredoka One', 'cursive'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="sasirangan-bg">
+
+    <!-- ============================================================ -->
+    <!-- 10. DASHBOARD SUPER ADMIN                                    -->
+    <!-- ============================================================ -->
+    <div id="dash-admin" class="page flex">
+
+        <!-- Sidebar Admin -->
+        <aside class="sidebar bg-gradient-to-b from-cokelat-general to-cokelat-dark text-white flex-shrink-0">
+            <div class="p-5 border-b border-white/10">
+                <div class="font-fredoka text-xl flex items-center gap-2">
+                    <span>🦅</span> Edudaya.id
+                </div>
+                <div class="text-xs text-white/50 mt-0.5">Super Admin Panel</div>
+            </div>
+            <div class="p-4">
+                <div class="text-xs text-white/40 uppercase font-700 mb-2 px-2">Menu</div>
+                <nav class="space-y-1">
+                    <button onclick="switchAdminTab('admin-dashboard')"
+                        class="sidebar-link active w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700">
+                        <span>📊</span> Dashboard Utama
+                    </button>
+                    <button onclick="switchAdminTab('admin-kelas')"
+                        class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition">
+                        <span>🏫</span> CRUD Kelas
+                    </button>
+                    <button onclick="switchAdminTab('admin-siswa')"
+                        class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition">
+                        <span>👧</span> CRUD Siswa
+                    </button>
+                    <button onclick="switchAdminTab('admin-token')"
+                        class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition">
+                        <span>🎟️</span> CRUD Token
+                    </button>
+                    <button onclick="switchAdminTab('admin-score')"
+                        class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition">
+                        <span>🏆</span> CRUD Nilai
+                    </button>
+                    <button onclick="switchAdminTab('admin-profile')"
+                        class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition">
+                        <span>⚙️</span> Setting Profil
+                    </button>
+                </nav>
+            </div>
+            <div class="mt-auto p-4 border-t border-white/10">
+                <button onclick="showPage('login-admin')"
+                    class="w-full text-left flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/10 transition font-600">
+                    <span>🚪</span> Keluar
+                </button>
+            </div>
+        </aside>
+
+        <!-- Content Admin -->
+        <main class="flex-1 overflow-auto">
+            <!-- Top bar -->
+            <div class="bg-white shadow-sm px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+                <div>
+                    <div class="font-fredoka text-xl text-cokelat-general" id="admin-page-title">Dashboard Utama</div>
+                    <div class="text-xs text-gray-400" id="admin-page-sub">Selamat datang, Super Admin!</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button class="relative p-2 text-gray-400 hover:text-cokelat-general">
+                        🔔<span class="absolute top-1 right-1 w-2 h-2 bg-merah-general rounded-full"></span>
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <div
+                            class="w-9 h-9 bg-merah-general rounded-full flex items-center justify-center text-white font-800 text-sm">
+                            SA</div>
+                        <div>
+                            <div class="text-sm font-700 text-cokelat-general">Super Admin</div>
+                            <div class="text-xs text-gray-400">admin@edudaya.id</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6">
+                <!-- Tab: Dashboard -->
+                <div id="admin-dashboard" class="admin-tab">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-kuning-general">
+                            <div class="text-2xl mb-2">🏫</div>
+                            <div class="font-fredoka text-3xl text-cokelat-general">{{ amount_classes }}</div>
+                            <div class="text-sm text-gray-500">Total Kelas</div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-biru-general">
+                            <div class="text-2xl mb-2">👧</div>
+                            <div class="font-fredoka text-3xl text-cokelat-general">{{ amount_student }}</div>
+                            <div class="text-sm text-gray-500">Total Siswa</div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-hijau-general">
+                            <div class="text-2xl mb-2">👨‍🏫</div>
+                            <div class="font-fredoka text-3xl text-cokelat-general">{{ amount_teacher }}</div>
+                            <div class="text-sm text-gray-500">Total Guru</div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-merah-general">
+                            <div class="text-2xl mb-2">🎟️</div>
+                            <div class="font-fredoka text-3xl text-cokelat-general">120</div>
+                            <div class="text-sm text-gray-500">Token Aktif</div>
+                        </div>
+                    </div>
+                    <!-- Charts placeholder -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-white rounded-2xl shadow p-6">
+                            <h3 class="font-fredoka text-lg text-cokelat-general mb-4">📈 Aktivitas Belajar (7 Hari
+                                Terakhir)</h3>
+                            <div class="h-40 flex items-end gap-3">
+                                <div class="flex-1 flex flex-col items-center gap-1">
+                                    <div class="w-full bg-biru-light rounded-t" style="height:60%"></div>
+                                    <div class="text-xs text-gray-400">Sen</div>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1">
+                                    <div class="w-full bg-biru-general rounded-t" style="height:80%"></div>
+                                    <div class="text-xs text-gray-400">Sel</div>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1">
+                                    <div class="w-full bg-biru-light rounded-t" style="height:50%"></div>
+                                    <div class="text-xs text-gray-400">Rab</div>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1">
+                                    <div class="w-full bg-biru-general rounded-t" style="height:90%"></div>
+                                    <div class="text-xs text-gray-400">Kam</div>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1">
+                                    <div class="w-full bg-kuning-general rounded-t" style="height:100%"></div>
+                                    <div class="text-xs text-gray-400">Jum</div>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1">
+                                    <div class="w-full bg-biru-light rounded-t" style="height:40%"></div>
+                                    <div class="text-xs text-gray-400">Sab</div>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center gap-1">
+                                    <div class="w-full bg-biru-light rounded-t" style="height:20%"></div>
+                                    <div class="text-xs text-gray-400">Min</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow p-6">
+                            <h3 class="font-fredoka text-lg text-cokelat-general mb-4">🏆 Top 5 Siswa</h3>
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2 text-sm">
+                                    <span class="text-lg">🥇</span><span class="flex-1 font-600">Ahmad Fauzi</span><span
+                                        class="badge bg-kuning-light text-kuning-dark">980</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm">
+                                    <span class="text-lg">🥈</span><span class="flex-1 font-600">Siti Rahma</span><span
+                                        class="badge bg-gray-100 text-gray-600">875</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm">
+                                    <span class="text-lg">🥉</span><span class="flex-1 font-600">Budi S.</span><span
+                                        class="badge bg-orange-50 text-orange-600">820</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm">
+                                    <span class="text-lg">4️⃣</span><span class="flex-1 font-600">Dewi
+                                        Lestari</span><span class="badge bg-gray-50 text-gray-500">790</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm">
+                                    <span class="text-lg">5️⃣</span><span class="flex-1 font-600">Rizky A.</span><span
+                                        class="badge bg-gray-50 text-gray-500">755</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: CRUD Kelas -->
+                <div id="admin-kelas" class="admin-tab hidden">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="font-fredoka text-2xl text-cokelat-general">🏫 Manajemen Kelas</h2>
+                        <button onclick="openModal('modal-kelas')"
+                            class="bg-kuning-general hover:bg-kuning-dark text-white font-700 px-4 py-2 rounded-xl transition">
+                            + Tambah Kelas
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow overflow-hidden">
+                        <div class="p-4 border-b border-gray-100 flex gap-3">
+                            <input type="search" placeholder="🔍 Cari kelas..."
+                                class="flex-1 border border-gray-200 rounded-xl px-4 py-2 text-sm font-nunito">
+                            <select class="border border-gray-200 rounded-xl px-3 py-2 text-sm font-nunito bg-white">
+                                <option>Semua Sekolah</option>
+                            </select>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead class="bg-gray-50 text-gray-500 text-xs font-700 uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left">No</th>
+                                        <th class="px-4 py-3 text-left">Nama Kelas</th>
+                                        <th class="px-4 py-3 text-left">Sekolah</th>
+                                        <th class="px-4 py-3 text-left">Guru</th>
+                                        <th class="px-4 py-3 text-left">Jml Siswa</th>
+                                        <th class="px-4 py-3 text-left">Status</th>
+                                        <th class="px-4 py-3 text-left">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <td class="px-4 py-3">1</td>
+                                        <td class="px-4 py-3 font-700">Kelas 4A</td>
+                                        <td class="px-4 py-3">SDN Banjarmasin 1</td>
+                                        <td class="px-4 py-3">Bu Sari</td>
+                                        <td class="px-4 py-3"><span class="badge bg-biru-light text-biru-dark">32
+                                                siswa</span></td>
+                                        <td class="px-4 py-3"><span
+                                                class="badge bg-hijau-light text-hijau-dark">Aktif</span></td>
+                                        <td class="px-4 py-3 flex gap-1">
+                                            <button
+                                                class="p-1.5 bg-biru-light text-biru-dark rounded-lg hover:bg-biru-general hover:text-white transition">✏️</button>
+                                            <button
+                                                class="p-1.5 bg-merah-light text-merah-general rounded-lg hover:bg-merah-general hover:text-white transition">🗑️</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <td class="px-4 py-3">2</td>
+                                        <td class="px-4 py-3 font-700">Kelas 5B</td>
+                                        <td class="px-4 py-3">SDN Martapura 3</td>
+                                        <td class="px-4 py-3">Pak Hendra</td>
+                                        <td class="px-4 py-3"><span class="badge bg-biru-light text-biru-dark">28
+                                                siswa</span></td>
+                                        <td class="px-4 py-3"><span
+                                                class="badge bg-hijau-light text-hijau-dark">Aktif</span></td>
+                                        <td class="px-4 py-3 flex gap-1">
+                                            <button
+                                                class="p-1.5 bg-biru-light text-biru-dark rounded-lg hover:bg-biru-general hover:text-white transition">✏️</button>
+                                            <button
+                                                class="p-1.5 bg-merah-light text-merah-general rounded-lg hover:bg-merah-general hover:text-white transition">🗑️</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <td class="px-4 py-3">3</td>
+                                        <td class="px-4 py-3 font-700">Kelas 3C</td>
+                                        <td class="px-4 py-3">SDN Banjarbaru 2</td>
+                                        <td class="px-4 py-3">Bu Aminah</td>
+                                        <td class="px-4 py-3"><span class="badge bg-biru-light text-biru-dark">25
+                                                siswa</span></td>
+                                        <td class="px-4 py-3"><span
+                                                class="badge bg-gray-100 text-gray-500">Nonaktif</span></td>
+                                        <td class="px-4 py-3 flex gap-1">
+                                            <button
+                                                class="p-1.5 bg-biru-light text-biru-dark rounded-lg hover:bg-biru-general hover:text-white transition">✏️</button>
+                                            <button
+                                                class="p-1.5 bg-merah-light text-merah-general rounded-lg hover:bg-merah-general hover:text-white transition">🗑️</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div
+                            class="p-4 flex items-center justify-between border-t border-gray-100 text-sm text-gray-500">
+                            <span>Menampilkan 1-3 dari 42 kelas</span>
+                            <div class="flex gap-1">
+                                <button class="px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50">←</button>
+                                <button class="px-3 py-1 bg-kuning-general text-white rounded-lg">1</button>
+                                <button class="px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50">2</button>
+                                <button class="px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50">→</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: CRUD Siswa -->
+                <div id="admin-siswa" class="admin-tab hidden">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="font-fredoka text-2xl text-cokelat-general">👧 Manajemen Siswa</h2>
+                        <button
+                            class="bg-kuning-general hover:bg-kuning-dark text-white font-700 px-4 py-2 rounded-xl transition">+
+                            Tambah Siswa</button>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow overflow-hidden">
+                        <div class="p-4 border-b border-gray-100 flex gap-3 flex-wrap">
+                            <input type="search" placeholder="🔍 Cari siswa..."
+                                class="flex-1 min-w-48 border border-gray-200 rounded-xl px-4 py-2 text-sm font-nunito">
+                            <select class="border border-gray-200 rounded-xl px-3 py-2 text-sm font-nunito bg-white">
+                                <option>Semua Kelas</option>
+                            </select>
+                            <select class="border border-gray-200 rounded-xl px-3 py-2 text-sm font-nunito bg-white">
+                                <option>Semua Sekolah</option>
+                            </select>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead class="bg-gray-50 text-gray-500 text-xs font-700 uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left">No</th>
+                                        <th class="px-4 py-3 text-left">Nama</th>
+                                        <th class="px-4 py-3 text-left">Kelas</th>
+                                        <th class="px-4 py-3 text-left">Sekolah</th>
+                                        <th class="px-4 py-3 text-left">Nilai Rata-rata</th>
+                                        <th class="px-4 py-3 text-left">Progress</th>
+                                        <th class="px-4 py-3 text-left">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3">1</td>
+                                        <td class="px-4 py-3 font-700">Ahmad Fauzi</td>
+                                        <td class="px-4 py-3">5A</td>
+                                        <td class="px-4 py-3">SDN Bnj 1</td>
+                                        <td class="px-4 py-3"><span
+                                                class="badge bg-hijau-light text-hijau-dark">98</span></td>
+                                        <td class="px-4 py-3 w-28">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width:95%"></div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3 flex gap-1"><button
+                                                class="p-1.5 bg-biru-light text-biru-dark rounded-lg">✏️</button><button
+                                                class="p-1.5 bg-merah-light text-merah-general rounded-lg">🗑️</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3">2</td>
+                                        <td class="px-4 py-3 font-700">Siti Rahma</td>
+                                        <td class="px-4 py-3">6B</td>
+                                        <td class="px-4 py-3">SDN Mtp 3</td>
+                                        <td class="px-4 py-3"><span
+                                                class="badge bg-hijau-light text-hijau-dark">87</span></td>
+                                        <td class="px-4 py-3 w-28">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width:80%"></div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3 flex gap-1"><button
+                                                class="p-1.5 bg-biru-light text-biru-dark rounded-lg">✏️</button><button
+                                                class="p-1.5 bg-merah-light text-merah-general rounded-lg">🗑️</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3">3</td>
+                                        <td class="px-4 py-3 font-700">Budi Santoso</td>
+                                        <td class="px-4 py-3">4A</td>
+                                        <td class="px-4 py-3">SDN Bnb 2</td>
+                                        <td class="px-4 py-3"><span
+                                                class="badge bg-kuning-light text-kuning-dark">82</span></td>
+                                        <td class="px-4 py-3 w-28">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width:70%"></div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3 flex gap-1"><button
+                                                class="p-1.5 bg-biru-light text-biru-dark rounded-lg">✏️</button><button
+                                                class="p-1.5 bg-merah-light text-merah-general rounded-lg">🗑️</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: CRUD Token -->
+                <div id="admin-token" class="admin-tab hidden">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="font-fredoka text-2xl text-cokelat-general">🎟️ Manajemen Token</h2>
+                        <button
+                            class="bg-kuning-general hover:bg-kuning-dark text-white font-700 px-4 py-2 rounded-xl transition">+
+                            Generate Token</button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-hijau-light border border-hijau-general rounded-2xl p-4 text-center">
+                            <div class="font-fredoka text-3xl text-hijau-dark">85</div>
+                            <div class="text-sm text-gray-600 font-600">Token Aktif</div>
+                        </div>
+                        <div class="bg-kuning-light border border-kuning-general rounded-2xl p-4 text-center">
+                            <div class="font-fredoka text-3xl text-kuning-dark">12</div>
+                            <div class="text-sm text-gray-600 font-600">Akan Kadaluarsa</div>
+                        </div>
+                        <div class="bg-merah-light border border-merah-general rounded-2xl p-4 text-center">
+                            <div class="font-fredoka text-3xl text-merah-dark">23</div>
+                            <div class="text-sm text-gray-600 font-600">Sudah Kadaluarsa</div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead class="bg-gray-50 text-gray-500 text-xs font-700 uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left">Token</th>
+                                        <th class="px-4 py-3 text-left">Kelas</th>
+                                        <th class="px-4 py-3 text-left">Guru</th>
+                                        <th class="px-4 py-3 text-left">Kadaluarsa</th>
+                                        <th class="px-4 py-3 text-left">Status</th>
+                                        <th class="px-4 py-3 text-left">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 font-mono font-700 tracking-widest text-biru-dark">EDU-4A21
+                                        </td>
+                                        <td class="px-4 py-3">Kelas 4A</td>
+                                        <td class="px-4 py-3">Bu Sari</td>
+                                        <td class="px-4 py-3">31 Des 2024</td>
+                                        <td class="px-4 py-3"><span
+                                                class="badge bg-hijau-light text-hijau-dark">Aktif</span></td>
+                                        <td class="px-4 py-3 flex gap-1"><button
+                                                class="p-1.5 bg-biru-light text-biru-dark rounded-lg text-xs px-2">Perpanjang</button><button
+                                                class="p-1.5 bg-merah-light text-merah-general rounded-lg">🗑️</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 font-mono font-700 tracking-widest text-biru-dark">EDU-5B09
+                                        </td>
+                                        <td class="px-4 py-3">Kelas 5B</td>
+                                        <td class="px-4 py-3">Pak Hendra</td>
+                                        <td class="px-4 py-3">15 Jan 2025</td>
+                                        <td class="px-4 py-3"><span
+                                                class="badge bg-hijau-light text-hijau-dark">Aktif</span></td>
+                                        <td class="px-4 py-3 flex gap-1"><button
+                                                class="p-1.5 bg-biru-light text-biru-dark rounded-lg text-xs px-2">Perpanjang</button><button
+                                                class="p-1.5 bg-merah-light text-merah-general rounded-lg">🗑️</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 font-mono font-700 tracking-widest text-gray-400">EDU-3C77
+                                        </td>
+                                        <td class="px-4 py-3">Kelas 3C</td>
+                                        <td class="px-4 py-3">Bu Aminah</td>
+                                        <td class="px-4 py-3">01 Des 2024</td>
+                                        <td class="px-4 py-3"><span
+                                                class="badge bg-merah-light text-merah-general">Kadaluarsa</span></td>
+                                        <td class="px-4 py-3 flex gap-1"><button
+                                                class="p-1.5 bg-kuning-light text-kuning-dark rounded-lg text-xs px-2">Aktifkan</button><button
+                                                class="p-1.5 bg-merah-light text-merah-general rounded-lg">🗑️</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: CRUD Nilai -->
+                <div id="admin-score" class="admin-tab hidden">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="font-fredoka text-2xl text-cokelat-general">🏆 Manajemen Nilai</h2>
+                        <div class="flex gap-2">
+                            <button
+                                class="bg-hijau-general hover:bg-hijau-dark text-white font-700 px-4 py-2 rounded-xl transition text-sm">📥
+                                Export CSV</button>
+                            <button
+                                class="bg-biru-general hover:bg-biru-dark text-white font-700 px-4 py-2 rounded-xl transition text-sm">📊
+                                Export PDF</button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow overflow-hidden">
+                        <div class="p-4 border-b border-gray-100 flex gap-3">
+                            <input type="search" placeholder="🔍 Cari siswa/materi..."
+                                class="flex-1 border border-gray-200 rounded-xl px-4 py-2 text-sm font-nunito">
+                            <select class="border border-gray-200 rounded-xl px-3 py-2 text-sm font-nunito bg-white">
+                                <option>Semua Kelas</option>
+                            </select>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead class="bg-gray-50 text-gray-500 text-xs font-700 uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left">Siswa</th>
+                                        <th class="px-4 py-3 text-left">Kelas</th>
+                                        <th class="px-4 py-3 text-left">Materi</th>
+                                        <th class="px-4 py-3 text-left">Nilai</th>
+                                        <th class="px-4 py-3 text-left">Tanggal</th>
+                                        <th class="px-4 py-3 text-left">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 font-700">Ahmad Fauzi</td>
+                                        <td class="px-4 py-3">5A</td>
+                                        <td class="px-4 py-3">Penjumlahan Pasar Terapung</td>
+                                        <td class="px-4 py-3"><span
+                                                class="badge bg-hijau-light text-hijau-dark font-fredoka text-base">98</span>
+                                        </td>
+                                        <td class="px-4 py-3 text-gray-400">10/11/2024</td>
+                                        <td class="px-4 py-3 flex gap-1"><button
+                                                class="p-1.5 bg-biru-light text-biru-dark rounded-lg">✏️</button><button
+                                                class="p-1.5 bg-merah-light text-merah-general rounded-lg">🗑️</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 font-700">Siti Rahma</td>
+                                        <td class="px-4 py-3">6B</td>
+                                        <td class="px-4 py-3">Perkalian Sasirangan</td>
+                                        <td class="px-4 py-3"><span
+                                                class="badge bg-hijau-light text-hijau-dark font-fredoka text-base">85</span>
+                                        </td>
+                                        <td class="px-4 py-3 text-gray-400">11/11/2024</td>
+                                        <td class="px-4 py-3 flex gap-1"><button
+                                                class="p-1.5 bg-biru-light text-biru-dark rounded-lg">✏️</button><button
+                                                class="p-1.5 bg-merah-light text-merah-general rounded-lg">🗑️</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 font-700">Budi Santoso</td>
+                                        <td class="px-4 py-3">4A</td>
+                                        <td class="px-4 py-3">Pengurangan Pasar Terapung</td>
+                                        <td class="px-4 py-3"><span
+                                                class="badge bg-kuning-light text-kuning-dark font-fredoka text-base">72</span>
+                                        </td>
+                                        <td class="px-4 py-3 text-gray-400">12/11/2024</td>
+                                        <td class="px-4 py-3 flex gap-1"><button
+                                                class="p-1.5 bg-biru-light text-biru-dark rounded-lg">✏️</button><button
+                                                class="p-1.5 bg-merah-light text-merah-general rounded-lg">🗑️</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Profil Admin -->
+                <div id="admin-profile" class="admin-tab hidden">
+                    <h2 class="font-fredoka text-2xl text-cokelat-general mb-6">⚙️ Setting Profil Admin</h2>
+                    <div class="max-w-xl bg-white rounded-2xl shadow p-6">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div
+                                class="w-20 h-20 bg-merah-general rounded-2xl flex items-center justify-center text-5xl">
+                                👤</div>
+                            <div>
+                                <div class="font-fredoka text-xl text-cokelat-general">Super Admin</div>
+                                <div class="text-sm text-gray-400">admin@edudaya.id</div>
+                                <button class="mt-1 text-xs text-biru-general hover:underline">Ubah foto profil</button>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div><label class="block text-sm font-700 text-cokelat-general mb-1">Nama
+                                    Lengkap</label><input type="text" value="Super Administrator"
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm">
+                            </div>
+                            <div><label class="block text-sm font-700 text-cokelat-general mb-1">Email</label><input
+                                    type="email" value="admin@edudaya.id"
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm">
+                            </div>
+                            <div><label class="block text-sm font-700 text-cokelat-general mb-1">Password
+                                    Baru</label><input type="password" placeholder="Kosongkan jika tidak ingin ubah"
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm">
+                            </div>
+                            <div><label class="block text-sm font-700 text-cokelat-general mb-1">Konfirmasi
+                                    Password</label><input type="password" placeholder="Ulangi password baru"
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm">
+                            </div>
+                            <button
+                                class="w-full bg-kuning-general hover:bg-kuning-dark text-white font-800 py-3 rounded-xl transition shadow-md">💾
+                                Simpan Perubahan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ---- Admin tabs ----
+        function switchAdminTab(tabId) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden'));
+            document.getElementById(tabId)?.classList.remove('hidden');
+            document.querySelectorAll('#dash-admin .sidebar-link').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            const titles = {
+            'admin-dashboard': ['Dashboard Utama','Ringkasan statistik platform'],
+            'admin-kelas': ['Manajemen Kelas','CRUD data kelas'],
+            'admin-siswa': ['Manajemen Siswa','CRUD data siswa'],
+            'admin-token': ['Manajemen Token','Generate & kelola token akses'],
+            'admin-score': ['Rekap Nilai','Lihat & kelola data nilai'],
+            'admin-profile': ['Setting Profil','Ubah data akun admin'],
+            };
+            if (titles[tabId]) {
+            document.getElementById('admin-page-title').textContent = titles[tabId][0];
+            document.getElementById('admin-page-sub').textContent = titles[tabId][1];
+            }
+        }
+    </script>
+</body>
+
+</html>

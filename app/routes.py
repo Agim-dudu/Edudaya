@@ -91,7 +91,7 @@ def dashboard_student(user_id):
 # End Dashboard Students =========================================================================
 
 
-# Halaman Khusus Dashboard Students ==============================================================
+# Halaman Khusus Dashboard Guru ==================================================================
 
 
 @app.route("/dashboard_teacher/<int:user_id>", methods=["GET"])
@@ -113,4 +113,32 @@ def dashboard_teacher(user_id):
     )
 
 
-# End Dashboard Students =========================================================================
+# End Dashboard Guru ===========================================================================
+
+# Halaman Khusus Dashboard Guru ==================================================================
+
+
+@app.route("/dashboard_admin/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(2)
+def dashboard_admin(user_id):
+    # Cegah akses user lain
+    if user_id != current_user.id:
+        return render_template("403.html"), 403
+
+    # Ambil jumlah siswa
+    amount_student = get_amount_student_all()
+    amount_teacher = get_amount_teacher_all()
+    amount_classes = get_amount_classes_all()
+    
+    print(amount_classes)
+
+    return render_template(
+        'dashboard/admin/dashboard.html',
+        amount_student=amount_student,
+        amount_teacher=amount_teacher,
+        amount_classes=amount_classes
+    )
+
+
+# End Dashboard Guru ===========================================================================

@@ -343,13 +343,15 @@
             }
         });
     </script>
-    <script>  // ---- Siswa tabs ----
-  function switchSiswaTab(tabId) {
-    document.querySelectorAll('.siswa-tab').forEach(t => t.classList.add('hidden'));
-    document.getElementById(tabId)?.classList.remove('hidden');
-    document.querySelectorAll('#dash-siswa .sidebar-link').forEach(b => b.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-  }</script>
+    <script>  
+        // ---- Siswa tabs ----
+        function switchSiswaTab(tabId) {
+            document.querySelectorAll('.siswa-tab').forEach(t => t.classList.add('hidden'));
+            document.getElementById(tabId)?.classList.remove('hidden');
+            document.querySelectorAll('#dash-siswa .sidebar-link').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+    </script>
 
 </body>
 
