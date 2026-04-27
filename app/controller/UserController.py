@@ -1,4 +1,4 @@
-from app.model import User, Token, Classes, UserClasses
+from app.model import User, Classes, UserClasses
 from flask import request, redirect, url_for, flash, jsonify, session
 from flask_login import current_user
 from flask_login import login_user, logout_user

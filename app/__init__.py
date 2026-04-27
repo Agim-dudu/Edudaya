@@ -36,7 +36,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-from app.model import Classes, User, Token, UserClasses
+from app.model import Classes, User, UserClasses
 
 # from app.model.scores import Score
 # from app.model.class_users import UserClasses

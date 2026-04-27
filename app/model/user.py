@@ -10,7 +10,6 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(50), unique=True, nullable=False)
     full_name = db.Column(db.String(50), unique=False, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    token = db.Column(db.String(45), nullable=False)
     level = db.Column(db.Integer, nullable=False)
     image = db.Column(db.String(255), nullable=True, default='default.jpg')
     recommendation = db.Column(db.String(255), nullable=True)

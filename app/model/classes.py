@@ -5,7 +5,9 @@ class Classes(db.Model):
     __tablename__ = 'classes'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    classes = db.Column(db.String(45), nullable=False, unique=True)
+    classes = db.Column(db.String(45), nullable=False,)
+    school = db.Column(db.String(45), nullable=False,)
+    token = db.Column(db.String(45), nullable=False, unique=True)
     kkm = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
