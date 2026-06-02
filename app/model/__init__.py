@@ -1,3 +1,4 @@
 from .user import User
 from .classes import Classes
-from .class_users import UserClasses
+from .teacher_classes import ClassTeachers
+from .pretest_result import PretestResult

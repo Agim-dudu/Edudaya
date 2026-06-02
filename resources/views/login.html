@@ -95,19 +95,10 @@
                             <h2 class="font-fredoka text-3xl text-cokelat-general mt-2">Masuk sebagai Siswa</h2>
                             <p class="text-gray-500 text-sm mt-1">Hayo, siap belajar hari ini?</p>
                         </div>
-                        <!-- Flash Message Section -->
-                        {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                        <div id="flash-messages" class="mb-4 space-y-2 transition duration-300">
-                            {% for category, message in messages %}
-                            <div
-                                class="text-white px-4 py-2 rounded-lg shadow-md animate-pulse {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-gray-500{% endif %}">
-                                {{ message }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                        {% endwith %}
+
+                         <!-- Flash Message Section -->
+                        {% include 'partials/flash_message.html' %}
+                        
                         <div class="space-y-4">
                             <form action="/login" method="POST" class="space-y-6">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -130,10 +121,10 @@
                         </div>
 
                         <div class="mt-6 flex gap-2 justify-center">
-                            <a href="/login_teacher"
+                            <a href="/login/teacher"
                                 class="text-sm text-blue-500 hover:underline font-600">Login Guru</a>
                             <span class="text-gray-300">|</span>
-                            <a href="/login_admin"
+                            <a href="/login/admin"
                                 class="text-sm text-red-500 hover:underline font-600">Login Admin</a>
                             <span class="text-gray-300">|</span>
                             <a href="/register" class="text-sm text-green-500 hover:underline font-600">Daftar Akun</a>

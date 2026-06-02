@@ -1,8 +1,4 @@
-from app.model import * 
-from sqlalchemy import func, desc, literal_column, case
-from sqlalchemy.orm import aliased
-from sqlalchemy.sql import over 
-from app import db
+from app.model import User, Classes
 
 def get_amount_student_all(user_id=None):
     return User.query.filter(User.level == 0).count()

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Profil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/resources/css/main.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kuning: {
+                            general: '#F5A623',
+                            light: '#FEF3DB',
+                            dark: '#C47D0E'
+                        },
+                        merah: {
+                            general: '#C0392B',
+                            light: '#FDECEA',
+                            dark: '#922B21'
+                        },
+                        hijau: {
+                            general: '#27AE60',
+                            light: '#E8F8F0',
+                            dark: '#1E8449'
+                        },
+                        biru: {
+                            general: '#2980B9',
+                            light: '#EAF4FB',
+                            dark: '#1A5276'
+                        },
+                        ungu: {
+                            general: '#8E44AD',
+                            light: '#F5EEF8',
+                            dark: '#6C3483'
+                        },
+                        cokelat: {
+                            general: '#6D4C41',
+                            light: '#EFEBE9',
+                            dark: '#4E342E'
+                        },
+                        krem: {
+                            general: '#FFF8EE',
+                            dark: '#F5E6CC'
+                        },
+                    },
+                    fontFamily: {
+                        nunito: ['Nunito', 'sans-serif'],
+                        fredoka: ['Fredoka One', 'cursive'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="sasirangan-bg">
+
+    <!-- ============================================================ -->
+    <!-- DASHBOARD SISWA                                              -->
+    <!-- ============================================================ -->
+    <div id="dash-siswa" class="page flex">
+
+        {% include 'dashboard/student/partials/sidebar.html' %}
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-auto">
+            <div class="sasirangan-header px-6 py-4 relative">
+                <div class="relative z-10 flex items-center justify-between">
+                    <div>
+                        <!-- 🔥 FIX: Variabel konsisten -->
+                        <div class="font-fredoka text-2xl text-white" id="siswa-page-title">Halo,
+                            {{ current_user.full_name }}! 👋</div>
+                        <div class="text-white/70 text-sm">Semangat belajar hari ini!</div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white/20 rounded-xl px-3 py-1.5 text-white text-sm font-700">⭐
+                            {{ current_user.star }} Poin</div>
+                    </div>
+                </div>
+                <div class="motif-strip mt-3 opacity-60 rounded-full"></div>
+            </div>
+
+            <div class="p-6">
+                <div>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <div id="flash-messages" class="mb-4 space-y-2 transition duration-300">
+                        {% for category, message in messages %}
+                        <div
+                            class="text-white px-4 py-2 rounded-lg shadow-md animate-pulse {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-gray-500{% endif %}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start max-w-6xl mx-auto">
+
+                        <div class="w-full">
+                            <h2
+                                class="font-fredoka text-xl rounded-2xl text-cokelat-general mb-3 p-2 flex items-center justify-center gap-2 bg-white">
+                                <span>⚙️</span> Profil Saya
+                            </h2>
+
+                            <div class="bg-white rounded-2xl shadow p-4 w-full">
+                                <form action="/update-profile/student/{{ user_id }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+
+                                        <!-- Sisi Kiri: Foto Profil & Info Ringkas -->
+                                        <div
+                                            class="md:col-span-2 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 pb-4 md:pb-0 md:pr-4">
+                                            <div
+                                                class="w-24 h-24 bg-biru-general rounded-xl flex items-center justify-center text-3xl shadow-sm mb-2 overflow-hidden">
+                                                {% if current_user.image and current_user.image != 'default.jpg' %}
+                                                <img src="/resources/images/avatars/{{ current_user.image }}"
+                                                    class="w-full h-full object-cover">
+                                                {% else %}
+                                                <img src="/resources/images/avatars/default.jpg"
+                                                    class="w-full h-full object-cover">
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="mb-3 w-full max-w-[180px] text-center">
+                                                <label class="block text-[10px] font-bold text-gray-500 mb-1">Ganti Foto
+                                                    Profil:</label>
+                                                <input type="file" name="avatar" accept="image/*"
+                                                    class="w-full text-[11px] text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[11px] file:font-bold file:bg-biru-light/50 file:text-biru-general hover:file:bg-biru-light/80 cursor-pointer">
+                                            </div>
+
+                                            <div class="text-center mb-3">
+                                                <div class="font-fredoka text-lg text-cokelat-general leading-tight">
+                                                    {{ current_user.full_name }}
+                                                </div>
+                                                <div class="text-xs text-gray-400 mt-0.5">
+                                                    {% if current_user.student_class_obj %}
+                                                    {{ current_user.student_class_obj.name }} ·
+                                                    {{ current_user.student_class_obj.school }}
+                                                    {% else %}
+                                                    <span class="text-merah-general font-bold">Belum Terikat
+                                                        Kelas</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+
+                                            <div class="grid grid-cols-3 gap-1.5 w-full text-center">
+                                                <div class="bg-kuning-light rounded-lg p-1.5">
+                                                    <div class="font-fredoka text-base text-kuning-dark leading-tight">
+                                                        {{ current_user.star }}</div>
+                                                    <div class="text-[10px] text-gray-500">Poin</div>
+                                                </div>
+                                                <div class="bg-hijau-light rounded-lg p-1.5">
+                                                    <div class="font-fredoka text-base text-hijau-dark leading-tight">6
+                                                    </div>
+                                                    <div class="text-[10px] text-gray-500">Materi</div>
+                                                </div>
+                                                <div class="bg-merah-light rounded-lg p-1.5">
+                                                    <div class="font-fredoka text-base text-merah-dark leading-tight">#1
+                                                    </div>
+                                                    <div class="text-[10px] text-gray-500">Rank</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Sisi Kanan: Input Form -->
+                                        <div class="md:col-span-3 space-y-3 flex flex-col justify-between">
+                                            <div>
+                                                <label class="block text-xs font-bold text-cokelat-general mb-1">Nama
+                                                    Lengkap</label>
+                                                <!-- 🔒 Diubah menjadi readonly & ditambah warna background abu-abu ringan (bg-gray-50) -->
+                                                <input type="text" name="full_name" value="{{ current_user.full_name }}"
+                                                    readonly
+                                                    class="w-full border-2 border-gray-200 rounded-lg px-3 py-1.5 font-nunito text-xs bg-gray-50 text-gray-500 cursor-not-allowed focus:outline-none">
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-xs font-bold text-cokelat-general mb-1">Jenis
+                                                    Kelamin</label>
+                                                <!-- 🔒 Diubah menjadi disabled & ditambah class agar serasi -->
+                                                <select name="gender" disabled
+                                                    class="w-full border-2 border-gray-200 rounded-lg px-3 py-1.5 font-nunito text-xs bg-gray-50 text-gray-500 cursor-not-allowed focus:outline-none">
+                                                    <option value="L"
+                                                        {% if current_user.gender == 'L' %}selected{% endif %}>Laki-laki
+                                                    </option>
+                                                    <option value="P"
+                                                        {% if current_user.gender == 'P' %}selected{% endif %}>Perempuan
+                                                    </option>
+                                                </select>
+                                                <!-- Catatan: Karena elemen disabled tidak terkirim via POST, data gender aman tidak akan berubah di backend -->
+                                            </div>
+
+                                            <div>
+                                                <label
+                                                    class="block text-xs font-bold text-cokelat-general mb-1">Password
+                                                    Baru</label>
+                                                <input type="password" name="password"
+                                                    placeholder="Kosongkan jika tidak diubah"
+                                                    class="w-full border-2 border-gray-200 rounded-lg px-3 py-1.5 font-nunito text-xs focus:outline-none focus:border-biru-general">
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-xs font-bold text-cokelat-general mb-1">Ulangi
+                                                    Password</label>
+                                                <input type="password" name="password_confirm"
+                                                    placeholder="Kosongkan jika tidak diubah"
+                                                    class="w-full border-2 border-gray-200 rounded-lg px-3 py-1.5 font-nunito text-xs focus:outline-none focus:border-biru-general">
+                                            </div>
+
+                                            <button type="submit"
+                                                class="w-full bg-biru-general hover:bg-biru-dark text-white font-extrabold py-2 rounded-lg transition shadow-sm text-xs mt-2 flex items-center justify-center gap-1">
+                                                <span>💾</span> Simpan Perubahan
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="w-full">
+                            <h2
+                                class="font-fredoka text-xl text-ungu-dark mb-3 p-2 rounded-2xl bg-white justify-center flex items-center gap-2">
+                                <span>🤖</span> Analisis Belajar AI
+                            </h2>
+
+                            <div class="bg-white rounded-2xl shadow p-5 w-full border-2 border-ungu-light/60">
+                                {% if ai_analysis %}
+                                <div class="space-y-4 font-nunito text-sm text-gray-600">
+
+                                    <!-- 🌟 Bagian Motivasi (Menggantikan Diagnostik Umum) -->
+                                    <div class="bg-ungu-light/50 border border-ungu-general/20 rounded-xl p-3.5">
+                                        <div class="font-bold text-ungu-dark text-xs mb-1">🎯 Pesan Motivasi:</div>
+                                        <p class="leading-relaxed text-xs font-semibold text-ungu-dark">
+                                            "{{ ai_analysis.motivasi if ai_analysis.motivasi else 'Analisis performa belajar Anda cukup stabil.' }}"
+                                        </p>
+                                    </div>
+
+                                    <!-- 💪 Bagian Kekuatan / Kelebihan -->
+                                    {% if ai_analysis.kekuatan %}
+                                    <div class="bg-hijau-light/40 border border-hijau-general/20 rounded-xl p-3.5">
+                                        <div class="font-bold text-hijau-dark text-xs mb-1.5">💪 Kelebihan Kamu:</div>
+                                        <ul class="list-disc list-inside space-y-1 text-xs text-gray-700">
+                                            {% for item in ai_analysis.kekuatan %}
+                                            <li><span class="font-bold text-hijau-dark">{{ item.topik }}:</span>
+                                                {{ item.keterangan }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    {% endif %}
+
+                                    <!-- 🔍 Bagian Kelemahan / Kekurangan -->
+                                    {% if ai_analysis.kelemahan %}
+                                    <div class="bg-red-50 border border-red-200 rounded-xl p-3.5">
+                                        <div class="font-bold text-red-700 text-xs mb-1.5">🔍 Hal yang Perlu
+                                            Ditingkatkan:</div>
+                                        <ul class="list-disc list-inside space-y-1 text-xs text-gray-700">
+                                            {% for item in ai_analysis.kelemahan %}
+                                            <li><span class="font-bold text-red-700">{{ item.topik }}:</span>
+                                                {{ item.keterangan }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    {% endif %}
+
+                                    <!-- 💡 Bagian Rekomendasi Siswa -->
+                                    {% if ai_analysis.rekomendasi_siswa %}
+                                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-3.5">
+                                        <div class="font-bold text-amber-700 text-xs mb-1.5">💡 Tips Belajar untuk Kamu:
+                                        </div>
+                                        <ul class="list-disc list-inside space-y-1 text-xs text-gray-700">
+                                            {% for item in ai_analysis.rekomendasi_siswa %}
+                                            <li><span class="font-bold text-amber-700">{{ item.topik }}:</span>
+                                                {{ item.saran }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    {% endif %}
+
+                                </div>
+                                {% else %}
+                                <!-- State ketika data kosong -->
+                                <div class="flex flex-col items-center justify-center py-10 text-center">
+                                    <div class="text-4xl mb-2 opacity-50">✨</div>
+                                    <div class="font-bold text-sm text-cokelat-general mb-1">Analisis Belam Tersedia
+                                    </div>
+                                    <p class="text-xs text-gray-400 max-w-xs px-4">Kamu belum menyelesaikan Pretest atau
+                                        Guru belum melakukan pemrosesan diagnostik cerdas pada akunmu.</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/resources/js/flash_message.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<aside class="sidebar flex-shrink-0" style="background:linear-gradient(180deg,#1a3a6c,#2980B9);">
+    <div class="p-5 border-b border-white/50 text-white">
+        <div class="font-fredoka text-xl flex items-center gap-2"><span>🦅</span> Edudaya </div>
+        <div class="text-xs text-white/50 mt-0.5 mb-4">Dashboard Siswa</div>
+    </div>
+    <div class="p-4">
+        <div class="bg-white/10 rounded-2xl p-3 mb-4 flex items-center gap-3">
+            <div class="w-12 h-12 bg-kuning-general rounded-xl flex items-center justify-center text-2xl">
+                {% if current_user.image and current_user.image != 'default.jpg' %}
+                <img src="/resources/images/avatars/{{ current_user.image }}" class="w-full h-full object-cover rounded-xl">
+                {% else %}
+                <img src="/resources/images/avatars/default.jpg" class="w-full h-full object-cover rounded-xl">
+                {% endif %}
+            </div>
+            <div class="text-white">
+                <div class="font-700 text-sm">{{ current_user.full_name }}</div>
+                <div class="text-white/60 text-xs">
+                    {% if current_user.student_class_obj %}
+                    {{ current_user.student_class_obj.name }}
+                    {% else %}
+                    <span class="text-merah-general font-bold">Belum Terikat Kelas</span>
+                    {% endif %}
+                </div>
+                <div class="text-xs text-kuning-general font-700 mt-0.5">⭐ {{ current_user.star }} Poin</div>
+            </div>
+        </div>
+        
+        <nav class="space-y-1">
+            <a href="/dashboard/student/{{ user_id }}"
+               class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition 
+               {{ 'active' if request.path == '/dashboard/student/' ~ user_id else 'hover:bg-white/10' }}">
+                <span>🏠</span> Dashboard
+            </a>
+            
+            <a href=""
+               class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition 
+               {{ 'active' if request.path == '/grades/student/' ~ user_id else 'hover:bg-white/10' }}">
+                <span>🏆</span> Nilai Saya
+            </a>
+            
+            <a href="/profile/student/{{ user_id }}"
+               class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition 
+               {{ 'active' if request.path == '/profile/student/' ~ user_id else 'hover:bg-white/10' }}">
+                <span>⚙️</span> Profil Saya
+            </a>
+        </nav>
+        
+        <div class="mt-4 border-t border-white/10 pt-4">
+            <a href=""
+               class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition 
+               {{ 'active' if request.path == '/learn/student/' ~ user_id else 'hover:bg-white/10' }}">
+                <span>📚</span> Lanjut Belajar
+            </a>
+        </div>
+    </div>
+    <div class="mt-auto p-4 border-t border-white/10">
+        <a href="{{ url_for('index') }}"
+           class="w-full text-left flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/10 transition font-600">
+            <span>↩️</span> Kembali
+        </a>
+        <a href="{{ url_for('logout') }}"
+           class="w-full text-left flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/10 transition font-600">
+            <span>🚪</span> Keluar
+        </a>
+    </div>
+</aside>

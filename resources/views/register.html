@@ -95,19 +95,10 @@
                     <div class="bg-white rounded-b-2xl shadow-xl p-8">
                         <h2 class="font-fredoka text-2xl text-amber-900 mb-6 text-center">📝 Formulir Pendaftaran
                             Siswa</h2>
+
                         <!-- Flash Message Section -->
-                        {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                        <div id="flash-messages" class="mb-4 space-y-2 transition duration-300">
-                            {% for category, message in messages %}
-                            <div
-                                class="text-white px-4 py-2 rounded-lg shadow-md animate-pulse {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-gray-500{% endif %}">
-                                {{ message }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                        {% endwith %}
+                        {% include 'partials/flash_message.html' %}
+                        
                         <form action="/register" method="POST" class="space-y-6">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <div class="grid grid-cols-2 gap-4">

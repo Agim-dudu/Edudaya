@@ -36,10 +36,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-from app.model import Classes, User, UserClasses
-
-# from app.model.scores import Score
-# from app.model.class_users import UserClasses
+from app.model import Classes, User, ClassTeachers, PretestResult
 
 @login_manager.user_loader
 def load_user(user_id):

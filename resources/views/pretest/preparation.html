@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Persiapan Pre-Test</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { font-family: 'Nunito', sans-serif; }
+    h1, .fun-title { font-family: 'Fredoka One', cursive; }
+
+    body {
+      background: linear-gradient(135deg, #FFF9C4 0%, #FCE4EC 40%, #E3F2FD 100%);
+      min-height: 100vh;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(-2deg); }
+      50%       { transform: translateY(-14px) rotate(2deg); }
+    }
+    @keyframes bounce-in {
+      0%   { transform: scale(0.5); opacity: 0; }
+      70%  { transform: scale(1.08); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-4deg); }
+      50%       { transform: rotate(4deg); }
+    }
+    @keyframes pop {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.12); }
+      100% { transform: scale(1); }
+    }
+    @keyframes star-spin {
+      0%   { transform: rotate(0deg) scale(1); }
+      50%  { transform: rotate(180deg) scale(1.3); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+    @keyframes slide-up {
+      from { transform: translateY(40px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(255,183,77,0.6); }
+      70%  { box-shadow: 0 0 0 18px rgba(255,183,77,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,183,77,0); }
+    }
+    @keyframes confetti-fall {
+      0%   { transform: translateY(-10px) rotate(0deg);   opacity: 1; }
+      100% { transform: translateY(110px) rotate(720deg); opacity: 0; }
+    }
+
+    .float-anim   { animation: float 3s ease-in-out infinite; }
+    .bounce-in    { animation: bounce-in 0.7s ease-out both; }
+    .wiggle-anim  { animation: wiggle 1.5s ease-in-out infinite; }
+    .star-anim    { animation: star-spin 4s linear infinite; }
+
+    .card-1 { animation: slide-up 0.6s ease-out 0.2s both; }
+    .card-2 { animation: slide-up 0.6s ease-out 0.4s both; }
+    .card-3 { animation: slide-up 0.6s ease-out 0.6s both; }
+    .card-4 { animation: slide-up 0.6s ease-out 0.8s both; }
+
+    .start-btn {
+      animation: pulse-ring 2s infinite, slide-up 0.6s ease-out 1s both;
+      transition: transform 0.15s, filter 0.15s;
+    }
+    .start-btn:hover {
+      transform: scale(1.06);
+      filter: brightness(1.05);
+    }
+    .start-btn:active { transform: scale(0.96); }
+
+    .info-card {
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .info-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    }
+
+    .deco-star {
+      position: absolute;
+      font-size: 1.8rem;
+      pointer-events: none;
+      animation: star-spin 5s linear infinite;
+      opacity: 0.5;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      animation: confetti-fall 3s linear infinite;
+      opacity: 0;
+    }
+
+    .badge-once {
+      background: linear-gradient(135deg, #FF7043, #FF5722);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .progress-bar-fill {
+      animation: slide-up 1s ease-out 1.2s both;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 overflow-x-hidden">
+
+  <!-- Decorative floating stars -->
+  <span class="deco-star" style="top:5%;left:5%;animation-duration:6s;">⭐</span>
+  <span class="deco-star" style="top:8%;right:8%;animation-duration:4s;font-size:1.2rem;">✨</span>
+  <span class="deco-star" style="bottom:10%;left:10%;animation-duration:7s;">🌟</span>
+  <span class="deco-star" style="bottom:6%;right:6%;animation-duration:5s;font-size:1.4rem;">⭐</span>
+  <span class="deco-star" style="top:40%;left:2%;animation-duration:8s;font-size:1rem;">💫</span>
+  <span class="deco-star" style="top:55%;right:2%;animation-duration:5.5s;font-size:1rem;">✨</span>
+
+  <!-- Confetti pieces -->
+  <div class="confetti" style="left:15%;top:-10px;background:#FFD700;animation-delay:0s;animation-duration:2.5s;"></div>
+  <div class="confetti" style="left:30%;top:-10px;background:#FF6B9D;animation-delay:0.5s;animation-duration:3s;border-radius:50%;"></div>
+  <div class="confetti" style="left:55%;top:-10px;background:#4FC3F7;animation-delay:1s;animation-duration:2.8s;"></div>
+  <div class="confetti" style="left:70%;top:-10px;background:#81C784;animation-delay:0.3s;animation-duration:3.2s;border-radius:50%;"></div>
+  <div class="confetti" style="left:85%;top:-10px;background:#FFB74D;animation-delay:0.8s;animation-duration:2.6s;"></div>
+
+  <!-- Main Card -->
+  <div class="relative w-3/4 mx-auto">
+
+    <!-- White main card -->
+    <div class="bg-white w-full rounded-2xl shadow-2xl overflow-hidden">
+
+      <!-- Colorful top banner -->
+      <div class="relative px-6 pt-6 pb-5 text-center"
+           style="background: linear-gradient(135deg, #FFE082 0%, #FFAB40 50%, #FF7043 100%);">
+        <div class="absolute top-3 left-4 text-2xl opacity-60 wiggle-anim">🎉</div>
+        <div class="absolute top-3 right-4 text-2xl opacity-60 wiggle-anim" style="animation-delay:.3s;">🎊</div>
+
+        <p class="text-orange-800 font-bold text-sm uppercase tracking-widest mb-1">Selamat Datang!</p>
+        <h1 class="fun-title text-4xl text-white drop-shadow-md leading-tight">
+          Pre-Test Seru! 🎯
+        </h1>
+        <p class="text-orange-100 font-semibold mt-1 text-sm">Baca dulu ya sebelum mulai! 👇</p>
+      </div>
+
+      <!-- Info cards grid -->
+      <div class="px-5 pt-5 pb-2 grid grid-cols-4 gap-3">
+
+        <!-- Card 1: Hanya 1 kali -->
+        <div class="info-card card-1 rounded-2xl p-4 text-center"
+             style="background: linear-gradient(135deg, #FCE4EC, #F8BBD9);">
+          <div class="text-4xl mb-2">🔒</div>
+          <p class="fun-title text-lg text-pink-700 leading-tight">1 Kali Saja!</p>
+          <p class="text-pink-600 text-xs font-semibold mt-1 leading-snug">
+            Pre-test ini hanya bisa dikerjakan <strong>satu kali</strong>. Jadi siap-siap dulu ya! 😊
+          </p>
+        </div>
+
+        <!-- Card 2: Waktu -->
+        <div class="info-card card-2 rounded-2xl p-4 text-center"
+             style="background: linear-gradient(135deg, #E3F2FD, #BBDEFB);">
+          <div class="text-4xl mb-2">⏰</div>
+          <p class="fun-title text-lg text-blue-700 leading-tight">20 Menit</p>
+          <p class="text-blue-600 text-xs font-semibold mt-1 leading-snug">
+            Waktumu adalah <strong>20 menit</strong>. Kerjakan dengan tenang dan fokus! 💪
+          </p>
+        </div>
+
+        <!-- Card 3: Jujur -->
+        <div class="info-card card-3 rounded-2xl p-4 text-center"
+             style="background: linear-gradient(135deg, #E8F5E9, #C8E6C9);">
+          <div class="text-4xl mb-2">🤝</div>
+          <p class="fun-title text-lg text-green-700 leading-tight">Jawab Jujur!</p>
+          <p class="text-green-600 text-xs font-semibold mt-1 leading-snug">
+            Kerjakan dengan jujur sesuai kemampuanmu. Tidak perlu mencontek! ✅
+          </p>
+        </div>
+
+        <!-- Card 4: Tidak Dinilai -->
+        <div class="info-card card-4 rounded-2xl p-4 text-center"
+             style="background: linear-gradient(135deg, #FFF3E0, #FFE0B2);">
+          <div class="text-4xl mb-2">🏆</div>
+          <p class="fun-title text-lg text-orange-700 leading-tight">Santai Aja!</p>
+          <p class="text-orange-600 text-xs font-semibold mt-1 leading-snug">
+            Pre-test ini <strong>tidak akan dinilai</strong>. Jadi tidak perlu takut! 😄
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Divider with stars -->
+      <div class="flex items-center px-5 py-3 gap-2">
+        <div class="flex-1 h-px bg-yellow-200"></div>
+        <span class="text-yellow-400 text-lg">⭐ ⭐ ⭐ ⭐ ⭐</span>
+        <div class="flex-1 h-px bg-yellow-200"></div>
+      </div>
+
+      <!-- Important reminder box -->
+      <div class="mx-5 mb-4 rounded-2xl p-4 flex items-start gap-3"
+           style="background: linear-gradient(135deg, #FFFDE7, #FFF9C4); border: 2px dashed #FFD54F;">
+        <span class="text-3xl flex-shrink-0">💡</span>
+        <div>
+          <p class="fun-title text-yellow-800 text-base">Ingat ya, Teman!</p>
+          <p class="text-yellow-700 text-xs font-semibold leading-relaxed mt-1">
+            Pre-test ini untuk mengetahui sejauh mana <em>kemampuanmu saat ini</em>.
+            Tidak ada jawaban salah yang menakutkan — yang penting <strong>usahamu sendiri</strong>! 🌈
+          </p>
+        </div>
+      </div>
+
+      <!-- CTA Button -->
+      <div class="px-5 pb-6 text-center">
+        <a href="/pretest/start/{{user_id}}" 
+          class="start-btn block w-full py-4 rounded-2xl text-white font-extrabold text-xl shadow-lg text-center"
+          style="background: linear-gradient(135deg, #FF6B9D, #FF4081); font-family:'Fredoka One', cursive; letter-spacing:.5px;">
+          🚀 Mulai Sekarang!
+        </a>
+        <p class="text-gray-400 text-xs font-semibold mt-3">
+          Pastikan sudah siap sebelum menekan tombol di atas 😉
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal overlay on start -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50 p-4">
+    <div class="bg-white rounded-3xl p-8 text-center max-w-sm w-full shadow-2xl"
+         style="animation: bounce-in 0.5s ease-out both;">
+      <div class="text-6xl mb-3">🎯</div>
+      <h2 class="fun-title text-3xl text-pink-600 mb-2">Siap Mulai?</h2>
+      <p class="text-gray-600 font-semibold text-sm mb-5 leading-relaxed">
+        Pastikan kamu sudah siap ya!<br/>
+        Setelah mulai, <strong>waktu tidak bisa diputar kembali</strong>. 😊
+      </p>
+      <div class="flex gap-3">
+        <button onclick="closeModal()"
+                class="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-bold text-sm hover:bg-gray-50 transition-colors">
+          ← Tunggu Dulu
+        </button>
+        <button onclick="goStart()"
+                class="flex-1 py-3 rounded-xl text-white font-bold text-sm"
+                style="background: linear-gradient(135deg, #FF6B9D, #FF4081);">
+          Ya, Mulai! 🚀
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function handleStart() {
+      document.getElementById('modal').classList.remove('hidden');
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.add('hidden');
+    }
+    function goStart() {
+      // Redirect to actual pretest page
+      alert('✅ Pre-test dimulai! Semangat ya! 🌟\n\n(Ganti fungsi ini dengan redirect ke halaman pre-test kamu)');
+      closeModal();
+    }
+    // Close modal on backdrop click
+    document.getElementById('modal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+  </script>
+</body>
+</html>

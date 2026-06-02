@@ -1,9 +1,9 @@
-from app import app, response, csrf
-from app.decorator.utils import level_required
+from app import app
 from app.controller import *
-from flask import request, jsonify, render_template
-from flask_login import current_user, login_required, logout_user
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from app.decorator.utils import level_required
+from flask_login import current_user, login_required
+from app.controller.PretestController import QUESTIONS_PRETEST
+from flask import Flask, render_template, request, redirect, url_for
 
 
 @app.route("/")
@@ -17,24 +17,19 @@ def index():
     
     return render_template("index.html", ac=amount_classes, at=amount_teacher, ast=amount_student)
 
-
 @app.route("/login", methods=["GET"])
 def login_page():
     return render_template("login.html")
 
-
-@app.route("/list_course", methods=["GET"])
+@app.route("/list-course", methods=["GET"])
 def list_course():
     return render_template("list_course.html")
-
 
 @app.route("/instruction", methods=["GET"])
 def instruction():
     return render_template("instruction.html")
 
-
-# Login Handle ===============================================================================
-
+# Login Handle ====================================================================================
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -43,28 +38,24 @@ def login():
     else:
         return UserController.login_siswa()
 
-
-@app.route("/login_teacher", methods=["GET", "POST"])
+@app.route("/login/teacher", methods=["GET", "POST"])
 def login_teacher():
     if request.method == "GET":
         return render_template("login_teacher.html")
     else:
         return UserController.login_teacher()
 
-
-@app.route("/login_admin", methods=["GET", "POST"])
+@app.route("/login/admin", methods=["GET", "POST"])
 def login_admin():
     if request.method == "GET":
         return render_template("login_admin.html")
     else:
         return UserController.login_admin()
 
-
 @app.route("/logout")
 @login_required
 def logout():
     return UserController.logout()
-
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -73,27 +64,113 @@ def register():
     else:
         return UserController.register()
 
-
 # End Login Handle ===============================================================================
 
-# Halaman Khusus Dashboard Students ==============================================================
 
+# Pretest Handle ===============================================================================
 
-@app.route("/dashboard_student/<int:user_id>", methods=["GET"])
+@app.route("/pretest/<int:user_id>", methods=["GET"])
 @login_required
-@level_required(0)
-def dashboard_student(user_id):
+def pretest(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html")
+    
+    return render_template("pretest/preparation.html", user_id=user_id)
+
+@app.route("/pretest/start/<int:user_id>", methods=["GET"])
+@login_required
+def pretest_start(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html")
+    
+    safe_questions = [
+        {k: v for k, v in q.items() if k != "correct"}
+        for q in QUESTIONS_PRETEST
+    ]
+    return render_template("pretest/pretest_start.html", questions=safe_questions, user_id=user_id)
+
+@app.route("/pretest/submit/<int:user_id>", methods=["POST"])
+@login_required
+def submit_pretest(user_id):
     if user_id != current_user.id:
         return render_template("403.html")
 
+    data = request.get_json()
+
+    return save_pretest(data, user_id)
+
+@app.route("/api/pretest/analyze/<int:user_id>", methods=["POST"])
+@login_required
+def api_analyze_pretest(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html")
+
+    data = request.get_json()
+
+    return analyze_pretest(data)
+
+@app.route("/pretest/finish/<int:user_id>", methods=["GET"])
+@login_required
+def finish_pretest(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html")
+
+    # Jika akses diizinkan, render halaman ini
+    return render_template("pretest/finish_pretest.html", user_id=user_id)
+
+# End Pretest Handle ===============================================================================
+
+
+# Routing Learning Bab 1 ====================================================================================
+
+@app.route("/learning/chapter/1/1/<int:user_id>", methods=["GET"])
+@login_required
+def learning_chapter1_1(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html")
+
+    # Jika request.method == 'GET', maka render halaman latihan
+    return render_template("learning/medium/bab1/01.html", user_id=user_id)
+
+# End Routing Learning Bab 1 ====================================================================================
+
+
+# Halaman Khusus Dashboard Students ==============================================================
+
+@app.route("/dashboard/student/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(0)
+def dashboard_student(user_id):
+
     user = get_user_by_id(user_id)
-    # top_scores = get_top_quiz_scores_per_chapter(user_id)
 
-    if user:
-        return render_template("dashboard/student/dashboard.html", user=user)
-    else:
-        return "User tidak ditemukan", 404
+    return render_template("dashboard/student/dashboard.html", user=user, user_id=user_id)
 
+@app.route("/profile/student/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(0)
+def student_profile(user_id):
+
+    data = show_student_ai_analysis(user_id)
+    user = get_user_by_id(user_id)
+    print(data)
+
+    return render_template(
+        'dashboard/student/student_profile.html',
+        user=user,
+        user_id=user_id,
+        student=data['student'],
+        ai_analysis=data['ai_analysis'],
+    )
+    
+@app.route('/profile/student/update/<int:user_id>', methods=['POST'])
+@login_required
+@level_required(0)
+def update_profile_route(user_id):
+
+    update_student_profile(user_id)
+    
+    return redirect(request.referrer)
 
 # End Dashboard Students =========================================================================
 
@@ -101,7 +178,7 @@ def dashboard_student(user_id):
 # Halaman Khusus Dashboard Guru ==================================================================
 
 
-@app.route("/dashboard_teacher/<int:user_id>", methods=["GET"])
+@app.route("/dashboard/teacher/<int:user_id>", methods=["GET"])
 @login_required
 @level_required(1)
 def dashboard_teacher(user_id):
@@ -117,10 +194,74 @@ def dashboard_teacher(user_id):
         'dashboard/teacher/dashboard.html',
         amount_student=amount_student,
         amount_class=amount_class,
+        user_id=user_id
+    )
+    
+@app.route("/teacher/analysis/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(1)
+def dashboard_analysis(user_id):
+    # Cegah akses user lain
+    if user_id != current_user.id:
+        return render_template("403.html"), 403
+    
+    get_kelas_pretest = get_kelas_pretest_by_guru(user_id)
+
+    return render_template(
+        'dashboard/teacher/analysis.html',
+        user_id=user_id,
+        list_class=get_kelas_pretest
     )
 
+@app.route("/teacher/result/analysis/<int:teacher_id>/student/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(1)
+def dashboard_student_ai_analysis(teacher_id, user_id):
+    if teacher_id != current_user.id:
+        return render_template("403.html"), 403
+
+    data = get_student_ai_analysis_detail(teacher_id, user_id)
+
+    if data is None:
+        return redirect(request.referrer or url_for('dashboard_result_analysis',
+                                                     user_id=teacher_id,
+                                                     class_id=0))
+
+    return render_template(
+        'dashboard/teacher/detail_result_analysis.html',
+        student=data['student'],
+        score=data['score'],
+        correct=data['correct'],
+        total=data['total'],
+        time_taken=data['time_taken'],
+        topic_scores=data['topic_scores'],
+        answer_details=data['answer_details'],
+        ai_analysis=data['ai_analysis'],
+        teacher_id=teacher_id,
+    )
+   
+@app.route("/teacher/result/analysis/<int:user_id>/<int:class_id>", methods=["GET"])
+@login_required
+@level_required(1)
+def dashboard_result_analysis(user_id, class_id):
+    
+    pretest_analysis = get_pretest_analysis(class_id)
+
+    return render_template(
+        'dashboard/teacher/result_analysis.html',
+        class_id=class_id,
+        user_id=user_id,
+        pretest_analysis=pretest_analysis
+    )
+   
+@app.route("/teacher/batch/analyze/<int:teacher_id>/<int:class_id>", methods=["POST"])
+@login_required
+@level_required(1)
+def dashboard_teacher_batch_analyze(teacher_id, class_id):
+    return batch_analyze_pretest_logic(teacher_id, class_id)
 
 # End Dashboard Guru ===========================================================================
+
 
 # Halaman Khusus Dashboard Guru ==================================================================
 
@@ -146,6 +287,5 @@ def dashboard_admin(user_id):
         amount_teacher=amount_teacher,
         amount_classes=amount_classes
     )
-
 
 # End Dashboard Guru ===========================================================================
