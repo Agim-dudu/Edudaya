@@ -123,9 +123,9 @@ def finish_pretest(user_id):
 
 # Routing Learning Bab 1 ====================================================================================
 
-@app.route("/learning/chapter/1/1/<int:user_id>", methods=["GET"])
+@app.route("/learning/medium/1/1/<int:user_id>", methods=["GET"])
 @login_required
-def learning_chapter1_1(user_id):
+def learning_medium_chapter1_1(user_id):
     if user_id != current_user.id:
         return render_template("403.html")
 
@@ -266,7 +266,7 @@ def dashboard_teacher_batch_analyze(teacher_id, class_id):
 # Halaman Khusus Dashboard Guru ==================================================================
 
 
-@app.route("/dashboard_admin/<int:user_id>", methods=["GET"])
+@app.route("/dashboard/admin/<int:user_id>", methods=["GET"])
 @login_required
 @level_required(2)
 def dashboard_admin(user_id):

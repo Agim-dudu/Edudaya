@@ -445,7 +445,7 @@
         userId:    "{{ user_id }}",
         csrfToken: "{{ csrf_token() }}",
         questions: {{ questions | tojson }},
-        pretestApiUrl: "/submit_pretest/{{ user_id }}"
+        pretestApiUrl: "/pretest/submit/{{ user_id }}"
     };
     </script>
     <script src="/resources/js/pretest_question_handle.js"></script>

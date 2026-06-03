@@ -107,10 +107,14 @@
                 </nav>
             </div>
             <div class="mt-auto p-4 border-t border-white/10">
-                <button onclick="showPage('login-admin')"
+                <a href="{{ url_for('index') }}"
+                    class="w-full text-left flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/10 transition font-600">
+                    <span>↩️</span> Kembali
+                </a>
+                <a href="{{ url_for('logout') }}"
                     class="w-full text-left flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/10 transition font-600">
                     <span>🚪</span> Keluar
-                </button>
+                </a>
             </div>
         </aside>
 
@@ -612,28 +616,6 @@
             </div>
         </main>
     </div>
-
-    <script>
-        // ---- Admin tabs ----
-        function switchAdminTab(tabId) {
-            document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden'));
-            document.getElementById(tabId)?.classList.remove('hidden');
-            document.querySelectorAll('#dash-admin .sidebar-link').forEach(b => b.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            const titles = {
-            'admin-dashboard': ['Dashboard Utama','Ringkasan statistik platform'],
-            'admin-kelas': ['Manajemen Kelas','CRUD data kelas'],
-            'admin-siswa': ['Manajemen Siswa','CRUD data siswa'],
-            'admin-token': ['Manajemen Token','Generate & kelola token akses'],
-            'admin-score': ['Rekap Nilai','Lihat & kelola data nilai'],
-            'admin-profile': ['Setting Profil','Ubah data akun admin'],
-            };
-            if (titles[tabId]) {
-            document.getElementById('admin-page-title').textContent = titles[tabId][0];
-            document.getElementById('admin-page-sub').textContent = titles[tabId][1];
-            }
-        }
-    </script>
 </body>
 
 </html>
