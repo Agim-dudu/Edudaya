@@ -12,10 +12,38 @@ def index():
     amount_classes=get_amount_classes()
     amount_teacher=get_amount_teacher()
     amount_student=get_amount_student()
+
+    from app.controller.LearningController import MATERIAL_CATALOG
+    from app.model import User, LearningProgress
+    from app import db
     
-    print(amount_student)
+    total_materi = len(MATERIAL_CATALOG)
     
-    return render_template("index.html", ac=amount_classes, at=amount_teacher, ast=amount_student)
+    top_students = db.session.query(
+        User.full_name, User.class_id,
+        db.func.coalesce(db.func.sum(LearningProgress.score), 0).label('total_score')
+    ).outerjoin(LearningProgress, LearningProgress.user_id == User.id
+    ).filter(User.level == 0
+    ).group_by(User.id
+    ).order_by(db.func.sum(LearningProgress.score).desc()
+    ).limit(5).all()
+    
+    leaderboard = []
+    for rank, row in enumerate(top_students, 1):
+        kelas_name = ''
+        if row.class_id:
+            from app.model import Classes
+            k = Classes.query.get(row.class_id)
+            if k:
+                kelas_name = k.name
+        leaderboard.append({
+            'rank': rank,
+            'name': row.full_name,
+            'kelas': kelas_name,
+            'score': int(row.total_score),
+        })
+    
+    return render_template("index.html", ac=amount_classes, at=amount_teacher, ast=amount_student, total_materi=total_materi, leaderboard=leaderboard)
 
 @app.route("/login", methods=["GET"])
 def login_page():
@@ -129,8 +157,39 @@ def learning_medium_chapter1_1(user_id):
     if user_id != current_user.id:
         return render_template("403.html")
 
-    # Jika request.method == 'GET', maka render halaman latihan
     return render_template("learning/medium/bab1/01.html", user_id=user_id)
+
+@app.route("/learning/medium/1/2/<int:user_id>", methods=["GET"])
+@login_required
+def learning_medium_chapter1_2(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html")
+
+    return render_template("learning/medium/bab1/02.html", user_id=user_id)
+
+@app.route("/learning/medium/1/3/<int:user_id>", methods=["GET"])
+@login_required
+def learning_medium_chapter1_3(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html")
+
+    return render_template("learning/medium/bab1/03.html", user_id=user_id)
+
+@app.route("/learning/medium/1/4/<int:user_id>", methods=["GET"])
+@login_required
+def learning_medium_chapter1_4(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html")
+
+    return render_template("learning/medium/bab1/04.html", user_id=user_id)
+
+@app.route("/learning/medium/1/quiz/<int:user_id>", methods=["GET"])
+@login_required
+def learning_medium_chapter1_quiz(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html")
+
+    return render_template("learning/medium/bab1/quiz.html", user_id=user_id)
 
 # End Routing Learning Bab 1 ====================================================================================
 
@@ -143,8 +202,46 @@ def learning_medium_chapter1_1(user_id):
 def dashboard_student(user_id):
 
     user = get_user_by_id(user_id)
+    stats = get_student_dashboard_stats(user_id)
 
-    return render_template("dashboard/student/dashboard.html", user=user, user_id=user_id)
+    return render_template(
+        "dashboard/student/dashboard.html",
+        user=user,
+        user_id=user_id,
+        stats=stats
+    )
+
+@app.route("/api/learning/progress/save/<int:user_id>", methods=["POST"])
+@login_required
+def api_save_progress(user_id):
+    return save_learning_progress(user_id)
+
+@app.route("/api/learning/progress/get/<int:user_id>", methods=["GET"])
+@login_required
+def api_get_progress(user_id):
+    return get_learning_progress(user_id)
+
+@app.route("/api/learning/progress/all/<int:user_id>", methods=["GET"])
+@login_required
+def api_get_all_progress(user_id):
+    return get_all_progress(user_id)
+
+@app.route("/grades/student/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(0)
+def student_grades(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html"), 403
+
+    user = get_user_by_id(user_id)
+    stats = get_student_dashboard_stats(user_id)
+
+    return render_template(
+        "dashboard/student/grades.html",
+        user=user,
+        user_id=user_id,
+        stats=stats
+    )
 
 @app.route("/profile/student/<int:user_id>", methods=["GET"])
 @login_required
@@ -259,6 +356,65 @@ def dashboard_result_analysis(user_id, class_id):
 @level_required(1)
 def dashboard_teacher_batch_analyze(teacher_id, class_id):
     return batch_analyze_pretest_logic(teacher_id, class_id)
+
+@app.route("/teacher/grades/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(1)
+def teacher_grades(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html"), 403
+
+    recap, material_labels, material_keys = get_grades_recap(user_id)
+
+    return render_template(
+        'dashboard/teacher/grades.html',
+        user_id=user_id,
+        recap=recap,
+        material_labels=material_labels,
+        material_keys=material_keys
+    )
+
+@app.route("/teacher/students/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(1)
+def teacher_students(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html"), 403
+
+    students_data = get_students_by_teacher(user_id)
+
+    return render_template(
+        'dashboard/teacher/students.html',
+        user_id=user_id,
+        students_data=students_data
+    )
+
+@app.route("/teacher/classes/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(1)
+def my_classes(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html"), 403
+
+    my_classes_list = get_my_classes(user_id)
+
+    return render_template(
+        'dashboard/teacher/my_classes.html',
+        user_id=user_id,
+        my_classes=my_classes_list
+    )
+
+@app.route("/teacher/classes/create/<int:teacher_id>", methods=["POST"])
+@login_required
+@level_required(1)
+def create_class_route(teacher_id):
+    return create_class(teacher_id)
+
+@app.route("/teacher/classes/edit/<int:teacher_id>/<int:class_id>", methods=["POST"])
+@login_required
+@level_required(1)
+def edit_class_route(teacher_id, class_id):
+    return edit_class(teacher_id, class_id)
 
 # End Dashboard Guru ===========================================================================
 

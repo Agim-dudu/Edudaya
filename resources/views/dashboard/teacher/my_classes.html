@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelas Saya - Portal Guru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/resources/css/main.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kuning: { general: '#F5A623', light: '#FEF3DB', dark: '#C47D0E' },
+                        merah: { general: '#C0392B', light: '#FDECEA', dark: '#922B21' },
+                        hijau: { general: '#27AE60', light: '#E8F8F0', dark: '#1E8449' },
+                        biru: { general: '#2980B9', light: '#EAF4FB', dark: '#1A5276' },
+                        ungu: { general: '#8E44AD', light: '#F5EEF8', dark: '#6C3483' },
+                        cokelat: { general: '#6D4C41', light: '#EFEBE9', dark: '#4E342E' },
+                        krem: { general: '#FFF8EE', dark: '#F5E6CC' },
+                    },
+                    fontFamily: {
+                        nunito: ['Nunito', 'sans-serif'],
+                        fredoka: ['Fredoka One', 'cursive'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="sasirangan-bg">
+
+    <div id="dash-guru" class="page flex">
+
+        {% include 'dashboard/teacher/partials/sidebar.html' %}
+
+        <main class="flex-1 overflow-auto">
+            <div class="bg-white shadow-sm px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+                <div>
+                    <div class="font-fredoka text-xl text-cokelat-general">Kelas Saya</div>
+                    <div class="text-xs text-gray-400">Daftar kelas yang Anda ampu</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="openCreateModal()"
+                        class="flex items-center gap-2 bg-hijau-general hover:bg-hijau-dark text-white font-semibold py-2 px-4 rounded-xl text-sm transition-colors duration-200 shadow-sm">
+                        <span>➕</span> Buat Kelas
+                    </button>
+                    <div class="text-sm font-700 text-cokelat-general">{{ current_user.full_name }}</div>
+                </div>
+            </div>
+
+            <div class="p-6">
+                {% include 'partials/flash_message.html' %}
+                <div class="max-w-7xl mx-auto">
+
+                    {% if my_classes %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                        {% for kelas in my_classes %}
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow duration-300">
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <div class="font-fredoka text-xl font-bold text-cokelat-general">{{ kelas.name }}</div>
+                                    <div class="text-sm text-gray-500 mt-1 flex items-center gap-1">
+                                        <span>🏫</span> {{ kelas.school }}
+                                    </div>
+                                </div>
+                                <button onclick="openEditModal(this)"
+                                    data-id="{{ kelas.id }}"
+                                    data-name="{{ kelas.name }}"
+                                    data-school="{{ kelas.school }}"
+                                    data-kkm="{{ kelas.kkm }}"
+                                    class="text-gray-400 hover:text-kuning-general transition-colors p-1" title="Edit kelas">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3 mb-4 text-sm">
+                                <div class="bg-biru-light rounded-xl p-3 text-center">
+                                    <div class="text-2xl font-fredoka font-bold text-biru-general">{{ kelas.total_siswa }}</div>
+                                    <div class="text-xs text-gray-500">Siswa</div>
+                                </div>
+                                <div class="bg-hijau-light rounded-xl p-3 text-center">
+                                    <div class="text-2xl font-fredoka font-bold text-hijau-general">{{ kelas.sudah_pretest }}</div>
+                                    <div class="text-xs text-gray-500">Sudah Pretest</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-2 text-xs text-gray-400 mb-4">
+                                <span class="bg-krem-dark text-cokelat-general px-2 py-1 rounded-md">Token: {{ kelas.token }}</span>
+                                <span class="bg-kuning-light text-kuning-dark px-2 py-1 rounded-md">KKM: {{ kelas.kkm }}</span>
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <a href="/teacher/result/analysis/{{ user_id }}/{{ kelas.id }}"
+                                    class="w-full flex items-center justify-center gap-2 bg-biru-light text-biru-general hover:bg-blue-100 font-medium py-2.5 px-4 rounded-xl transition-colors duration-200 text-sm">
+                                    <span>📊</span> Hasil Analisis Pretest
+                                </a>
+                                <button class="w-full flex items-center justify-center gap-2 bg-hijau-light text-hijau-general hover:bg-emerald-100 font-medium py-2.5 px-4 rounded-xl transition-colors duration-200 text-sm opacity-50 cursor-not-allowed" disabled>
+                                    <span>📋</span> Evaluasi (Segera)
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="p-12 text-center bg-white rounded-2xl border border-dashed border-gray-300">
+                        <div class="text-4xl mb-3">🏫</div>
+                        <div class="font-fredoka text-lg text-gray-500 mb-1">Belum ada kelas</div>
+                        <div class="text-sm text-gray-400 mb-4">Anda belum memiliki kelas. Buat kelas pertama Anda sekarang.</div>
+                        <button onclick="openCreateModal()"
+                            class="inline-flex items-center gap-2 bg-hijau-general hover:bg-hijau-dark text-white font-semibold py-2.5 px-5 rounded-xl text-sm transition-colors duration-200 shadow-sm">
+                            <span>➕</span> Buat Kelas Baru
+                        </button>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL: Buat Kelas -->
+    <div id="createModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6">
+            <div class="flex items-center justify-between mb-5">
+                <h3 class="font-fredoka text-lg text-cokelat-general">➕ Buat Kelas Baru</h3>
+                <button onclick="closeModal('createModal')" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+            </div>
+            <form method="POST" action="/teacher/classes/create/{{ user_id }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Nama Kelas</label>
+                        <input type="text" name="name" required
+                            class="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-hijau-general focus:border-transparent"
+                            placeholder="Contoh: Kelas 5A">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Sekolah</label>
+                        <input type="text" name="school" required
+                            class="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-hijau-general focus:border-transparent"
+                            placeholder="Contoh: SDN 1 Banjarmasin">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">KKM (Nilai Minimum)</label>
+                        <input type="number" name="kkm" value="75" min="0" max="100"
+                            class="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-hijau-general focus:border-transparent">
+                    </div>
+                    <div class="bg-krem-dark text-cokelat-general text-xs p-3 rounded-lg flex items-start gap-2">
+                        <span>🔑</span> Token kelas akan dibuat otomatis setelah kelas berhasil dibuat.
+                    </div>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button type="button" onclick="closeModal('createModal')"
+                        class="flex-1 py-2.5 px-4 border border-gray-300 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="flex-1 py-2.5 px-4 bg-hijau-general hover:bg-hijau-dark text-white font-semibold rounded-xl text-sm transition-colors shadow-sm">
+                        Buat Kelas
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Edit Kelas -->
+    <div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6">
+            <div class="flex items-center justify-between mb-5">
+                <h3 class="font-fredoka text-lg text-cokelat-general">✏️ Edit Kelas</h3>
+                <button onclick="closeModal('editModal')" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+            </div>
+            <form id="editForm" method="POST" action="">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Nama Kelas</label>
+                        <input type="text" name="name" id="editName" required
+                            class="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-kuning-general focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Sekolah</label>
+                        <input type="text" name="school" id="editSchool" required
+                            class="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-kuning-general focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">KKM (Nilai Minimum)</label>
+                        <input type="number" name="kkm" id="editKkm" min="0" max="100"
+                            class="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-kuning-general focus:border-transparent">
+                    </div>
+                    <div class="bg-kuning-light text-kuning-dark text-xs p-3 rounded-lg flex items-start gap-2">
+                        <span>💡</span> Token kelas tidak dapat diubah setelah dibuat.
+                    </div>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button type="button" onclick="closeModal('editModal')"
+                        class="flex-1 py-2.5 px-4 border border-gray-300 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="flex-1 py-2.5 px-4 bg-kuning-general hover:bg-kuning-dark text-white font-semibold rounded-xl text-sm transition-colors shadow-sm">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openCreateModal() {
+            document.getElementById('createModal').classList.remove('hidden');
+            document.getElementById('createModal').classList.add('flex');
+        }
+
+        function openEditModal(btn) {
+            var id = btn.dataset.id;
+            var name = btn.dataset.name;
+            var school = btn.dataset.school;
+            var kkm = btn.dataset.kkm;
+            document.getElementById('editForm').action = '/teacher/classes/edit/{{ user_id }}/' + id;
+            document.getElementById('editName').value = name;
+            document.getElementById('editSchool').value = school;
+            document.getElementById('editKkm').value = kkm;
+            document.getElementById('editModal').classList.remove('hidden');
+            document.getElementById('editModal').classList.add('flex');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.getElementById(modalId).classList.remove('flex');
+        }
+
+        document.querySelectorAll('.fixed.inset-0').forEach(function(overlay) {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) {
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex');
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

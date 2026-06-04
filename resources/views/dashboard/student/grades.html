@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nilai Saya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/resources/css/main.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kuning: { general: '#F5A623', light: '#FEF3DB', dark: '#C47D0E' },
+                        merah: { general: '#C0392B', light: '#FDECEA', dark: '#922B21' },
+                        hijau: { general: '#27AE60', light: '#E8F8F0', dark: '#1E8449' },
+                        biru: { general: '#2980B9', light: '#EAF4FB', dark: '#1A5276' },
+                        ungu: { general: '#8E44AD', light: '#F5EEF8', dark: '#6C3483' },
+                        cokelat: { general: '#6D4C41', light: '#EFEBE9', dark: '#4E342E' },
+                        krem: { general: '#FFF8EE', dark: '#F5E6CC' },
+                    },
+                    fontFamily: {
+                        nunito: ['Nunito', 'sans-serif'],
+                        fredoka: ['Fredoka One', 'cursive'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="sasirangan-bg">
+
+    <div id="dash-siswa" class="page flex">
+
+        {% include 'dashboard/student/partials/sidebar.html' %}
+
+        <main class="flex-1 overflow-auto">
+            <div class="sasirangan-header px-6 py-4 relative">
+                <div class="relative z-10 flex items-center justify-between">
+                    <div>
+                        <div class="font-fredoka text-2xl text-white">🏆 Nilai Saya</div>
+                        <div class="text-white/70 text-sm">Detail nilai dan progres belajar</div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white/20 rounded-xl px-3 py-1.5 text-white text-sm font-700">⭐ {{ current_user.star }} Poin</div>
+                    </div>
+                </div>
+                <div class="motif-strip mt-3 opacity-60 rounded-full"></div>
+            </div>
+
+            <div class="p-6">
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="bg-white rounded-2xl p-4 shadow text-center">
+                        <div class="font-fredoka text-5xl text-hijau-general mb-1">{{ stats.avg_score }}</div>
+                        <div class="text-sm text-gray-500 font-600">Nilai Rata-rata</div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-4 shadow text-center">
+                        <div class="font-fredoka text-5xl text-biru-general mb-1">{{ stats.completed_bab }}/{{ stats.total_bab }}</div>
+                        <div class="text-sm text-gray-500 font-600">Materi Selesai</div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-4 shadow text-center">
+                        <div class="font-fredoka text-5xl text-kuning-general mb-1">{{ stats.total_submateri }}</div>
+                        <div class="text-sm text-gray-500 font-600">Sub-materi</div>
+                    </div>
+                </div>
+
+                {% for bab in stats.bab_list %}
+                <div class="bg-white rounded-2xl shadow overflow-hidden mb-5">
+                    <button onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.chevron').classList.toggle('rotate-90')"
+                        class="w-full flex items-center justify-between px-5 py-4 border-b border-gray-100 hover:bg-gray-50 transition text-left">
+                        <h3 class="font-fredoka text-lg text-cokelat-general">{{ bab.icon }} {{ bab.bab_title }}</h3>
+                        <div class="flex items-center gap-3">
+                            <span class="text-sm font-bold {% if bab.completed == bab.total %}text-hijau-general{% else %}text-kuning-general{% endif %}">
+                                {{ bab.completed }}/{{ bab.total }}
+                            </span>
+                            <span class="chevron text-gray-400 text-sm transition-transform inline-block">▶</span>
+                        </div>
+                    </button>
+                    <div class="hidden">
+                        <div class="px-5 py-2 bg-gray-50">
+                            <div class="progress-bar h-2">
+                                <div class="progress-fill h-2" style="width:{{ bab.bab_progress }}%"></div>
+                            </div>
+                        </div>
+                        <div class="divide-y divide-gray-100">
+                            {% for item in bab.materials %}
+                            <div class="flex items-center gap-4 px-5 py-3 hover:bg-gray-50">
+                                <div class="text-2xl">{{ item.icon }}</div>
+                                <div class="flex-1">
+                                    <div class="font-700 text-cokelat-general text-sm">{{ item.title }}</div>
+                                    <div class="text-xs text-gray-400">
+                                        {% if item.updated_at %}
+                                        {{ item.updated_at.strftime('%d %b %Y') }}
+                                        {% else %}
+                                        Belum dikerjakan
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    {% if item.completed %}
+                                    <div class="font-fredoka text-xl text-hijau-general">{{ item.score }}</div>
+                                    <div class="text-xs {% if item.score >= 80 %}text-hijau-general{% elif item.score >= 60 %}text-kuning-general{% else %}text-merah-general{% endif %} font-bold">
+                                        {% if item.score >= 80 %}Sangat Baik
+                                        {% elif item.score >= 60 %}Baik
+                                        {% else %}Cukup{% endif %}
+                                    </div>
+                                    {% else %}
+                                    <div class="font-fredoka text-xl text-gray-300">—</div>
+                                    <div class="text-xs text-gray-400">Belum</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>

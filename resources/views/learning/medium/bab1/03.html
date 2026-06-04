@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Petualangan Berhitung di Bumi Lambung Mangkurat 🌟</title>
+    <title>Petualangan Mengurangi di Bumi Lambung Mangkurat 🌟</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
@@ -76,7 +76,7 @@
 
 <!-- Floating decorations -->
 <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0" style="top:18%;left:60%;animation-delay:0s">🌟</div>
-<div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0" style="top:55%;left:75%;animation-delay:1.5s">🎮</div>
+<div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0" style="top:55%;left:75%;animation-delay:1.5s">🛶</div>
 <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0" style="top:78%;left:85%;animation-delay:0.8s">🏆</div>
 
 <!-- ===== SIDEBAR ===== -->
@@ -108,7 +108,7 @@
             </div>
             <ul class="hidden flex-col gap-1 pt-1 pl-1 list-none">
                 <li>
-                    <a href="/learning/medium/1/1/{{user_id}}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-emerald-500 to-emerald-600 text-white">
+                    <a href="/learning/medium/1/1/{{user_id}}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-gray-100 text-gray-700 hover:bg-emerald-500 hover:text-white transition-all duration-200">
                         📖 Pengenalan Penjumlahan
                     </a>
                 </li>
@@ -124,11 +124,11 @@
         <div>
             <div onclick="toggleSidebarMenu(this)" class="flex justify-between items-center px-3 py-2.5 border-2 border-gray-200 rounded-xl cursor-pointer font-bold text-sm text-gray-700 bg-white hover:bg-gray-50 hover:border-emerald-400 transition-all duration-200 select-none">
                 <span>➖ Pengurangan</span>
-                <ion-icon name="chevron-down-outline" class="transition-transform duration-300 text-base"></ion-icon>
+                <ion-icon name="chevron-down-outline" class="transition-transform duration-300 text-base" style="transform: rotate(180deg)"></ion-icon>
             </div>
-            <ul class="hidden flex-col gap-1 pt-1 pl-1 list-none">
+            <ul class="flex flex-col gap-1 pt-1 pl-1 list-none">
                 <li>
-                    <a href="/learning/medium/1/3/{{user_id}}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-gray-100 text-gray-700 hover:bg-emerald-500 hover:text-white transition-all duration-200">
+                    <a href="/learning/medium/1/3/{{user_id}}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-emerald-500 to-emerald-600 text-white">
                         📖 Pengertian Pengurangan
                     </a>
                 </li>
@@ -146,7 +146,6 @@
                 🧩 Kuis Bab 1
             </a>
         </div>
-
     </div>
 
     <!-- Footer -->
@@ -168,12 +167,11 @@
             </span>
             <span class="font-fredoka text-lg text-gray-700">🛶 Bumi Lambung Mangkurat</span>
         </div>
-        <span class="text-sm text-gray-400 font-semibold hidden md:block">📚 Bab 1 — Penjumlahan</span>
+        <span class="text-sm text-gray-400 font-semibold hidden md:block">📚 Bab 1 — Pengurangan</span>
     </nav>
 
     <!-- CONTENT SCROLL AREA -->
     <div class="flex-1 px-6 py-6 bg-gradient-to-br from-cyan-50 via-green-50 to-yellow-50">
-        <!-- max-w-5xl untuk canvas lebih lebar -->
         <div class="max-w-5xl mx-auto flex flex-col gap-5">
 
             <!-- COMPLETED OVERLAY -->
@@ -190,18 +188,13 @@
                         <button onclick="window.location.href='/dashboard/student/' + USER_ID" class="flex-1 font-fredoka text-base px-4 py-3 rounded-full border-2 border-gray-300 text-gray-600 hover:bg-gray-50 transition">
                             🏠 Dashboard
                         </button>
-                        <button onclick="window.location.href='/learning/medium/1/2/' + USER_ID" class="flex-1 font-fredoka text-base px-4 py-3 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg hover:-translate-y-1 transition-transform duration-200">
+                        <button onclick="window.location.href='/learning/medium/1/4/' + USER_ID" class="flex-1 font-fredoka text-base px-4 py-3 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg hover:-translate-y-1 transition-transform duration-200">
                             Lanjut ➡️
                         </button>
                     </div>
                 </div>
             </div>
-                    <button onclick="window.location.href='/dashboard/student/' + USER_ID" class="font-fredoka text-base px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg hover:-translate-y-1 transition-transform duration-200 mx-auto block">
-                        🏠 Ke Dashboard
-                    </button>
-                </div>
-            </div>
-            <!-- TWO COLUMN LAYOUT: Materi + Latihan side by side on large screens -->
+
             <div class="grid grid-cols-1 gap-5">
 
                 <!-- ===== MATERI CARD ===== -->
@@ -219,31 +212,51 @@
                             <div class="flex flex-col gap-2">
                                 <div class="flex items-center gap-3 bg-gradient-to-r from-green-50 to-green-100 border-l-4 border-green-500 rounded-xl px-4 py-3 font-bold text-sm text-gray-800 hover:translate-x-1 transition-transform duration-200">
                                     <span class="text-2xl">🌺</span>
-                                    <span>Memahami konsep penjumlahan lewat benda-benda dan budaya khas Kalimantan Selatan.</span>
+                                    <span>Memahami konsep pengurangan dengan benda-benda khas Kalimantan Selatan.</span>
                                 </div>
                                 <div class="flex items-center gap-3 bg-gradient-to-r from-green-50 to-green-100 border-l-4 border-green-500 rounded-xl px-4 py-3 font-bold text-sm text-gray-800 hover:translate-x-1 transition-transform duration-200">
                                     <span class="text-2xl">🔢</span>
-                                    <span>Bisa menghitung hasil penjumlahan bilangan 1–10 dengan bantuan objek nyata.</span>
+                                    <span>Bisa menghitung hasil pengurangan bilangan 1–10.</span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Pengantar -->
                         <div>
-                            <h3 class="font-fredoka text-xl text-blue-600 mb-3 flex items-center gap-2">🛶 Mengenal Penjumlahan Bersama Acil</h3>
+                            <h3 class="font-fredoka text-xl text-blue-600 mb-3 flex items-center gap-2">🛶 Mengenal Pengurangan di Pasar Terapung</h3>
                             <div class="relative bg-gradient-to-br from-amber-50 to-yellow-100 border-4 border-dashed border-yellow-400 rounded-2xl p-4 pt-6 mb-3">
                                 <span class="absolute -top-4 left-4 text-2xl">💡</span>
                                 <p class="text-sm leading-relaxed text-gray-700">
-                                    <strong class="text-amber-600">Penjumlahan</strong> adalah cara kita <strong>menggabungkan</strong> dua atau lebih kelompok benda menjadi satu kelompok yang <strong>besar</strong>.
-                                    Di Kalimantan Selatan, ini terlihat saat para pedagang (<em>Acil</em>) mengumpulkan buah di dalam
-                                    <strong class="text-emerald-600">tangking</strong> (keranjang bambu) di atas <strong class="text-emerald-600">jukung</strong> mereka!
+                                    <strong class="text-amber-600">Pengurangan</strong> adalah cara kita <strong>mengambil sebagian</strong> dari jumlah benda yang ada, sehingga jumlahnya menjadi <strong>lebih sedikit</strong>.
+                                    Di Kalimantan Selatan, para <strong class="text-emerald-600">Acil</strong> di Pasar Terapung selalu menghitung sisa dagangan setelah menjual — inilah pengurangan dalam kehidupan sehari-hari! 🛶
                                 </p>
+                            </div>
+
+                            <p class="font-bold text-gray-700 text-sm mb-3">🍮 Mari lihat cerita Acil berjualan Wadai di Pasar Terapung!</p>
+                            <div class="bg-gradient-to-br from-pink-50 to-pink-100 border-2 border-pink-300 rounded-2xl p-4 mb-4">
+                                <div class="flex gap-3 items-start text-sm mb-3">
+                                    <span class="text-2xl flex-shrink-0">🛶</span>
+                                    <p class="text-gray-700"><strong class="text-pink-700">Awal:</strong> Acil membawa <strong>8 biji wadai</strong> di atas jukungnya untuk dijual di Pasar Terapung.</p>
+                                </div>
+                                <div class="flex gap-3 items-start text-sm mb-3">
+                                    <span class="text-2xl flex-shrink-0">👩‍🦰</span>
+                                    <p class="text-gray-700"><strong class="text-pink-700">Terjual:</strong> Seorang pembeli datang dan membeli <strong>3 biji wadai</strong> dari Acil.</p>
+                                </div>
+                                <div class="flex gap-3 items-start text-sm mb-3">
+                                    <span class="text-2xl flex-shrink-0">🤔</span>
+                                    <p class="text-gray-700"><strong class="text-pink-700">Sisa:</strong> Setelah 3 wadai terjual, Acil tinggal punya berapa wadai?</p>
+                                </div>
+                                <div class="flex gap-3 items-start bg-gradient-to-r from-green-100 to-green-200 rounded-xl p-3 text-sm">
+                                    <span class="text-2xl flex-shrink-0">🎉</span>
+                                    <p class="text-gray-700"><strong class="text-green-700">Hasil:</strong> Acil menghitung: 8 biji — 3 yang terjual = sisa <strong>5 biji wadai</strong>!<br>
+                                    <span class="text-emerald-600">Ditulis: <strong>8 - 3 = 5</strong> ✅</span></p>
+                                </div>
                             </div>
 
                             <div class="flex flex-wrap gap-3 mb-4">
                                 <div class="flex-1 min-w-[140px] bg-gradient-to-br from-purple-50 to-purple-100 border-l-4 border-purple-500 rounded-r-2xl px-4 py-3 font-bold text-purple-900">
-                                    <div class="text-sm">➕ Tanda <strong>Tambah (+)</strong></div>
-                                    <div class="text-xs font-semibold text-purple-600">untuk menggabungkan</div>
+                                    <div class="text-sm">➖ Tanda <strong>Kurang (−)</strong></div>
+                                    <div class="text-xs font-semibold text-purple-600">untuk mengurangi/mengambil</div>
                                 </div>
                                 <div class="flex-1 min-w-[140px] bg-gradient-to-br from-purple-50 to-purple-100 border-l-4 border-purple-500 rounded-r-2xl px-4 py-3 font-bold text-purple-900">
                                     <div class="text-sm">🟰 Tanda <strong>Sama Dengan (=)</strong></div>
@@ -251,39 +264,11 @@
                                 </div>
                             </div>
 
-                            <p class="font-bold text-gray-700 text-sm mb-3">🥭 Mari lihat contoh buah Kasturi di atas jukung berikut!</p>
-                            <div class="border-4 border-emerald-400 rounded-2xl overflow-hidden shadow-md mb-2">
-                                <img src="{{ url_for('static', filename='img/1.png') }}" alt="ilustrasi penjumlahan buah kasturi di atas jukung" class="w-full block">
-                            </div>
-                            <p class="text-center text-xs text-gray-500 font-semibold mb-4">📷 <em>Gambar 1 — Penggabungan 3 Buah Kasturi dan 2 Buah Kasturi</em></p>
-
-                            <!-- Unsur -->
-                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-4 flex flex-col gap-3 mb-4">
-                                <h4 class="font-fredoka text-blue-700 text-lg">🔍 Unsur Penjumlahannya:</h4>
-                                <div class="flex gap-3 items-start text-sm">
-                                    <span class="text-2xl flex-shrink-0">🥭</span>
-                                    <p class="text-gray-700"><strong class="text-blue-700">Kelompok Pertama:</strong> Di sudut kiri jukung ada <strong>3 buah kasturi</strong> yang masak.</p>
-                                </div>
-                                <div class="flex gap-3 items-start text-sm">
-                                    <span class="text-2xl flex-shrink-0">🥭</span>
-                                    <p class="text-gray-700"><strong class="text-blue-700">Kelompok Kedua:</strong> Di sudut kanan jukung ada tambahan <strong>2 buah kasturi</strong> lagi.</p>
-                                </div>
-                                <div class="flex gap-3 items-start text-sm">
-                                    <span class="text-2xl flex-shrink-0">➕</span>
-                                    <p class="text-gray-700"><strong class="text-amber-600">Proses Gabung (+):</strong> Acil memasukkan semua buah ke dalam satu keranjang yang sama.</p>
-                                </div>
-                                <div class="flex gap-3 items-start bg-gradient-to-r from-green-100 to-green-200 rounded-xl p-3 text-sm">
-                                    <span class="text-2xl flex-shrink-0">🎉</span>
-                                    <p class="text-gray-700"><strong class="text-green-700">Hasil Akhir (=):</strong> Acil punya total <strong>5 buah kasturi!</strong><br>
-                                    <span class="text-emerald-600">Ditulis: <strong>3 + 2 = 5</strong> ✅</span></p>
-                                </div>
-                            </div>
-
                             <!-- Fun fact -->
                             <div class="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-300 rounded-2xl p-4">
-                                <h4 class="font-fredoka text-purple-700 text-base mb-2">🎮 Tahukah Kamu? Badaku juga Pakai Penjumlahan!</h4>
+                                <h4 class="font-fredoka text-purple-700 text-base mb-2">🛶 Tahukah Kamu?</h4>
                                 <p class="text-gray-700 text-sm leading-relaxed">
-                                    Permainan tradisional Banjar <strong>Badaku</strong> (congklak) melatih kita berhitung! Saat mengambil biji daku dan mengisi setiap lubang satu per satu, biji di dalam lubang akan <strong>bertambah</strong> — itulah penjumlahan! 🪨➕🪨
+                                    Saat berjualan di <strong>Pasar Terapung</strong>, para Acil selalu menghitung sisa dagangan mereka. Inilah pengurangan dalam kehidupan sehari-hari! 🛶
                                 </p>
                             </div>
                         </div>
@@ -309,28 +294,27 @@
                             <div class="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-4 mb-4">
                                 <p class="font-bold text-blue-800 text-sm mb-2">📖 Baca cerita ini:</p>
                                 <p class="text-blue-900 text-sm leading-relaxed mb-3">
-                                    Udin membawa <strong>4 butir biji daku</strong> untuk bermain bersama temannya.
-                                    Di lapangan, Amat memberikan <strong>3 butir biji daku</strong> lagi kepada Udin agar permainan semakin seru. 🎮
+                                    Acil membawa <strong>9 buah rambutan</strong> di atas jukungnya. Kemudian <strong>4 buah rambutan</strong> diberikan kepada pembeli di Pasar Terapung. 🛶
                                 </p>
                                 <div class="bg-white rounded-xl px-4 py-3 border-2 border-dashed border-blue-300">
-                                    <p class="font-extrabold text-blue-700 text-sm">❓ Berapakah total biji daku Udin setelah digabungkan?</p>
+                                    <p class="font-extrabold text-blue-700 text-sm">❓ Berapakah sisa rambutan Acil sekarang?</p>
                                 </div>
                             </div>
                             <div class="flex flex-col gap-2">
                                 <button onclick="checkJawaban(1,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">A</span> 5 butir biji daku
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">A</span> 4 buah rambutan
                                 </button>
                                 <button onclick="checkJawaban(1,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">B</span> 6 butir biji daku
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">B</span> 6 buah rambutan
                                 </button>
                                 <button onclick="checkJawaban(1,this,true)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">C</span> 7 butir biji daku ✅
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">C</span> 5 buah rambutan ✅
                                 </button>
                                 <button onclick="checkJawaban(1,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">D</span> 8 butir biji daku
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">D</span> 7 buah rambutan
                                 </button>
                                 <button onclick="checkJawaban(1,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">E</span> 9 butir biji daku
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">E</span> 3 buah rambutan
                                 </button>
                             </div>
                             <div id="feedback-1" class="hidden mt-3 items-center gap-3 rounded-2xl px-4 py-3 font-bold text-sm"></div>
@@ -345,7 +329,7 @@
                             <div class="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-4 mb-4">
                                 <p class="font-bold text-blue-800 text-sm mb-2">📖 Perhatikan cerita berikut:</p>
                                 <p class="text-blue-900 text-sm italic leading-relaxed bg-white rounded-xl p-3 border-2 border-dashed border-blue-300 mb-3">
-                                    "Galuh membeli <strong>5 biji wadai Bingka</strong> di Pasar Wadai Ramadhan. Sesampainya di rumah, Ayah memberinya lagi <strong>2 biji wadai Bingka</strong> yang baru dibeli dari warung sebelah." 🍮
+                                    "Di atas piring ada <strong>7 biji wadai lam</strong>. Kemudian <strong>2 biji wadai lam dimakan</strong> oleh Galuh." 🍮
                                 </p>
                                 <div class="bg-white rounded-xl px-4 py-3 border-2 border-dashed border-blue-300">
                                     <p class="font-extrabold text-blue-700 text-sm">❓ Kalimat matematika yang tepat adalah...?</p>
@@ -353,19 +337,19 @@
                             </div>
                             <div class="flex flex-col gap-2">
                                 <button onclick="checkJawaban(2,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">A</span> 5 - 2 = 3
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">A</span> 7 + 2 = 9
                                 </button>
                                 <button onclick="checkJawaban(2,this,true)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">B</span> 5 + 2 = 7 ✅
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">B</span> 7 - 2 = 5 ✅
                                 </button>
                                 <button onclick="checkJawaban(2,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">C</span> 5 + 5 = 10
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">C</span> 7 + 2 = 5
                                 </button>
                                 <button onclick="checkJawaban(2,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">D</span> 2 + 2 = 4
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">D</span> 7 - 5 = 2
                                 </button>
                                 <button onclick="checkJawaban(2,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">E</span> 5 - 3 = 2
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">E</span> 2 + 7 = 10
                                 </button>
                             </div>
                             <div id="feedback-2" class="hidden mt-3 items-center gap-3 rounded-2xl px-4 py-3 font-bold text-sm"></div>
@@ -380,24 +364,24 @@
                             <div class="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-4 mb-4">
                                 <p class="font-bold text-blue-800 text-sm mb-2">🤔 Pikir dengan baik:</p>
                                 <div class="bg-white rounded-xl px-4 py-3 border-2 border-dashed border-blue-300">
-                                    <p class="font-extrabold text-blue-700 text-sm">❓ Apa yang terjadi pada jumlah buah limau 🍊 di dalam tangking jika Acil terus menambahkan limau baru ke dalamnya?</p>
+                                    <p class="font-extrabold text-blue-700 text-sm">❓ Apa yang terjadi pada jumlah benda jika kita mengambil sebagian dari jumlah semula?</p>
                                 </div>
                             </div>
                             <div class="flex flex-col gap-2">
                                 <button onclick="checkJawaban(3,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">A</span> 📉 Jumlah limau akan berkurang menjadi sedikit
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">A</span> 📈 Jumlah bertambah menjadi lebih banyak
                                 </button>
                                 <button onclick="checkJawaban(3,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">B</span> 🌊 Jumlah limau akan hanyut semua ke sungai
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">B</span> ➡️ Jumlah tetap sama dan tidak berubah
                                 </button>
                                 <button onclick="checkJawaban(3,this,true)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">C</span> 📈 Jumlah limau akan bertambah menjadi lebih banyak ✅
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">C</span> 📉 Jumlah berkurang menjadi lebih sedikit ✅
                                 </button>
                                 <button onclick="checkJawaban(3,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">D</span> ➡️ Jumlah limau akan tetap sama dan tidak berubah
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">D</span> 🎨 Jumlah hilang semua menjadi nol
                                 </button>
                                 <button onclick="checkJawaban(3,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">E</span> 🎨 Limau akan berubah warna secara otomatis
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">E</span> 🔥 Jumlah menjadi dua kali lipat
                                 </button>
                             </div>
                             <div id="feedback-3" class="hidden mt-3 items-center gap-3 rounded-2xl px-4 py-3 font-bold text-sm"></div>
@@ -412,24 +396,24 @@
                             <div class="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-300 rounded-2xl p-4 mb-4">
                                 <p class="font-bold text-purple-700 text-sm mb-2">✨ Pertanyaan terakhir:</p>
                                 <div class="bg-white rounded-xl px-4 py-3 border-2 border-dashed border-purple-300">
-                                    <p class="font-extrabold text-purple-700 text-sm">❓ Manakah lambang yang kita gunakan untuk menambahkan buah-buahan di jukung? 🛶</p>
+                                    <p class="font-extrabold text-purple-700 text-sm">❓ Manakah lambang/simbol pengurangan yang digunakan Acil untuk menghitung sisa dagangan? 🛶</p>
                                 </div>
                             </div>
                             <div class="flex flex-col gap-2">
                                 <button onclick="checkJawaban(4,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">A</span> ➖ Simbol Kurang ( - )
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">A</span> ➕ Tanda Tambah ( + )
                                 </button>
                                 <button onclick="checkJawaban(4,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">B</span> ✖️ Simbol Kali ( × )
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">B</span> ✖️ Tanda Kali ( × )
                                 </button>
                                 <button onclick="checkJawaban(4,this,true)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">C</span> ➕ Simbol Tambah ( + ) ✅
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">C</span> ➖ Tanda Kurang ( − ) ✅
                                 </button>
                                 <button onclick="checkJawaban(4,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">D</span> ➗ Simbol Bagi ( ÷ )
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">D</span> ➗ Tanda Bagi ( ÷ )
                                 </button>
                                 <button onclick="checkJawaban(4,this,false)" class="quiz-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-bold text-sm text-left hover:border-emerald-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">E</span> 💯 Simbol Persen ( % )
+                                    <span class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-black text-xs flex-shrink-0">E</span> 🟰 Tanda Sama Dengan ( = )
                                 </button>
                             </div>
                             <div id="feedback-4" class="hidden mt-3 items-center gap-3 rounded-2xl px-4 py-3 font-bold text-sm"></div>
@@ -455,7 +439,7 @@
                     🏠 Beranda
                 </button>
                 <p class="text-gray-400 text-xs font-semibold">© 2026 Edudaya 🌟</p>
-                <button onclick="window.location.href='/learning/medium/1/2/{{user_id}}'" class="font-fredoka text-base px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">
+                <button onclick="window.location.href='/learning/medium/1/4/{{user_id}}'" class="font-fredoka text-base px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">
                     Halaman Selanjutnya ➡️
                 </button>
             </div>
@@ -536,7 +520,7 @@
 
     // ===== QUIZ =====
     const USER_ID = {{ user_id }};
-    const MATERIAL_KEY = 'medium_1_1';
+    const MATERIAL_KEY = 'medium_1_3';
     const CSRF_TOKEN = '{{ csrf_token() }}';
     let currentSoal = 1;
     const totalSoal = 4;
@@ -568,8 +552,12 @@
     function updateProgress() {
         const done = statusJawaban.slice(1).filter(Boolean).length;
         const pct = (done / totalSoal) * 100;
-        document.getElementById('progressBar').style.width = pct + '%';
-        document.getElementById('progressText').textContent = `${done} / ${totalSoal} soal dijawab`;
+        if (document.getElementById('progressBar')) {
+            document.getElementById('progressBar').style.width = pct + '%';
+        }
+        if (document.getElementById('progressText')) {
+            document.getElementById('progressText').textContent = `${done} / ${totalSoal} soal dijawab`;
+        }
         for (let i = 1; i <= totalSoal; i++) {
             if (statusJawaban[i]) {
                 const star = document.getElementById(`star${i}`);
@@ -703,7 +691,6 @@
     document.head.appendChild(style);
 
     document.addEventListener('DOMContentLoaded', () => {
-        // Init mobile sidebar
         if (window.innerWidth <= 768) {
             document.getElementById('sidebar').classList.add('-translate-x-full');
             document.getElementById('mainArea').classList.remove('ml-[280px]');

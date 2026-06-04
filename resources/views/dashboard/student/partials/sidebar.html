@@ -27,28 +27,28 @@
         
         <nav class="space-y-1">
             <a href="/dashboard/student/{{ user_id }}"
+               onclick="switchSiswaTab('siswa-dashboard')"
                class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition 
-               {{ 'active' if request.path == '/dashboard/student/' ~ user_id else 'hover:bg-white/10' }}">
+               {{ 'active' if request.path == '/dashboard/student/' ~ user_id|string else 'hover:bg-white/10' }}">
                 <span>🏠</span> Dashboard
             </a>
             
-            <a href=""
+            <a href="/grades/student/{{ user_id }}"
                class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition 
-               {{ 'active' if request.path == '/grades/student/' ~ user_id else 'hover:bg-white/10' }}">
+               {{ 'active' if '/grades/student' in request.path else 'hover:bg-white/10' }}">
                 <span>🏆</span> Nilai Saya
             </a>
             
             <a href="/profile/student/{{ user_id }}"
                class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition 
-               {{ 'active' if request.path == '/profile/student/' ~ user_id else 'hover:bg-white/10' }}">
+               {{ 'active' if request.path == '/profile/student/' ~ user_id|string else 'hover:bg-white/10' }}">
                 <span>⚙️</span> Profil Saya
             </a>
         </nav>
         
         <div class="mt-4 border-t border-white/10 pt-4">
-            <a href=""
-               class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition 
-               {{ 'active' if request.path == '/learn/student/' ~ user_id else 'hover:bg-white/10' }}">
+            <a href="/dashboard/student/{{ user_id }}"
+               class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition hover:bg-white/10">
                 <span>📚</span> Lanjut Belajar
             </a>
         </div>

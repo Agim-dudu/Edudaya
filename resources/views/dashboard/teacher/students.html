@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Siswa - Portal Guru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/resources/css/main.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kuning: { general: '#F5A623', light: '#FEF3DB', dark: '#C47D0E' },
+                        merah: { general: '#C0392B', light: '#FDECEA', dark: '#922B21' },
+                        hijau: { general: '#27AE60', light: '#E8F8F0', dark: '#1E8449' },
+                        biru: { general: '#2980B9', light: '#EAF4FB', dark: '#1A5276' },
+                        ungu: { general: '#8E44AD', light: '#F5EEF8', dark: '#6C3483' },
+                        cokelat: { general: '#6D4C41', light: '#EFEBE9', dark: '#4E342E' },
+                        krem: { general: '#FFF8EE', dark: '#F5E6CC' },
+                    },
+                    fontFamily: {
+                        nunito: ['Nunito', 'sans-serif'],
+                        fredoka: ['Fredoka One', 'cursive'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="sasirangan-bg">
+
+    <div id="dash-guru" class="page flex">
+
+        {% include 'dashboard/teacher/partials/sidebar.html' %}
+
+        <main class="flex-1 overflow-auto">
+            <div class="bg-white shadow-sm px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+                <div>
+                    <div class="font-fredoka text-xl text-cokelat-general">Data Siswa</div>
+                    <div class="text-xs text-gray-400">Daftar siswa di kelas yang Anda ampu</div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="text-sm font-700 text-cokelat-general">{{ current_user.full_name }}</div>
+                </div>
+            </div>
+
+            <div class="p-6">
+                <div class="max-w-7xl mx-auto">
+
+                    {% if students_data %}
+                    {% for kelas in students_data %}
+                    <div class="mb-8">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-2xl">🏫</span>
+                            <div>
+                                <h3 class="font-fredoka text-lg text-cokelat-general">{{ kelas.class_name }}</h3>
+                                <p class="text-xs text-gray-400">{{ kelas.school }} · {{ kelas.students|length }} siswa</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl shadow overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead class="bg-gray-50 border-b border-gray-200">
+                                        <tr>
+                                            <th class="text-left px-4 py-3 font-700 text-cokelat-general text-xs">No</th>
+                                            <th class="text-left px-4 py-3 font-700 text-cokelat-general text-xs">Nama</th>
+                                            <th class="text-center px-4 py-3 font-700 text-cokelat-general text-xs">L/P</th>
+                                            <th class="text-center px-4 py-3 font-700 text-cokelat-general text-xs">Pretest</th>
+                                            <th class="text-center px-4 py-3 font-700 text-cokelat-general text-xs">Kuis</th>
+                                            <th class="text-center px-4 py-3 font-700 text-cokelat-general text-xs">Materi</th>
+                                            <th class="text-center px-4 py-3 font-700 text-cokelat-general text-xs">Total Nilai</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                        {% for s in kelas.students %}
+                                        <tr class="hover:bg-gray-50 transition">
+                                            <td class="px-4 py-3 text-gray-500 text-xs">{{ loop.index }}</td>
+                                            <td class="px-4 py-3">
+                                                <div class="font-700 text-cokelat-general">{{ s.full_name }}</div>
+                                            </td>
+                                            <td class="px-4 py-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold {% if s.gender == 'L' %}bg-biru-light text-biru-general{% else %}bg-ungu-light text-ungu-general{% endif %}">
+                                                    {{ s.gender }}
+                                                </span>
+                                            </td>
+                                            <td class="px-4 py-3 text-center">
+                                                {% if s.pretest_done %}
+                                                <span class="text-hijau-general font-bold text-xs">✓</span>
+                                                {% else %}
+                                                <span class="text-gray-300 text-xs">—</span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="px-4 py-3 text-center">
+                                                {% if s.quiz_score is not none %}
+                                                <span class="font-fredoka text-sm {% if s.quiz_score >= 80 %}text-hijau-general{% elif s.quiz_score >= 60 %}text-kuning-general{% else %}text-merah-general{% endif %}">{{ s.quiz_score }}</span>
+                                                {% else %}
+                                                <span class="text-gray-300 text-xs">—</span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="px-4 py-3 text-center">
+                                                <span class="font-bold text-sm">{{ s.materi_selesai }}/{{ s.total_bab }}</span>
+                                            </td>
+                                            <td class="px-4 py-3 text-center">
+                                                <span class="font-fredoka text-sm text-kuning-general">⭐ {{ s.total_score }}</span>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="p-12 text-center bg-white rounded-2xl border border-dashed border-gray-300">
+                        <div class="text-4xl mb-3">👧</div>
+                        <div class="font-fredoka text-lg text-gray-500 mb-1">Belum ada data siswa</div>
+                        <div class="text-sm text-gray-400">Anda belum memiliki kelas dengan siswa.</div>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>

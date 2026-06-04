@@ -39,6 +39,9 @@ class User(db.Model, UserMixin):
     # 2. Hubungan Siswa ke Hasil Pretest (One-to-One)
     pretest_result = db.relationship('PretestResult', backref='user', uselist=False, cascade='all, delete-orphan')
 
+    # 3. Hubungan Siswa ke Progres Belajar (One-to-Many)
+    learning_progress = db.relationship('LearningProgress', backref='user', lazy=True, cascade='all, delete-orphan')
+
     def __repr__(self):
         role = "Siswa" if self.level == 0 else "Guru" if self.level == 1 else "Admin"
         return f'<User {self.username} ({role})>'

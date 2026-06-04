@@ -75,7 +75,7 @@ def update_student_profile(user_id):
             flash("Password baru minimal harus 6 karakter!", "danger")
             return False
 
-        user.password_hash = generate_password_hash(password)
+        user.set_password(password)
         has_changes = True
 
     # =======================================================

@@ -15,17 +15,17 @@
                 <span>✨</span> AI Analisis
             </a>
 
-            <a href=""
+            <a href="/teacher/classes/{{ user_id }}"
                 class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition {{ 'active' if '/teacher/classes' in request.path else 'hover:bg-white/10' }}">
                 <span>🏫</span> Kelas Saya
             </a>
 
-            <a href=""
+            <a href="/teacher/students/{{ user_id }}"
                 class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition {{ 'active' if '/teacher/students' in request.path else 'hover:bg-white/10' }}">
                 <span>👧</span> Data Siswa
             </a>
 
-            <a href=""
+            <a href="/teacher/grades/{{ user_id }}"
                 class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition {{ 'active' if '/teacher/grades' in request.path else 'hover:bg-white/10' }}">
                 <span>📋</span> Rekap Nilai
             </a>
