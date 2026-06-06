@@ -35,6 +35,8 @@
     <style>
         .sticky-col { position: sticky; left: 0; background: inherit; z-index: 1; }
         .sticky-col-head { position: sticky; left: 0; z-index: 2; }
+        .card-hover { transition: all 0.25s; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
     </style>
 </head>
 
@@ -46,9 +48,16 @@
 
         <main class="flex-1 overflow-auto">
             <div class="bg-white shadow-sm px-6 py-4 flex items-center justify-between sticky top-0 z-30">
-                <div>
-                    <div class="font-fredoka text-xl text-cokelat-general">Rekap Nilai</div>
-                    <div class="text-xs text-gray-400">Detail nilai siswa per kelas</div>
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="lg:hidden text-cokelat-general p-1 -ml-1" aria-label="Menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <div class="font-fredoka text-xl text-cokelat-general" id="nilai-top-title">Rekap Nilai</div>
+                        <div class="text-xs text-gray-400" id="nilai-top-sub">Pilih kelas untuk melihat rekap nilai</div>
+                    </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <div class="text-sm font-700 text-cokelat-general">{{ current_user.full_name }}</div>
@@ -59,68 +68,113 @@
                 <div class="max-w-7xl mx-auto">
 
                     {% if recap %}
-                    {% for r in recap %}
-                    <div class="mb-8">
-                        <div class="flex items-center gap-3 mb-4">
-                            <span class="text-2xl">🏫</span>
+
+                    <!-- CLASS CARDS GRID -->
+                    <div id="nilai-cards">
+                        <div class="flex items-center justify-between px-4 py-3 mb-6 bg-white rounded-xl">
                             <div>
-                                <h3 class="font-fredoka text-lg text-cokelat-general">{{ r.class_name }}</h3>
-                                <p class="text-xs text-gray-400">{{ r.school }} · {{ r.students|length }} siswa</p>
+                                <h2 class="font-fredoka text-2xl text-cokelat-general">📋 Rekap Nilai</h2>
+                                <p class="text-xs text-gray-400 mt-0.5">Pilih kelas untuk melihat detail nilai</p>
                             </div>
                         </div>
 
-                        <div class="bg-white rounded-2xl shadow overflow-hidden">
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-sm">
-                                    <thead class="bg-gray-50 border-b border-gray-200">
-                                        <tr>
-                                            <th class="text-left px-3 py-3 font-700 text-cokelat-general text-xs sticky-col-head bg-gray-50">Nama</th>
-                                            <th class="text-center px-2 py-3 font-700 text-cokelat-general text-xs">Pretest</th>
-                                            {% for label in material_labels %}
-                                            <th class="text-center px-2 py-3 font-700 text-cokelat-general text-xs">{{ label }}</th>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                            {% for r in recap %}
+                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm card-hover">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div>
+                                        <div class="font-fredoka text-xl font-bold text-cokelat-general">{{ r.class_name }}</div>
+                                        <div class="text-sm text-gray-500 mt-1 flex items-center gap-1">
+                                            <span>🏫</span> {{ r.school }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-gray-400 mb-4">
+                                    <span>👤</span> {{ r.students|length }} siswa
+                                </div>
+                                <button onclick="showNilaiKelas({{ r.class_id }})"
+                                    class="w-full flex items-center justify-center gap-2 bg-ungu-light text-ungu-general hover:bg-purple-100 font-medium py-2.5 px-4 rounded-xl transition-colors duration-200 text-sm">
+                                    <span>📊</span> Lihat Nilai
+                                </button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- PER-CLASS DETAIL TABLES (hidden by default) -->
+                    {% for r in recap %}
+                    <div id="nilai-detail-{{ r.class_id }}" class="hidden">
+                        <div class="mb-6">
+                            <button onclick="backToNilaiCards()"
+                                class="flex items-center gap-2 text-cokelat-general hover:text-ungu-general font-700 text-sm mb-4 transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                                </svg>
+                                Kembali ke Daftar Kelas
+                            </button>
+
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="text-2xl">🏫</span>
+                                <div>
+                                    <h3 class="font-fredoka text-lg text-cokelat-general">{{ r.class_name }}</h3>
+                                    <p class="text-xs text-gray-400">{{ r.school }} · {{ r.students|length }} siswa</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-2xl shadow overflow-hidden">
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead class="bg-gray-50 border-b border-gray-200">
+                                            <tr>
+                                                <th class="text-left px-3 py-3 font-700 text-cokelat-general text-xs sticky-col-head bg-gray-50">Nama</th>
+                                                <th class="text-center px-2 py-3 font-700 text-cokelat-general text-xs">Pretest</th>
+                                                {% for label in material_labels %}
+                                                <th class="text-center px-2 py-3 font-700 text-cokelat-general text-xs">{{ label }}</th>
+                                                {% endfor %}
+                                                <th class="text-center px-3 py-3 font-700 text-cokelat-general text-xs">Total</th>
+                                                <th class="text-center px-3 py-3 font-700 text-cokelat-general text-xs">Rata²</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-100">
+                                            {% for s in r.students %}
+                                            <tr class="hover:bg-gray-50 transition">
+                                                <td class="px-3 py-3 sticky-col bg-white">
+                                                    <div class="font-700 text-cokelat-general text-xs">{{ s.full_name }}</div>
+                                                </td>
+                                                <td class="px-2 py-3 text-center">
+                                                    {% if s.pretest_done %}
+                                                    <span class="text-hijau-general font-bold text-xs">✓</span>
+                                                    {% else %}
+                                                    <span class="text-gray-300 text-xs">—</span>
+                                                    {% endif %}
+                                                </td>
+                                                {% for i in range(material_labels|length) %}
+                                                <td class="px-2 py-3 text-center">
+                                                    {% set mk = material_keys[i] %}
+                                                    {% set val = s.scores[mk] %}
+                                                    {% if val is not none %}
+                                                    <span class="font-fredoka text-xs {% if val >= 80 %}text-hijau-general{% elif val >= 60 %}text-kuning-general{% else %}text-merah-general{% endif %}">{{ val }}</span>
+                                                    {% else %}
+                                                    <span class="text-gray-300 text-xs">—</span>
+                                                    {% endif %}
+                                                </td>
+                                                {% endfor %}
+                                                <td class="px-3 py-3 text-center">
+                                                    <span class="font-fredoka text-sm font-bold text-kuning-general">{{ s.total }}</span>
+                                                </td>
+                                                <td class="px-3 py-3 text-center">
+                                                    <span class="font-fredoka text-sm font-bold {% if s.avg >= 80 %}text-hijau-general{% elif s.avg >= 60 %}text-kuning-general{% else %}text-merah-general{% endif %}">{{ s.avg }}</span>
+                                                </td>
+                                            </tr>
                                             {% endfor %}
-                                            <th class="text-center px-3 py-3 font-700 text-cokelat-general text-xs">Total</th>
-                                            <th class="text-center px-3 py-3 font-700 text-cokelat-general text-xs">Rata²</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-100">
-                                        {% for s in r.students %}
-                                        <tr class="hover:bg-gray-50 transition">
-                                            <td class="px-3 py-3 sticky-col bg-white">
-                                                <div class="font-700 text-cokelat-general text-xs">{{ s.full_name }}</div>
-                                            </td>
-                                            <td class="px-2 py-3 text-center">
-                                                {% if s.pretest_done %}
-                                                <span class="text-hijau-general font-bold text-xs">✓</span>
-                                                {% else %}
-                                                <span class="text-gray-300 text-xs">—</span>
-                                                {% endif %}
-                                            </td>
-                                            {% for i in range(material_labels|length) %}
-                                            <td class="px-2 py-3 text-center">
-                                                {% set mk = material_keys[i] %}
-                                                {% set val = s.scores[mk] %}
-                                                {% if val is not none %}
-                                                <span class="font-fredoka text-xs {% if val >= 80 %}text-hijau-general{% elif val >= 60 %}text-kuning-general{% else %}text-merah-general{% endif %}">{{ val }}</span>
-                                                {% else %}
-                                                <span class="text-gray-300 text-xs">—</span>
-                                                {% endif %}
-                                            </td>
-                                            {% endfor %}
-                                            <td class="px-3 py-3 text-center">
-                                                <span class="font-fredoka text-sm font-bold text-kuning-general">{{ s.total }}</span>
-                                            </td>
-                                            <td class="px-3 py-3 text-center">
-                                                <span class="font-fredoka text-sm font-bold {% if s.avg >= 80 %}text-hijau-general{% elif s.avg >= 60 %}text-kuning-general{% else %}text-merah-general{% endif %}">{{ s.avg }}</span>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
+
                     {% else %}
                     <div class="p-12 text-center bg-white rounded-2xl border border-dashed border-gray-300">
                         <div class="text-4xl mb-3">📋</div>
@@ -134,6 +188,23 @@
         </main>
     </div>
 
+<script>
+    function showNilaiKelas(classId) {
+        document.getElementById('nilai-cards').classList.add('hidden');
+        document.getElementById('nilai-detail-' + classId).classList.remove('hidden');
+        document.getElementById('nilai-top-title').textContent = 'Rekap Nilai';
+        document.getElementById('nilai-top-sub').textContent = 'Detail nilai per kelas';
+    }
+    function backToNilaiCards() {
+        document.getElementById('nilai-cards').classList.remove('hidden');
+        document.querySelectorAll('[id^="nilai-detail-"]').forEach(function(el) {
+            el.classList.add('hidden');
+        });
+        document.getElementById('nilai-top-title').textContent = 'Rekap Nilai';
+        document.getElementById('nilai-top-sub').textContent = 'Pilih kelas untuk melihat rekap nilai';
+    }
+</script>
+{% include 'dashboard/partials/mobile_toggle.html' %}
 </body>
 
 </html>
