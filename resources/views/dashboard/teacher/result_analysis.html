@@ -69,9 +69,16 @@
 
         <main class="flex-1 overflow-auto">
             <div class="bg-white shadow-sm px-6 py-4 flex items-center justify-between sticky top-0 z-30">
-                <div>
-                    <div class="font-fredoka text-xl text-cokelat-general" id="guru-page-title">Dashboard Guru</div>
-                    <div class="text-xs text-gray-400">Selamat datang, {{ current_user.full_name }}!</div>
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="lg:hidden text-cokelat-general p-1 -ml-1" aria-label="Menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <div class="font-fredoka text-xl text-cokelat-general" id="guru-page-title">Dashboard Guru</div>
+                        <div class="text-xs text-gray-400">Selamat datang, {{ current_user.full_name }}!</div>
+                    </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <div class="text-sm font-700 text-cokelat-general">{{ current_user.full_name }}</div>
@@ -188,6 +195,7 @@
 
     <script src="/resources/js/flash_message.js"></script>
 
+{% include 'dashboard/partials/mobile_toggle.html' %}
 </body>
 
 </html>

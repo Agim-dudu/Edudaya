@@ -74,11 +74,18 @@
         <main class="flex-1 overflow-auto">
             <div class="sasirangan-header px-6 py-4 relative">
                 <div class="relative z-10 flex items-center justify-between">
-                    <div>
-                        <!-- 🔥 FIX: Variabel konsisten -->
-                        <div class="font-fredoka text-2xl text-white" id="siswa-page-title">Halo,
-                            {{ current_user.full_name }}! 👋</div>
-                        <div class="text-white/70 text-sm">Semangat belajar hari ini!</div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="toggleSidebar()" class="lg:hidden text-white p-1 -ml-1" aria-label="Menu">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                            </svg>
+                        </button>
+                        <div>
+                            <!-- 🔥 FIX: Variabel konsisten -->
+                            <div class="font-fredoka text-2xl text-white" id="siswa-page-title">Halo,
+                                {{ current_user.full_name }}! 👋</div>
+                            <div class="text-white/70 text-sm">Semangat belajar hari ini!</div>
+                        </div>
                     </div>
                     <div class="flex items-center gap-3">
                         <div class="bg-white/20 rounded-xl px-3 py-1.5 text-white text-sm font-700">⭐
@@ -307,6 +314,7 @@
     </div>
 
     <script src="/resources/js/flash_message.js"></script>
+{% include 'dashboard/partials/mobile_toggle.html' %}
 </body>
 
 </html>

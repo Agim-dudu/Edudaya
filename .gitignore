@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 .env
 AGENTS.md
+passenger_wsgi.py

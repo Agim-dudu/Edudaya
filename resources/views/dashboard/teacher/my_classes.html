@@ -42,9 +42,16 @@
 
         <main class="flex-1 overflow-auto">
             <div class="bg-white shadow-sm px-6 py-4 flex items-center justify-between sticky top-0 z-30">
-                <div>
-                    <div class="font-fredoka text-xl text-cokelat-general">Kelas Saya</div>
-                    <div class="text-xs text-gray-400">Daftar kelas yang Anda ampu</div>
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="lg:hidden text-cokelat-general p-1 -ml-1" aria-label="Menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <div class="font-fredoka text-xl text-cokelat-general">Kelas Saya</div>
+                        <div class="text-xs text-gray-400">Daftar kelas yang Anda ampu</div>
+                    </div>
                 </div>
                 <div class="flex items-center gap-3">
                     <button onclick="openCreateModal()"
@@ -248,7 +255,7 @@
             });
         });
     </script>
-
+{% include 'dashboard/partials/mobile_toggle.html' %}
 </body>
 
 </html>
