@@ -135,7 +135,7 @@
         style="top:78%;left:85%;animation-delay:0.8s">🏆</div>
 
     <!-- ===== SIDEBAR ===== -->
-    {% include 'learning/partial/sidebar.html' %}
+    {% include 'learning/partial/sidebar.html' %}1
 
     <!-- ===== MAIN AREA ===== -->
     <div id="mainArea" class="ml-[280px] flex-1 flex flex-col min-h-screen transition-all duration-300">
@@ -172,112 +172,62 @@
                     {% endif %}
                     {% endwith %}
 
-                    <!-- ===== Intruction CARD ===== -->
+                    <!-- ===== Rangkuman CARD (Penjumlahan Anak SD) ===== -->
                     <div
                         class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-emerald-100 flex flex-col">
                         <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-5 text-center">
                             <h2 class="font-fredoka text-2xl text-white" style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">
-                                Kuis Materi Penjumlahan</h2>
+                                Rangkuman Belajar</h2>
                         </div>
 
-                        <div class="px-5 py-3 bg-white">
-                            <ul class="text-gray-800 text-justify list-decimal pl-5 space-y-3">
-                                <li>
-                                    <p>Kuis ini bertujuan untuk menguji pengetahuan Anda tentang materi yang telah
-                                        dipelajari sebelumnya. Ada 10 pertanyaan yang harus dikerjakan dalam kuis ini.
-                                        Beberapa
-                                        ketentuannya sebagai
-                                        berikut:</p>
+                        <div class="px-8 py-6 bg-white shadow-md text-gray-800">
+                            <ul class="space-y-4 text-base leading-relaxed">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-emerald-600 font-semibold">•</span>
+                                    <span><strong>Penjumlahan</strong> artinya kita <strong>menggabungkan</strong> dua
+                                        kelompok benda atau angka menjadi satu, supaya tahu semuanya ada berapa.</span>
                                 </li>
-                                <li>
-                                    <strong>Syarat nilai kelulusan: {{user_kkm}}</strong>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-emerald-600 font-semibold">•</span>
+                                    <span>Tanda <strong>Tambah (+)</strong> dipakai untuk menjumlahkan, sedangkan tanda
+                                        <strong>Sama Dengan (=)</strong> dipakai sebelum menuliskan hasilnya.</span>
                                 </li>
-                                <li>
-                                    <strong>Durasi ujian: 15 menit</strong>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-emerald-600 font-semibold">•</span>
+                                    <span><strong>Contoh gampangnya:</strong>
+                                        <ul class="list-disc list-inside ml-5 mt-2 space-y-1">
+                                            <li>Jika kamu punya <strong>3 permen</strong>, lalu diberi lagi <strong>2
+                                                    permen</strong>...</li>
+                                            <li>...maka bentuk penjumlahannya adalah: <strong>3 + 2 = 5</strong>.</li>
+                                            <li>Sekarang, total seluruh permenmu ada <strong>5 buah</strong>!</li>
+                                        </ul>
+                                    </span>
                                 </li>
-                                <li>
-                                    <p>Apabila tidak memenuhi syarat kelulusan, Anda harus menunggu selama 5 menit
-                                        untuk mengulang pengerjaan kuis kembali. Manfaatkan waktu tunggu tersebut untuk
-                                        mempelajari kembali materi sebelumnya.</p>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-emerald-600 font-semibold">•</span>
+                                    <span><strong>Angkanya boleh dibolak-balik!</strong> Hasilnya akan tetap sama kok.
+                                        Contohnya: <strong>3 + 2</strong> itu hasilnya 5, dan jika dibalik menjadi
+                                        <strong>2 + 3</strong> hasilnya juga tetap 5.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-emerald-600 font-semibold">•</span>
+                                    <span>Ingat ya, setiap kali kita melakukan penjumlahan, hasilnya pasti akan menjadi
+                                        <strong>lebih banyak</strong> atau bertambah besar!</span>
                                 </li>
                             </ul>
-                            <!-- Tombol Mulai -->
-                            <div class="py-5">
-                                <a href="/quiz/bab1/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                                    class="px-4 py-2 bg-blue-500 text-white rounded-sm hover:bg-blue-600 text-base rounded-lg">Mulai
-                                    Kuis</a>
-                            </div>
                         </div>
                     </div>
-
-                    <!-- ===== Riwayat CARD ===== -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-blue-100 flex flex-col">
-                        <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-5 py-5 text-center">
-                            <h2 class="font-fredoka text-2xl text-white" style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">
-                                Riwayat</h2>
-                        </div>
-
-                        <div class="bg-white">
-                            <!-- Tabel Riwayat -->
-                            <table class="w-full table-auto border-collapse">
-                                <thead>
-                                    <tr class="bg-gray-200">
-                                        <th class="px-4 py-2 text-center text-sm font-semibold text-gray-800">Tanggal
-                                        </th>
-                                        <th class="px-4 py-2 text-center text-sm font-semibold text-gray-800">Jumlah
-                                            Benar</th>
-                                        <th class="px-4 py-2 text-center text-sm font-semibold text-gray-800">Jumlah
-                                            Salah</th>
-                                        <th class="px-4 py-2 text-center text-sm font-semibold text-gray-800">Nilai</th>
-                                        <th class="px-4 py-2 text-center text-sm font-semibold text-gray-800">Status
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% if quiz_history %}
-                                    {% for item in quiz_history %}
-                                    <tr class="border-b">
-                                        <td class="px-4 py-2 text-center text-sm text-gray-700">{{ item.created_at }}
-                                        </td>
-                                        <td class="px-4 py-2 text-center text-sm text-gray-700">{{ item.correct }}</td>
-                                        <td class="px-4 py-2 text-center text-sm text-gray-700">{{ item.incorrect }}
-                                        </td>
-                                        <td class="px-4 py-2 text-center text-sm text-gray-700">{{ item.value }}</td>
-                                        <td class="px-4 py-2 text-center text-sm">
-                                            <span class="inline-block px-3 py-1 rounded-md font-semibold text-white 
-                                            {% if item.value >= user_kkm %}
-                                                bg-green-500 hover:bg-green-600
-                                            {% else %}
-                                                bg-red-500 hover:bg-red-600
-                                            {% endif %}">
-                                                {% if item.value >= user_kkm %}Lulus{% else %}Gagal{% endif %}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                    {% else %}
-                                    <tr>
-                                        <td colspan="4" class="px-4 py-2 text-sm text-center text-gray-500">
-                                            Belum ada riwayat kuis. Silakan mulai kuis terlebih dahulu.
-                                        </td>
-                                    </tr>
-                                    {% endif %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
                 </div>
                 <!-- end grid -->
 
                 <!-- FOOTER NAV -->
                 <div class="flex justify-between items-center flex-wrap gap-3 pb-4">
-                    <a href="/learning/bab1/summary/{{ current_user.id }}/{{ current_user.klasifikasi }}"
+                    <a href="/learning/bab2/chapter2/{{ current_user.id }}/{{ current_user.klasifikasi }}"
                         class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">
                         Halaman Sebelumnya
                     </a>
                     <p class="text-gray-400 text-xs font-semibold">© 2026 Edudaya 🌟</p>
-                    <a href="/learning/bab2/chapter1/{{ current_user.id }}/{{ current_user.klasifikasi }}"
+                    <a href="/learning/bab2/quiz/{{ current_user.id }}/{{ current_user.klasifikasi }}"
                         class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">
                         Halaman Selanjutnya
                     </a>

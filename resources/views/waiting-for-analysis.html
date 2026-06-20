@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Belum Bisa Belajar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+    body { font-family: 'Nunito', sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-yellow-100 via-orange-50 to-pink-100 flex items-center justify-center p-6">
+
+  <div class="bg-white rounded-3xl shadow-xl p-8 text-center">
+
+    <div class="text-7xl mb-4">😔</div>
+
+    <h1 class="text-2xl font-extrabold text-orange-500 mb-2">
+      Ups! Belum Bisa Belajar Dulu
+    </h1>
+
+    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+      Bapak/Ibu Guru kamu sedang memeriksa hasil <span class="font-bold text-orange-400">pretest</span> yang kamu kerjakan tadi.<br/>
+      Sabar ya, tunggu sebentar sampai guru selesai! 🙏
+    </p>
+
+    <div class="bg-orange-50 border-2 border-orange-200 rounded-2xl p-5 text-left mb-6">
+      <p class="text-orange-700 font-bold text-sm mb-3">📋 Kenapa belum bisa mulai?</p>
+      <ul class="space-y-2 text-sm text-orange-600">
+        <li class="flex items-center gap-2">
+          <span class="text-lg">1️⃣</span>
+          Guru sedang menganalisis hasil pretest kamu
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="text-lg">2️⃣</span>
+          Materi belajar akan disesuaikan denganmu
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="text-lg">3️⃣</span>
+          Setelah selesai, kamu langsung bisa belajar!
+        </li>
+      </ul>
+    </div>
+
+    <div class="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-4 mb-8">
+      <p class="text-yellow-700 font-bold text-sm">💬 Apa yang harus kamu lakukan?</p>
+      <p class="text-yellow-600 text-sm mt-1">
+        Temui Bapak/Ibu Guru kamu dan bilang:<br/>
+        <span class="font-extrabold text-yellow-700">"Bu/Pak, saya sudah siap belajar!"</span>
+      </p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-3">
+      <a href="/" onclick="history.back(); return false;"
+        class="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-2xl border-2 border-gray-200 text-gray-500 text-sm font-bold hover:bg-gray-50 transition-colors">
+        ← Kembali
+      </a>
+      <a href="/dashboard/student/{{ current_user.id }}"
+        class="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-orange-400 text-white text-sm font-bold hover:bg-orange-500 transition-colors">
+        🏠 Ke Dashboard
+      </a>
+    </div>
+
+  </div>
+
+</body>
+</html>

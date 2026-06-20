@@ -85,15 +85,16 @@
                 <div>
                     <div class="flex items-center justify-between px-4 py-3 mb-6 bg-white rounded-xl">
                         <div>
-                            <h2 class="font-fredoka text-2xl text-cokelat-general">🤖 Hasil Analisis AI Kelas</h2>
+                            <h2 class="font-fredoka text-2xl text-cokelat-general">🤖 Hasil Final Analisis AI Kelas
+                            </h2>
                         </div>
                         <form
-                            action="{{ url_for('dashboard_teacher_batch_analyze', teacher_id=user_id, class_id=class_id) }}"
+                            action="{{ url_for('dashboard_teacher_batch_analyze_final', teacher_id=user_id, class_id=class_id) }}"
                             method="post">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <button
                                 class="w-full bg-blue-500 hover:bg-biru-dark text-white font-800 py-2 px-3 rounded-xl text-sm shadow-md">
-                                🔍 Mulai Analisis Pretest
+                                🔍 Mulai Analisis Final
                             </button>
                         </form>
                     </div>
@@ -110,25 +111,22 @@
                                         <th class="px-4 py-3 text-left w-12">No</th>
                                         <th class="px-4 py-3 text-left">Nama</th>
                                         <th class="px-4 py-3 text-left">Status Pretest</th>
-                                        <th class="px-4 py-3 text-left">Score</th>
-                                        <th class="px-4 py-3 text-left">Waktu Pengerjaan</th>
+                                        <th class="px-4 py-3 text-left">Status Evaluation</th>
+                                        <th class="px-4 py-3 text-left">Status Final</th>
                                         <!-- Tambah Header Kolom Aksi AI -->
                                         <th class="px-4 py-3 text-center w-28">Analisis AI</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
-                                    {% if pretest_analysis %}
-                                    {% for student in pretest_analysis %}
+                                    {% if final_analysis %}
+                                    {% for student in final_analysis %}
                                     <tr class="hover:bg-gray-50">
-                                        <!-- 1. Nomor urut -->
                                         <td class="px-4 py-3 text-gray-500">{{ loop.index }}</td>
 
-                                        <!-- 2. Nama Lengkap -->
-                                        <td class="px-4 py-3 font-700 text-gray-900">{{ student.full_name }}</td>
+                                        <td class="px-4 py-3 font-bold text-gray-900">{{ student.full_name }}</td>
 
-                                        <!-- 3. Status Pretest -->
                                         <td class="px-4 py-3">
-                                            {% if student.has_done %}
+                                            {% if student.pretest_done %}
                                             <span
                                                 class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Selesai</span>
                                             {% else %}
@@ -138,33 +136,38 @@
                                             {% endif %}
                                         </td>
 
-                                        <!-- 4. Score -->
-                                        <td class="px-4 py-3 font-semibold text-gray-700">
-                                            {% if student.score is not none %}
-                                            {{ student.score }}
+                                        <td class="px-4 py-3">
+                                            {% if student.evaluation_done %}
+                                            <span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Selesai</span>
                                             {% else %}
-                                            <span class="text-gray-400 font-normal">-</span>
+                                            <span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Belum
+                                                Mengerjakan</span>
                                             {% endif %}
                                         </td>
 
-                                        <!-- 5. Waktu Pengerjaan -->
-                                        <td class="px-4 py-3 text-gray-600">
-                                            {{ student.time_taken if student.time_taken != '-' else 'Belum Aktif' }}
+                                        <td class="px-4 py-3">
+                                            {% if student.final_analysis_done %}
+                                            <span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Selesai</span>
+                                            {% else %}
+                                            <span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Belum
+                                                Dianalisis</span>
+                                            {% endif %}
                                         </td>
 
-                                        <!-- 6. Kolom Detail Analisis AI -->
                                         <td class="px-4 py-3 text-center">
-                                            {% if student.has_done %}
-                                            <!-- Tombol aktif jika siswa sudah mengerjakan -->
-                                            <a href="/teacher/result/analysis/{{ user_id }}/student/{{student.user_id}}"
+                                            {% if student.final_analysis_done %}
+                                            <a href="/teacher/result/final/analysis/{{ user_id }}/student/{{ student.user_id }}"
                                                 class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 Detail AI
                                             </a>
                                             {% else %}
-                                            <!-- Tombol disabled/disabled style jika siswa belum mengerjakan -->
                                             <button disabled
                                                 class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-400 bg-gray-100 rounded-lg cursor-not-allowed">
-                                                Kunci
+                                                Terkunci
                                             </button>
                                             {% endif %}
                                         </td>
@@ -172,7 +175,6 @@
                                     {% endfor %}
                                     {% else %}
                                     <tr>
-                                        <!-- Jangan lupa colspan diubah menjadi 6 karena jumlah kolom bertambah -->
                                         <td colspan="6" class="px-4 py-4 text-center text-gray-400">
                                             Belum ada data siswa. Pilih atau buat kelas terlebih dahulu.
                                         </td>

@@ -2,6 +2,7 @@ from app import app
 from app.controller import *
 from app.decorator.utils import level_required
 from flask_login import current_user, login_required
+from app.model import Classes
 from app.controller.PretestController import QUESTIONS_PRETEST
 from flask import Flask, render_template, request, redirect, url_for
 
@@ -12,38 +13,8 @@ def index():
     amount_classes=get_amount_classes()
     amount_teacher=get_amount_teacher()
     amount_student=get_amount_student()
-
-    from app.controller.LearningController import MATERIAL_CATALOG
-    from app.model import User, LearningProgress
-    from app import db
     
-    total_materi = len(MATERIAL_CATALOG)
-    
-    top_students = db.session.query(
-        User.full_name, User.class_id,
-        db.func.coalesce(db.func.sum(LearningProgress.score), 0).label('total_score')
-    ).outerjoin(LearningProgress, LearningProgress.user_id == User.id
-    ).filter(User.level == 0
-    ).group_by(User.id
-    ).order_by(db.func.sum(LearningProgress.score).desc()
-    ).limit(5).all()
-    
-    leaderboard = []
-    for rank, row in enumerate(top_students, 1):
-        kelas_name = ''
-        if row.class_id:
-            from app.model import Classes
-            k = Classes.query.get(row.class_id)
-            if k:
-                kelas_name = k.name
-        leaderboard.append({
-            'rank': rank,
-            'name': row.full_name,
-            'kelas': kelas_name,
-            'score': int(row.total_score),
-        })
-    
-    return render_template("index.html", ac=amount_classes, at=amount_teacher, ast=amount_student, total_materi=total_materi, leaderboard=leaderboard)
+    return render_template("index.html", ac=amount_classes, at=amount_teacher, ast=amount_student)
 
 @app.route("/login", methods=["GET"])
 def login_page():
@@ -148,51 +119,252 @@ def finish_pretest(user_id):
 
 # End Pretest Handle ===============================================================================
 
+@app.route("/waiting/pretest/<int:user_id>", methods=["GET"])
+@login_required
+def waiting_pretest(user_id):
+    return render_template(f"waiting-for-analysis.html", user_id=user_id)
+
+# Evaluation Handle ==================================================================================
+
+@app.route("/learning/evaluation/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_evaluation(user_id, klasifikasi):
+    return can_access_learning_evaluation(user_id, klasifikasi)
+
+@app.route("/evaluation/start/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def evaluation_start(user_id, klasifikasi):
+    return can_access_learning_evaluation_start(user_id, klasifikasi)
+
+@app.route("/evaluation/submit/<int:user_id>", methods=["POST"])
+@login_required
+def submit_evaluation(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html")
+
+    data = request.get_json()
+    print(data)
+
+    return save_evaluation(data, user_id)
+
+# Evaluation Handle ==================================================================================
 
 # Routing Learning Bab 1 ====================================================================================
 
-@app.route("/learning/medium/1/1/<int:user_id>", methods=["GET"])
+@app.route("/learning/bab1/chapter1/<int:user_id>/<int:klasifikasi>", methods=["GET"])
 @login_required
-def learning_medium_chapter1_1(user_id):
-    if user_id != current_user.id:
-        return render_template("403.html")
+def learning_bab1_chapter1(user_id, klasifikasi):
+    return can_access_bab1_chapter1(user_id, klasifikasi)
 
-    return render_template("learning/medium/bab1/01.html", user_id=user_id)
-
-@app.route("/learning/medium/1/2/<int:user_id>", methods=["GET"])
+@app.route('/api/learning/bab1/chapter1/<int:user_id>', methods=['POST'])
 @login_required
-def learning_medium_chapter1_2(user_id):
-    if user_id != current_user.id:
-        return render_template("403.html")
+def submit_activity_learning_bab1_chapter1(user_id):
+    return bab1_chapter1_activity(user_id)
 
-    return render_template("learning/medium/bab1/02.html", user_id=user_id)
-
-@app.route("/learning/medium/1/3/<int:user_id>", methods=["GET"])
+@app.route("/learning/bab1/chapter2/<int:user_id>/<int:klasifikasi>", methods=["GET"])
 @login_required
-def learning_medium_chapter1_3(user_id):
-    if user_id != current_user.id:
-        return render_template("403.html")
+def learning_bab1_chapter2(user_id, klasifikasi):
+    return can_access_bab1_chapter2(user_id, klasifikasi)
 
-    return render_template("learning/medium/bab1/03.html", user_id=user_id)
-
-@app.route("/learning/medium/1/4/<int:user_id>", methods=["GET"])
+@app.route('/api/learning/bab1/chapter2/<int:user_id>', methods=['POST'])
 @login_required
-def learning_medium_chapter1_4(user_id):
-    if user_id != current_user.id:
-        return render_template("403.html")
+def submit_activity_learning_bab1_chapter2(user_id):
+    return bab1_chapter2_activity(user_id)
 
-    return render_template("learning/medium/bab1/04.html", user_id=user_id)
-
-@app.route("/learning/medium/1/quiz/<int:user_id>", methods=["GET"])
+@app.route("/learning/bab1/summary/<int:user_id>/<int:klasifikasi>", methods=["GET"])
 @login_required
-def learning_medium_chapter1_quiz(user_id):
+def learning_bab1_summary(user_id, klasifikasi):
+    return can_access_bab1_summary(user_id, klasifikasi)
+
+@app.route("/learning/bab1/quiz/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bab1_quiz(user_id, klasifikasi):
+    return can_access_bab1_quiz(user_id, klasifikasi)
+
+@app.route("/quiz/bab1/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def quiz_start_bab1(user_id, klasifikasi):
+    return can_access_bab1_quiz_start(user_id, klasifikasi)
+
+@app.route('/api/bab1/quiz/<int:user_id>', methods=['POST'])
+def api_bab1_quiz_submit(user_id):
     if user_id != current_user.id:
-        return render_template("403.html")
+        return jsonify({'error': 'Unauthorized'}), 403
 
-    return render_template("learning/medium/bab1/quiz.html", user_id=user_id)
+    data = request.get_json()
 
+    # Jawaban dikirim dari frontend sebagai { 1: "soal1-c", 2: "soal2-b", ... }
+    # Key bisa berupa int (JSON number) atau string — normalkan ke string semua
+    jawaban_user_raw = data.get('jawaban', {})
+    jawaban_user = {str(k): v for k, v in jawaban_user_raw.items()}
+
+    kunci = {
+        "1":  "soal1-c",
+        "2":  "soal2-b",
+        "3":  "soal3-c",
+        "4":  "soal4-b",
+        "5":  "soal5-a",
+        "6":  "soal6-b",
+        "7":  "soal7-c",
+        "8":  "soal8-a",
+        "9":  "soal9-c",
+        "10": "soal10-b"
+    }
+
+    total_soal  = len(kunci)
+    total_benar = sum(1 for k, v in kunci.items() if jawaban_user.get(k) == v)
+    total_salah = total_soal - total_benar
+    score       = round((total_benar / total_soal) * 100)
+
+    session.pop('quiz_start_time', None)
+
+    # Cek apakah sudah ada score sebelumnya
+    existing_score = Score.query.filter_by(
+        user_id=user_id,
+        score_type='quiz',
+        chapter='Bab 1'
+    ).first()
+
+    if existing_score:
+        existing_score.correct   = total_benar
+        existing_score.incorrect = total_salah
+        existing_score.value     = score
+    else:
+        db.session.add(Score(
+            user_id=user_id,
+            class_id=current_user.class_id,
+            score_type='quiz',
+            chapter='Bab 1',
+            correct=total_benar,
+            incorrect=total_salah,
+            value=score,
+        ))
+
+    db.session.commit()
+
+    user_class = Classes.query.get(current_user.class_id)
+    user_kkm   = user_class.kkm if user_class else 75
+    lulus      = score >= user_kkm
+
+    return jsonify({
+        'score':         score,
+        'total_benar':   total_benar,
+        'total_salah':   total_salah,
+        'lulus':         lulus,
+        'user_kkm':      user_kkm,
+        'next_url':      url_for('learning_bab1_quiz', user_id=user_id, klasifikasi=current_user.klasifikasi),
+        'jawaban_benar': kunci
+    })
 # End Routing Learning Bab 1 ====================================================================================
 
+# Routing Learning Bab 2 ====================================================================================
+
+@app.route("/learning/bab2/chapter1/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bab2_chapter1(user_id, klasifikasi):
+    return can_access_bab2_chapter1(user_id, klasifikasi)
+
+@app.route('/api/learning/bab2/chapter1/<int:user_id>', methods=['POST'])
+@login_required
+def submit_activity_learning_bab2_chapter1(user_id):
+    return bab2_chapter1_activity(user_id)
+
+@app.route("/learning/bab2/chapter2/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bab2_chapter2(user_id, klasifikasi):
+    return can_access_bab2_chapter2(user_id, klasifikasi)
+
+@app.route('/api/learning/bab2/chapter2/<int:user_id>', methods=['POST'])
+@login_required
+def submit_activity_learning_bab2_chapter2(user_id):
+    return bab2_chapter2_activity(user_id)
+
+@app.route("/learning/bab2/summary/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bab2_summary(user_id, klasifikasi):
+    return can_access_bab2_summary(user_id, klasifikasi)
+
+@app.route("/learning/bab2/quiz/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bab2_quiz(user_id, klasifikasi):
+    return can_access_bab2_quiz(user_id, klasifikasi)
+
+@app.route("/quiz/bab2/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def quiz_start_bab2(user_id, klasifikasi):
+    return can_access_bab2_quiz_start(user_id, klasifikasi)
+
+@app.route('/api/bab2/quiz/<int:user_id>', methods=['POST'])
+def api_bab2_quiz_submit(user_id):
+    if user_id != current_user.id:
+        return jsonify({'error': 'Unauthorized'}), 403
+
+    data = request.get_json()
+
+    # Jawaban dikirim dari frontend sebagai { 1: "soal1-c", 2: "soal2-b", ... }
+    # Key bisa berupa int (JSON number) atau string — normalkan ke string semua
+    jawaban_user_raw = data.get('jawaban', {})
+    jawaban_user = {str(k): v for k, v in jawaban_user_raw.items()}
+
+    kunci = {
+        "1":  "soal1-c",
+        "2":  "soal2-b",
+        "3":  "soal3-c",
+        "4":  "soal4-b",
+        "5":  "soal5-a",
+        "6":  "soal6-b",
+        "7":  "soal7-c",
+        "8":  "soal8-a",
+        "9":  "soal9-c",
+        "10": "soal10-b"
+    }
+
+    total_soal  = len(kunci)
+    total_benar = sum(1 for k, v in kunci.items() if jawaban_user.get(k) == v)
+    total_salah = total_soal - total_benar
+    score       = round((total_benar / total_soal) * 100)
+
+    session.pop('quiz_start_time', None)
+
+    # Cek apakah sudah ada score sebelumnya
+    existing_score = Score.query.filter_by(
+        user_id=user_id,
+        score_type='quiz',
+        chapter='Bab 2'
+    ).first()
+
+    if existing_score:
+        existing_score.correct   = total_benar
+        existing_score.incorrect = total_salah
+        existing_score.value     = score
+    else:
+        db.session.add(Score(
+            user_id=user_id,
+            class_id=current_user.class_id,
+            score_type='quiz',
+            chapter='Bab 2',
+            correct=total_benar,
+            incorrect=total_salah,
+            value=score,
+        ))
+
+    db.session.commit()
+
+    user_class = Classes.query.get(current_user.class_id)
+    user_kkm   = user_class.kkm if user_class else 75
+    lulus      = score >= user_kkm
+
+    return jsonify({
+        'score':         score,
+        'total_benar':   total_benar,
+        'total_salah':   total_salah,
+        'lulus':         lulus,
+        'user_kkm':      user_kkm,
+        'next_url':      url_for('learning_bab2_quiz', user_id=user_id, klasifikasi=current_user.klasifikasi),
+        'jawaban_benar': kunci
+    })
+
+# End Routing Learning Bab 2 ====================================================================================
 
 # Halaman Khusus Dashboard Students ==============================================================
 
@@ -202,29 +374,12 @@ def learning_medium_chapter1_quiz(user_id):
 def dashboard_student(user_id):
 
     user = get_user_by_id(user_id)
-    stats = get_student_dashboard_stats(user_id)
 
     return render_template(
         "dashboard/student/dashboard.html",
         user=user,
         user_id=user_id,
-        stats=stats
     )
-
-@app.route("/api/learning/progress/save/<int:user_id>", methods=["POST"])
-@login_required
-def api_save_progress(user_id):
-    return save_learning_progress(user_id)
-
-@app.route("/api/learning/progress/get/<int:user_id>", methods=["GET"])
-@login_required
-def api_get_progress(user_id):
-    return get_learning_progress(user_id)
-
-@app.route("/api/learning/progress/all/<int:user_id>", methods=["GET"])
-@login_required
-def api_get_all_progress(user_id):
-    return get_all_progress(user_id)
 
 @app.route("/grades/student/<int:user_id>", methods=["GET"])
 @login_required
@@ -274,6 +429,45 @@ def update_profile_route(user_id):
 
 # Halaman Khusus Dashboard Guru ==================================================================
 
+@app.route("/teacher/choise/course/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(1)
+def teacher_choise_course(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html")
+
+    return render_template("teacher_choise_course.html", user_id=user_id)
+
+@app.route('/teacher/klasifikasi/<int:user_id>', methods=['POST'])
+@login_required
+@level_required(1)
+def teacher_update_klasifikasi(user_id):
+    # 1. Mengambil data dari form
+    k = request.form.get('klasifikasi', type=int)
+
+    # 2. Validasi input
+    if k not in (0, 1, 2):
+        flash('Klasifikasi tidak valid.', 'danger')
+        # Menggunakan redirect standar Flask
+        return redirect(url_for('teacher_choise_course', user_id=user_id))
+
+    # 3. Update data ke database
+    current_user.klasifikasi = k
+    db.session.commit()
+    
+    # 4. Menentukan folder template (Gunakan '=' bukan '==')
+    if k == 0:
+        pilihan = "low"
+    elif k == 1:
+        pilihan = "medium"
+    else:
+        pilihan = "high"
+
+    # 5. Render template sesuai pilihan
+    return render_template(
+        f'learning/{pilihan}/bab1/01.html',
+        user_id=user_id
+    )
 
 @app.route("/dashboard/teacher/<int:user_id>", methods=["GET"])
 @login_required
@@ -310,22 +504,31 @@ def dashboard_analysis(user_id):
         list_class=get_kelas_pretest
     )
 
-@app.route("/teacher/result/analysis/<int:teacher_id>/student/<int:user_id>", methods=["GET"])
+@app.route("/teacher/result/pretest/analysis/<int:user_id>/<int:class_id>", methods=["GET"])
 @login_required
 @level_required(1)
-def dashboard_student_ai_analysis(teacher_id, user_id):
+def dashboard_result_pretest_analysis(user_id, class_id):
+    
+    pretest_analysis = get_pretest_analysis(class_id)
+
+    return render_template(
+        'dashboard/teacher/result_pretest_analysis.html',
+        class_id=class_id,
+        user_id=user_id,
+        pretest_analysis=pretest_analysis
+    )
+
+@app.route("/teacher/result/pretest/analysis/<int:teacher_id>/student/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(1)
+def dashboard_teacher_detail_pretest_analysis(teacher_id, user_id):
     if teacher_id != current_user.id:
         return render_template("403.html"), 403
 
-    data = get_student_ai_analysis_detail(teacher_id, user_id)
-
-    if data is None:
-        return redirect(request.referrer or url_for('dashboard_result_analysis',
-                                                     user_id=teacher_id,
-                                                     class_id=0))
+    data = get_student_pretest_analysis_detail(teacher_id, user_id)
 
     return render_template(
-        'dashboard/teacher/detail_result_analysis.html',
+        'dashboard/teacher/detail_result_pretest_analysis.html',
         student=data['student'],
         score=data['score'],
         correct=data['correct'],
@@ -337,25 +540,51 @@ def dashboard_student_ai_analysis(teacher_id, user_id):
         teacher_id=teacher_id,
     )
    
-@app.route("/teacher/result/analysis/<int:user_id>/<int:class_id>", methods=["GET"])
+@app.route("/teacher/batch/analyze/pretest/<int:teacher_id>/<int:class_id>", methods=["POST"])
 @login_required
 @level_required(1)
-def dashboard_result_analysis(user_id, class_id):
+def dashboard_teacher_batch_analyze_pretest(teacher_id, class_id):
+    return batch_analyze_pretest_logic(teacher_id, class_id)
+
+@app.route("/teacher/result/final/analysis/<int:user_id>/<int:class_id>", methods=["GET"])
+@login_required
+@level_required(1)
+def dashboard_result_final_analysis(user_id, class_id):
     
-    pretest_analysis = get_pretest_analysis(class_id)
+    final_analysis = get_final_analysis(class_id)
 
     return render_template(
-        'dashboard/teacher/result_analysis.html',
+        'dashboard/teacher/result_final_analysis.html',
         class_id=class_id,
         user_id=user_id,
-        pretest_analysis=pretest_analysis
+        final_analysis=final_analysis
     )
-   
-@app.route("/teacher/batch/analyze/<int:teacher_id>/<int:class_id>", methods=["POST"])
+    
+@app.route("/teacher/batch/analyze/final/<int:teacher_id>/<int:class_id>", methods=["POST"])
 @login_required
 @level_required(1)
-def dashboard_teacher_batch_analyze(teacher_id, class_id):
-    return batch_analyze_pretest_logic(teacher_id, class_id)
+def dashboard_teacher_batch_analyze_final(teacher_id, class_id):
+    return batch_analyze_final_logic(teacher_id, class_id)
+
+@app.route("/teacher/result/final/analysis/<int:teacher_id>/student/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(1)
+def dashboard_teacher_detail_final_analysis(teacher_id, user_id):
+    if teacher_id != current_user.id:
+        return render_template("403.html"), 403
+
+    data = get_student_final_analysis_detail(teacher_id, user_id)
+
+    if not data:
+        flash("Data analisis AI untuk Final Test siswa ini belum tersedia.", "warning")
+        return redirect(url_for('dashboard_result_pretest_analysis', user_id=teacher_id, class_id=current_user.teacher_classes[0].class_id))
+
+    return render_template(
+        'dashboard/teacher/detail_result_final_analysis.html',
+        student=data['student'],
+        ai_analysis=data['ai_analysis'],
+        teacher_id=teacher_id,
+    )
 
 @app.route("/teacher/grades/<int:user_id>", methods=["GET"])
 @login_required
@@ -421,6 +650,45 @@ def edit_class_route(teacher_id, class_id):
 
 # Halaman Khusus Dashboard Guru ==================================================================
 
+@app.route("/admin/choise/course/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(2)
+def admin_choise_course(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html")
+
+    return render_template("admin_choise_course.html", user_id=user_id)
+
+@app.route('/admin/klasifikasi/<int:user_id>', methods=['POST'])
+@login_required
+@level_required(2)
+def admin_update_klasifikasi(user_id):
+    # 1. Mengambil data dari form
+    k = request.form.get('klasifikasi', type=int)
+
+    # 2. Validasi input
+    if k not in (0, 1, 2):
+        flash('Klasifikasi tidak valid.', 'danger')
+        # Menggunakan redirect standar Flask
+        return redirect(url_for('admin_choise_course', user_id=user_id))
+
+    # 3. Update data ke database
+    current_user.klasifikasi = k
+    db.session.commit()
+    
+    # 4. Menentukan folder template (Gunakan '=' bukan '==')
+    if k == 0:
+        pilihan = "low"
+    elif k == 1:
+        pilihan = "medium"
+    else:
+        pilihan = "high"
+
+    # 5. Render template sesuai pilihan
+    return render_template(
+        f'learning/{pilihan}/bab1/01.html',
+        user_id=user_id
+    )
 
 @app.route("/dashboard/admin/<int:user_id>", methods=["GET"])
 @login_required

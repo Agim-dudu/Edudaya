@@ -1,8 +1,9 @@
 import secrets
 import string
+import json
+from sqlalchemy import case
 from app import db
-from app.model import User, Classes, ClassTeachers, PretestResult, LearningProgress
-from app.controller.LearningController import MATERIAL_CATALOG
+from app.model import User, Classes, ClassTeachers, FinalResult, EvaluationResult,PretestResult
 from flask_login import current_user
 from flask import flash, redirect, url_for, request
 
@@ -58,7 +59,7 @@ def get_my_classes(user_id):
             User.class_id == kelas.id
         ).count()
 
-        sudah_pretest = PretestResult.query.join(
+        sudah_pretest = FinalResult.query.join(
             User, PretestResult.user_id == User.id
         ).filter(
             User.class_id == kelas.id,
@@ -77,6 +78,67 @@ def get_my_classes(user_id):
 
     return classes
 
+def get_final_analysis(class_id: int) -> list[dict]:
+    results = (
+        db.session.query(
+            User.id.label('user_id'),
+            User.full_name,
+            PretestResult.answer_details.label('pretest_details'),
+            EvaluationResult.answer_details.label('eval_details'),
+            FinalResult.ai_analysis.label('final_analysis')
+        )
+        # Join ke tabel PretestResult
+        .outerjoin(PretestResult, PretestResult.user_id == User.id)
+        # Join ke tabel EvaluationResult
+        .outerjoin(EvaluationResult, EvaluationResult.user_id == User.id)
+        # Join ke tabel FinalResult
+        .outerjoin(FinalResult, FinalResult.user_id == User.id)
+        .filter(
+            User.class_id == class_id,   # Filter sesuai id kelas
+            User.level == 0,             # 0 = siswa
+        )
+        .order_by(
+            # Urutkan: Siswa yang sudah punya final analysis ditaruh di atas
+            case((FinalResult.ai_analysis == None, 1), else_=0).asc(),  
+            User.full_name.asc(),
+        )
+        .all()
+    )
+
+    return [
+        {
+            'user_id'             : row.user_id,
+            'full_name'           : row.full_name,
+            # True jika kolom answer_detail di PretestResult tidak None / tidak kosong
+            'pretest_done'        : row.pretest_details is not None,
+            # True jika kolom answer_detail di EvaluationResult tidak None / tidak kosong
+            'evaluation_done'     : row.eval_details is not None,
+            # True jika kolom ai_analysis di FinalResult tidak None / tidak kosong
+            'final_analysis_done' : row.final_analysis is not None,
+        }
+        for row in results
+    ]
+
+def get_student_final_analysis_detail(teacher_id, user_id):
+    if teacher_id != current_user.id:
+        abort(403)
+
+    # 1. Validasi siswa dan kelas guru
+    student = User.query.filter_by(id=user_id, level=0).first_or_404()
+    teacher_class_ids = [ct.class_id for ct in current_user.teacher_classes]
+    if student.class_id not in teacher_class_ids:
+        abort(403)
+
+    # 2. Ambil data murni dari FinalResult saja
+    final_test = FinalResult.query.filter_by(user_id=user_id).first()
+    if not final_test:
+        return None
+
+    # 3. Return data student dan ai_analysis saja
+    return {
+        'student':     student,
+        'ai_analysis': json.loads(final_test.ai_analysis) if final_test.ai_analysis else None
+    }
 
 def create_class(teacher_id):
     if teacher_id != current_user.id:

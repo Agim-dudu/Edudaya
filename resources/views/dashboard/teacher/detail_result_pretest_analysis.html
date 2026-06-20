@@ -183,7 +183,7 @@
 
   <!-- BACK ──────────────────────────────────────── -->
   <div class="f f1">
-    <a href="{{ url_for('dashboard_result_analysis', user_id=teacher_id, class_id=student.class_id) }}"
+    <a href="{{ url_for('dashboard_result_pretest_analysis', user_id=teacher_id, class_id=student.class_id) }}"
        style="display:inline-flex;align-items:center;gap:.4rem;font-size:13px;font-weight:500;
               color:var(--ink-3);text-decoration:none;transition:color .15s;"
        onmouseover="this.style.color='var(--ink-1)'" onmouseout="this.style.color='var(--ink-3)'">
@@ -258,9 +258,9 @@
           </div>
           <div class="stat-box" style="background:#faf9f6;border-color:var(--border);">
             <div class="stat-val" style="color:var(--ink-2);">
-              {% if time_taken %}{{ (time_taken // 60)|int }}m{{ (time_taken % 60)|int }}d{% else %}–{% endif %}
+              {{ time_taken }}
             </div>
-            <div class="stat-lbl" style="color:var(--ink-3);">Waktu</div>
+            <div class="stat-lbl" style="color:var(--ink-3);">Menit</div>
           </div>
         </div>
 
@@ -443,7 +443,7 @@
        ROW 5 — Detail Jawaban Siswa (full width)
   ═══════════════════════════════════════════════ -->
   {% if answer_details %}
-  <div class="card f f6">
+  <div class="card f f2 w-lg">
     <div class="card-header"><span class="slabel">Detail Jawaban Siswa</span></div>
     <div style="overflow-x:auto;">
       <table class="ans-table">
@@ -452,7 +452,6 @@
             <th style="width:44px;">No</th>
             <th>Topik</th>
             <th style="text-align:center;width:90px;">Jawaban</th>
-            <th style="text-align:center;width:80px;">Kunci</th>
             <th style="text-align:center;width:90px;">Status</th>
           </tr>
         </thead>
@@ -465,7 +464,6 @@
                        color:{% if item['benar'] %}var(--green-fg){% else %}var(--red-fg){% endif %};">
               {{ item['jawaban_siswa'] or '–' }}
             </td>
-            <td style="text-align:center;color:var(--ink-3);font-weight:500;">{{ item['kunci'] or '–' }}</td>
             <td style="text-align:center;">
               {% if item['benar'] %}
               <span class="pill pill-high">✓ Benar</span>

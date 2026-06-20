@@ -177,7 +177,7 @@
                         class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-emerald-100 flex flex-col">
                         <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-5 text-center">
                             <h2 class="font-fredoka text-2xl text-white" style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">
-                                Kuis Materi Penjumlahan</h2>
+                                Evaluasi Akhir</h2>
                         </div>
 
                         <div class="px-5 py-3 bg-white">
@@ -203,9 +203,9 @@
                             </ul>
                             <!-- Tombol Mulai -->
                             <div class="py-5">
-                                <a href="/quiz/bab1/{{ current_user.id }}/{{ current_user.klasifikasi }}"
+                                <a href="/evaluation/start/{{user_id}}/{{ current_user.klasifikasi }}"
                                     class="px-4 py-2 bg-blue-500 text-white rounded-sm hover:bg-blue-600 text-base rounded-lg">Mulai
-                                    Kuis</a>
+                                    Evaluasi</a>
                             </div>
                         </div>
                     </div>
@@ -272,12 +272,12 @@
 
                 <!-- FOOTER NAV -->
                 <div class="flex justify-between items-center flex-wrap gap-3 pb-4">
-                    <a href="/learning/bab1/summary/{{ current_user.id }}/{{ current_user.klasifikasi }}"
+                    <a href="/learning/bab2/quiz/{{ current_user.id }}/{{ current_user.klasifikasi }}"
                         class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">
                         Halaman Sebelumnya
                     </a>
                     <p class="text-gray-400 text-xs font-semibold">© 2026 Edudaya 🌟</p>
-                    <a href="/learning/bab2/chapter1/{{ current_user.id }}/{{ current_user.klasifikasi }}"
+                    <a href="/learning/finish/{{ current_user.id }}/{{ current_user.klasifikasi }}"
                         class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">
                         Halaman Selanjutnya
                     </a>
