@@ -146,8 +146,28 @@ def finish_pretest(user_id):
     # Jika akses diizinkan, render halaman ini
     return render_template("pretest/finish_pretest.html", user_id=user_id)
 
+
+# Halaman menunggu analisis AI oleh guru ===========================================================
+@app.route("/pretest/waiting/<int:user_id>", methods=["GET"])
+@login_required
+def waiting_analysis(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html")
+    return render_template("pretest/waiting_analysis.html", user_id=user_id)
+
 # End Pretest Handle ===============================================================================
 
+
+# Helper: cek akses siswa ke halaman belajar =======================================================
+def _check_student_learning_access():
+    if current_user.level != 0:
+        return True
+    if current_user.pretest != 1:
+        return False
+    pr = current_user.pretest_result
+    if pr is None or pr.ai_analysis is None:
+        return False
+    return True
 
 # Routing Learning Bab 1 ====================================================================================
 
@@ -156,6 +176,10 @@ def finish_pretest(user_id):
 def learning_medium_chapter1_1(user_id):
     if user_id != current_user.id:
         return render_template("403.html")
+    if not _check_student_learning_access():
+        if current_user.pretest != 1:
+            return redirect(url_for('pretest', user_id=current_user.id))
+        return redirect(url_for('waiting_analysis', user_id=current_user.id))
 
     return render_template("learning/medium/bab1/01.html", user_id=user_id)
 
@@ -164,6 +188,10 @@ def learning_medium_chapter1_1(user_id):
 def learning_medium_chapter1_2(user_id):
     if user_id != current_user.id:
         return render_template("403.html")
+    if not _check_student_learning_access():
+        if current_user.pretest != 1:
+            return redirect(url_for('pretest', user_id=current_user.id))
+        return redirect(url_for('waiting_analysis', user_id=current_user.id))
 
     return render_template("learning/medium/bab1/02.html", user_id=user_id)
 
@@ -172,6 +200,10 @@ def learning_medium_chapter1_2(user_id):
 def learning_medium_chapter1_3(user_id):
     if user_id != current_user.id:
         return render_template("403.html")
+    if not _check_student_learning_access():
+        if current_user.pretest != 1:
+            return redirect(url_for('pretest', user_id=current_user.id))
+        return redirect(url_for('waiting_analysis', user_id=current_user.id))
 
     return render_template("learning/medium/bab1/03.html", user_id=user_id)
 
@@ -180,6 +212,10 @@ def learning_medium_chapter1_3(user_id):
 def learning_medium_chapter1_4(user_id):
     if user_id != current_user.id:
         return render_template("403.html")
+    if not _check_student_learning_access():
+        if current_user.pretest != 1:
+            return redirect(url_for('pretest', user_id=current_user.id))
+        return redirect(url_for('waiting_analysis', user_id=current_user.id))
 
     return render_template("learning/medium/bab1/04.html", user_id=user_id)
 
@@ -188,6 +224,10 @@ def learning_medium_chapter1_4(user_id):
 def learning_medium_chapter1_quiz(user_id):
     if user_id != current_user.id:
         return render_template("403.html")
+    if not _check_student_learning_access():
+        if current_user.pretest != 1:
+            return redirect(url_for('pretest', user_id=current_user.id))
+        return redirect(url_for('waiting_analysis', user_id=current_user.id))
 
     return render_template("learning/medium/bab1/quiz.html", user_id=user_id)
 

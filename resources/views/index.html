@@ -75,7 +75,7 @@
           <span class="font-fredoka text-2xl text-white">Edudaya</span>
         </div>
         <div class="hidden md:flex items-center gap-6">
-          <a href="/learning/chapter/1/1/{{ current_user.id }}" class="text-white hover:text-yellow-400 font-600 text-lg transition">Beranda</a>
+          <a href="/" class="text-white hover:text-yellow-400 font-600 text-lg transition">Beranda</a>
           <a href="/list-course" class="text-white hover:text-yellow-400 font-600 text-lg transition">Materi</a>
           <a href="/instruction" class="text-white hover:text-yellow-400 font-600 text-lg transition">Petunjuk</a>
         </div>
@@ -86,6 +86,25 @@
           {% else %}
           <a href="/login"
             class="hidden md:block bg-green-500 hover:bg-green-600 text-white text-lg px-5 py-1 rounded-lg font-600 transition">Masuk</a>
+          {% endif %}
+          <!-- Hamburger button (mobile only) -->
+          <button id="hamburgerBtn" onclick="toggleMobileMenu()" class="md:hidden flex flex-col gap-1 p-1" aria-label="Menu">
+            <span class="block w-6 h-0.5 bg-white transition-transform origin-center"></span>
+            <span class="block w-6 h-0.5 bg-white transition-opacity"></span>
+            <span class="block w-6 h-0.5 bg-white transition-transform origin-center"></span>
+          </button>
+        </div>
+      </div>
+      <!-- Mobile menu dropdown -->
+      <div id="mobileMenu" class="relative z-10 max-w-6xl mx-auto px-4 pb-3 hidden md:hidden flex-col gap-2">
+        <a href="/" class="text-white hover:text-yellow-400 font-600 text-lg transition block py-1">Beranda</a>
+        <a href="/list-course" class="text-white hover:text-yellow-400 font-600 text-lg transition block py-1">Materi</a>
+        <a href="/instruction" class="text-white hover:text-yellow-400 font-600 text-lg transition block py-1">Petunjuk</a>
+        <div class="pt-2 border-t border-white/20">
+          {% if current_user.is_authenticated %}
+          <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white text-lg px-5 py-1 rounded-lg font-600 transition inline-block">Keluar</a>
+          {% else %}
+          <a href="/login" class="bg-green-500 hover:bg-green-600 text-white text-lg px-5 py-1 rounded-lg font-600 transition inline-block">Masuk</a>
           {% endif %}
         </div>
       </div>
@@ -135,9 +154,15 @@
           {% elif current_user.level == 0 %}
             
             {% if current_user.pretest == 1 %}
+              {% if current_user.pretest_result and current_user.pretest_result.ai_analysis %}
               <a href="/learning/medium/1/1/{{ current_user.id }}" class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
                 📚 Mulai Belajar
               </a>
+              {% else %}
+              <a href="/pretest/waiting/{{ current_user.id }}" class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
+                📚 Mulai Belajar
+              </a>
+              {% endif %}
             {% elif current_user.pretest == 0 %}
               <a href="/pretest/{{ current_user.id }}" class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
                 📚 Mulai Belajar
@@ -245,29 +270,43 @@
       </div>
 
       <!-- Leaderboard mini -->
+      {% set top_entries = leaderboard | selectattr('score', 'gt', 0) | list %}
+      {% if top_entries %}
       <div class="bg-white rounded-2xl shadow p-6">
         <h3 class="font-fredoka text-2xl text-cokelat-general mb-4">🏆 Juara Pekan Ini</h3>
         <div class="space-y-3">
-          {% if leaderboard %}
-          {% for entry in leaderboard %}
-          <div class="flex items-center gap-3 p-3 rounded-xl {% if entry.rank == 1 %}bg-kuning-light{% elif entry.rank == 2 %}bg-gray-50{% elif entry.rank == 3 %}bg-orange-50{% else %}bg-gray-50{% endif %}">
+          {% for entry in top_entries[:5] %}
+          <div class="flex items-center gap-3 p-3 rounded-xl {% if loop.index == 1 %}bg-kuning-light{% elif loop.index == 2 %}bg-gray-50{% elif loop.index == 3 %}bg-orange-50{% else %}bg-gray-50{% endif %}">
             <span class="text-2xl">
-              {% if entry.rank == 1 %}🥇{% elif entry.rank == 2 %}🥈{% elif entry.rank == 3 %}🥉{% else %}#{{ entry.rank }}{% endif %}
+              {% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈{% elif loop.index == 3 %}🥉{% else %}#{{ loop.index }}{% endif %}
             </span>
             <div class="flex-1">
               <div class="font-700">{{ entry.name }}</div>
               <div class="text-xs text-gray-500">{% if entry.kelas %}{{ entry.kelas }}{% else %}—{% endif %}</div>
             </div>
-            <div class="font-fredoka text-xl {% if entry.rank == 1 %}text-kuning-dark{% else %}text-gray-500{% endif %}">{{ entry.score }}</div>
+            <div class="font-fredoka text-xl {% if loop.index == 1 %}text-kuning-dark{% else %}text-gray-500{% endif %}">{{ entry.score }}</div>
           </div>
           {% endfor %}
-          {% else %}
-          <div class="text-center text-gray-400 py-4 text-sm">Belum ada data. Ayo belajar!</div>
-          {% endif %}
         </div>
       </div>
+      {% endif %}
     </div>
   </div>
+
+<script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const btn = document.getElementById('hamburgerBtn');
+      const spans = btn.querySelectorAll('span');
+      menu.classList.toggle('hidden');
+      menu.classList.toggle('flex');
+      spans[0].classList.toggle('rotate-45');
+      spans[0].classList.toggle('translate-y-[6px]');
+      spans[1].classList.toggle('opacity-0');
+      spans[2].classList.toggle('-rotate-45');
+      spans[2].classList.toggle('-translate-y-[6px]');
+    }
+  </script>
 
 </body>
 
