@@ -319,3 +319,6 @@ def get_student_pretest_analysis_detail(teacher_id, user_id):
         'answer_details': json.loads(pretest.answer_details) if pretest.answer_details else [],
         'ai_analysis':    json.loads(pretest.ai_analysis)    if pretest.ai_analysis    else None,
     }
+
+def analyze_pretest(data):
+    return jsonify({"status": "success", "message": "Analisis akan diproses oleh guru"})

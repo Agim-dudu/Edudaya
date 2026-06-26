@@ -1,11 +1,14 @@
+import os
 import secrets
 import string
 import json
 from sqlalchemy import case
 from app import db
-from app.model import User, Classes, ClassTeachers, FinalResult, EvaluationResult,PretestResult
+from app.model import User, Classes, ClassTeachers, FinalResult, EvaluationResult, PretestResult, Score
 from flask_login import current_user
-from flask import flash, redirect, url_for, request
+from flask import abort, current_app, flash, redirect, url_for, request
+from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash
 
 def _generate_token():
     suffix = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(6))
@@ -59,9 +62,7 @@ def get_my_classes(user_id):
             User.class_id == kelas.id
         ).count()
 
-        sudah_pretest = FinalResult.query.join(
-            User, PretestResult.user_id == User.id
-        ).filter(
+        sudah_pretest = PretestResult.query.join(User).filter(
             User.class_id == kelas.id,
             User.level == 0
         ).count()
@@ -226,22 +227,42 @@ def get_students_by_teacher(teacher_id):
         if not kelas:
             continue
         students = User.query.filter_by(class_id=cid, level=0).order_by(User.full_name).all()
+        if not students:
+            continue
+
+        student_ids = [s.id for s in students]
+        all_scores = Score.query.filter(Score.user_id.in_(student_ids)).all()
+
+        scores_by_user = {}
+        all_chapters = set()
+        for sc in all_scores:
+            scores_by_user.setdefault(sc.user_id, []).append(sc)
+            if sc.chapter:
+                all_chapters.add(sc.chapter)
+        total_bab = max(len(all_chapters), 1)
+
         student_list = []
         for s in students:
-            pretest = s.pretest_result
-            quiz = LearningProgress.query.filter_by(user_id=s.id, material_key='medium_1_quiz').first()
-            quiz_completed = quiz.completed if quiz else False
-            bab_count = 1 if quiz_completed else 0
-            total_score = sum(r.score for r in s.learning_progress)
+            user_scores = scores_by_user.get(s.id, [])
+            quiz_val = None
+            chapters_done = set()
+            total_val = 0
+            for sc in user_scores:
+                if sc.score_type == 'quiz' and quiz_val is None:
+                    quiz_val = sc.value
+                if sc.chapter:
+                    chapters_done.add(sc.chapter)
+                total_val += sc.value
+
             student_list.append({
                 'id': s.id,
                 'full_name': s.full_name,
                 'gender': s.gender,
-                'pretest_done': s.pretest == 1,
-                'quiz_score': quiz.score if quiz else None,
-                'materi_selesai': bab_count,
-                'total_bab': 1,
-                'total_score': total_score,
+                'pretest_done': s.pretest_result is not None,
+                'quiz_score': quiz_val,
+                'materi_selesai': len(chapters_done),
+                'total_bab': total_bab,
+                'total_score': total_val,
             })
         classes_data.append({
             'class_id': kelas.id,
@@ -256,19 +277,37 @@ def get_students_by_teacher(teacher_id):
 def get_grades_recap(teacher_id):
     teacher = User.query.get(teacher_id)
     if not teacher or teacher.level != 1:
-        return []
+        return [], [], []
 
-    material_keys = []
-    material_labels = []
-    for bab in MATERIAL_CATALOG:
-        seq = 1
-        for item in bab['materials']:
-            material_keys.append(item['key'])
-            if item['key'].endswith('_quiz'):
-                material_labels.append(f"Kuis B{bab['bab_key'].split('_')[-1]}")
-            else:
-                material_labels.append(f"L{seq}")
-                seq += 1
+    class_ids = [ct.class_id for ct in teacher.teacher_classes]
+    if not class_ids:
+        return [], [], []
+
+    all_student_ids = []
+    for cid in class_ids:
+        ids = [row[0] for row in User.query.filter_by(class_id=cid, level=0).with_entities(User.id).all()]
+        all_student_ids.extend(ids)
+
+    if not all_student_ids:
+        return [], [], []
+
+    chapters = db.session.query(Score.chapter).filter(
+        Score.user_id.in_(all_student_ids),
+        Score.chapter.isnot(None)
+    ).distinct().order_by(Score.chapter).all()
+    chapter_list = [row.chapter for row in chapters]
+    material_keys = chapter_list
+    material_labels = chapter_list
+
+    all_scores = Score.query.filter(
+        Score.user_id.in_(all_student_ids),
+        Score.chapter.isnot(None),
+        Score.score_type == 'quiz'
+    ).all()
+
+    scores_by_user = {}
+    for sc in all_scores:
+        scores_by_user.setdefault(sc.user_id, {})[sc.chapter] = sc.value
 
     recap = []
     for ct in teacher.teacher_classes:
@@ -281,22 +320,22 @@ def get_grades_recap(teacher_id):
 
         student_grades = []
         for s in students:
-            progress_map = {r.material_key: r for r in s.learning_progress}
-            scores = {}
+            user_scores = scores_by_user.get(s.id, {})
+            scores_dict = {}
             total = 0
             count = 0
-            for key in material_keys:
-                p = progress_map.get(key)
-                scores[key] = p.score if p else None
-                if p:
-                    total += p.score
+            for ch in chapter_list:
+                val = user_scores.get(ch)
+                scores_dict[ch] = val
+                if val is not None:
+                    total += val
                     count += 1
             avg = round(total / count) if count > 0 else 0
             student_grades.append({
                 'id': s.id,
                 'full_name': s.full_name,
-                'pretest_done': s.pretest == 1,
-                'scores': scores,
+                'pretest_done': s.pretest_result is not None,
+                'scores': scores_dict,
                 'total': total,
                 'avg': avg,
             })
@@ -309,3 +348,45 @@ def get_grades_recap(teacher_id):
         })
 
     return recap, material_labels, material_keys
+
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def teacher_profile(user_id):
+    user = User.query.get_or_404(user_id)
+    return user
+
+
+def update_teacher_profile(user_id):
+    if user_id != current_user.id:
+        abort(403)
+
+    user = User.query.get_or_404(user_id)
+
+    if 'avatar' in request.files:
+        file = request.files['avatar']
+        if file and file.filename != '':
+            if allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                ext = filename.rsplit('.', 1)[-1].lower()
+                project_root = os.path.dirname(current_app.root_path)
+                upload_folder = os.path.join(project_root, 'resources', 'images', 'avatars')
+                os.makedirs(upload_folder, exist_ok=True)
+                new_filename = f"teacher_{user_id}.{ext}"
+                file.save(os.path.join(upload_folder, new_filename))
+                user.image = new_filename
+
+    password = request.form.get('password', '').strip()
+    password_confirm = request.form.get('password_confirm', '').strip()
+    if password and password == password_confirm:
+        user.set_password(password)
+    elif password and password != password_confirm:
+        flash("Password tidak cocok.", "danger")
+        return redirect(url_for('teacher_profile_route', user_id=user_id))
+
+    db.session.commit()
+    flash("Profil berhasil diperbarui.", "success")
+    return redirect(url_for('teacher_profile_route', user_id=user_id))

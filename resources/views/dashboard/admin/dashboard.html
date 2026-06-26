@@ -84,18 +84,22 @@
                         class="sidebar-link active w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700">
                         <span>📊</span> Dashboard Utama
                     </button>
-                    <button onclick="switchAdminTab('admin-kelas')"
-                        class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition">
+                    <a href="{{ url_for('admin_kelas_index') }}"
+                        class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition text-white">
                         <span>🏫</span> CRUD Kelas
-                    </button>
-                    <button onclick="switchAdminTab('admin-siswa')"
-                        class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition">
+                    </a>
+                    <a href="{{ url_for('admin_guru_index') }}"
+                        class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition text-white">
+                        <span>👨‍🏫</span> CRUD Guru
+                    </a>
+                    <a href="{{ url_for('admin_siswa_index') }}"
+                        class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition text-white">
                         <span>👧</span> CRUD Siswa
-                    </button>
-                    <button onclick="switchAdminTab('admin-token')"
-                        class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition">
+                    </a>
+                    <a href="{{ url_for('admin_token_index') }}"
+                        class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition text-white">
                         <span>🎟️</span> CRUD Token
-                    </button>
+                    </a>
                     <button onclick="switchAdminTab('admin-score')"
                         class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition">
                         <span>🏆</span> CRUD Nilai
@@ -623,6 +627,23 @@
             </div>
         </main>
     </div>
+<script>
+function switchAdminTab(tabId) {
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden'));
+    document.getElementById(tabId).classList.remove('hidden');
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    document.querySelector(`[onclick*="'${tabId}'"]`)?.classList.add('active');
+    const titles = { 'admin-dashboard': ['Dashboard Utama', 'Selamat datang, Super Admin!'], 'admin-kelas': ['Manajemen Kelas', 'Kelola data kelas'], 'admin-siswa': ['Manajemen Siswa', 'Kelola data siswa'], 'admin-token': ['Manajemen Token', 'Kelola token akses kelas'], 'admin-score': ['Manajemen Nilai', 'Kelola nilai siswa'], 'admin-profile': ['Setting Profil', 'Ubah profil admin'] };
+    const t = titles[tabId] || ['Dashboard', ''];
+    document.getElementById('admin-page-title').textContent = t[0];
+    document.getElementById('admin-page-sub').textContent = t[1];
+    localStorage.setItem('adminTab', tabId);
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const saved = localStorage.getItem('adminTab') || window.location.hash.replace('#', '') || 'admin-dashboard';
+    if (saved && document.getElementById(saved)) switchAdminTab(saved);
+});
+</script>
 {% include 'dashboard/partials/mobile_toggle.html' %}
 </body>
 

@@ -1,6 +1,5 @@
 const { userId, csrfToken, questions, pretestApiUrl } = window.APP_CONFIG;
 
-const waktuPengerjaan = 120;
 const totalQ = questions.length;
 let currentQ = 0;
 let answers = {};
@@ -139,7 +138,7 @@ function handleSubmit() {
     body: JSON.stringify({
       user_id: userId,
       answers: answers,
-      time_taken: waktuPengerjaan
+      time_taken: DURATION - timeLeft
     })
   })
   .then(res => res.json())

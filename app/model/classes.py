@@ -12,6 +12,7 @@ class Classes(db.Model):
     school = db.Column(db.String(45), nullable=False) 
     token = db.Column(db.String(45), nullable=False, unique=True) 
     kkm = db.Column(db.Integer, nullable=False, default=75)
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)

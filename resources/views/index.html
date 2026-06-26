@@ -291,8 +291,6 @@
       </div>
 
       <!-- Leaderboard mini -->
-      {% set top_entries = leaderboard | selectattr('score', 'gt', 0) | list %}
-      {% if top_entries %}
       <div class="bg-white rounded-2xl shadow p-6">
         <h3 class="font-fredoka text-2xl text-cokelat-general mb-4">🏆 Juara Pekan Ini</h3>
         <div class="space-y-3">

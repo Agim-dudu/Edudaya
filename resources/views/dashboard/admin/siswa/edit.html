@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Siswa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/resources/css/main.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kuning: { general: '#F5A623', light: '#FEF3DB', dark: '#C47D0E' },
+                        merah: { general: '#C0392B', light: '#FDECEA', dark: '#922B21' },
+                        hijau: { general: '#27AE60', light: '#E8F8F0', dark: '#1E8449' },
+                        biru: { general: '#2980B9', light: '#EAF4FB', dark: '#1A5276' },
+                        cokelat: { general: '#6D4C41', light: '#EFEBE9', dark: '#4E342E' },
+                    },
+                    fontFamily: {
+                        nunito: ['Nunito', 'sans-serif'],
+                        fredoka: ['Fredoka One', 'cursive'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="sasirangan-bg">
+    <div id="dash-admin" class="page flex">
+        <aside class="sidebar bg-gradient-to-b from-cokelat-general to-cokelat-dark text-white flex-shrink-0">
+            <div class="p-5 border-b border-white/10">
+                <div class="font-fredoka text-xl flex items-center gap-2"><span>🦅</span> Edudaya.id</div>
+                <div class="text-xs text-white/50 mt-0.5">Super Admin Panel</div>
+            </div>
+            <div class="p-4">
+                <div class="text-xs text-white/40 uppercase font-700 mb-2 px-2">Menu</div>
+                <nav class="space-y-1">
+                    <a href="{{ url_for('dashboard_admin', user_id=current_user.id) }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition text-white"><span>📊</span> Dashboard Utama</a>
+                    <a href="{{ url_for('admin_kelas_index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition text-white"><span>🏫</span> CRUD Kelas</a>
+                    <a href="{{ url_for('admin_guru_index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition text-white"><span>👨‍🏫</span> CRUD Guru</a>
+                    <a href="{{ url_for('admin_siswa_index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition text-white active"><span>👧</span> CRUD Siswa</a>
+                    <a href="{{ url_for('admin_token_index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition text-white"><span>🎟️</span> CRUD Token</a>
+                    <a href="{{ url_for('dashboard_admin', user_id=current_user.id) }}#admin-score" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition text-white"><span>🏆</span> CRUD Nilai</a>
+                    <a href="{{ url_for('dashboard_admin', user_id=current_user.id) }}#admin-profile" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 hover:bg-white/10 transition text-white"><span>⚙️</span> Setting Profil</a>
+                </nav>
+            </div>
+            <div class="mt-auto p-4 border-t border-white/10">
+                <a href="{{ url_for('index') }}" class="w-full text-left flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/10 transition font-600"><span>↩️</span> Kembali</a>
+                <a href="{{ url_for('logout') }}" class="w-full text-left flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/10 transition font-600"><span>🚪</span> Keluar</a>
+            </div>
+        </aside>
+
+        <main class="flex-1 overflow-auto">
+            <div class="bg-white shadow-sm px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="lg:hidden text-cokelat-general p-1 -ml-1">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    </button>
+                    <div>
+                        <div class="font-fredoka text-xl text-cokelat-general">✏️ Edit Siswa</div>
+                        <div class="text-xs text-gray-400">{{ siswa.full_name }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 max-w-2xl">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="mb-4">
+                    {% for category, message in messages %}
+                    <div class="px-4 py-2 rounded-xl text-white font-600 {% if category == 'success' %}bg-hijau-general{% elif category == 'danger' %}bg-merah-general{% else %}bg-gray-500{% endif %} mb-2">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+
+                <div class="bg-white rounded-2xl shadow p-6">
+                    <form method="POST">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-700 text-cokelat-general mb-1">Username</label>
+                                <input type="text" name="username" value="{{ siswa.username }}" required
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm focus:border-kuning-general focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-700 text-cokelat-general mb-1">Nama Lengkap</label>
+                                <input type="text" name="full_name" value="{{ siswa.full_name }}" required
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm focus:border-kuning-general focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-700 text-cokelat-general mb-1">Password Baru</label>
+                                <input type="password" name="password" placeholder="Kosongkan jika tidak diubah"
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm focus:border-kuning-general focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-700 text-cokelat-general mb-1">Gender</label>
+                                <select name="gender" required
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm focus:border-kuning-general focus:outline-none bg-white">
+                                    <option value="L" {% if siswa.gender == 'L' %}selected{% endif %}>Laki-laki</option>
+                                    <option value="P" {% if siswa.gender == 'P' %}selected{% endif %}>Perempuan</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-700 text-cokelat-general mb-1">Kelas</label>
+                                <select name="class_id"
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm focus:border-kuning-general focus:outline-none bg-white">
+                                    <option value="">-- Pilih Kelas --</option>
+                                    {% for c in classes %}
+                                    <option value="{{ c.id }}" {% if siswa.class_id == c.id %}selected{% endif %}>{{ c.name }} - {{ c.school }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="flex gap-3 pt-2">
+                                <button type="submit"
+                                    class="bg-kuning-general hover:bg-kuning-dark text-white font-800 px-6 py-2.5 rounded-xl transition shadow-md">💾 Simpan</button>
+                                <a href="{{ url_for('admin_siswa_index') }}"
+                                    class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-700 px-6 py-2.5 rounded-xl transition">Batal</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+{% include 'dashboard/partials/mobile_toggle.html' %}
+</body>
+</html>

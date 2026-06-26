@@ -34,6 +34,28 @@
 
 <body class="sasirangan-bg">
 
+    {% if waiting_analysis %}
+    <div id="waiting-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full mx-4 p-8 text-center">
+            <div class="text-6xl mb-4">⏳</div>
+            <h2 class="font-fredoka text-2xl text-cokelat-general mb-2">Menunggu Analisis Guru</h2>
+            <p class="text-sm text-gray-500 mb-6 leading-relaxed">
+                Kamu sudah menyelesaikan Pretest!<br>
+                Harap tunggu guru melakukan analisis sebelum kamu bisa mengakses materi pembelajaran.
+            </p>
+            <div class="bg-kuning-light rounded-2xl p-4 mb-6">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">💡</span>
+                    <p class="text-xs text-kuning-dark text-left">
+                        Guru akan menganalisis hasil Pretest-mu dan menentukan materi yang paling cocok untukmu.
+                    </p>
+                </div>
+            </div>
+            <p class="text-xs text-gray-400">Hubungi gurumu jika sudah lama menunggu.</p>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- ============================================================ -->
     <!-- DASHBOARD SISWA                                              -->
     <!-- ============================================================ -->

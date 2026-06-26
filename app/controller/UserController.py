@@ -130,6 +130,9 @@ def register():
         if not token_record:
             flash("Token kelas tidak valid.", "danger")
             return redirect(url_for("register"))
+        if not token_record.is_active:
+            flash("Token kelas sudah dinonaktifkan.", "danger")
+            return redirect(url_for("register"))
 
         # 🔥 FIX LOGIK: Buat user baru (Siswa) langsung menempelkan class_id di sini
         user = User(

@@ -1,7 +1,8 @@
 import json
 import os
+from datetime import datetime
 from app import db
-from app.model import User
+from app.model import User, Score
 from flask_login import current_user
 from werkzeug.utils import secure_filename
 from flask import abort, current_app, flash, request
@@ -100,6 +101,57 @@ def get_user_by_id(user_id):
     
     user = User.query.get(user_id)
     return user
+
+def get_student_dashboard_stats(user_id):
+    scores = Score.query.filter_by(user_id=user_id).all()
+
+    chapters = [
+        {"key": "Bab 1", "title": "Operasi Hitung Dasar", "icon": "🛶"},
+        {"key": "Bab 2", "title": "Geometri & Pola", "icon": "🔷"},
+    ]
+
+    bab_list = []
+    total_value = 0
+    total_completed = 0
+    total_submateri = 0
+
+    for ch in chapters:
+        ch_scores = [s for s in scores if s.chapter == ch["key"]]
+        completed = [s for s in ch_scores if s.value > 0]
+        total = max(len(ch_scores), 4)
+
+        materials = []
+        for i, s in enumerate(ch_scores):
+            materials.append({
+                "icon": "📝" if s.score_type == "quiz" else "📄",
+                "title": f"{'Kuis' if s.score_type == 'quiz' else 'Latihan'} {ch['key']}",
+                "updated_at": s.created_at or datetime.utcnow(),
+                "completed": s.value > 0,
+                "score": s.value,
+            })
+
+        progress = round((len(completed) / total) * 100) if total > 0 else 0
+        bab_list.append({
+            "bab_title": ch["title"],
+            "icon": ch["icon"],
+            "completed": len(completed),
+            "total": total,
+            "bab_progress": progress,
+            "materials": materials,
+        })
+        total_submateri += len(ch_scores)
+
+    completed_count = sum(b["completed"] for b in bab_list)
+    total_count = sum(b["total"] for b in bab_list)
+    avg_score = round(sum(s.value for s in scores if s.value > 0) / max(sum(1 for s in scores if s.value > 0), 1))
+
+    return {
+        "avg_score": avg_score,
+        "completed_bab": completed_count,
+        "total_bab": total_count,
+        "total_submateri": total_submateri,
+        "bab_list": bab_list,
+    }
 
 def show_student_ai_analysis(user_id):
     if user_id != current_user.id:

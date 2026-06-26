@@ -162,12 +162,32 @@ def submit_evaluation(user_id):
 def _check_student_learning_access():
     if current_user.level != 0:
         return True
-    if current_user.pretest != 1:
-        return False
     pr = current_user.pretest_result
     if pr is None or pr.ai_analysis is None:
         return False
     return True
+
+def is_student_waiting_analysis():
+    if current_user.level != 0:
+        return False
+    pr = current_user.pretest_result
+    return pr is not None and pr.ai_analysis is None
+
+
+@app.before_request
+def _block_student_if_waiting_analysis():
+    if current_user.is_authenticated and current_user.level == 0:
+        path = request.path
+        pr = current_user.pretest_result
+        blocked_prefixes = ('/learning/', '/quiz/', '/evaluation/', '/api/learning/', '/api/bab')
+        if path.startswith(blocked_prefixes):
+            if pr is None or pr.ai_analysis is None:
+                from flask import flash
+                if pr is None:
+                    flash("Kamu harus menyelesaikan Pretest terlebih dahulu.", "warning")
+                    return redirect(url_for('pretest', user_id=current_user.id))
+                flash("Selesaikan Pretest atau tunggu analisis guru terlebih dahulu.", "warning")
+                return redirect(url_for('dashboard_student', user_id=current_user.id))
 
 # Routing Learning Bab 1 ====================================================================================
 
@@ -392,6 +412,10 @@ def api_bab2_quiz_submit(user_id):
 @login_required
 @level_required(0)
 def dashboard_student(user_id):
+    if current_user.level == 0 and current_user.pretest_result is None:
+        from flask import flash
+        flash("Kamu harus menyelesaikan Pretest terlebih dahulu.", "warning")
+        return redirect(url_for('pretest', user_id=current_user.id))
 
     user = get_user_by_id(user_id)
 
@@ -399,6 +423,7 @@ def dashboard_student(user_id):
         "dashboard/student/dashboard.html",
         user=user,
         user_id=user_id,
+        waiting_analysis=is_student_waiting_analysis()
     )
 
 @app.route("/grades/student/<int:user_id>", methods=["GET"])
@@ -665,6 +690,25 @@ def create_class_route(teacher_id):
 def edit_class_route(teacher_id, class_id):
     return edit_class(teacher_id, class_id)
 
+@app.route("/profile/teacher/<int:user_id>", methods=["GET"])
+@login_required
+@level_required(1)
+def teacher_profile_route(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html"), 403
+    user = teacher_profile(user_id)
+    return render_template(
+        'dashboard/teacher/teacher_profile.html',
+        user=user,
+        user_id=user_id
+    )
+
+@app.route("/profile/teacher/update/<int:user_id>", methods=["POST"])
+@login_required
+@level_required(1)
+def update_teacher_profile_route(user_id):
+    return update_teacher_profile(user_id)
+
 # End Dashboard Guru ===========================================================================
 
 
@@ -732,4 +776,237 @@ def dashboard_admin(user_id):
         amount_classes=amount_classes
     )
 
-# End Dashboard Guru ===========================================================================
+# Admin CRUD Kelas =============================================================================
+
+@app.route("/admin/kelas", methods=["GET"])
+@login_required
+@level_required(2)
+def admin_kelas_index():
+    classes = get_all_classes()
+    return render_template("dashboard/admin/kelas/index.html", classes=classes)
+
+@app.route("/admin/kelas/create", methods=["GET"])
+@login_required
+@level_required(2)
+def admin_kelas_create():
+    teachers = get_all_teachers()
+    return render_template("dashboard/admin/kelas/create.html", teachers=teachers)
+
+@app.route("/admin/kelas/create", methods=["POST"])
+@login_required
+@level_required(2)
+def admin_kelas_create_post():
+    name = request.form.get("name")
+    school = request.form.get("school")
+    kkm = request.form.get("kkm", type=int)
+    teacher_ids = request.form.getlist("teacher_ids")
+    teacher_ids = [int(tid) for tid in teacher_ids if tid]
+    if not name or not school:
+        flash("Nama kelas dan sekolah wajib diisi.", "danger")
+        return redirect(url_for("admin_kelas_create"))
+    create_kelas(name, school, kkm or 75, teacher_ids=teacher_ids)
+    flash("Kelas berhasil ditambahkan.", "success")
+    return redirect(url_for("admin_kelas_index"))
+
+@app.route("/admin/kelas/<int:kelas_id>/edit", methods=["GET"])
+@login_required
+@level_required(2)
+def admin_kelas_edit(kelas_id):
+    kelas = get_kelas_by_id(kelas_id)
+    teachers = get_all_teachers()
+    return render_template("dashboard/admin/kelas/edit.html", kelas=kelas, teachers=teachers)
+
+@app.route("/admin/kelas/<int:kelas_id>/edit", methods=["POST"])
+@login_required
+@level_required(2)
+def admin_kelas_edit_post(kelas_id):
+    name = request.form.get("name")
+    school = request.form.get("school")
+    kkm = request.form.get("kkm", type=int)
+    teacher_ids = request.form.getlist("teacher_ids")
+    teacher_ids = [int(tid) for tid in teacher_ids if tid]
+    if not name or not school:
+        flash("Nama kelas dan sekolah wajib diisi.", "danger")
+        return redirect(url_for("admin_kelas_edit", kelas_id=kelas_id))
+    update_kelas(kelas_id, name, school, kkm or 75, teacher_ids=teacher_ids)
+    flash("Kelas berhasil diperbarui.", "success")
+    return redirect(url_for("admin_kelas_index"))
+
+@app.route("/admin/kelas/<int:kelas_id>/delete", methods=["POST"])
+@login_required
+@level_required(2)
+def admin_kelas_delete(kelas_id):
+    delete_kelas(kelas_id)
+    flash("Kelas berhasil dihapus.", "success")
+    return redirect(url_for("admin_kelas_index"))
+
+# Admin CRUD Guru ===============================================================================
+
+@app.route("/admin/guru", methods=["GET"])
+@login_required
+@level_required(2)
+def admin_guru_index():
+    teachers = get_all_teachers()
+    return render_template("dashboard/admin/guru/index.html", teachers=teachers)
+
+@app.route("/admin/guru/create", methods=["GET"])
+@login_required
+@level_required(2)
+def admin_guru_create():
+    return render_template("dashboard/admin/guru/create.html")
+
+@app.route("/admin/guru/create", methods=["POST"])
+@login_required
+@level_required(2)
+def admin_guru_create_post():
+    username = request.form.get("username")
+    full_name = request.form.get("full_name")
+    password = request.form.get("password")
+    gender = request.form.get("gender")
+    if not username or not full_name or not password:
+        flash("Username, nama, dan password wajib diisi.", "danger")
+        return redirect(url_for("admin_guru_create"))
+    result = create_teacher(username, full_name, password, gender)
+    if result is None:
+        flash("Username sudah digunakan.", "danger")
+        return redirect(url_for("admin_guru_create"))
+    flash("Guru berhasil ditambahkan.", "success")
+    return redirect(url_for("admin_guru_index"))
+
+@app.route("/admin/guru/<int:teacher_id>/edit", methods=["GET"])
+@login_required
+@level_required(2)
+def admin_guru_edit(teacher_id):
+    teacher = get_teacher_by_id(teacher_id)
+    return render_template("dashboard/admin/guru/edit.html", teacher=teacher)
+
+@app.route("/admin/guru/<int:teacher_id>/edit", methods=["POST"])
+@login_required
+@level_required(2)
+def admin_guru_edit_post(teacher_id):
+    username = request.form.get("username")
+    full_name = request.form.get("full_name")
+    gender = request.form.get("gender")
+    password = request.form.get("password") or None
+    if not username or not full_name:
+        flash("Username dan nama wajib diisi.", "danger")
+        return redirect(url_for("admin_guru_edit", teacher_id=teacher_id))
+    result = update_teacher(teacher_id, username, full_name, gender, password)
+    if result is None:
+        flash("Username sudah digunakan.", "danger")
+        return redirect(url_for("admin_guru_edit", teacher_id=teacher_id))
+    flash("Guru berhasil diperbarui.", "success")
+    return redirect(url_for("admin_guru_index"))
+
+@app.route("/admin/guru/<int:teacher_id>/delete", methods=["POST"])
+@login_required
+@level_required(2)
+def admin_guru_delete(teacher_id):
+    delete_teacher(teacher_id)
+    flash("Guru berhasil dihapus.", "success")
+    return redirect(url_for("admin_guru_index"))
+
+# Admin CRUD Siswa =============================================================================
+
+@app.route("/admin/siswa", methods=["GET"])
+@login_required
+@level_required(2)
+def admin_siswa_index():
+    siswa = get_all_siswa()
+    return render_template("dashboard/admin/siswa/index.html", siswa=siswa)
+
+@app.route("/admin/siswa/create", methods=["GET"])
+@login_required
+@level_required(2)
+def admin_siswa_create():
+    classes = get_all_classes()
+    return render_template("dashboard/admin/siswa/create.html", classes=classes)
+
+@app.route("/admin/siswa/create", methods=["POST"])
+@login_required
+@level_required(2)
+def admin_siswa_create_post():
+    username = request.form.get("username")
+    full_name = request.form.get("full_name")
+    password = request.form.get("password")
+    gender = request.form.get("gender")
+    class_id = request.form.get("class_id", type=int)
+    if not username or not full_name or not password:
+        flash("Username, nama, dan password wajib diisi.", "danger")
+        return redirect(url_for("admin_siswa_create"))
+    result = create_siswa(username, full_name, password, gender, class_id)
+    if result is None:
+        flash("Username sudah digunakan.", "danger")
+        return redirect(url_for("admin_siswa_create"))
+    flash("Siswa berhasil ditambahkan.", "success")
+    return redirect(url_for("admin_siswa_index"))
+
+@app.route("/admin/siswa/<int:siswa_id>/edit", methods=["GET"])
+@login_required
+@level_required(2)
+def admin_siswa_edit(siswa_id):
+    siswa = get_siswa_by_id(siswa_id)
+    classes = get_all_classes()
+    return render_template("dashboard/admin/siswa/edit.html", siswa=siswa, classes=classes)
+
+@app.route("/admin/siswa/<int:siswa_id>/edit", methods=["POST"])
+@login_required
+@level_required(2)
+def admin_siswa_edit_post(siswa_id):
+    username = request.form.get("username")
+    full_name = request.form.get("full_name")
+    gender = request.form.get("gender")
+    class_id = request.form.get("class_id", type=int)
+    password = request.form.get("password") or None
+    if not username or not full_name:
+        flash("Username dan nama wajib diisi.", "danger")
+        return redirect(url_for("admin_siswa_edit", siswa_id=siswa_id))
+    result = update_siswa(siswa_id, username, full_name, gender, class_id, password)
+    if result is None:
+        flash("Username sudah digunakan.", "danger")
+        return redirect(url_for("admin_siswa_edit", siswa_id=siswa_id))
+    flash("Siswa berhasil diperbarui.", "success")
+    return redirect(url_for("admin_siswa_index"))
+
+@app.route("/admin/siswa/<int:siswa_id>/delete", methods=["POST"])
+@login_required
+@level_required(2)
+def admin_siswa_delete(siswa_id):
+    delete_siswa(siswa_id)
+    flash("Siswa berhasil dihapus.", "success")
+    return redirect(url_for("admin_siswa_index"))
+
+# Admin CRUD Token =============================================================================
+
+@app.route("/admin/token", methods=["GET"])
+@login_required
+@level_required(2)
+def admin_token_index():
+    tokens = get_all_tokens()
+    return render_template("dashboard/admin/token/index.html", tokens=tokens)
+
+@app.route("/admin/token/<int:kelas_id>/regenerate", methods=["POST"])
+@login_required
+@level_required(2)
+def admin_token_regenerate(kelas_id):
+    token = regenerate_token(kelas_id)
+    flash(f"Token berhasil diperbarui: {token}", "success")
+    return redirect(url_for("admin_token_index"))
+
+@app.route("/admin/token/<int:kelas_id>/activate", methods=["POST"])
+@login_required
+@level_required(2)
+def admin_token_activate(kelas_id):
+    activate_token(kelas_id)
+    flash("Token diaktifkan.", "success")
+    return redirect(url_for("admin_token_index"))
+
+@app.route("/admin/token/<int:kelas_id>/deactivate", methods=["POST"])
+@login_required
+@level_required(2)
+def admin_token_deactivate(kelas_id):
+    deactivate_token(kelas_id)
+    flash("Token dinonaktifkan.", "success")
+    return redirect(url_for("admin_token_index"))
+
+# End Admin CRUD ===============================================================================

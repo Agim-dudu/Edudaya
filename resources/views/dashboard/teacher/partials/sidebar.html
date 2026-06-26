@@ -30,8 +30,8 @@
                 <span>📋</span> Rekap Nilai
             </a>
 
-            <a href=""
-                class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition {{ 'active' if '/teacher/profile' in request.path else 'hover:bg-white/10' }}">
+            <a href="/profile/teacher/{{ user_id }}"
+                class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition {{ 'active' if '/profile/teacher' in request.path else 'hover:bg-white/10' }}">
                 <span>⚙️</span> Setting Profil
             </a>
         </nav>

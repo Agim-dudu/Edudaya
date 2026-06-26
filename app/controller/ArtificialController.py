@@ -146,7 +146,7 @@ def batch_analyze_pretest_logic(teacher_id, class_id, user_ids=None):
             "skor":           r.score,
             "benar":          r.correct,
             "total":          r.total,
-            "waktu_menit":    r.time_taken,
+            "waktu_menit":    (r.time_taken // 60) if r.time_taken else 0,
             "topic_scores":   json.loads(r.topic_scores)   if r.topic_scores   else {},
             "answer_details": json.loads(r.answer_details) if r.answer_details else []
         })
@@ -385,12 +385,12 @@ def batch_analyze_final_logic(teacher_id, class_id, user_ids=None):
                 "skor":           pre.score,
                 "benar":          pre.correct,
                 "total":          pre.total,
-                "waktu_menit":    pre.time_taken,
+                "waktu_menit":    (pre.time_taken // 60) if pre.time_taken else 0,
                 "topic_scores":   json.loads(pre.topic_scores)   if pre.topic_scores   else {},
                 "answer_details": json.loads(pre.answer_details) if pre.answer_details else []
             },
             "evaluasi_akhir": {
-                "waktu_menit":    ev.time_taken,
+                "waktu_menit":    (ev.time_taken // 60) if ev.time_taken else 0,
                 "topic_scores":   json.loads(ev.topic_scores)   if ev.topic_scores   else {},
                 "answer_details": json.loads(ev.answer_details) if ev.answer_details else []
             }
