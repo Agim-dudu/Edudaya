@@ -178,7 +178,7 @@
                         class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-emerald-100 flex flex-col">
                         <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-5 text-center">
                             <h2 class="font-fredoka text-2xl text-white" style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">
-                                Materi Pengenalan Penjumlahan (Medium) wey</h2>
+                                Materi Pengenalan Penjumlahan (Medium) Bab2</h2>
                         </div>
 
                         <div class="p-6 flex flex-col gap-5 flex-1">
@@ -546,12 +546,12 @@
 
                 <!-- FOOTER NAV -->
                 <div class="flex justify-between items-center flex-wrap gap-3 pb-4">
-                    <a href="/"
+                    <a href="/learning/bab1/quiz/{{ current_user.id }}/{{ current_user.klasifikasi }}"
                         class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">
-                        Beranda
+                        Halaman Sebelumnya
                     </a>
                     <p class="text-gray-400 text-xs font-semibold">© 2026 Edudaya 🌟</p>
-                    <a href="/learning/bab1/chapter2/{{ current_user.id }}/{{ current_user.klasifikasi }}"
+                    <a href="/learning/bab2/chapter2/{{ current_user.id }}/{{ current_user.klasifikasi }}"
                         class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">
                         Halaman Selanjutnya
                     </a>
@@ -729,7 +729,7 @@
             }
 
             // Soal terakhir selesai — kirim progress ke backend
-            fetch('/api/learning/bab1/chapter1/{{ user_id }}', {
+            fetch('/api/learning/bab2/chapter1/{{ user_id }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -763,7 +763,7 @@
                             popup: 'rounded-3xl font-fredoka'
                         }
                     }).then(() => {
-                        window.location.href = "/learning/bab1/chapter2/{{ current_user.id }}/{{ current_user.klasifikasi }}";
+                        window.location.href = "/learning/bab2/chapter2/{{ current_user.id }}/{{ current_user.klasifikasi }}";
                     });
                 })
                 .catch(err => {

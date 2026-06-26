@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kuis Seru: Penjumlahan</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="bg-slate-100 select-none">
+
+    <!-- Mobile overlay -->
+    <div
+        id="sidebar-overlay"
+        onclick="closeSidebar()"
+        class="hidden fixed inset-0 bg-black/40 z-40"
+    ></div>
+
+    <div class="flex w-screen h-screen overflow-hidden">
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside
+            id="sidebar"
+            class="fixed inset-y-0 left-0 z-50 w-72 lg:w-[300px] flex flex-col bg-white shadow-xl -translate-x-full transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 lg:shadow-md lg:z-auto"
+        >
+            <!-- Logo / Title -->
+            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200">
+                <a href="/" class="text-xl font-bold bg-gradient-to-r from-emerald-500 to-blue-500 bg-clip-text text-transparent">
+                    Kuis Penjumlahan 🌟
+                </a>
+                <button onclick="closeSidebar()" class="lg:hidden p-1 rounded hover:bg-gray-100 text-gray-500">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex flex-col gap-4 p-4 overflow-y-auto flex-1">
+
+                <!-- Timer -->
+                <div class="bg-white border-2 border-gray-200 rounded-xl p-3 text-center shadow-sm">
+                    <p class="text-sm text-gray-500 font-medium mb-1">Sisa Waktu</p>
+                    <span id="timer" class="text-3xl font-mono font-bold text-slate-600">15:00</span>
+                </div>
+
+                <!-- Question grid -->
+                <div class="bg-white border-2 border-gray-200 rounded-xl p-4 shadow-sm">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Navigasi Soal</p>
+                    <div class="grid grid-cols-5 gap-2">
+                        {% for i in range(1, 11) %}
+                        <button
+                            id="tombol-soal-{{ i }}"
+                            onclick="goToSoal({{ i }})"
+                            class="aspect-square rounded-lg border-2 border-gray-200 bg-white text-sm font-semibold transition hover:border-emerald-400 hover:bg-emerald-50"
+                        >{{ i }}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="bg-white border-2 border-gray-200 rounded-xl p-4 shadow-sm text-sm space-y-2">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Keterangan</p>
+                    <div class="flex items-center gap-2">
+                        <span class="w-5 h-5 rounded bg-green-300 border border-green-400 inline-block flex-shrink-0"></span>
+                        <span class="text-gray-600">Sudah dijawab</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-5 h-5 rounded bg-white border-2 border-gray-300 inline-block flex-shrink-0"></span>
+                        <span class="text-gray-600">Belum dijawab</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-5 h-5 rounded bg-red-300 border border-red-400 inline-block flex-shrink-0"></span>
+                        <span class="text-gray-600">Jawaban salah</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <main class="flex-1 flex flex-col min-w-0 overflow-hidden bg-white">
+
+            <!-- Top bar (mobile) -->
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 lg:hidden bg-white sticky top-0 z-30">
+                <button onclick="openSidebar()" class="p-2 rounded-lg hover:bg-gray-100 text-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-blue-500">
+                    Kuis Penjumlahan 🌟
+                </span>
+                <div id="timer-mobile" class="text-sm font-mono font-bold text-slate-600">15:00</div>
+            </div>
+
+            <!-- Questions area -->
+            <div class="flex-1 overflow-y-auto">
+                <div class="max-w-2xl mx-auto px-4 sm:px-6 py-4">
+
+                    <!-- SOAL 1 -->
+                    <div id="soal-1" class="animate-[fadeIn_0.2s_ease-in-out]">
+                        <div class="my-4 bg-emerald-400 rounded-lg px-4 py-2 text-center">
+                            <span class="text-base font-semibold text-white">Soal 1 dari 10</span>
+                        </div>
+                        <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
+                            <p class="font-semibold text-base leading-relaxed">Adi mempunyai 3 buah apel merah. Ibu membelikan lagi 4 buah apel hijau untuk Adi. Berapa jumlah seluruh apel Adi sekarang?</p>
+                        </div>
+                        <div class="mt-3 flex flex-col gap-3">
+                            <button type="button" id="soal1-a" onclick="pilihJawaban(1, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 5 buah</button>
+                            <button type="button" id="soal1-b" onclick="pilihJawaban(1, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 6 buah</button>
+                            <button type="button" id="soal1-c" onclick="pilihJawaban(1, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 7 buah</button>
+                            <button type="button" id="soal1-d" onclick="pilihJawaban(1, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 8 buah</button>
+                        </div>
+                    </div>
+
+                    <!-- SOAL 2 -->
+                    <div id="soal-2" class="hidden animate-[fadeIn_0.2s_ease-in-out]">
+                        <div class="my-4 bg-emerald-400 rounded-lg px-4 py-2 text-center">
+                            <span class="text-base font-semibold text-white">Soal 2 dari 10</span>
+                        </div>
+                        <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
+                            <p class="font-semibold text-base">Manakah di bawah ini yang merupakan arti dari simbol tambah (+)?</p>
+                        </div>
+                        <div class="mt-3 flex flex-col gap-3">
+                            <button type="button" id="soal2-a" onclick="pilihJawaban(2, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. Membuang benda agar berkurang</button>
+                            <button type="button" id="soal2-b" onclick="pilihJawaban(2, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. Menggabungkan dua kelompok benda menjadi lebih banyak</button>
+                            <button type="button" id="soal2-c" onclick="pilihJawaban(2, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. Membagikan benda kepada teman sama rata</button>
+                            <button type="button" id="soal2-d" onclick="pilihJawaban(2, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. Menyembunyikan angka rahasia</button>
+                        </div>
+                    </div>
+
+                    <!-- SOAL 3 -->
+                    <div id="soal-3" class="hidden animate-[fadeIn_0.2s_ease-in-out]">
+                        <div class="my-4 bg-emerald-400 rounded-lg px-4 py-2 text-center">
+                            <span class="text-base font-semibold text-white">Soal 3 dari 10</span>
+                        </div>
+                        <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
+                            <p class="font-semibold text-base">Berapakah hasil dari 5 + 5?</p>
+                        </div>
+                        <div class="mt-3 flex flex-col gap-3">
+                            <button type="button" id="soal3-a" onclick="pilihJawaban(3, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 8</button>
+                            <button type="button" id="soal3-b" onclick="pilihJawaban(3, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 9</button>
+                            <button type="button" id="soal3-c" onclick="pilihJawaban(3, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 10</button>
+                            <button type="button" id="soal3-d" onclick="pilihJawaban(3, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 11</button>
+                        </div>
+                    </div>
+
+                    <!-- SOAL 4 -->
+                    <div id="soal-4" class="hidden animate-[fadeIn_0.2s_ease-in-out]">
+                        <div class="my-4 bg-emerald-400 rounded-lg px-4 py-2 text-center">
+                            <span class="text-base font-semibold text-white">Soal 4 dari 10</span>
+                        </div>
+                        <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
+                            <p class="font-semibold text-base">Di atas meja ada 6 buku cerita. Kakak meletakkan lagi 2 buku cerita di atas meja. Kalimat matematika penjumlahan yang benar adalah...</p>
+                        </div>
+                        <div class="mt-3 flex flex-col gap-3">
+                            <button type="button" id="soal4-a" onclick="pilihJawaban(4, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 6 − 2 = 4</button>
+                            <button type="button" id="soal4-b" onclick="pilihJawaban(4, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 6 + 2 = 8</button>
+                            <button type="button" id="soal4-c" onclick="pilihJawaban(4, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 6 + 6 = 12</button>
+                            <button type="button" id="soal4-d" onclick="pilihJawaban(4, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 2 + 2 = 4</button>
+                        </div>
+                    </div>
+
+                    <!-- SOAL 5 -->
+                    <div id="soal-5" class="hidden animate-[fadeIn_0.2s_ease-in-out]">
+                        <div class="my-4 bg-emerald-400 rounded-lg px-4 py-2 text-center">
+                            <span class="text-base font-semibold text-white">Soal 5 dari 10</span>
+                        </div>
+                        <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
+                            <p class="font-semibold text-base">Siti punya 4 boneka. Dayu punya 0 boneka. Jika boneka mereka digabungkan, ada berapa jumlahnya?</p>
+                        </div>
+                        <div class="mt-3 flex flex-col gap-3">
+                            <button type="button" id="soal5-a" onclick="pilihJawaban(5, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 4 boneka</button>
+                            <button type="button" id="soal5-b" onclick="pilihJawaban(5, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 0 boneka</button>
+                            <button type="button" id="soal5-c" onclick="pilihJawaban(5, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 40 boneka</button>
+                            <button type="button" id="soal5-d" onclick="pilihJawaban(5, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 5 boneka</button>
+                        </div>
+                    </div>
+
+                    <!-- SOAL 6 -->
+                    <div id="soal-6" class="hidden animate-[fadeIn_0.2s_ease-in-out]">
+                        <div class="my-4 bg-emerald-400 rounded-lg px-4 py-2 text-center">
+                            <span class="text-base font-semibold text-white">Soal 6 dari 10</span>
+                        </div>
+                        <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
+                            <p class="font-semibold text-base">Jika 4 + 2 = 6, maka berapakah hasil dari balikannya yaitu 2 + 4?</p>
+                        </div>
+                        <div class="mt-3 flex flex-col gap-3">
+                            <button type="button" id="soal6-a" onclick="pilihJawaban(6, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. Hasilnya jadi lebih sedikit yaitu 2</button>
+                            <button type="button" id="soal6-b" onclick="pilihJawaban(6, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. Hasilnya tetap sama yaitu 6</button>
+                            <button type="button" id="soal6-c" onclick="pilihJawaban(6, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. Hasilnya berubah menjadi 8</button>
+                            <button type="button" id="soal6-d" onclick="pilihJawaban(6, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. Tidak bisa dihitung karena terbalik</button>
+                        </div>
+                    </div>
+
+                    <!-- SOAL 7 -->
+                    <div id="soal-7" class="hidden animate-[fadeIn_0.2s_ease-in-out]">
+                        <div class="my-4 bg-emerald-400 rounded-lg px-4 py-2 text-center">
+                            <span class="text-base font-semibold text-white">Soal 7 dari 10</span>
+                        </div>
+                        <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
+                            <p class="font-semibold text-base">Lani memiliki 5 pensil warna. Ia membeli lagi 1 kotak berisi 5 pensil warna. Sekarang pensil warna Lani ada...</p>
+                        </div>
+                        <div class="mt-3 flex flex-col gap-3">
+                            <button type="button" id="soal7-a" onclick="pilihJawaban(7, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 6 pensil</button>
+                            <button type="button" id="soal7-b" onclick="pilihJawaban(7, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 9 pensil</button>
+                            <button type="button" id="soal7-c" onclick="pilihJawaban(7, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 10 pensil</button>
+                            <button type="button" id="soal7-d" onclick="pilihJawaban(7, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 15 pensil</button>
+                        </div>
+                    </div>
+
+                    <!-- SOAL 8 -->
+                    <div id="soal-8" class="hidden animate-[fadeIn_0.2s_ease-in-out]">
+                        <div class="my-4 bg-emerald-400 rounded-lg px-4 py-2 text-center">
+                            <span class="text-base font-semibold text-white">Soal 8 dari 10</span>
+                        </div>
+                        <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
+                            <p class="font-semibold text-base mb-2">Lihatlah hitungan di bawah ini:</p>
+                            <ol class="list-decimal list-inside space-y-1 font-mono text-base">
+                                <li>1 + 2 = 3</li>
+                                <li>4 + 1 = 5</li>
+                                <li>3 + 2 = 6</li>
+                            </ol>
+                            <p class="font-semibold text-base mt-3">Hitungan penjumlahan mana yang benar?</p>
+                        </div>
+                        <div class="mt-3 flex flex-col gap-3">
+                            <button type="button" id="soal8-a" onclick="pilihJawaban(8, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. Nomor 1 dan 2</button>
+                            <button type="button" id="soal8-b" onclick="pilihJawaban(8, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. Nomor 1 dan 3</button>
+                            <button type="button" id="soal8-c" onclick="pilihJawaban(8, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. Nomor 2 dan 3</button>
+                            <button type="button" id="soal8-d" onclick="pilihJawaban(8, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. Semua nomor benar</button>
+                        </div>
+                    </div>
+
+                    <!-- SOAL 9 -->
+                    <div id="soal-9" class="hidden animate-[fadeIn_0.2s_ease-in-out]">
+                        <div class="my-4 bg-emerald-400 rounded-lg px-4 py-2 text-center">
+                            <span class="text-base font-semibold text-white">Soal 9 dari 10</span>
+                        </div>
+                        <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
+                            <p class="font-semibold text-base">Edo punya 7 kelereng, lalu dia menemukan 2 kelereng lagi di halaman. Jika kelereng Edo dijumlahkan, maka jumlahnya akan menjadi...</p>
+                        </div>
+                        <div class="mt-3 flex flex-col gap-3">
+                            <button type="button" id="soal9-a" onclick="pilihJawaban(9, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. Lebih sedikit (berkurang)</button>
+                            <button type="button" id="soal9-b" onclick="pilihJawaban(9, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. Tetap tidak berubah</button>
+                            <button type="button" id="soal9-c" onclick="pilihJawaban(9, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. Lebih banyak yaitu menjadi 9</button>
+                            <button type="button" id="soal9-d" onclick="pilihJawaban(9, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. Habis semua</button>
+                        </div>
+                    </div>
+
+                    <!-- SOAL 10 -->
+                    <div id="soal-10" class="hidden animate-[fadeIn_0.2s_ease-in-out]">
+                        <div class="my-4 bg-emerald-400 rounded-lg px-4 py-2 text-center">
+                            <span class="text-base font-semibold text-white">Soal 10 dari 10</span>
+                        </div>
+                        <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
+                            <p class="font-semibold text-base">Berapakah angka yang tepat untuk mengisi titik-titik berikut: 6 + ... = 9?</p>
+                        </div>
+                        <div class="mt-3 flex flex-col gap-3">
+                            <button type="button" id="soal10-a" onclick="pilihJawaban(10, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 2</button>
+                            <button type="button" id="soal10-b" onclick="pilihJawaban(10, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 3</button>
+                            <button type="button" id="soal10-c" onclick="pilihJawaban(10, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 4</button>
+                            <button type="button" id="soal10-d" onclick="pilihJawaban(10, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 5</button>
+                        </div>
+                    </div>
+
+                    <!-- Navigation buttons -->
+                    <div class="flex justify-between mt-6 mb-8">
+                        <button
+                            onclick="prevSoal()"
+                            class="px-5 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition border border-gray-300"
+                        >← Kembali</button>
+                        <button
+                            id="btn-next"
+                            class="px-5 py-2.5 bg-teal-500 text-white font-semibold rounded-lg hover:bg-teal-600 transition shadow-sm"
+                        >Soal Selanjutnya →</button>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // ==================== STATE ====================
+        let currentSoal = 1;
+        const totalSoal = 10;
+        const userLevel = parseInt("{{ user_level }}") || 0;
+        const jawabanUser = {};
+
+        // Tailwind classes for answer button states — applied via JS
+        const CLASS_DEFAULT  = 'border-slate-200 bg-white text-slate-800';
+        const CLASS_SELECTED = 'border-emerald-400 bg-green-100 text-slate-800';
+        const CLASS_WRONG    = 'border-red-400 bg-red-100 text-slate-800';
+
+        // ==================== SIDEBAR MOBILE ====================
+        function openSidebar() {
+            document.getElementById('sidebar').classList.remove('-translate-x-full');
+            document.getElementById('sidebar-overlay').classList.remove('hidden');
+        }
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.add('-translate-x-full');
+            document.getElementById('sidebar-overlay').classList.add('hidden');
+        }
+
+        // ==================== NAVIGASI SOAL ====================
+        function showSoal(no) {
+            for (let i = 1; i <= totalSoal; i++) {
+                const el = document.getElementById(`soal-${i}`);
+                if (el) el.classList.toggle('hidden', i !== no);
+            }
+            updateTombolNavigasi();
+
+            for (let i = 1; i <= totalSoal; i++) {
+                const t = document.getElementById(`tombol-soal-${i}`);
+                if (t) {
+                    t.classList.toggle('ring-2', i === no);
+                    t.classList.toggle('ring-teal-400', i === no);
+                }
+            }
+
+            if (window.innerWidth < 1024) closeSidebar();
+        }
+
+        function goToSoal(no) { currentSoal = no; showSoal(currentSoal); }
+        function nextSoal()   { if (currentSoal < totalSoal) { currentSoal++; showSoal(currentSoal); } }
+        function prevSoal()   { if (currentSoal > 1)         { currentSoal--; showSoal(currentSoal); } }
+
+        function updateTombolNavigasi() {
+            const btnNext = document.getElementById("btn-next");
+            if (currentSoal === totalSoal) {
+                btnNext.textContent = "Kirim Jawaban 🚀";
+                btnNext.onclick = () => cekHasil(false);
+            } else {
+                btnNext.textContent = "Soal Selanjutnya →";
+                btnNext.onclick = nextSoal;
+            }
+        }
+
+        // ==================== JAWABAN ====================
+        function setButtonState(btn, state) {
+            // Reset all state classes first
+            btn.classList.remove(
+                'border-slate-200', 'bg-white',
+                'border-emerald-400', 'bg-green-100',
+                'border-red-400', 'bg-red-100'
+            );
+            if (state === 'selected') {
+                btn.classList.add('border-emerald-400', 'bg-green-100');
+            } else if (state === 'wrong') {
+                btn.classList.add('border-red-400', 'bg-red-100');
+            } else {
+                btn.classList.add('border-slate-200', 'bg-white');
+            }
+        }
+
+        function pilihJawaban(no, el) {
+            jawabanUser[no] = el.id;
+
+            // Reset semua pilihan di soal ini
+            const parent = el.parentElement;
+            Array.from(parent.children).forEach(btn => setButtonState(btn, 'default'));
+
+            // Tandai yang dipilih
+            setButtonState(el, 'selected');
+
+            // Update navigator
+            tandaiTombol(no, null);
+        }
+
+        function tandaiTombol(no, isCorrect) {
+            const tombol = document.getElementById(`tombol-soal-${no}`);
+            if (!tombol) return;
+            tombol.classList.remove('bg-white', 'bg-green-300', 'bg-red-300');
+            if      (isCorrect === true)  tombol.classList.add('bg-green-300');
+            else if (isCorrect === false) tombol.classList.add('bg-red-300');
+            else                          tombol.classList.add('bg-green-300');
+        }
+
+        function tandaiJawabanBenarSalah(no, userAnswer, kunci) {
+            if (!userAnswer) return;
+            if (userAnswer !== kunci) {
+                const salahBtn = document.getElementById(userAnswer);
+                if (salahBtn) setButtonState(salahBtn, 'wrong');
+            }
+        }
+
+        // ==================== CEK HASIL ====================
+        function cekHasil(force = false) {
+            if (!force && Object.keys(jawabanUser).length < totalSoal) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Ups, Belum Selesai!',
+                    text: 'Silakan jawab semua soal matematika dulu ya.',
+                });
+                return;
+            }
+
+            // --- GURU: preview mode (hitung lokal hanya untuk preview) ---
+            if (userLevel !== 0) {
+                const kunciPreview = {1:"soal1-c",2:"soal2-b",3:"soal3-c",4:"soal4-b",5:"soal5-a",6:"soal6-b",7:"soal7-c",8:"soal8-a",9:"soal9-c",10:"soal10-b"};
+                let benar = 0;
+                for (let i = 1; i <= totalSoal; i++) {
+                    const ok = jawabanUser[i] === kunciPreview[i];
+                    if (ok) benar++;
+                    tandaiTombol(i, ok);
+                    tandaiJawabanBenarSalah(i, jawabanUser[i], kunciPreview[i]);
+                }
+                const score = Math.round((benar / totalSoal) * 100);
+                const salah = totalSoal - benar;
+                const kkm   = parseInt("{{ user_kkm }}") || 70;
+                const lulus = score >= kkm;
+
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Preview Kuis Selesai',
+                    html: `
+                        <div class="space-y-3 text-gray-800">
+                            <div class="bg-amber-50 text-amber-700 border border-amber-200 p-2 rounded-lg text-sm font-medium">
+                                👁️ Mode Preview Guru — nilai tidak disimpan
+                            </div>
+                            <p class="text-xl font-semibold">
+                                Nilai Simulasi:
+                                <span class="text-3xl font-bold ${lulus ? 'text-green-600' : 'text-red-600'}">${score}</span>
+                            </p>
+                            <p>🎉 Benar: <strong class="text-green-600">${benar}</strong> &nbsp;|&nbsp; ❌ Salah: <strong class="text-red-600">${salah}</strong></p>
+                        </div>
+                    `,
+                    confirmButtonText: 'Kembali ke Menu',
+                    customClass: {
+                        confirmButton: 'bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-2 rounded-lg',
+                        popup: 'rounded-2xl shadow-xl',
+                    },
+                    buttonsStyling: false,
+                }).then(r => { if (r.isConfirmed) window.location.href = "/learning/bab1/quiz/{{ current_user.id }}/{{ current_user.klasifikasi }}"; });
+                return;
+            }
+
+            // --- SISWA: kirim jawaban mentah ke server ---
+            const csrfToken = "{{ csrf_token() }}";
+            fetch('/api/bab1/quiz/{{ user_id }}', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+                body: JSON.stringify({
+                    userID:  '{{ user_id }}',
+                    chapter: '1',
+                    jawaban: jawabanUser   // { 1: "soal1-c", 2: "soal2-b", ... }
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                // Tandai benar/salah dari kunci yang dikembalikan server
+                for (let i = 1; i <= totalSoal; i++) {
+                    const kunci = data.jawaban_benar[String(i)];
+                    const ok    = jawabanUser[i] === kunci;
+                    tandaiTombol(i, ok);
+                    tandaiJawabanBenarSalah(i, jawabanUser[i], kunci);
+                }
+
+                const lulus = data.lulus;
+                const score = data.score;
+                const benar = data.total_benar;
+                const salah = data.total_salah;
+
+                Swal.fire({
+                    icon: lulus ? 'success' : 'error',
+                    title: lulus ? 'Hore! Kamu Lulus ✨' : 'Yuk, Belajar Lagi! 💪',
+                    html: `
+                        <div class="space-y-3 text-gray-800">
+                            <p class="text-xl font-semibold">
+                                Nilaimu:
+                                <span class="text-3xl font-bold ${lulus ? 'text-green-600' : 'text-red-600'}">${score}</span>
+                            </p>
+                            <p>🎉 Benar: <strong class="text-green-600">${benar}</strong> &nbsp;|&nbsp; ❌ Salah: <strong class="text-red-600">${salah}</strong></p>
+                            <div class="mt-2 p-3 rounded-lg text-sm font-medium ${lulus ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}">
+                                ${lulus
+                                    ? 'Hebat sekali! Kamu pintar! Yuk kita lanjut ke materi berikutnya.'
+                                    : 'Jangan berkecil hati ya! Yuk coba ulangi lagi kuisnya biar makin jago.'}
+                            </div>
+                        </div>
+                    `,
+                    confirmButtonText: 'Lanjut',
+                    customClass: {
+                        confirmButton: 'bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg',
+                        popup: 'rounded-2xl shadow-xl',
+                    },
+                    buttonsStyling: false,
+                }).then(r => { if (r.isConfirmed) window.location.href = data.next_url; });
+            })
+            .catch(err => {
+                console.error('Gagal update progress:', err);
+                Swal.fire({ icon: 'error', title: 'Gagal', text: 'Gagal menyimpan skor kuis. Coba lagi nanti.' });
+            });
+        }
+
+        // ==================== INIT ====================
+        document.addEventListener('DOMContentLoaded', () => showSoal(currentSoal));
+    </script>
+
+    <!-- Timer Script -->
+    <script>
+        const timerEl       = document.getElementById('timer');
+        const timerMobileEl = document.getElementById('timer-mobile');
+        let totalSeconds    = parseInt("{{ sisa_detik }}") || (15 * 60);
+
+        function formatTime(s) {
+            const m = Math.floor(s / 60);
+            return `${String(m).padStart(2,'0')}:${String(s % 60).padStart(2,'0')}`;
+        }
+
+        function syncTimers(s) {
+            const t = formatTime(s);
+            if (timerEl)       timerEl.textContent = t;
+            if (timerMobileEl) timerMobileEl.textContent = t;
+
+            // Ganti warna teks timer via Tailwind class swap
+            const warn = s <= 120;
+            [timerEl, timerMobileEl].forEach(el => {
+                if (!el) return;
+                el.classList.toggle('text-red-500',   warn);
+                el.classList.toggle('text-slate-600', !warn);
+            });
+        }
+
+        syncTimers(totalSeconds);
+
+        const timerInterval = setInterval(() => {
+            if (totalSeconds <= 0) {
+                clearInterval(timerInterval);
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: "Waktu Habis! ⏰",
+                    text: "Jawabanmu akan dikirim otomatis ya.",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                setTimeout(() => cekHasil(true), 2000);
+                return;
+            }
+            totalSeconds--;
+            syncTimers(totalSeconds);
+        }, 1000);
+    </script>
+
+</body>
+</html>

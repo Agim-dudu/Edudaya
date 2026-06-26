@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Analisis AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/resources/css/main.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kuning: {
+                            general: '#F5A623',
+                            light: '#FEF3DB',
+                            dark: '#C47D0E'
+                        },
+                        merah: {
+                            general: '#C0392B',
+                            light: '#FDECEA',
+                            dark: '#922B21'
+                        },
+                        hijau: {
+                            general: '#27AE60',
+                            light: '#E8F8F0',
+                            dark: '#1E8449'
+                        },
+                        biru: {
+                            general: '#2980B9',
+                            light: '#EAF4FB',
+                            dark: '#1A5276'
+                        },
+                        ungu: {
+                            general: '#8E44AD',
+                            light: '#F5EEF8',
+                            dark: '#6C3483'
+                        },
+                        cokelat: {
+                            general: '#6D4C41',
+                            light: '#EFEBE9',
+                            dark: '#4E342E'
+                        },
+                        krem: {
+                            general: '#FFF8EE',
+                            dark: '#F5E6CC'
+                        },
+                    },
+                    fontFamily: {
+                        nunito: ['Nunito', 'sans-serif'],
+                        fredoka: ['Fredoka One', 'cursive'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="sasirangan-bg">
+
+    <div id="dash-guru" class="page flex">
+
+        {% include 'dashboard/teacher/partials/sidebar.html' %}
+
+        <main class="flex-1 overflow-auto">
+            <div class="bg-white shadow-sm px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="lg:hidden text-cokelat-general p-1 -ml-1" aria-label="Menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <div class="font-fredoka text-xl text-cokelat-general" id="guru-page-title">Dashboard Guru</div>
+                        <div class="text-xs text-gray-400">Selamat datang, {{ current_user.full_name }}!</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="text-sm font-700 text-cokelat-general">{{ current_user.full_name }}</div>
+                </div>
+            </div>
+
+            <!-- Flash Message Section -->
+            {% include 'partials/flash_message.html' %}
+
+            <div class="p-6">
+                <div>
+                    <div class="flex items-center justify-between px-4 py-3 mb-6 bg-white rounded-xl">
+                        <div>
+                            <h2 class="font-fredoka text-2xl text-cokelat-general">🤖 Hasil Pretest Analisis AI Kelas
+                            </h2>
+                        </div>
+                        <form
+                            action="{{ url_for('dashboard_teacher_batch_analyze_pretest', teacher_id=user_id, class_id=class_id) }}"
+                            method="post">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button
+                                class="w-full bg-blue-500 hover:bg-biru-dark text-white font-800 py-2 px-3 rounded-xl text-sm shadow-md">
+                                🔍 Mulai Analisis Pretest
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow overflow-hidden">
+                        <div class="p-4 border-b border-gray-100 flex gap-3">
+                            <input type="search" placeholder="🔍 Cari siswa..."
+                                class="flex-1 border border-gray-200 rounded-xl px-4 py-2 text-sm font-nunito">
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead class="bg-gray-50 text-gray-500 text-xs font-700 uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left w-12">No</th>
+                                        <th class="px-4 py-3 text-left">Nama</th>
+                                        <th class="px-4 py-3 text-left">Status Pretest</th>
+                                        <th class="px-4 py-3 text-left">Status Analysis</th>
+                                        <th class="px-4 py-3 text-left">Score</th>
+                                        <th class="px-4 py-3 text-left">Waktu Pengerjaan</th>
+                                        <!-- Tambah Header Kolom Aksi AI -->
+                                        <th class="px-4 py-3 text-center w-28">Analisis AI</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    {% if pretest_analysis %}
+                                    {% for student in pretest_analysis %}
+                                    <tr class="hover:bg-gray-50">
+                                        <!-- 1. Nomor urut -->
+                                        <td class="px-4 py-3 text-gray-500">{{ loop.index }}</td>
+
+                                        <!-- 2. Nama Lengkap -->
+                                        <td class="px-4 py-3 font-700 text-gray-900">{{ student.full_name }}</td>
+
+                                        <!-- 3. Status Pretest -->
+                                        <td class="px-4 py-3">
+                                            {% if student.pretest_done %}
+                                            <span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Selesai</span>
+                                            {% else %}
+                                            <span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Belum
+                                                Mengerjakan</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <!-- Status Analisis -->
+                                        <td class="px-4 py-3 font-semibold text-gray-700">
+                                            {% if student.analysis_done %}
+                                            <span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Selesai</span>
+                                            {% else %}
+                                            <span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Belum
+                                                Dianalysis</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <!-- 4. Score -->
+                                        <td class="px-4 py-3 font-semibold text-gray-700">
+                                            {% if student.score is not none %}
+                                            {{ student.score }}
+                                            {% else %}
+                                            <span class="text-gray-400 font-normal">---</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <!-- 5. Waktu Pengerjaan -->
+                                        <td class="px-4 py-3 text-gray-600">
+                                            {% if student.time_taken is not none %}
+                                            {{ student.time_taken }} Menit
+                                            {% else %}
+                                            <span class="text-gray-400 font-normal">---</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <!-- 6. Kolom Detail Analisis AI -->
+                                        <td class="px-4 py-3 text-center">
+                                            {% if student.analysis_done %}
+                                            <!-- Tombol aktif jika siswa sudah mengerjakan -->
+                                            <a href="/teacher/result/pretest/analysis/{{ user_id }}/student/{{student.user_id}}"
+                                                class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                Detail 🧐
+                                            </a>
+                                            {% else %}
+                                            <!-- Tombol disabled/disabled style jika siswa belum mengerjakan -->
+                                            <button disabled
+                                                class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-400 bg-gray-100 rounded-lg cursor-not-allowed">
+                                                Terkunci
+                                            </button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <!-- Jangan lupa colspan diubah menjadi 6 karena jumlah kolom bertambah -->
+                                        <td colspan="6" class="px-4 py-4 text-center text-gray-400">
+                                            Belum ada data siswa. Pilih atau buat kelas terlebih dahulu.
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        </main>
+    </div>
+
+    <script src="/resources/js/flash_message.js"></script>
+
+{% include 'dashboard/partials/mobile_toggle.html' %}
+</body>
+
+</html>

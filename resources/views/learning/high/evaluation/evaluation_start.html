@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pretest Edudaya</title>
+  <title>Evaluasi Edudaya</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet"/>
   <style>
@@ -373,7 +373,7 @@
       <div class="site-logo">
         <div>
           <div class="logo-title">Edudaya</div>
-          <div class="logo-sub">PRETEST</div>
+          <div class="logo-sub">Evaluasi</div>
         </div>
       </div>
     </div>
@@ -519,7 +519,7 @@
         userId:    "{{ user_id }}",
         csrfToken: "{{ csrf_token() }}",
         questions: {{ questions | tojson }},
-        pretestApiUrl: "/pretest/submit/{{ user_id }}"
+        pretestApiUrl: "/evaluation/submit/{{ user_id }}"
     };
   </script>
   <script src="/resources/js/pretest_question_handle.js"></script>

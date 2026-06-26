@@ -71,22 +71,22 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                         <div class="bg-white rounded-2xl p-4 shadow text-center card-hover">
                             <div class="text-3xl mb-1">📚</div>
-                            <div class="font-fredoka text-3xl text-biru-general">{{ stats.completed_bab }}/{{ stats.total_bab }}</div>
+                            <div class="font-fredoka text-3xl text-biru-general">6</div>
                             <div class="text-xs text-gray-500 font-600">Materi Selesai</div>
                         </div>
                         <div class="bg-white rounded-2xl p-4 shadow text-center card-hover">
                             <div class="text-3xl mb-1">🧩</div>
-                            <div class="font-fredoka text-3xl text-hijau-general">{{ stats.total_submateri }}</div>
-                            <div class="text-xs text-gray-500 font-600">Sub-materi</div>
+                            <div class="font-fredoka text-3xl text-hijau-general">42</div>
+                            <div class="text-xs text-gray-500 font-600">Latihan Dikerjakan</div>
                         </div>
                         <div class="bg-white rounded-2xl p-4 shadow text-center card-hover">
                             <div class="text-3xl mb-1">⭐</div>
-                            <div class="font-fredoka text-3xl text-kuning-general">{{ stats.avg_score }}</div>
+                            <div class="font-fredoka text-3xl text-kuning-general">95</div>
                             <div class="text-xs text-gray-500 font-600">Nilai Rata-rata</div>
                         </div>
                         <div class="bg-white rounded-2xl p-4 shadow text-center card-hover">
                             <div class="text-3xl mb-1">🏅</div>
-                            <div class="font-fredoka text-3xl text-merah-general">#{{ stats.ranking if stats.ranking else '-' }}</div>
+                            <div class="font-fredoka text-3xl text-merah-general">#1</div>
                             <div class="text-xs text-gray-500 font-600">Peringkat Kelas</div>
                         </div>
                     </div>
@@ -94,94 +94,113 @@
                     <!-- Lanjutkan Belajar -->
                     <div class="bg-white rounded-2xl shadow p-5 mb-6">
                         <h3 class="font-fredoka text-xl text-cokelat-general mb-4">📖 Lanjutkan Belajar</h3>
-                        {% if stats.next_material %}
                         <div class="flex items-center gap-4 p-4 bg-biru-light rounded-xl">
-                            <div class="text-5xl">{{ stats.next_material.icon }}</div>
+                            <div class="text-5xl">🛶</div>
                             <div class="flex-1">
-                                <div class="font-700 text-cokelat-general">{{ stats.next_material.title }}</div>
-                                <div class="text-sm text-gray-500 mb-2">{{ stats.next_material.bab_title }} · {{ stats.next_material.bab_progress }}% selesai</div>
+                                <div class="font-700 text-cokelat-general">Penjumlahan ala Pasar Terapung</div>
+                                <div class="text-sm text-gray-500 mb-2">Sesi 3 dari 8 telah selesai</div>
                                 <div class="progress-bar">
-                                    <div class="progress-fill" style="width:{{ stats.next_material.bab_progress }}%"></div>
+                                    <div class="progress-fill" style="width:37%"></div>
                                 </div>
                             </div>
-                            <a href="{{ stats.next_material.url }}" class="bg-biru-general hover:bg-biru-dark text-white font-700 px-4 py-2 rounded-xl text-sm shrink-0 transition">
-                                {% if stats.next_material.completed %}Ulangi{% else %}Lanjut →{% endif %}
-                            </a>
-                        </div>
-                        {% else %}
-                        <div class="text-center text-gray-400 py-6">
-                            <div class="text-4xl mb-2">🎉</div>
-                            <p class="font-bold">Semua bab sudah selesai!</p>
-                            <p class="text-xs">Kamu hebat! Tunggu bab berikutnya.</p>
-                        </div>
-                        {% endif %}
-                    </div>
-
-                    {% set ns = namespace(completed_any=false) %}
-                    {% for bab in stats.bab_list %}
-                        {% if bab.completed == bab.total %}{% set ns.completed_any = true %}{% endif %}
-                    {% endfor %}
-
-                    {% if ns.completed_any %}
-                    <div class="bg-white rounded-2xl shadow p-5 mb-6">
-                        <h3 class="font-fredoka text-xl text-cokelat-general mb-4">✅ Materi Selesai</h3>
-                        <div class="space-y-3">
-                            {% for bab in stats.bab_list %}
-                            {% if bab.completed == bab.total %}
-                            <div class="border border-hijau-general/30 rounded-xl overflow-hidden">
-                                <button onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.chevron').classList.toggle('rotate-90')"
-                                    class="w-full flex items-center gap-3 p-4 bg-hijau-light hover:bg-hijau-light/70 transition text-left">
-                                    <span class="text-2xl">{{ bab.icon }}</span>
-                                    <div class="flex-1">
-                                        <div class="font-700 text-cokelat-general text-sm">{{ bab.bab_title }}</div>
-                                        <div class="text-xs text-hijau-dark">{{ bab.completed }}/{{ bab.total }} selesai</div>
-                                    </div>
-                                    <span class="chevron text-hijau-general text-sm transition-transform inline-block">▶</span>
-                                </button>
-                                <div class="hidden divide-y divide-gray-100">
-                                    {% for item in bab.materials %}
-                                    <a href="{{ item.url }}" class="flex items-center gap-3 px-5 py-2.5 bg-white hover:bg-gray-50 transition">
-                                        <div class="text-xl">{{ item.icon }}</div>
-                                        <div class="flex-1">
-                                            <div class="font-600 text-cokelat-general text-sm">{{ item.title }}</div>
-                                        </div>
-                                        <div class="text-right">
-                                            <div class="font-fredoka text-lg text-hijau-general">{{ item.score }}</div>
-                                        </div>
-                                    </a>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            {% endif %}
-                            {% endfor %}
+                            <button onclick="showPage('belajar')" class="bg-biru-general hover:bg-biru-dark text-white font-700 px-4 py-2 rounded-xl text-sm shrink-0 transition">Lanjut →</button>
                         </div>
                     </div>
-                    {% endif %}
 
                     <!-- Leaderboard mini siswa -->
                     <div class="bg-white rounded-2xl shadow p-5">
                         <!-- 🔥 FIX: Penulisan dinamis .name dan .school dari model baru -->
                         <h3 class="font-fredoka text-xl text-cokelat-general mb-4">
                             🏆 Peringkat Kelas 
-                            {% if stats.class_name %}
-                                ({{ stats.class_name }} - {{ stats.class_school }})
+                            {% if current_user.class_obj %}
+                                ({{ current_user.class_obj.name }} - {{ current_user.class_obj.school }})
                             {% endif %}
                         </h3>
                         <div class="space-y-2">
-                            {% for entry in stats.leaderboard %}
-                            <div class="flex items-center gap-3 p-3 rounded-xl {% if entry.is_me %}bg-kuning-light border-2 border-kuning-general{% else %}bg-gray-50{% endif %}">
-                                <span class="text-2xl">
-                                    {% if entry.rank == 1 %}🥇{% elif entry.rank == 2 %}🥈{% elif entry.rank == 3 %}🥉{% else %}#{{ entry.rank }}{% endif %}
-                                </span>
-                                <div class="flex-1 {% if entry.is_me %}font-800 text-cokelat-general{% else %}font-600 text-gray-700{% endif %}">
-                                    {{ entry.name }}{% if entry.is_me %} (Kamu!){% endif %}
-                                </div>
-                                <div class="font-fredoka text-xl {% if entry.is_me %}text-kuning-dark{% else %}text-gray-500{% endif %}">{{ entry.total_score }}</div>
+                            <div class="flex items-center gap-3 p-3 bg-kuning-light rounded-xl border-2 border-kuning-general">
+                                <span class="text-2xl">🥇</span>
+                                <div class="flex-1 font-800 text-cokelat-general">{{ current_user.full_name }} (Kamu!)</div>
+                                <div class="font-fredoka text-xl text-kuning-dark">980</div>
                             </div>
-                            {% endfor %}
-                            {% if stats.leaderboard|length == 0 %}
-                            <div class="text-center text-gray-400 text-sm py-4">Belum ada data peringkat</div>
-                            {% endif %}
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                                <span class="text-2xl">🥈</span>
+                                <div class="flex-1 font-600 text-gray-700">Dewi Lestari</div>
+                                <div class="font-fredoka text-xl text-gray-500">820</div>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                                <span class="text-2xl">🥉</span>
+                                <div class="flex-1 font-600 text-gray-700">Rizky Akbar</div>
+                                <div class="font-fredoka text-xl text-gray-500">755</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Nilai Siswa -->
+                <div id="siswa-nilai" class="siswa-tab hidden">
+                    <h2 class="font-fredoka text-2xl text-cokelat-general mb-6">🏆 Nilai Saya</h2>
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div class="bg-white rounded-2xl p-4 shadow text-center">
+                            <div class="font-fredoka text-5xl text-hijau-general mb-1">95</div>
+                            <div class="text-sm text-gray-500 font-600">Nilai Terbaik</div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-4 shadow text-center">
+                            <div class="font-fredoka text-5xl text-biru-general mb-1">82</div>
+                            <div class="text-sm text-gray-500 font-600">Rata-rata</div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-4 shadow text-center">
+                            <div class="font-fredoka text-5xl text-kuning-general mb-1">6</div>
+                            <div class="text-sm text-gray-500 font-600">Latihan Selesai</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow overflow-hidden">
+                        <div class="px-5 py-4 border-b border-gray-100">
+                            <h3 class="font-fredoka text-lg text-cokelat-general">Detail Nilai per Materi</h3>
+                        </div>
+                        <div class="divide-y divide-gray-100">
+                            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50">
+                                <div class="text-3xl">🛶</div>
+                                <div class="flex-1">
+                                    <div class="font-700 text-cokelat-general text-sm">Penjumlahan ala Pasar Terapung</div>
+                                    <div class="text-xs text-gray-400">Dikerjakan: 10 Nov 2024</div>
+                                    <div class="progress-bar mt-2 w-32">
+                                        <div class="progress-fill" style="width:98%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-fredoka text-3xl text-hijau-general">98</div>
+                                    <div class="text-xs text-gray-400">Sangat Baik</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50">
+                                <div class="text-3xl">🌺</div>
+                                <div class="flex-1">
+                                    <div class="font-700 text-cokelat-general text-sm">Mengenal Bilangan 1-100</div>
+                                    <div class="text-xs text-gray-400">Dikerjakan: 5 Nov 2024</div>
+                                    <div class="progress-bar mt-2 w-32">
+                                        <div class="progress-fill" style="width:92%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-fredoka text-3xl text-hijau-general">92</div>
+                                    <div class="text-xs text-gray-400">Sangat Baik</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50">
+                                <div class="text-3xl">🦜</div>
+                                <div class="flex-1">
+                                    <div class="font-700 text-cokelat-general text-sm">Pengurangan di Sungai Barito</div>
+                                    <div class="text-xs text-gray-400">Dikerjakan: 1 Nov 2024</div>
+                                    <div class="progress-bar mt-2 w-32">
+                                        <div class="progress-fill" style="width:75%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-fredoka text-3xl text-kuning-general">75</div>
+                                    <div class="text-xs text-gray-400">Baik</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -196,7 +215,11 @@
                             
                             <!-- 🔥 FIX: Menampilkan nama sekolah secara dinamis dari model baru -->
                             <div class="text-sm text-gray-400">
-                                {{ stats.class_name }} · {{ stats.class_school }}
+                                {% if current_user.class_obj %}
+                                    {{ current_user.class_obj.name }} · {{ current_user.class_obj.school }}
+                                {% else %}
+                                    Belum Terikat Kelas
+                                {% endif %}
                             </div>
                             <button class="mt-2 text-xs text-biru-general hover:underline">Ubah foto profil</button>
                         </div>
@@ -208,11 +231,11 @@
                                 <div class="text-xs text-gray-500">Total Poin</div>
                             </div>
                             <div class="bg-hijau-light rounded-xl p-3">
-                                <div class="font-fredoka text-2xl text-hijau-dark">{{ stats.completed_count }}</div>
+                                <div class="font-fredoka text-2xl text-hijau-dark">6</div>
                                 <div class="text-xs text-gray-500">Materi Selesai</div>
                             </div>
                             <div class="bg-merah-light rounded-xl p-3">
-                                <div class="font-fredoka text-2xl text-merah-dark">#{{ stats.ranking if stats.ranking else '-' }}</div>
+                                <div class="font-fredoka text-2xl text-merah-dark">#1</div>
                                 <div class="text-xs text-gray-500">Peringkat</div>
                             </div>
                         </div>

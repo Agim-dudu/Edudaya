@@ -75,7 +75,8 @@
           <span class="font-fredoka text-2xl text-white">Edudaya</span>
         </div>
         <div class="hidden md:flex items-center gap-6">
-          <a href="/" class="text-white hover:text-yellow-400 font-600 text-lg transition">Beranda</a>
+          <a href="/learning/chapter/1/1/{{ current_user.id }}"
+            class="text-white hover:text-yellow-400 font-600 text-lg transition">Beranda</a>
           <a href="/list-course" class="text-white hover:text-yellow-400 font-600 text-lg transition">Materi</a>
           <a href="/instruction" class="text-white hover:text-yellow-400 font-600 text-lg transition">Petunjuk</a>
         </div>
@@ -140,55 +141,77 @@
             Sasirangan,<br>dan kearifan lokal Banua Kita!</p>
           <div class="flex flex-wrap gap-3">
             {% if current_user.is_authenticated %}
-  
-          {# --- JIKA GURU (LEVEL 1) --- #}
-          {% if current_user.level == 1 %}
-            <a href="/dashboard/teacher/{{ current_user.id }}" class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
-              📚 Mulai Belajar
-            </a>
-            <a href="/dashboard/teacher/{{ current_user.id }}" class="bg-white hover:bg-gray-50 text-cokelat-general font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
-              Halaman Guru
-            </a>
 
-          {# --- JIKA SISWA (LEVEL 0) --- #}
-          {% elif current_user.level == 0 %}
-            
-            {% if current_user.pretest == 1 %}
-              {% if current_user.pretest_result and current_user.pretest_result.ai_analysis %}
-              <a href="/learning/medium/1/1/{{ current_user.id }}" class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
-                📚 Mulai Belajar
-              </a>
-              {% else %}
-              <a href="/pretest/waiting/{{ current_user.id }}" class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
-                📚 Mulai Belajar
-              </a>
-              {% endif %}
-            {% elif current_user.pretest == 0 %}
-              <a href="/pretest/{{ current_user.id }}" class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
-                📚 Mulai Belajar
-              </a>
+                {# --- 1. JIKA GURU (LEVEL 1) --- #}
+                {% if current_user.level == 1 %}
+                    <a href="/teacher/choise/course/{{ current_user.id }}"
+                      class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
+                      📚 Mulai Belajar
+                    </a>
+                    <a href="/dashboard/teacher/{{ current_user.id }}"
+                      class="bg-white hover:bg-gray-50 text-cokelat-general font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
+                      Halaman Guru
+                    </a>
+
+                {# --- 2. JIKA SISWA (LEVEL 0) --- #}
+                {% elif current_user.level == 0 %}
+                    
+                    {% if current_user.pretest_result %}
+                        
+                        {# Kondisi A: Sudah pretest, tapi AI belum selesai menganalisis #}
+                        {% if current_user.pretest_result.ai_analysis is none %}
+                            <a href="/waiting/pretest/{{ current_user.id }}"
+                              class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
+                              📚 Mulai Belajar
+                            </a>
+                            <a href="/dashboard/student/{{ current_user.id }}"
+                              class="bg-white hover:bg-gray-50 text-cokelat-general font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
+                              Halaman Siswa
+                            </a>
+
+                        {# Kondisi B: Sudah pretest DAN AI sudah selesai menganalisis (Bisa Masuk Kelas/Materi) #}
+                        {% else %}
+                            <a href="/learning/bab1/chapter1/{{ current_user.id }}/{{ current_user.klasifikasi }}" {# <-- Diarahkan ke halaman belajar/materi, bukan pretest lagi #}
+                              class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
+                              📚 Mulai Belajar
+                            </a>
+                            <a href="/dashboard/student/{{ current_user.id }}"
+                              class="bg-white hover:bg-gray-50 text-cokelat-general font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
+                              Halaman Siswa
+                            </a>
+                        {% endif %}
+
+                    {# Kondisi C: Belum pernah mengerjakan pretest sama sekali #}
+                    {% else %}
+                        <a href="/pretest/{{ current_user.id }}"
+                          class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
+                          📚 Mulai Pretest {# <-- Ubah teks teksnya agar siswa tahu mereka harus tes dulu #}
+                        </a>
+                        <a href="/dashboard/student/{{ current_user.id }}"
+                          class="bg-white hover:bg-gray-50 text-cokelat-general font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
+                          Halaman Siswa
+                        </a>
+                    {% endif %}
+
+                {# --- 3. JIKA ADMIN (LEVEL 2) --- #}
+                {% elif current_user.level == 2 %}
+                    <a href="/admin/choise/course/{{ current_user.id }}"
+                      class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
+                      📚 Mulai Belajar
+                    </a>
+                    <a href="/dashboard/admin/{{ current_user.id }}"
+                      class="bg-white hover:bg-gray-50 text-cokelat-general font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
+                      Halaman Admin
+                    </a>
+                {% endif %}
+
+            {# --- 4. JIKA GUEST / BELUM LOGIN --- #}
+            {% else %}
+                <a href="/login"
+                  class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
+                  📚 Mulai Belajar
+                </a>
             {% endif %}
-
-            <a href="/dashboard/student/{{ current_user.id }}" class="bg-white hover:bg-gray-50 text-cokelat-general font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
-              Halaman Siswa
-            </a>
-
-          {# --- JIKA ADMIN (LEVEL 2) --- #}
-          {% elif current_user.level == 2 %}
-            <a href="/dashboard/admin/{{ current_user.id }}" class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
-              📚 Mulai Belajar
-            </a>
-            <a href="/dashboard/admin/{{ current_user.id }}" class="bg-white hover:bg-gray-50 text-cokelat-general font-700 px-6 py-3 rounded-xl shadow border-2 border-gray-200 transition hover:-translate-y-0.5 text-base">
-              Halaman Admin
-            </a>
-          {% endif %}
-
-        {% else %}
-          {# --- JIKA BELUM LOGIN (GUEST) --- #}
-          <a href="/login" class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
-            📚 Mulai Belajar
-          </a>
-        {% endif %}
           </div>
         </div>
         <div class="flex-1 flex justify-center">
@@ -247,8 +270,7 @@
             </div>
           </div>
         </div>
-        <div class="bg-white rounded-2xl overflow-hidden shadow card-hover"
-          style="opacity:0.6">
+        <div class="bg-white rounded-2xl overflow-hidden shadow card-hover" style="opacity:0.6">
           <div class="h-36 flex items-center justify-center text-6xl"
             style="background:linear-gradient(135deg,#E8F8F0,#FFF8EE)">🔮</div>
           <div class="p-4">
@@ -257,8 +279,7 @@
             <p class="text-sm text-gray-500 mt-1 font-600">Materi baru sedang disiapkan. Nantikan ya!</p>
           </div>
         </div>
-        <div class="bg-white rounded-2xl overflow-hidden shadow card-hover"
-          style="opacity:0.6">
+        <div class="bg-white rounded-2xl overflow-hidden shadow card-hover" style="opacity:0.6">
           <div class="h-36 flex items-center justify-center text-6xl"
             style="background:linear-gradient(135deg,#EAF4FB,#FFF8EE)">🔮</div>
           <div class="p-4">
@@ -275,8 +296,10 @@
       <div class="bg-white rounded-2xl shadow p-6">
         <h3 class="font-fredoka text-2xl text-cokelat-general mb-4">🏆 Juara Pekan Ini</h3>
         <div class="space-y-3">
-          {% for entry in top_entries[:5] %}
-          <div class="flex items-center gap-3 p-3 rounded-xl {% if loop.index == 1 %}bg-kuning-light{% elif loop.index == 2 %}bg-gray-50{% elif loop.index == 3 %}bg-orange-50{% else %}bg-gray-50{% endif %}">
+          {% if leaderboard %}
+          {% for entry in leaderboard %}
+          <div
+            class="flex items-center gap-3 p-3 rounded-xl {% if entry.rank == 1 %}bg-kuning-light{% elif entry.rank == 2 %}bg-gray-50{% elif entry.rank == 3 %}bg-orange-50{% else %}bg-gray-50{% endif %}">
             <span class="text-2xl">
               {% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈{% elif loop.index == 3 %}🥉{% else %}#{{ loop.index }}{% endif %}
             </span>
@@ -284,7 +307,9 @@
               <div class="font-700">{{ entry.name }}</div>
               <div class="text-xs text-gray-500">{% if entry.kelas %}{{ entry.kelas }}{% else %}—{% endif %}</div>
             </div>
-            <div class="font-fredoka text-xl {% if loop.index == 1 %}text-kuning-dark{% else %}text-gray-500{% endif %}">{{ entry.score }}</div>
+            <div
+              class="font-fredoka text-xl {% if entry.rank == 1 %}text-kuning-dark{% else %}text-gray-500{% endif %}">
+              {{ entry.score }}</div>
           </div>
           {% endfor %}
         </div>

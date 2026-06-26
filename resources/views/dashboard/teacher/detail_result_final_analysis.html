@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analisis Perkembangan Akhir – {{ student.full_name }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:         #f5f3ef;
+      --surface:    #ffffff;
+      --border:     #e9e5dc;
+      --border-2:   #f0ece4;
+      --ink-1:      #1a1916;
+      --ink-2:      #5a5650;
+      --ink-3:      #9c9790;
+      --accent:     #b36c1e;
+      --accent-bg:  #fdf3e2;
+      --green-fg:   #1e6641;
+      --green-bg:   #f0faf4;
+      --green-bd:   #c9ecd9;
+      --red-fg:     #991b1b;
+      --red-bg:     #fff4f4;
+      --red-bd:     #fdd5d5;
+      --amber-fg:   #924d0a;
+      --amber-bg:   #fffbf2;
+      --amber-bd:   #fde8b8;
+      --violet-fg:  #5b21b6;
+      --violet-bg:  #f8f5ff;
+      --violet-bd:  #ddd6fe;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--ink-1);
+      min-height: 100vh;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    .page {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .card-body  { padding: 1.5rem; }
+    .card-header {
+      padding: .8rem 1.5rem;
+      border-bottom: 1px solid var(--border-2);
+      background: #faf9f6;
+    }
+
+    .slabel {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .slabel::after { content: ''; flex: 1; height: 1px; background: var(--border-2); }
+
+    .outer-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: .75rem;
+    }
+    .outer-label::after { content: ''; flex: 1; height: 1px; background: var(--border-2); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      padding: 3px 10px 3px 8px;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+    .pill-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .pill-high   { background: var(--green-bg); color: var(--green-fg); }
+    .pill-high   .pill-dot { background: var(--green-fg); }
+    .pill-medium { background: var(--amber-bg); color: var(--amber-fg); }
+    .pill-medium .pill-dot { background: var(--amber-fg); }
+    .pill-low    { background: var(--red-bg);   color: var(--red-fg); }
+    .pill-low    .pill-dot { background: var(--red-fg); }
+
+    .hdiv { border: none; border-top: 1px solid var(--border-2); margin: 1.25rem 0; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .f  { animation: fadeUp .45s ease both; }
+    .f1 { animation-delay: .04s; }
+    .f2 { animation-delay: .10s; }
+    .f3 { animation-delay: .16s; }
+    .f4 { animation-delay: .22s; }
+
+    .col2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; align-items: start; }
+    @media (max-width: 680px) { .col2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="f f1">
+    <a href="{{ url_for('dashboard_result_final_analysis', user_id=teacher_id, class_id=student.class_id) }}"
+       style="display:inline-flex;align-items:center;gap:.4rem;font-size:13px;font-weight:500;
+              color:var(--ink-3);text-decoration:none;transition:color .15s;"
+       onmouseover="this.style.color='var(--ink-1)'" onmouseout="this.style.color='var(--ink-3)'">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Kembali ke Daftar Siswa
+    </a>
+  </div>
+
+  {% if ai_analysis %}
+  {% set lvl = ai_analysis['level_akhir']['level'] %}
+
+  <div class="col2 f f2">
+
+    <div class="card" style="height:100%;">
+      <div class="card-header"><span class="slabel">Profil Akhir Siswa</span></div>
+      <div class="card-body">
+        <div style="display:flex;align-items:flex-start;gap:1rem;">
+          <div style="width:50px;height:50px;border-radius:14px;background:var(--accent-bg);color:var(--accent);
+                      font-family:'Lora',serif;font-size:22px;font-style:italic;
+                      display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            {{ student.full_name[0].upper() }}
+          </div>
+          <div style="flex:1;min-width:0;">
+            <h1 style="font-family:'Lora',serif;font-size:20px;font-style:italic;font-weight:400;
+                       line-height:1.25;color:var(--ink-1);">{{ student.full_name }}</h1>
+            <p style="font-size:11.5px;color:var(--ink-3);margin-top:3px;">
+              {{ student.student_class_obj.name if student.student_class_obj else '–' }}
+              <span style="margin:0 4px;opacity:.4;">·</span>
+              {{ student.student_class_obj.school if student.student_class_obj else '–' }}
+            </p>
+            <div style="display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;margin-top:.6rem;">
+              <span class="pill {% if lvl == 'Tinggi' %}pill-high{% elif lvl == 'Sedang' %}pill-medium{% else %}pill-low{% endif %}">
+                <span class="pill-dot"></span>Level Akhir: {{ lvl }}
+              </span>
+              <span class="pill {% if ai_analysis['perkembangan'] == 'Meningkat' %}pill-high{% else %}pill-medium{% endif %}">
+                Perkembangan: {{ ai_analysis['perkembangan'] }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="hdiv">
+
+        <p style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.4rem;">Deskripsi Kemampuan</p>
+        <p style="font-size:12.5px;color:var(--ink-2);line-height:1.6;font-style:italic;background:#faf9f6;padding:.75rem 1rem;border-radius:12px;border:1px solid var(--border-2);">
+          "{{ ai_analysis['level_akhir']['deskripsi'] }}"
+        </p>
+      </div>
+    </div>
+
+    <div class="card" style="height:100%;">
+      <div class="card-header"><span class="slabel">Ikhtisar Perkembangan</span></div>
+      <div class="card-body" style="display:flex;flex-direction:column;justify-content:center;height:calc(100% - 40px);">
+        <div style="text-align:center;margin-bottom:1rem;">
+          <div style="font-family:'Lora',serif;font-size:52px;font-style:italic;line-height:1;
+                      color:{% if ai_analysis['peningkatan_skor'] > 0 %}var(--green-fg){% elif ai_analysis['peningkatan_skor'] == 0 %}var(--ink-2){% else %}var(--red-fg){% endif %};">
+            {% if ai_analysis['peningkatan_skor'] > 0 %}+{% endif %}{{ ai_analysis['peningkatan_skor'] }}
+          </div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:4px;">
+            Peningkatan Skor
+          </div>
+        </div>
+        <div style="border-top:1px dashed var(--border);padding-top:1rem;">
+          <p style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.4rem;">Analisis AI</p>
+          <p style="font-size:12.5px;color:var(--ink-2);line-height:1.6;">
+            {{ ai_analysis['analisis_perkembangan'] }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div><div class="col2 f f3">
+    
+    <div class="card" style="height:100%;">
+      <div class="card-header">
+        <span class="slabel" style="color:var(--green-fg);">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          Topik Meningkat
+        </span>
+      </div>
+      <div class="card-body" style="display:flex;flex-direction:column;gap:.7rem;">
+        {% if ai_analysis['topik_meningkat'] %}
+          {% for item in ai_analysis['topik_meningkat'] %}
+          <div style="display:flex;gap:.8rem;padding:.875rem;border-radius:12px;background:var(--green-bg);border:1px solid var(--green-bd);">
+            <div>
+              <p style="font-size:12.5px;font-weight:600;color:var(--green-fg);">{{ item['topik'] }}</p>
+              <p style="font-size:11.5px;color:var(--green-fg);opacity:.85;margin-top:2px;line-height:1.55;">{{ item['keterangan'] }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p style="font-size:12px;color:var(--ink-3);font-style:italic;text-align:center;padding:1rem 0;">Tidak ada perubahan peningkatan signifikan.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card" style="height:100%;">
+      <div class="card-header">
+        <span class="slabel" style="color:var(--red-fg);">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+          Topik Menurun
+        </span>
+      </div>
+      <div class="card-body" style="display:flex;flex-direction:column;gap:.7rem;">
+        {% if ai_analysis['topik_menurun'] %}
+          {% for item in ai_analysis['topik_menurun'] %}
+          <div style="display:flex;gap:.8rem;padding:.875rem;border-radius:12px;background:var(--red-bg);border:1px solid var(--red-bd);">
+            <div>
+              <p style="font-size:12.5px;font-weight:600;color:var(--red-fg);">{{ item['topik'] }}</p>
+              <p style="font-size:11.5px;color:var(--red-fg);opacity:.85;margin-top:2px;line-height:1.55;">{{ item['keterangan'] }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div style="display:flex;align-items:center;justify-content:center;gap:.4rem;padding:1.5rem 0;color:var(--green-fg);font-size:12.5px;background:var(--green-bg);border:1px dashed var(--green-bd);border-radius:12px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Luar biasa! Tidak ada topik yang menurun.</span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>{% if ai_analysis['rekomendasi_guru'] %}
+  <div class="f f4">
+    <div class="outer-label">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      Rekomendasi Tindak Lanjut untuk Guru
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:.875rem;">
+      {% for item in ai_analysis['rekomendasi_guru'] %}
+      <div class="card">
+        <div class="card-header">
+          <span style="font-size:12px;font-weight:600;color:var(--ink-2);">Fokus: {{ item['topik'] }}</span>
+        </div>
+        <div style="padding:1.2rem;background:var(--amber-bg);">
+          <p style="font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-fg);opacity:.8;margin-bottom:.4rem;">Saran Strategi Instruksional</p>
+          <p style="font-size:12.5px;line-height:1.6;color:var(--amber-fg);">{{ item['saran'] }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+
+  {% if ai_analysis['evaluasi_guru'] %}
+  <div class="card f f4">
+    <div class="card-header">
+      <span class="slabel" style="color:var(--violet-fg);">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+        </svg>
+        Kesimpulan Evaluasi
+      </span>
+    </div>
+    <div class="card-body" style="display:flex;flex-direction:column;gap:.6rem;">
+      {% for item in ai_analysis['evaluasi_guru'] %}
+      <div style="display:flex;gap:.875rem;padding:.875rem 1rem;border-radius:10px;background:var(--violet-bg);border:1px solid var(--violet-bd);">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--violet-fg);flex-shrink:0;margin-top:5px;"></div>
+        <p style="font-size:12.5px;line-height:1.6;color:var(--violet-fg);">{{ item['poin'] }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% else %}
+  <div class="card f f2" style="text-align:center;padding:5rem 2rem;">
+    <div style="width:52px;height:52px;border-radius:16px;background:#f0ece4;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b8b2a7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    </div>
+    <h2 style="font-family:'Lora',serif;font-size:20px;font-style:italic;color:var(--ink-3);margin-bottom:.5rem;">Analisis Akhir Belum Tersedia</h2>
+    <p style="font-size:13px;color:var(--ink-3);max-width:280px;margin:0 auto;line-height:1.65;">
+      Siswa harus menyelesaikan evaluasi akhir terlebih dahulu agar ringkasan perkembangan AI dapat digenerate.
+    </p>
+  </div>
+  {% endif %}
+
+</div>
+</body>
+</html>

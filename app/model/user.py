@@ -19,28 +19,24 @@ class User(db.Model, UserMixin):
     gender = db.Column(db.String(5), nullable=False)
     image = db.Column(db.String(255), nullable=True, default='default.jpg')
     
-    # Fitur Akademik Siswa
-    pretest = db.Column(db.Integer, nullable=False, default=0)
+    # Fitur Akademik / Akumulasi Siswa Global
     star = db.Column(db.Integer, nullable=True, default=0)
     progress = db.Column(db.Integer, nullable=True, default=0)
-    last_submission = db.Column(db.DateTime, nullable=True)
+    klasifikasi = db.Column(db.Integer, nullable=True) 
     
-    # 🔗 KUNCI SISWA: 1 Siswa hanya boleh masuk 1 kelas (One-to-Many langsung)
-    # Diisi ID kelas jika Siswa. Jika Guru/Admin nilainya NULL.
+    # 🔗 KUNCI SISWA ke Kelas
     class_id = db.Column(db.Integer, db.ForeignKey('classes.id', ondelete='SET NULL'), nullable=True)
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     # 🔄 RELASI ORM
-    # 1. Hubungan Guru ke Tabel Jembatan (Untuk melihat daftar kelas yang dia ajar)
     teacher_classes = db.relationship('ClassTeachers', backref='teacher_obj', lazy=True)
-    
-    # 2. Hubungan Siswa ke Hasil Pretest (One-to-One)
     pretest_result = db.relationship('PretestResult', backref='user', uselist=False, cascade='all, delete-orphan')
-
-    # 3. Hubungan Siswa ke Progres Belajar (One-to-Many)
-    learning_progress = db.relationship('LearningProgress', backref='user', lazy=True, cascade='all, delete-orphan')
+    evaluation_result = db.relationship('EvaluationResult', backref='user', uselist=False, cascade='all, delete-orphan')
+    final_result = db.relationship('FinalResult', backref='user', uselist=False, cascade='all, delete-orphan')
+    scores = db.relationship('Score', backref='user', lazy=True, cascade='all, delete-orphan')
+    activity_logs = db.relationship('ActivityLog', backref='user', lazy=True, cascade='all, delete-orphan')
 
     def __repr__(self):
         role = "Siswa" if self.level == 0 else "Guru" if self.level == 1 else "Admin"
