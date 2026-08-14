@@ -579,7 +579,6 @@ def dashboard_teacher_detail_pretest_analysis(teacher_id, user_id):
         correct=data['correct'],
         total=data['total'],
         time_taken=data['time_taken'],
-        topic_scores=data['topic_scores'],
         answer_details=data['answer_details'],
         ai_analysis=data['ai_analysis'],
         teacher_id=teacher_id,

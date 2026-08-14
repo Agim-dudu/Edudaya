@@ -61,7 +61,6 @@
       transition: transform 0.3s cubic-bezier(.4,0,.2,1), opacity 0.3s;
       transform-origin: center;
     }
-    /* Burger → X: triggered via JS class 'open' */
     .burger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .burger-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .burger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
@@ -114,10 +113,8 @@
       z-index: 50;
       padding: 24px 16px;
     }
-    /* Default: sidebar VISIBLE (not collapsed) */
     #sidebar.collapsed { transform: translateX(calc(-1 * var(--sidebar-w))); }
 
-    /* Overlay (mobile + when sidebar open on mobile) */
     #sidebarOverlay {
       display: none;
       position: fixed; inset: 0; top: var(--navbar-h);
@@ -219,7 +216,44 @@
     .q-text-wrap { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 28px; }
     .q-text { font-size: 18px; font-weight: 800; color: #1f2937; line-height: 1.55; }
 
-    /* Options */
+    /* ── Isian (essay) answer ── */
+    .answer-isian-wrap { display: flex; flex-direction: column; gap: 10px; }
+    .answer-isian-label {
+      font-size: 12px; font-weight: 800; color: var(--green-600);
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .answer-isian-box {
+      width: 100%;
+      min-height: 140px;
+      resize: vertical;
+      border: 2px solid var(--border-light);
+      border-radius: 14px;
+      padding: 16px 18px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1f2937;
+      background: var(--green-50);
+      transition: all 0.2s cubic-bezier(.34,1.56,.64,1);
+    }
+    .answer-isian-box::placeholder { color: #9ca3af; font-weight: 600; }
+    .answer-isian-box:focus {
+      outline: none;
+      border-color: var(--green-500);
+      background: white;
+      box-shadow: 0 6px 20px rgba(22,138,80,0.14);
+    }
+    .answer-isian-box.filled {
+      border-color: var(--green-400);
+      background: white;
+    }
+    .answer-isian-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; font-weight: 700; color: #9ca3af;
+    }
+    .answer-isian-meta .char-count.ok { color: var(--green-500); }
+
+    /* Options (legacy multiple-choice styles kept for compatibility, unused) */
     .options-list { display: flex; flex-direction: column; gap: 12px; }
     .opt-label {
       display: flex; align-items: center; gap: 14px;
@@ -353,7 +387,6 @@
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
-      /* On mobile: sidebar hidden by default, overlay toggles it */
       #sidebar { transform: translateX(calc(-1 * var(--sidebar-w))); }
       #sidebar.mobile-open { transform: translateX(0); }
       #main { margin-left: 0 !important; padding: 20px 16px; }
@@ -429,7 +462,23 @@
           <div class="q-text" id="qText"></div>
         </div>
 
-        <div class="options-list" id="optionsList"></div>
+        <!-- ── ISIAN (jawaban esai/isian) ── -->
+        <div class="answer-isian-wrap" id="answerIsianWrap">
+          <span class="answer-isian-label">Jawaban Anda</span>
+          <textarea
+            class="answer-isian-box"
+            id="answerIsianBox"
+            placeholder="Tulis jawaban Anda di sini..."
+            oninput="handleIsianInput(this)"
+          ></textarea>
+          <div class="answer-isian-meta">
+            <span id="isianHint">Minimal 1 karakter untuk dianggap terjawab</span>
+            <span class="char-count" id="isianCharCount">0 karakter</span>
+          </div>
+        </div>
+
+        <!-- Wadah pilihan ganda lama (tidak lagi dipakai, disimpan untuk kompatibilitas jika diperlukan) -->
+        <div class="options-list" id="optionsList" style="display:none"></div>
 
         <div class="q-footer">
           <button class="btn-nav btn-prev" id="btnPrev" onclick="goTo(currentQ-1)">← Sebelumnya</button>
@@ -461,26 +510,22 @@
 
       function isMobile() { return window.innerWidth <= MOBILE_BP; }
 
-      /* State: track whether sidebar is "open" */
-      let sidebarOpen = true; /* default open on desktop */
+      let sidebarOpen = true;
 
       function applyState() {
         if (isMobile()) {
-          /* Mobile: sidebar slides in from left over content */
           sidebar.classList.toggle('mobile-open', sidebarOpen);
           sidebar.classList.remove('collapsed');
           overlay.classList.toggle('show', sidebarOpen);
-          main.style.marginLeft = ''; /* always 0 on mobile via CSS */
+          main.style.marginLeft = '';
           burgerBtn.setAttribute('aria-expanded', sidebarOpen);
         } else {
-          /* Desktop: sidebar pushes content */
           sidebar.classList.remove('mobile-open');
           sidebar.classList.toggle('collapsed', !sidebarOpen);
           overlay.classList.remove('show');
           main.classList.toggle('expanded', !sidebarOpen);
           burgerBtn.setAttribute('aria-expanded', sidebarOpen);
         }
-        /* Burger icon X ↔ hamburger */
         burgerBtn.classList.toggle('open', !sidebarOpen);
       }
 
@@ -489,7 +534,6 @@
         applyState();
       };
 
-      /* Close sidebar when clicking overlay */
       overlay.addEventListener('click', function () {
         sidebarOpen = false;
         applyState();
@@ -497,10 +541,8 @@
 
       burgerBtn.addEventListener('click', window.toggleSidebar);
 
-      /* Re-evaluate on resize */
       window.addEventListener('resize', function () {
         if (!isMobile()) {
-          /* Reset mobile class on desktop */
           sidebar.classList.remove('mobile-open');
           overlay.classList.remove('show');
           main.style.marginLeft = '';
@@ -508,10 +550,31 @@
         applyState();
       });
 
-      /* Init */
       if (isMobile()) sidebarOpen = false;
       applyState();
     })();
+
+    /* ── Handler input isian (essay) ──
+       Fungsi ini memberi umpan balik visual dasar (border hijau saat terisi
+       & penghitung karakter). Logika penyimpanan jawaban per-nomor soal,
+       update progress bar, dan status "answered" pada nav-grid ada di
+       pretest_question_handle.js — sesuaikan fungsi di sana agar membaca
+       nilai dari #answerIsianBox (bukan lagi radio input) setiap kali
+       soal berganti / disimpan. */
+    function handleIsianInput(el) {
+      const val = el.value || '';
+      el.classList.toggle('filled', val.trim().length > 0);
+      const counter = document.getElementById('isianCharCount');
+      if (counter) {
+        counter.textContent = val.length + ' karakter';
+        counter.classList.toggle('ok', val.trim().length > 0);
+      }
+      /* Panggil hook eksternal jika tersedia, supaya pretest_question_handle.js
+         bisa menyimpan jawaban isian ke state/array jawaban. */
+      if (typeof window.onIsianAnswerChange === 'function') {
+        window.onIsianAnswerChange(val);
+      }
+    }
   </script>
 
   <script>

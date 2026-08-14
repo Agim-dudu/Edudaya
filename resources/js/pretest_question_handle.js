@@ -2,11 +2,23 @@ const { userId, csrfToken, questions, pretestApiUrl } = window.APP_CONFIG;
 
 const totalQ = questions.length;
 let currentQ = 0;
-let answers = {};
+let answers = {}; // { [questionId]: "jawaban isian siswa" }
 
 // ── INIT ──
 document.getElementById('qOf').textContent = totalQ;
 buildNavGrid();
+
+// Hook dipanggil dari handleIsianInput() di HTML setiap kali siswa mengetik
+window.onIsianAnswerChange = function (value) {
+  const q = questions[currentQ];
+  if (!q) return;
+  answers[q.id] = value;
+
+  updateNavGrid();
+  updateSidebarProgress();
+  checkAllAnswered();
+};
+
 goTo(0);
 
 // ── RENDER SOAL ──
@@ -36,19 +48,17 @@ function goTo(index) {
     document.getElementById('qText').before(img);
   }
 
-  // Pilihan jawaban
-  const list = document.getElementById('optionsList');
-  list.innerHTML = '';
-  q.options.forEach(opt => {
-    const selected = answers[q.id] === opt.id ? 'selected' : '';
-    list.innerHTML += `
-      <label class="opt-label ${selected}" onclick="selectAnswer(${q.id}, '${opt.id}', this)">
-        <input type="radio" name="q${q.id}" value="${opt.id}" ${selected ? 'checked' : ''}>
-        <div class="opt-radio"><div class="opt-radio-dot"></div></div>
-        <div class="opt-letter">${opt.id.toUpperCase()}</div>
-        <div class="opt-text">${opt.text}</div>
-      </label>`;
-  });
+  // ── Sinkronkan kotak jawaban isian dengan jawaban tersimpan untuk soal ini ──
+  const box = document.getElementById('answerIsianBox');
+  const savedValue = answers[q.id] || '';
+  box.value = savedValue;
+  box.classList.toggle('filled', savedValue.trim().length > 0);
+
+  const counter = document.getElementById('isianCharCount');
+  if (counter) {
+    counter.textContent = savedValue.length + ' karakter';
+    counter.classList.toggle('ok', savedValue.trim().length > 0);
+  }
 
   // Tombol prev / next / submit
   document.getElementById('btnPrev').disabled = index === 0;
@@ -62,21 +72,9 @@ function goTo(index) {
   // Update nav grid & progress sidebar
   updateNavGrid();
   updateSidebarProgress();
-}
 
-// ── PILIH JAWABAN ──
-function selectAnswer(questionId, optionId, clickedLabel) {
-  answers[questionId] = optionId;
-
-  // Update visual semua label di soal ini
-  document.querySelectorAll('#optionsList .opt-label').forEach(lbl => {
-    lbl.classList.remove('selected');
-  });
-  clickedLabel.classList.add('selected');
-
-  updateNavGrid();
-  updateSidebarProgress();
-  checkAllAnswered();
+  // Fokus otomatis ke kotak jawaban biar langsung bisa mengetik
+  box.focus();
 }
 
 // ── NAV GRID (sidebar) ──
@@ -93,26 +91,31 @@ function buildNavGrid() {
   });
 }
 
+function isAnswered(q) {
+  const val = answers[q.id];
+  return typeof val === 'string' && val.trim().length > 0;
+}
+
 function updateNavGrid() {
   questions.forEach((q, i) => {
     const btn = document.getElementById(`navNum${i}`);
     if (!btn) return;
     btn.className = 'nav-num';
     if (i === currentQ) btn.classList.add('active');
-    else if (answers[q.id]) btn.classList.add('answered');
+    else if (isAnswered(q)) btn.classList.add('answered');
   });
 }
 
 // ── PROGRESS SIDEBAR ──
 function updateSidebarProgress() {
-  const answered = Object.keys(answers).length;
+  const answered = questions.filter(isAnswered).length;
   document.getElementById('sbProgressText').textContent = `${answered} / ${totalQ}`;
   document.getElementById('sbProgressFill').style.width = (answered / totalQ * 100) + '%';
 }
 
 // ── CEK SEMUA TERJAWAB ──
 function checkAllAnswered() {
-  const allDone = Object.keys(answers).length === totalQ;
+  const allDone = questions.every(isAnswered);
   document.getElementById('sbSubmitBtn').disabled = !allDone;
   document.getElementById('sbSubmitHint').textContent = allDone ?
     'Semua soal terjawab!' :
@@ -121,15 +124,16 @@ function checkAllAnswered() {
 
 // ── SUBMIT ──
 function handleSubmit() {
-  const allDone = Object.keys(answers).length === totalQ;
+  const allDone = questions.every(isAnswered);
   if (!allDone) {
+    const belum = questions.filter(q => !isAnswered(q)).length;
     document.getElementById('warnStrip').style.display = 'flex';
     document.getElementById('warnText').textContent =
-      `Masih ada ${totalQ - Object.keys(answers).length} soal yang belum dijawab!`;
+      `Masih ada ${belum} soal yang belum dijawab!`;
     return;
   }
 
-  fetch(pretestApiUrl, {          // ← pakai variabel, bukan template literal
+  fetch(pretestApiUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -144,8 +148,8 @@ function handleSubmit() {
   .then(res => res.json())
   .then(data => {
       if (data.redirect_url) {
-          window.location.href = data.redirect_url;  // ← navigasi manual
+          window.location.href = data.redirect_url;
       }
   })
   .catch(err => console.error('Error:', err));
-  }
+}

@@ -10,12 +10,9 @@ class PretestResult(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
 
-    score = db.Column(db.Integer, nullable=False)
-    correct = db.Column(db.Integer, nullable=False)
-    total = db.Column(db.Integer, nullable=False)
+    score = db.Column(db.Integer, nullable=True)
+    correct = db.Column(db.Integer, nullable=True)
     time_taken = db.Column(db.Integer, nullable=True) 
-
-    topic_scores = db.Column(db.Text, nullable=True)   
     answer_details = db.Column(db.Text, nullable=True) 
     ai_analysis = db.Column(db.Text, nullable=True)    
 
