@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Kuis Seru: Penjumlahan</title>
+    <title>Kuis Seru: Segitiga</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -30,7 +30,7 @@
             <!-- Logo / Title -->
             <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200">
                 <a href="/" class="text-xl font-bold bg-gradient-to-r from-emerald-500 to-blue-500 bg-clip-text text-transparent">
-                    Kuis Penjumlahan 🌟
+                    Kuis Segitiga 🌟
                 </a>
                 <button onclick="closeSidebar()" class="lg:hidden p-1 rounded hover:bg-gray-100 text-gray-500">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,7 +91,7 @@
                     </svg>
                 </button>
                 <span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-blue-500">
-                    Kuis Penjumlahan 🌟
+                    Kuis Segitiga 🌟
                 </span>
                 <div id="timer-mobile" class="text-sm font-mono font-bold text-slate-600">15:00</div>
             </div>
@@ -106,13 +106,13 @@
                             <span class="text-base font-semibold text-white">Soal 1 dari 10</span>
                         </div>
                         <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
-                            <p class="font-semibold text-base leading-relaxed">Adi mempunyai 3 buah apel merah. Ibu membelikan lagi 4 buah apel hijau untuk Adi. Berapa jumlah seluruh apel Adi sekarang?</p>
+                            <p class="font-semibold text-base leading-relaxed">Dina membuat dua pola segitiga dari karton. Pola A memiliki tiga sisi yang sama panjang. Pola B memiliki dua sisi yang sama panjang. Jenis segitiga pada pola A dan pola B berturut-turut adalah ...</p>
                         </div>
                         <div class="mt-3 flex flex-col gap-3">
-                            <button type="button" id="soal1-a" onclick="pilihJawaban(1, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 5 buah</button>
-                            <button type="button" id="soal1-b" onclick="pilihJawaban(1, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 6 buah</button>
-                            <button type="button" id="soal1-c" onclick="pilihJawaban(1, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 7 buah</button>
-                            <button type="button" id="soal1-d" onclick="pilihJawaban(1, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 8 buah</button>
+                            <button type="button" id="soal1-a" onclick="pilihJawaban(1, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. sama kaki dan sama sisi</button>
+                            <button type="button" id="soal1-b" onclick="pilihJawaban(1, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. sama sisi dan sama kaki</button>
+                            <button type="button" id="soal1-c" onclick="pilihJawaban(1, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. sembarang dan sama kaki</button>
+                            <button type="button" id="soal1-d" onclick="pilihJawaban(1, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. sama kaki dan sembarang</button>
                         </div>
                     </div>
 
@@ -122,13 +122,17 @@
                             <span class="text-base font-semibold text-white">Soal 2 dari 10</span>
                         </div>
                         <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
-                            <p class="font-semibold text-base">Manakah di bawah ini yang merupakan arti dari simbol tambah (+)?</p>
+                            <p class="font-semibold text-base pb-2">Terdapat 3 rangka!</p>
+                            <p class="font-semibold text-base">Rangka A memiliki panjang sisi 8 cm, 8 cm, dan 8 cm.</p>
+                            <p class="font-semibold text-base">Rangka B memiliki panjang sisi 9 cm, 9 cm, dan 6 cm.</p>
+                            <p class="font-semibold text-base">Rangka C memiliki panjang sisi 6 cm, 7 cm, dan 8 cm.</p>
+                            <p class="font-semibold text-base pt-2">Urutan jenis segitiga berdasarkan panjang sisinya adalah ...</p>
                         </div>
                         <div class="mt-3 flex flex-col gap-3">
-                            <button type="button" id="soal2-a" onclick="pilihJawaban(2, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. Membuang benda agar berkurang</button>
-                            <button type="button" id="soal2-b" onclick="pilihJawaban(2, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. Menggabungkan dua kelompok benda menjadi lebih banyak</button>
-                            <button type="button" id="soal2-c" onclick="pilihJawaban(2, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. Membagikan benda kepada teman sama rata</button>
-                            <button type="button" id="soal2-d" onclick="pilihJawaban(2, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. Menyembunyikan angka rahasia</button>
+                            <button type="button" id="soal2-a" onclick="pilihJawaban(2, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. sama sisi, sama kaki, sembarang</button>
+                            <button type="button" id="soal2-b" onclick="pilihJawaban(2, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. sama kaki, sama sisi, sembarang</button>
+                            <button type="button" id="soal2-c" onclick="pilihJawaban(2, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. sama sisi, sembarang, sama kaki</button>
+                            <button type="button" id="soal2-d" onclick="pilihJawaban(2, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. sembarang, sama kaki, sama sisi</button>
                         </div>
                     </div>
 
@@ -138,13 +142,13 @@
                             <span class="text-base font-semibold text-white">Soal 3 dari 10</span>
                         </div>
                         <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
-                            <p class="font-semibold text-base">Berapakah hasil dari 5 + 5?</p>
+                            <p class="font-semibold text-base">Sebuah papan penyangga memiliki bentuk segitiga. Salah satu sudutnya merupakan sudut siku-siku. Jika dilihat dari bentuk sudutnya, papan penyangga tersebut termasuk ...</p>
                         </div>
                         <div class="mt-3 flex flex-col gap-3">
-                            <button type="button" id="soal3-a" onclick="pilihJawaban(3, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 8</button>
-                            <button type="button" id="soal3-b" onclick="pilihJawaban(3, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 9</button>
-                            <button type="button" id="soal3-c" onclick="pilihJawaban(3, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 10</button>
-                            <button type="button" id="soal3-d" onclick="pilihJawaban(3, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 11</button>
+                            <button type="button" id="soal3-a" onclick="pilihJawaban(3, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. segitiga lancip</button>
+                            <button type="button" id="soal3-b" onclick="pilihJawaban(3, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. segitiga tumpul</button>
+                            <button type="button" id="soal3-c" onclick="pilihJawaban(3, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. segitiga siku-siku</button>
+                            <button type="button" id="soal3-d" onclick="pilihJawaban(3, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. segitiga sama sisi</button>
                         </div>
                     </div>
 
@@ -154,13 +158,13 @@
                             <span class="text-base font-semibold text-white">Soal 4 dari 10</span>
                         </div>
                         <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
-                            <p class="font-semibold text-base">Di atas meja ada 6 buku cerita. Kakak meletakkan lagi 2 buku cerita di atas meja. Kalimat matematika penjumlahan yang benar adalah...</p>
+                            <p class="font-semibold text-base">Doni membuat sebuah penyangga berbentuk segitiga dari tiga batang kayu. Ketika diperhatikan, ketiga sisi penyangga tersebut memiliki panjang yang berbeda. Berdasarkan panjang sisinya, penyangga yang dibuat Doni termasuk ...</p>
                         </div>
                         <div class="mt-3 flex flex-col gap-3">
-                            <button type="button" id="soal4-a" onclick="pilihJawaban(4, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 6 − 2 = 4</button>
-                            <button type="button" id="soal4-b" onclick="pilihJawaban(4, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 6 + 2 = 8</button>
-                            <button type="button" id="soal4-c" onclick="pilihJawaban(4, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 6 + 6 = 12</button>
-                            <button type="button" id="soal4-d" onclick="pilihJawaban(4, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 2 + 2 = 4</button>
+                            <button type="button" id="soal4-a" onclick="pilihJawaban(4, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. segitiga sama sisi</button>
+                            <button type="button" id="soal4-b" onclick="pilihJawaban(4, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. segitiga sama kaki</button>
+                            <button type="button" id="soal4-c" onclick="pilihJawaban(4, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. segitiga sembarang</button>
+                            <button type="button" id="soal4-d" onclick="pilihJawaban(4, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. segitiga siku-siku</button>
                         </div>
                     </div>
 
@@ -170,13 +174,13 @@
                             <span class="text-base font-semibold text-white">Soal 5 dari 10</span>
                         </div>
                         <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
-                            <p class="font-semibold text-base">Siti punya 4 boneka. Dayu punya 0 boneka. Jika boneka mereka digabungkan, ada berapa jumlahnya?</p>
+                            <p class="font-semibold text-base">Sebuah hiasan berbentuk segitiga sama kaki memiliki dua sisi yang sama panjang, masing-masing 15 cm. Jika keliling hiasan tersebut 40 cm, berapa panjang sisi alasnya?</p>
                         </div>
                         <div class="mt-3 flex flex-col gap-3">
-                            <button type="button" id="soal5-a" onclick="pilihJawaban(5, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 4 boneka</button>
-                            <button type="button" id="soal5-b" onclick="pilihJawaban(5, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 0 boneka</button>
-                            <button type="button" id="soal5-c" onclick="pilihJawaban(5, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 40 boneka</button>
-                            <button type="button" id="soal5-d" onclick="pilihJawaban(5, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 5 boneka</button>
+                            <button type="button" id="soal5-a" onclick="pilihJawaban(5, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 8 cm</button>
+                            <button type="button" id="soal5-b" onclick="pilihJawaban(5, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 10 cm</button>
+                            <button type="button" id="soal5-c" onclick="pilihJawaban(5, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 12 cm</button>
+                            <button type="button" id="soal5-d" onclick="pilihJawaban(5, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 15 cm</button>
                         </div>
                     </div>
 
@@ -186,13 +190,13 @@
                             <span class="text-base font-semibold text-white">Soal 6 dari 10</span>
                         </div>
                         <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
-                            <p class="font-semibold text-base">Jika 4 + 2 = 6, maka berapakah hasil dari balikannya yaitu 2 + 4?</p>
+                            <p class="font-semibold text-base">Sebuah rangka berbentuk segitiga sama sisi memiliki keliling 36 cm. Berapa panjang setiap sisinya?</p>
                         </div>
                         <div class="mt-3 flex flex-col gap-3">
-                            <button type="button" id="soal6-a" onclick="pilihJawaban(6, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. Hasilnya jadi lebih sedikit yaitu 2</button>
-                            <button type="button" id="soal6-b" onclick="pilihJawaban(6, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. Hasilnya tetap sama yaitu 6</button>
-                            <button type="button" id="soal6-c" onclick="pilihJawaban(6, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. Hasilnya berubah menjadi 8</button>
-                            <button type="button" id="soal6-d" onclick="pilihJawaban(6, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. Tidak bisa dihitung karena terbalik</button>
+                            <button type="button" id="soal6-a" onclick="pilihJawaban(6, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 9 cm</button>
+                            <button type="button" id="soal6-b" onclick="pilihJawaban(6, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 10 cm</button>
+                            <button type="button" id="soal6-c" onclick="pilihJawaban(6, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 12 cm</button>
+                            <button type="button" id="soal6-d" onclick="pilihJawaban(6, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 18 cm</button>
                         </div>
                     </div>
 
@@ -202,13 +206,13 @@
                             <span class="text-base font-semibold text-white">Soal 7 dari 10</span>
                         </div>
                         <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
-                            <p class="font-semibold text-base">Lani memiliki 5 pensil warna. Ia membeli lagi 1 kotak berisi 5 pensil warna. Sekarang pensil warna Lani ada...</p>
+                            <p class="font-semibold text-base">Sebuah papan berbentuk segitiga memiliki alas 16 cm dan tinggi 9 cm. Luas papan tersebut adalah ...</p>
                         </div>
                         <div class="mt-3 flex flex-col gap-3">
-                            <button type="button" id="soal7-a" onclick="pilihJawaban(7, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 6 pensil</button>
-                            <button type="button" id="soal7-b" onclick="pilihJawaban(7, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 9 pensil</button>
-                            <button type="button" id="soal7-c" onclick="pilihJawaban(7, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 10 pensil</button>
-                            <button type="button" id="soal7-d" onclick="pilihJawaban(7, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 15 pensil</button>
+                            <button type="button" id="soal7-a" onclick="pilihJawaban(7, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 64 cm²</button>
+                            <button type="button" id="soal7-b" onclick="pilihJawaban(7, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 72 cm²</button>
+                            <button type="button" id="soal7-c" onclick="pilihJawaban(7, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 80 cm²</button>
+                            <button type="button" id="soal7-d" onclick="pilihJawaban(7, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 144 cm²</button>
                         </div>
                     </div>
 
@@ -218,19 +222,13 @@
                             <span class="text-base font-semibold text-white">Soal 8 dari 10</span>
                         </div>
                         <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
-                            <p class="font-semibold text-base mb-2">Lihatlah hitungan di bawah ini:</p>
-                            <ol class="list-decimal list-inside space-y-1 font-mono text-base">
-                                <li>1 + 2 = 3</li>
-                                <li>4 + 1 = 5</li>
-                                <li>3 + 2 = 6</li>
-                            </ol>
-                            <p class="font-semibold text-base mt-3">Hitungan penjumlahan mana yang benar?</p>
+                            <p class="font-semibold text-base">Sebuah hiasan berbentuk segitiga sama kaki memiliki alas 18 cm dan tinggi 8 cm. Luas hiasan tersebut adalah ...</p>
                         </div>
                         <div class="mt-3 flex flex-col gap-3">
-                            <button type="button" id="soal8-a" onclick="pilihJawaban(8, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. Nomor 1 dan 2</button>
-                            <button type="button" id="soal8-b" onclick="pilihJawaban(8, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. Nomor 1 dan 3</button>
-                            <button type="button" id="soal8-c" onclick="pilihJawaban(8, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. Nomor 2 dan 3</button>
-                            <button type="button" id="soal8-d" onclick="pilihJawaban(8, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. Semua nomor benar</button>
+                            <button type="button" id="soal8-a" onclick="pilihJawaban(8, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 36 cm²</button>
+                            <button type="button" id="soal8-b" onclick="pilihJawaban(8, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 64 cm²</button>
+                            <button type="button" id="soal8-c" onclick="pilihJawaban(8, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 72 cm²</button>
+                            <button type="button" id="soal8-d" onclick="pilihJawaban(8, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 144 cm²</button>
                         </div>
                     </div>
 
@@ -240,13 +238,13 @@
                             <span class="text-base font-semibold text-white">Soal 9 dari 10</span>
                         </div>
                         <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
-                            <p class="font-semibold text-base">Edo punya 7 kelereng, lalu dia menemukan 2 kelereng lagi di halaman. Jika kelereng Edo dijumlahkan, maka jumlahnya akan menjadi...</p>
+                            <p class="font-semibold text-base">Rina memiliki dua lembar karton berbentuk segitiga. Karton A memiliki alas 12 cm dan tinggi 10 cm. Karton B memiliki alas 20 cm dan tinggi 6 cm. Pernyataan yang benar adalah ...</p>
                         </div>
                         <div class="mt-3 flex flex-col gap-3">
-                            <button type="button" id="soal9-a" onclick="pilihJawaban(9, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. Lebih sedikit (berkurang)</button>
-                            <button type="button" id="soal9-b" onclick="pilihJawaban(9, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. Tetap tidak berubah</button>
-                            <button type="button" id="soal9-c" onclick="pilihJawaban(9, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. Lebih banyak yaitu menjadi 9</button>
-                            <button type="button" id="soal9-d" onclick="pilihJawaban(9, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. Habis semua</button>
+                            <button type="button" id="soal9-a" onclick="pilihJawaban(9, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. Karton A memiliki luas lebih besar.</button>
+                            <button type="button" id="soal9-b" onclick="pilihJawaban(9, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. Karton B memiliki luas lebih besar.</button>
+                            <button type="button" id="soal9-c" onclick="pilihJawaban(9, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. Kedua karton memiliki luas yang sama.</button>
+                            <button type="button" id="soal9-d" onclick="pilihJawaban(9, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. Luas kedua karton tidak dapat ditentukan.</button>
                         </div>
                     </div>
 
@@ -256,13 +254,13 @@
                             <span class="text-base font-semibold text-white">Soal 10 dari 10</span>
                         </div>
                         <div class="bg-blue-50 border border-gray-200 p-5 rounded-xl text-gray-800">
-                            <p class="font-semibold text-base">Berapakah angka yang tepat untuk mengisi titik-titik berikut: 6 + ... = 9?</p>
+                            <p class="font-semibold text-base">Sebuah rangka segitiga sama kaki memiliki dua sisi yang sama panjang, masing-masing 13 cm, dan alas 10 cm. Tinggi rangka tersebut adalah 12 cm. Berapakah keliling dan luas rangka tersebut?</p>
                         </div>
                         <div class="mt-3 flex flex-col gap-3">
-                            <button type="button" id="soal10-a" onclick="pilihJawaban(10, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. 2</button>
-                            <button type="button" id="soal10-b" onclick="pilihJawaban(10, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. 3</button>
-                            <button type="button" id="soal10-c" onclick="pilihJawaban(10, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. 4</button>
-                            <button type="button" id="soal10-d" onclick="pilihJawaban(10, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. 5</button>
+                            <button type="button" id="soal10-a" onclick="pilihJawaban(10, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">A. Keliling 36 cm dan luas 60 cm²</button>
+                            <button type="button" id="soal10-b" onclick="pilihJawaban(10, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">B. Keliling 36 cm dan luas 72 cm²</button>
+                            <button type="button" id="soal10-c" onclick="pilihJawaban(10, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">C. Keliling 38 cm dan luas 60 cm²</button>
+                            <button type="button" id="soal10-d" onclick="pilihJawaban(10, this)" class="block w-full px-4 py-3 rounded-lg border-2 border-slate-200 bg-white text-left font-medium text-[0.9375rem] text-slate-800 transition-all duration-150 cursor-pointer leading-relaxed hover:border-emerald-300 hover:bg-green-50 hover:shadow-sm">D. Keliling 38 cm dan luas 72 cm²</button>
                         </div>
                     </div>
 
@@ -395,14 +393,14 @@
                 Swal.fire({
                     icon: 'warning',
                     title: 'Ups, Belum Selesai!',
-                    text: 'Silakan jawab semua soal matematika dulu ya.',
+                    text: 'Silakan jawab semua soal segitiga dulu ya.',
                 });
                 return;
             }
 
             // --- GURU: preview mode (hitung lokal hanya untuk preview) ---
             if (userLevel !== 0) {
-                const kunciPreview = {1:"soal1-c",2:"soal2-b",3:"soal3-c",4:"soal4-b",5:"soal5-a",6:"soal6-b",7:"soal7-c",8:"soal8-a",9:"soal9-c",10:"soal10-b"};
+                const kunciPreview = {1:"soal1-b",2:"soal2-a",3:"soal3-c",4:"soal4-c",5:"soal5-b",6:"soal6-c",7:"soal7-b",8:"soal8-c",9:"soal9-c",10:"soal10-a"};
                 let benar = 0;
                 for (let i = 1; i <= totalSoal; i++) {
                     const ok = jawabanUser[i] === kunciPreview[i];
@@ -442,13 +440,13 @@
 
             // --- SISWA: kirim jawaban mentah ke server ---
             const csrfToken = "{{ csrf_token() }}";
-            fetch('/api/bab1/quiz/{{ user_id }}', {
+            fetch('/api/bab1/quiz/{{ user_id }}/1', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
                 body: JSON.stringify({
                     userID:  '{{ user_id }}',
                     chapter: '1',
-                    jawaban: jawabanUser   // { 1: "soal1-c", 2: "soal2-b", ... }
+                    jawaban: jawabanUser   // { 1: "soal1-b", 2: "soal2-a", ... }
                 })
             })
             .then(res => res.json())

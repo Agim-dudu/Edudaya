@@ -442,7 +442,7 @@
 
             // --- SISWA: kirim jawaban mentah ke server ---
             const csrfToken = "{{ csrf_token() }}";
-            fetch('/api/bab2/quiz/{{ user_id }}', {
+            fetch('/api/bab2/quiz/{{ user_id }}/2', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
                 body: JSON.stringify({
