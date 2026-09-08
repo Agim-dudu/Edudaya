@@ -26,107 +26,32 @@
         {% set active   = "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white" %}
         {% set inactive = "bg-gray-100 text-gray-700 hover:bg-emerald-500 hover:text-white transition-all duration-200" %}
 
-        {% if current_user.klasifikasi == 0 %}
-        <!-- Menu: Konsep Bangun Datar (Low) -->
-        <div>
-            <a href="/learning/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                class="flex items-center gap-2 px-3 py-2.5 border-2
-                {% if request.endpoint == 'learning_bangun_datar' %}
-                    border-emerald-400 bg-emerald-50
-                {% else %}
-                    border-gray-200 bg-white hover:bg-gray-50 hover:border-emerald-400
-                {% endif %}
-                rounded-xl cursor-pointer font-bold text-sm text-gray-700 transition-all duration-200 select-none">
-                <span>🔷 Konsep Bangun Datar</span>
-            </a>
-        </div>
-        {% else %}
-        <!-- Menu: Penjumlahan -->
+        <!-- Menu: Bangun Datar (semua level) -->
         <div>
             <div onclick="toggleSidebarMenu(this)"
                 class="flex justify-between items-center px-3 py-2.5 border-2
-                {% if request.endpoint in ['learning_chapter1_1', 'learning_chapter1_2', 'learning_chapter1_summary', 'learning_chapter1_quiz'] %}
+                {% if request.endpoint in ['learning_bangun_datar', 'learning_bangun_datar_2'] %}
                     border-emerald-400 bg-emerald-50
                 {% else %}
                     border-gray-200 bg-white hover:bg-gray-50 hover:border-emerald-400
                 {% endif %}
                 rounded-xl cursor-pointer font-bold text-sm text-gray-700 transition-all duration-200 select-none">
-                <span>➕ Penjumlahan</span>
+                <span>🔷 Bangun Datar</span>
                 <ion-icon name="chevron-down-outline" class="transition-transform duration-300 text-base"></ion-icon>
             </div>
-            <ul class="{% if request.endpoint in ['learning_chapter1_1', 'learning_chapter1_2', 'learning_chapter1_summary', 'learning_chapter1_quiz'] %}flex{% else %}hidden{% endif %} flex-col gap-1 pt-1 pl-1 list-none">
+            <ul class="{% if request.endpoint in ['learning_bangun_datar', 'learning_bangun_datar_2'] %}flex{% else %}hidden{% endif %} flex-col gap-1 pt-1 pl-1 list-none">
 
                 <li>
-                    <a href="/learning/bab1/chapter1/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_chapter1_1' else inactive }}">
-                        📖 Pengenalan Penjumlahan
+                    <a href="/learning/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}"
+                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_bangun_datar' else inactive }}">
+                        📖 Konsep Bangun Datar
                     </a>
                 </li>
 
                 <li>
-                    <a href="/learning/bab1/chapter2/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_chapter1_2' else inactive }}">
-                        📊 Penjumlahan Lanjutan
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/learning/bab1/summary/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_chapter1_summary' else inactive }}">
-                        📋 Rangkuman
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/learning/bab1/quiz/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_chapter1_quiz' else inactive }}">
-                        🧩 Kuis
-                    </a>
-                </li>
-
-            </ul>
-        </div>
-
-        <!-- Menu: Pengurangan -->
-        <div>
-            <div onclick="toggleSidebarMenu(this)"
-                class="flex justify-between items-center px-3 py-2.5 border-2
-                {% if request.endpoint in ['learning_chapter2_1', 'learning_chapter2_2', 'learning_chapter2_summary', 'learning_chapter2_quiz'] %}
-                    border-emerald-400 bg-emerald-50
-                {% else %}
-                    border-gray-200 bg-white hover:bg-gray-50 hover:border-emerald-400
-                {% endif %}
-                rounded-xl cursor-pointer font-bold text-sm text-gray-700 transition-all duration-200 select-none">
-                <span>➖ Pengurangan</span>
-                <ion-icon name="chevron-down-outline" class="transition-transform duration-300 text-base"></ion-icon>
-            </div>
-            <ul class="{% if request.endpoint in ['learning_chapter2_1', 'learning_chapter2_2', 'learning_chapter2_summary', 'learning_chapter2_quiz'] %}flex{% else %}hidden{% endif %} flex-col gap-1 pt-1 pl-1 list-none">
-
-                <li>
-                    <a href="/learning/bab2/chapter1/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_chapter2_1' else inactive }}">
-                        📖 Pengertian Pengurangan
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/learning/bab2/chapter2/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_chapter2_2' else inactive }}">
-                        📊 Pengurangan Lanjutan
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/learning/bab2/summary/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_chapter2_summary' else inactive }}">
-                        📋 Rangkuman
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/learning/bab2/quiz/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_chapter2_quiz' else inactive }}">
-                        🧩 Kuis
+                    <a href="/learning/bangun_datar/02/{{ current_user.id }}/{{ current_user.klasifikasi }}"
+                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_bangun_datar_2' else inactive }}">
+                        🔺 Segitiga
                     </a>
                 </li>
 
@@ -140,7 +65,6 @@
                 🏆 Evaluasi Final
             </a>
         </div>
-        {% endif %}
 
     </div>
 

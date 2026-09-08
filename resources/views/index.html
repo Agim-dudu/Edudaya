@@ -172,17 +172,10 @@
                         {# Kondisi B: Sudah pretest DAN AI sudah selesai menganalisis (Bisa Masuk Kelas/Materi) #}
                         {% else %}
                             {% if current_user.klasifikasi is not none %}
-                                {% if current_user.klasifikasi == 0 %}
                             <a href="/learning/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}"
                               class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
                               📚 Mulai Belajar
                             </a>
-                                {% else %}
-                            <a href="/learning/bab1/chapter1/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                              class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
-                              📚 Mulai Belajar
-                            </a>
-                                {% endif %}
                             {% else %}
                             <a href="/dashboard/student/{{ current_user.id }}"
                               class="bg-yellow-400 hover:bg-kuning-dark text-white font-800 px-6 py-3 rounded-xl shadow-md transition hover:-translate-y-0.5 text-base">
