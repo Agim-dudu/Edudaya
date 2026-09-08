@@ -457,3 +457,142 @@ def can_access_bangun_datar_2(user_id, klasifikasi):
         user_id=user_id,
         klasifikasi=klasifikasi,
     )
+
+def can_access_bangun_datar_2(user_id, klasifikasi):
+    guard = _guard(user_id)
+    if guard:
+        return guard
+    if klasifikasi not in (0, 1):
+        flash("Materi Segitiga untuk level tinggi belum tersedia.", "warning")
+        return redirect(url_for(
+            "learning_bangun_datar",
+            user_id=user_id,
+            klasifikasi=klasifikasi,
+        ))
+    folder = _folder(klasifikasi)
+    return render_template(
+        f"learning/{folder}/bangun_datar/02.html",
+        user_id=user_id,
+        klasifikasi=klasifikasi,
+    )
+    
+def can_access_bangun_datar_quiz(user_id, klasifikasi):
+    guard = _guard(user_id)
+    if guard:
+        return guard
+        
+    # Validasi level materi
+    if klasifikasi not in (0, 1):
+        flash("Materi Segitiga untuk level tinggi belum tersedia.", "warning")
+        return redirect(url_for(
+            "learning_bangun_datar",
+            user_id=user_id,
+            klasifikasi=klasifikasi,
+        ))
+        
+    folder = _folder(klasifikasi)
+
+    # ==================== JIKA USER ADALAH SISWA (LEVEL 0) ====================
+    if current_user.level == 0:
+        # Catat aktivitas siswa telah membuka halaman ini
+        _log_activity(user_id, "bangun_datar_quiz")
+
+        # Ambil data history dari database khusus untuk materi Bangun Datar
+        quiz_history = Score.query.filter_by(
+            user_id=user_id,
+            score_type="quiz",
+            chapter="Bangun Datar", # Pastikan string ini sama dengan format penyimpanan di DB kamu
+        ).order_by(Score.created_at.desc()).all()
+
+        return render_template(
+            f"learning/{folder}/bangun_datar/quiz.html",
+            user_id=user_id,
+            klasifikasi=klasifikasi,
+            quiz_history=quiz_history,
+            user_kkm=_get_kkm(current_user),
+        )
+
+    # ==================== JIKA USER ADALAH GURU (LEVEL != 0) ====================
+    return render_template(
+        f"learning/{folder}/bangun_datar/quiz.html",
+        user_id=user_id,
+        klasifikasi=klasifikasi,
+    )
+    
+def can_access_bangun_datar_quiz_start(user_id, klasifikasi):
+    guard = _guard(user_id)
+    if guard:
+        return guard
+
+    # Validasi klasifikasi
+    if klasifikasi not in (0, 1):
+        flash("Materi Segitiga untuk level tinggi belum tersedia.", "warning")
+        return redirect(url_for(
+            "learning_bangun_datar",
+            user_id=user_id,
+            klasifikasi=klasifikasi,
+        ))
+
+    folder = _folder(klasifikasi)
+    kkm = _get_kkm(current_user) if current_user.is_authenticated else 70
+    chapter_label = "Bangun Datar" # Sesuaikan dengan nama chapter di database Score
+
+    # ==================== JIKA USER ADALAH SISWA (LEVEL 0) ====================
+    if current_user.level == 0:
+        last_score = _get_last_score(user_id, "quiz", chapter_label)
+
+        # 1. Pengecekan apakah siswa sudah lulus KKM sebelumnya
+        if last_score:
+            if last_score.value >= kkm:
+                flash(
+                    f"Kamu sudah mencapai nilai KKM ({kkm}). "
+                    f"Tidak perlu mengulang kuis ini lagi! 🎉",
+                    "success",
+                )
+                return redirect(url_for("learning_bangun_datar", user_id=user_id, klasifikasi=klasifikasi))
+
+            # 2. Pengecekan masa tunggu (cooldown)
+            sisa_cooldown = _compute_cooldown(last_score)
+            if sisa_cooldown > 0:
+                flash(
+                    f"Kamu baru saja mengerjakan kuis. "
+                    f"Tunggu {sisa_cooldown // 60} menit {sisa_cooldown % 60} detik lagi.",
+                    "warning",
+                )
+                return redirect(url_for("learning_bangun_datar", user_id=user_id, klasifikasi=klasifikasi))
+
+        # 3. Atur waktu mulai kuis di session (gunakan key spesifik agar tidak bentrok dengan bab lain)
+        session_key = "quiz_start_time_bangun_datar"
+        if session_key not in session:
+            session[session_key] = datetime.utcnow().isoformat()
+
+        # 4. Hitung sisa detik kuis
+        sisa_detik = QUIZ_DURATION_SECONDS - int(
+            (datetime.utcnow() - datetime.fromisoformat(session[session_key])).total_seconds()
+        )
+        
+        if sisa_detik <= 0:
+            session.pop(session_key, None)
+            flash("Waktu pengerjaan kuis telah habis.", "warning")
+            return redirect(url_for("learning_bangun_datar", user_id=user_id, klasifikasi=klasifikasi))
+
+        # Render template untuk siswa
+        return render_template(
+            f"learning/{folder}/bangun_datar/quiz_start.html",
+            user_id=user_id,
+            klasifikasi=klasifikasi,
+            sisa_detik=sisa_detik,
+            user_kkm=kkm,
+            user_level=0
+        )
+
+    # ==================== JIKA USER ADALAH GURU (LEVEL != 0) ====================
+    # Guru melewati validasi timer/cooldown (Bypass untuk preview)
+    return render_template(
+        f"learning/{folder}/bangun_datar/quiz_start.html",
+        user_id=user_id,
+        klasifikasi=klasifikasi,
+        sisa_detik=15 * 60,                # Waktu default 15 menit
+        user_kkm=kkm,
+        user_level=current_user.level
+    )
