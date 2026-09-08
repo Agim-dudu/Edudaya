@@ -462,13 +462,6 @@ def can_access_bangun_datar_2(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:
         return guard
-    if klasifikasi not in (0, 1):
-        flash("Materi Segitiga untuk level tinggi belum tersedia.", "warning")
-        return redirect(url_for(
-            "learning_bangun_datar",
-            user_id=user_id,
-            klasifikasi=klasifikasi,
-        ))
     folder = _folder(klasifikasi)
     return render_template(
         f"learning/{folder}/bangun_datar/02.html",
@@ -479,17 +472,7 @@ def can_access_bangun_datar_2(user_id, klasifikasi):
 def can_access_bangun_datar_quiz(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:
-        return guard
-        
-    # Validasi level materi
-    if klasifikasi not in (0, 1):
-        flash("Materi Segitiga untuk level tinggi belum tersedia.", "warning")
-        return redirect(url_for(
-            "learning_bangun_datar",
-            user_id=user_id,
-            klasifikasi=klasifikasi,
-        ))
-        
+        return guard      
     folder = _folder(klasifikasi)
 
     # ==================== JIKA USER ADALAH SISWA (LEVEL 0) ====================
@@ -523,15 +506,6 @@ def can_access_bangun_datar_quiz_start(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:
         return guard
-
-    # Validasi klasifikasi
-    if klasifikasi not in (0, 1):
-        flash("Materi Segitiga untuk level tinggi belum tersedia.", "warning")
-        return redirect(url_for(
-            "learning_bangun_datar",
-            user_id=user_id,
-            klasifikasi=klasifikasi,
-        ))
 
     folder = _folder(klasifikasi)
     kkm = _get_kkm(current_user) if current_user.is_authenticated else 70
