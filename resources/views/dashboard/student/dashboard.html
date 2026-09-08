@@ -117,15 +117,12 @@
                     <div class="bg-white rounded-2xl shadow p-5 mb-6">
                         <h3 class="font-fredoka text-xl text-cokelat-general mb-4">📖 Lanjutkan Belajar</h3>
                         <div class="flex items-center gap-4 p-4 bg-biru-light rounded-xl">
-                            <div class="text-5xl">🛶</div>
+                            <div class="text-5xl">🔷</div>
                             <div class="flex-1">
-                                <div class="font-700 text-cokelat-general">Penjumlahan ala Pasar Terapung</div>
-                                <div class="text-sm text-gray-500 mb-2">Sesi 3 dari 8 telah selesai</div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width:37%"></div>
-                                </div>
+                                <div class="font-700 text-cokelat-general">Konsep Bangun Datar</div>
+                                <div class="text-sm text-gray-500">Pelajari pengertian, unsur, dan jenis-jenis bangun datar</div>
                             </div>
-                            <button onclick="showPage('belajar')" class="bg-biru-general hover:bg-biru-dark text-white font-700 px-4 py-2 rounded-xl text-sm shrink-0 transition">Lanjut →</button>
+                            <a href="/learning/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi if current_user.klasifikasi is not none else 0 }}" class="bg-biru-general hover:bg-biru-dark text-white font-700 px-4 py-2 rounded-xl text-sm shrink-0 transition">Mulai →</a>
                         </div>
                     </div>
 

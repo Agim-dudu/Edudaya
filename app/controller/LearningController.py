@@ -434,3 +434,33 @@ def can_access_learning_evaluation(user_id, klasifikasi):
 
 def can_access_learning_evaluation_start(user_id, klasifikasi):
     return can_access_evaluation_start(user_id, klasifikasi, "evaluation")
+
+# Bangun Datar (Low)
+def can_access_bangun_datar(user_id, klasifikasi):
+    guard = _guard(user_id)
+    if guard:
+        return guard
+    folder = _folder(klasifikasi)
+    return render_template(
+        f"learning/{folder}/bangun_datar/01.html",
+        user_id=user_id,
+        klasifikasi=klasifikasi,
+    )
+
+def can_access_bangun_datar_2(user_id, klasifikasi):
+    guard = _guard(user_id)
+    if guard:
+        return guard
+    if klasifikasi not in (0, 1):
+        flash("Materi Segitiga untuk level tinggi belum tersedia.", "warning")
+        return redirect(url_for(
+            "learning_bangun_datar",
+            user_id=user_id,
+            klasifikasi=klasifikasi,
+        ))
+    folder = _folder(klasifikasi)
+    return render_template(
+        f"learning/{folder}/bangun_datar/02.html",
+        user_id=user_id,
+        klasifikasi=klasifikasi,
+    )

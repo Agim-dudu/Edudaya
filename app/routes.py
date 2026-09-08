@@ -189,6 +189,18 @@ def _block_student_if_waiting_analysis():
                 flash("Selesaikan Pretest atau tunggu analisis guru terlebih dahulu.", "warning")
                 return redirect(url_for('dashboard_student', user_id=current_user.id))
 
+# Routing Learning Bangun Datar (Low) =========================================================================
+
+@app.route("/learning/bangun_datar/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bangun_datar(user_id, klasifikasi):
+    return can_access_bangun_datar(user_id, klasifikasi)
+
+@app.route("/learning/bangun_datar/02/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bangun_datar_2(user_id, klasifikasi):
+    return can_access_bangun_datar_2(user_id, klasifikasi)
+
 # Routing Learning Bab 1 ====================================================================================
 
 @app.route("/learning/bab1/chapter1/<int:user_id>/<int:klasifikasi>", methods=["GET"])
@@ -503,6 +515,10 @@ def teacher_update_klasifikasi(user_id):
     # 4. Menentukan folder template (Gunakan '=' bukan '==')
     if k == 0:
         pilihan = "low"
+        return render_template(
+            f'learning/{pilihan}/bangun_datar/01.html',
+            user_id=user_id
+        )
     elif k == 1:
         pilihan = "medium"
     else:
@@ -742,6 +758,10 @@ def admin_update_klasifikasi(user_id):
     # 4. Menentukan folder template (Gunakan '=' bukan '==')
     if k == 0:
         pilihan = "low"
+        return render_template(
+            f'learning/{pilihan}/bangun_datar/01.html',
+            user_id=user_id
+        )
     elif k == 1:
         pilihan = "medium"
     else:

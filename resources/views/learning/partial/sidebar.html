@@ -26,6 +26,21 @@
         {% set active   = "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white" %}
         {% set inactive = "bg-gray-100 text-gray-700 hover:bg-emerald-500 hover:text-white transition-all duration-200" %}
 
+        {% if current_user.klasifikasi == 0 %}
+        <!-- Menu: Konsep Bangun Datar (Low) -->
+        <div>
+            <a href="/learning/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}"
+                class="flex items-center gap-2 px-3 py-2.5 border-2
+                {% if request.endpoint == 'learning_bangun_datar' %}
+                    border-emerald-400 bg-emerald-50
+                {% else %}
+                    border-gray-200 bg-white hover:bg-gray-50 hover:border-emerald-400
+                {% endif %}
+                rounded-xl cursor-pointer font-bold text-sm text-gray-700 transition-all duration-200 select-none">
+                <span>🔷 Konsep Bangun Datar</span>
+            </a>
+        </div>
+        {% else %}
         <!-- Menu: Penjumlahan -->
         <div>
             <div onclick="toggleSidebarMenu(this)"
@@ -125,6 +140,7 @@
                 🏆 Evaluasi Final
             </a>
         </div>
+        {% endif %}
 
     </div>
 

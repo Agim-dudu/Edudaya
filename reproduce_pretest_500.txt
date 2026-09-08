@@ -1,0 +1,7 @@
+cd /home/edudayai/public_html/edudaya && export PYTHONPATH=. && python -c "
+from app import app
+with app.app_context():
+    from app.controller.PretestController import save_pretest
+    data = {'answers': {'1': 'trapesium', '2': 'layang', '3': '60', '4': '60', '5': '12', '6': 'A', '7': 'salah', '8': 'x', '9': 'tidak', '10': 'x'}, 'time_taken': 100}
+    save_pretest(data, 8)
+"
