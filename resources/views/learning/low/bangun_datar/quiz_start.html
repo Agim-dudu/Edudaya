@@ -430,18 +430,18 @@
                         popup: 'rounded-2xl shadow-xl',
                     },
                     buttonsStyling: false,
-                }).then(r => { if (r.isConfirmed) window.location.href = "/learning/bab1/quiz/{{ current_user.id }}/{{ current_user.klasifikasi }}"; });
+                }).then(r => { if (r.isConfirmed) window.location.href = "/quiz/bangun_datar{{ current_user.id }}/{{ current_user.klasifikasi }}"; });
                 return;
             }
 
             // --- SISWA: kirim jawaban mentah ke server ---
             const csrfToken = "{{ csrf_token() }}";
-            fetch('/api/bab1/quiz/{{ user_id }}/0', {
+            fetch('/api/bangun_datar/quiz/{{ user_id }}/0', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
                 body: JSON.stringify({
                     userID:  '{{ user_id }}',
-                    chapter: '1',
+                    chapter: 'Bangun Datar',
                     jawaban: jawabanUser   // { 1: "soal1-b", 2: "soal2-c", ... }
                 })
             })
