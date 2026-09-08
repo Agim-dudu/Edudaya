@@ -790,6 +790,7 @@ def dashboard_student(user_id):
         "dashboard/student/dashboard.html",
         user=user,
         user_id=user_id,
+        overview=get_student_overview_stats(user_id),
         waiting_analysis=is_student_waiting_analysis()
     )
 

@@ -62,16 +62,16 @@
             <div class="p-6">
                 <div class="grid grid-cols-3 gap-4 mb-6">
                     <div class="bg-white rounded-2xl p-4 shadow text-center">
-                        <div class="font-fredoka text-5xl text-hijau-general mb-1">{{ stats.avg_score }}</div>
+                        <div class="font-fredoka text-5xl text-hijau-general mb-1">{{ stats.avg_score if stats.avg_score is not none else '–' }}</div>
                         <div class="text-sm text-gray-500 font-600">Nilai Rata-rata</div>
                     </div>
                     <div class="bg-white rounded-2xl p-4 shadow text-center">
-                        <div class="font-fredoka text-5xl text-biru-general mb-1">{{ stats.completed_bab }}/{{ stats.total_bab }}</div>
+                        <div class="font-fredoka text-5xl text-biru-general mb-1">{{ stats.completed_bab }}</div>
                         <div class="text-sm text-gray-500 font-600">Materi Selesai</div>
                     </div>
                     <div class="bg-white rounded-2xl p-4 shadow text-center">
-                        <div class="font-fredoka text-5xl text-kuning-general mb-1">{{ stats.total_submateri }}</div>
-                        <div class="text-sm text-gray-500 font-600">Sub-materi</div>
+                        <div class="font-fredoka text-5xl text-kuning-general mb-1">{{ stats.soal_dijawab }}</div>
+                        <div class="text-sm text-gray-500 font-600">Soal Dijawab</div>
                     </div>
                 </div>
 
@@ -124,6 +124,15 @@
                             {% endfor %}
                         </div>
                     </div>
+                </div>
+                {% else %}
+                <div class="bg-white rounded-2xl shadow p-8 text-center">
+                    <div class="text-5xl mb-3">📭</div>
+                    <div class="font-fredoka text-xl text-cokelat-general mb-1">Belum Ada Nilai</div>
+                    <div class="text-sm text-gray-500">Kamu belum mengerjakan kuis apa pun.</div>
+                    <div class="text-xs text-gray-400 mt-1">Kerjakan Kuis Bangun Datar untuk melihat nilaimu di sini!</div>
+                    <a href="/quiz/bangun_datar/{{ user_id }}/{{ current_user.klasifikasi if current_user.klasifikasi is not none else 0 }}"
+                        class="inline-block mt-4 bg-biru-general hover:bg-biru-dark text-white font-700 px-5 py-2.5 rounded-xl text-sm transition">🧩 Kerjakan Kuis</a>
                 </div>
                 {% endfor %}
             </div>

@@ -12,17 +12,6 @@
     <!-- Body -->
     <div class="flex-1 overflow-y-auto px-3 py-4 flex flex-col gap-4">
 
-        <!-- Progress -->
-        <div class="bg-white border-2 border-gray-200 rounded-2xl p-4">
-            <p class="text-sm font-bold text-gray-500">📈 Progres Belajarmu: <span class="text-emerald-500"
-                    id="overallProgressPct">0%</span></p>
-            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-                <div id="overallProgressBar"
-                    class="bg-gradient-to-r from-emerald-400 to-emerald-600 h-2.5 rounded-full transition-all duration-1000 w-0">
-                </div>
-            </div>
-        </div>
-
         {% set active   = "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white" %}
         {% set inactive = "bg-gray-100 text-gray-700 hover:bg-emerald-500 hover:text-white transition-all duration-200" %}
 
@@ -58,11 +47,11 @@
             </ul>
         </div>
 
-        <!-- Evaluasi Final -->
+        <!-- Kuis -->
         <div>
-            <a href="/learning/evaluation/{{ user_id }}/{{ current_user.klasifikasi }}"
-                class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold w-full {{ active if request.endpoint == 'learning_evaluation' else inactive }}">
-                🏆 Evaluasi Final
+            <a href="/quiz/bangun_datar/{{ user_id }}/{{ current_user.klasifikasi }}"
+                class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold w-full {{ active if request.endpoint == 'quiz_bangun_datar' else inactive }}">
+                🧩 Kuis
             </a>
         </div>
 

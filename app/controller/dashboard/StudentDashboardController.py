@@ -103,54 +103,119 @@ def get_user_by_id(user_id):
     return user
 
 def get_student_dashboard_stats(user_id):
+    """Statistik & detail nilai halaman 'Nilai Saya' — murni dari hasil kuis (tabel Score)."""
     scores = Score.query.filter_by(user_id=user_id).all()
 
-    chapters = [
-        {"key": "Bab 1", "title": "Operasi Hitung Dasar", "icon": "🛶"},
-        {"key": "Bab 2", "title": "Geometri & Pola", "icon": "🔷"},
-    ]
+    chapters_meta = {
+        "Bangun Datar": {"title": "Bangun Datar", "icon": "🔷"},
+        "Bab 1": {"title": "Penjumlahan", "icon": "➕"},
+        "Bab 2": {"title": "Pengurangan", "icon": "➖"},
+    }
 
     bab_list = []
-    total_value = 0
-    total_completed = 0
-    total_submateri = 0
+    for ch_key, meta in chapters_meta.items():
+        ch_scores = [s for s in scores if s.chapter == ch_key]
+        if not ch_scores:
+            # Hanya tampilkan section yang benar-benar punya nilai
+            continue
 
-    for ch in chapters:
-        ch_scores = [s for s in scores if s.chapter == ch["key"]]
         completed = [s for s in ch_scores if s.value > 0]
-        total = max(len(ch_scores), 4)
-
         materials = []
-        for i, s in enumerate(ch_scores):
+        for s in ch_scores:
             materials.append({
-                "icon": "📝" if s.score_type == "quiz" else "📄",
-                "title": f"{'Kuis' if s.score_type == 'quiz' else 'Latihan'} {ch['key']}",
+                "icon": "🧩" if s.score_type == "quiz" else "📝",
+                "title": f"{'Kuis' if s.score_type == 'quiz' else 'Latihan'} {meta['title']}",
                 "updated_at": s.created_at or datetime.utcnow(),
                 "completed": s.value > 0,
                 "score": s.value,
             })
 
-        progress = round((len(completed) / total) * 100) if total > 0 else 0
+        progress = round((len(completed) / len(ch_scores)) * 100) if ch_scores else 0
         bab_list.append({
-            "bab_title": ch["title"],
-            "icon": ch["icon"],
+            "bab_title": meta["title"],
+            "icon": meta["icon"],
             "completed": len(completed),
-            "total": total,
+            "total": len(ch_scores),
             "bab_progress": progress,
             "materials": materials,
         })
-        total_submateri += len(ch_scores)
 
-    completed_count = sum(b["completed"] for b in bab_list)
-    total_count = sum(b["total"] for b in bab_list)
-    avg_score = round(sum(s.value for s in scores if s.value > 0) / max(sum(1 for s in scores if s.value > 0), 1))
+    completed_chapters = len({s.chapter for s in scores if s.chapter})
+    soal_dijawab = sum(s.correct + s.incorrect for s in scores)
+    avg_score = round(sum(s.value for s in scores) / len(scores)) if scores else None
 
     return {
-        "avg_score": avg_score,
-        "completed_bab": completed_count,
-        "total_bab": total_count,
-        "total_submateri": total_submateri,
+        "avg_score": avg_score,          # None -> template menampilkan '–'
+        "completed_bab": completed_chapters,
+        "soal_dijawab": soal_dijawab,
         "bab_list": bab_list,
+    }
+
+def get_student_overview_stats(user_id):
+    """Statistik real untuk card ringkasan di dashboard siswa."""
+    user = User.query.get(user_id)
+    scores = Score.query.filter_by(user_id=user_id).all()
+
+    # 📚 Materi selesai = jumlah bab/chapter berbeda yang sudah punya skor kuis
+    materi_selesai = len({s.chapter for s in scores if s.chapter})
+
+    # 🧩 Latihan dikerjakan = total soal yang sudah dijawab (benar + salah)
+    latihan_dikerjakan = sum(s.correct + s.incorrect for s in scores)
+
+    # ⭐ Nilai rata-rata & terbaik = MURNI dari nilai kuis (pretest tidak dihitung)
+    def _avg(s_list):
+        return round(sum(s.value for s in s_list) / len(s_list)) if s_list else None
+
+    nilai_rata = _avg(scores)
+    nilai_terbaik = max((s.value for s in scores), default=None)
+
+    # 🏅 Peringkat kelas & leaderboard = ranking siswa sekelas (rata-rata nilai, lalu star)
+    peringkat = None
+    total_kelas = 0
+    leaderboard = []
+    classmates = []
+    if user.class_id:
+        classmates = User.query.filter_by(level=0, class_id=user.class_id).all()
+        total_kelas = len(classmates)
+
+        def _rank_key(m):
+            avg = _avg(m.scores)
+            return (avg if avg is not None else -1, m.star or 0)
+
+        ranked = sorted(classmates, key=_rank_key, reverse=True)
+        peringkat = ranked.index(user) + 1
+
+        for m in ranked[:3]:
+            avg = _avg(m.scores)  # murni nilai kuis
+            leaderboard.append({
+                "full_name": m.full_name,
+                "is_me": m.id == user.id,
+                "score": avg,  # None -> template tampil '–'
+            })
+
+    # 📋 Detail nilai per materi (dari tabel Score, terbaru dulu)
+    icons = {"Bangun Datar": "🔷", "Bab 1": "➕", "Bab 2": "➖"}
+    titles = {"Bangun Datar": "Kuis Bangun Datar", "Bab 1": "Kuis Penjumlahan", "Bab 2": "Kuis Pengurangan"}
+    nilai_detail = []
+    for s in sorted(scores, key=lambda x: x.created_at or datetime.utcnow(), reverse=True):
+        nilai_detail.append({
+            "icon": icons.get(s.chapter, "📝"),
+            "title": titles.get(s.chapter, f"Kuis {s.chapter}"),
+            "created_at": s.created_at,
+            "value": s.value,
+            "label": "Sangat Baik" if s.value >= 85 else "Baik" if s.value >= 75 else "Perlu Latihan",
+        })
+
+    return {
+        "materi_selesai": materi_selesai,
+        "latihan_dikerjakan": latihan_dikerjakan,
+        "kuis_selesai": len(scores),
+        "nilai_rata": nilai_rata,
+        "nilai_terbaik": nilai_terbaik,
+        "peringkat": peringkat,
+        "total_kelas": total_kelas,
+        "leaderboard": leaderboard,
+        "nilai_detail": nilai_detail,
     }
 
 def show_student_ai_analysis(user_id):
@@ -165,7 +230,11 @@ def show_student_ai_analysis(user_id):
     # Ambil data ai_analysis jika pretest dan ai_analysis itu ada
     ai_analysis_data = None
     if pretest and pretest.ai_analysis:
-        ai_analysis_data = json.loads(pretest.ai_analysis)
+        try:
+            ai_analysis_data = json.loads(pretest.ai_analysis)
+        except (json.JSONDecodeError, TypeError):
+            # Payload bukan JSON valid — tampilkan halaman tanpa analisis, bukan error 500
+            ai_analysis_data = None
 
     # Selalu kembalikan struktur dictionary yang sama agar route tidak error
     return {
