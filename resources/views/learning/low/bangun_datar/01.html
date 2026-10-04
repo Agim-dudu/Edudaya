@@ -12,6 +12,89 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap"
         rel="stylesheet">
+    <style>
+        /* ===== ANIMASI BERTAHAP (sesuai urutan animasi di materi) ===== */
+        .muncul {
+            opacity: 0;
+            animation: muncul .45s ease forwards;
+            animation-delay: var(--d, 0s);
+        }
+
+        @keyframes muncul {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .kedip {
+            animation: kedip .55s ease 3;
+            animation-delay: var(--d, 2.4s);
+        }
+
+        @keyframes kedip {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .2;
+            }
+        }
+
+        /* Simetri lipat: separuh kanan menutup ke kiri */
+        .lipat {
+            transform-box: view-box;
+            transform-origin: 110px 92px;
+            animation: lipat 5s ease-in-out infinite;
+        }
+
+        @keyframes lipat {
+
+            0%,
+            20% {
+                transform: scaleX(1);
+                opacity: .9;
+            }
+
+            55%,
+            85% {
+                transform: scaleX(0);
+                opacity: .25;
+            }
+
+            100% {
+                transform: scaleX(1);
+                opacity: .9;
+            }
+        }
+
+        /* Simetri putar: berputar 360° tepat kembali ke posisi awal */
+        .putar {
+            transform-box: view-box;
+            transform-origin: 110px 92px;
+            animation: putar 7s linear infinite;
+        }
+
+        @keyframes putar {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .tampil-teks {
+            opacity: 0;
+            animation: tampilTeks .4s ease forwards;
+            animation-delay: var(--d, 0s);
+        }
+
+        @keyframes tampilTeks {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
     <script>
         tailwind.config = {
             theme: {
@@ -23,14 +106,10 @@
                     animation: {
                         'bounce-slow': 'bounce 2s ease-in-out infinite',
                         'float': 'floatUp 8s ease-in-out infinite',
-                        'star-pop': 'starPop 0.5s cubic-bezier(0.34,1.56,0.64,1)',
-                        'soal-in': 'soalIn 0.35s ease',
                         'feedback-in': 'feedbackIn 0.4s cubic-bezier(0.34,1.56,0.64,1)',
                         'pop-in': 'popIn 0.5s cubic-bezier(0.34,1.56,0.64,1)',
-                        'confetti-fall': 'confettiFall linear forwards',
                         'shake': 'wrongShake 0.4s ease',
                         'pulse-correct': 'correctPulse 0.5s ease',
-                        'spin-slow': 'spin 10s linear infinite',
                     },
                     keyframes: {
                         floatUp: {
@@ -39,27 +118,6 @@
                             },
                             '50%': {
                                 transform: 'translateY(-20px) rotate(10deg)'
-                            },
-                        },
-                        starPop: {
-                            '0%': {
-                                transform: 'scale(0)'
-                            },
-                            '60%': {
-                                transform: 'scale(1.4)'
-                            },
-                            '100%': {
-                                transform: 'scale(1)'
-                            },
-                        },
-                        soalIn: {
-                            '0%': {
-                                opacity: '0',
-                                transform: 'translateX(24px)'
-                            },
-                            '100%': {
-                                opacity: '1',
-                                transform: 'translateX(0)'
                             },
                         },
                         feedbackIn: {
@@ -80,16 +138,6 @@
                             '100%': {
                                 transform: 'scale(1)',
                                 opacity: '1'
-                            },
-                        },
-                        confettiFall: {
-                            '0%': {
-                                transform: 'translateY(0) rotate(0deg)',
-                                opacity: '1'
-                            },
-                            '100%': {
-                                transform: 'translateY(100vh) rotate(720deg)',
-                                opacity: '0'
                             },
                         },
                         wrongShake: {
@@ -128,11 +176,11 @@
 
     <!-- Floating decorations -->
     <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0"
-        style="top:18%;left:60%;animation-delay:0s">🔷</div>
+        style="top:16%;left:62%;animation-delay:0s">🔺</div>
     <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0"
-        style="top:55%;left:75%;animation-delay:1.5s">🔺</div>
+        style="top:52%;left:78%;animation-delay:1.5s">⬜</div>
     <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0"
-        style="top:78%;left:85%;animation-delay:0.8s">⬜</div>
+        style="top:80%;left:86%;animation-delay:0.8s">🔷</div>
 
     <!-- ===== SIDEBAR ===== -->
     {% include 'learning/partial/sidebar.html' %}
@@ -172,515 +220,740 @@
                     {% endif %}
                     {% endwith %}
 
-                    <!-- ===== MATERI CARD: Pendahuluan ===== -->
-                    <div
-                        class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-emerald-100 flex flex-col">
-                        <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-5 text-center">
+                    <!-- ===== MATERI CARD: Judul & Tujuan ===== -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-emerald-100 flex flex-col">
+                        <div class="bg-gradient-to-r from-emerald-500 to-teal-600 px-5 py-5 text-center">
                             <h2 class="font-fredoka text-2xl text-white"
                                 style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">
-                                Materi Konsep Bangun Datar</h2>
+                                🌺 Yuk, Kenalan dengan Bangun Datar!</h2>
+                            <p class="text-emerald-50 text-sm font-bold mt-1">Matematika Seru Bersama Budaya
+                                Kalimantan Selatan</p>
                         </div>
 
                         <div class="p-6 flex flex-col gap-5 flex-1">
 
-                            <!-- Tujuan -->
+                            <!-- Tujuan Belajar -->
                             <div>
                                 <h3 class="font-fredoka text-xl text-emerald-600 mb-3 flex items-center gap-2">🎯
                                     Tujuan Belajar</h3>
                                 <div class="flex flex-col gap-2">
                                     <div
                                         class="flex items-center gap-3 bg-gradient-to-r from-green-50 to-green-100 border-l-4 border-green-500 rounded-xl px-4 py-3 font-bold text-sm text-gray-800 hover:translate-x-1 transition-transform duration-200">
+                                        <span class="text-2xl">👀</span>
+                                        <span>Mengamati benda-benda di sekitar kita dan menemukan bentuk bangun
+                                            datar</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-3 bg-gradient-to-r from-green-50 to-green-100 border-l-4 border-green-500 rounded-xl px-4 py-3 font-bold text-sm text-gray-800 hover:translate-x-1 transition-transform duration-200">
                                         <span class="text-2xl">🔷</span>
-                                        <span>Mengenal pengertian bangun datar dan menemukannya dalam kehidupan
-                                            sehari-hari</span>
+                                        <span>Memahami pengertian bangun datar serta cirinya</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-3 bg-gradient-to-r from-green-50 to-green-100 border-l-4 border-green-500 rounded-xl px-4 py-3 font-bold text-sm text-gray-800 hover:translate-x-1 transition-transform duration-200">
+                                        <span class="text-2xl">📐</span>
+                                        <span>Mengenal sifat-sifat bangun datar: titik sudut, sisi, sudut, simetri
+                                            lipat, dan simetri putar</span>
                                     </div>
                                     <div
                                         class="flex items-center gap-3 bg-gradient-to-r from-green-50 to-green-100 border-l-4 border-green-500 rounded-xl px-4 py-3 font-bold text-sm text-gray-800 hover:translate-x-1 transition-transform duration-200">
                                         <span class="text-2xl">🔺</span>
-                                        <span>Memahami unsur-unsur bangun datar: sisi, titik sudut, dan sudut</span>
+                                        <span>Mengenal segitiga sama sisi, segitiga sama kaki, dan segitiga
+                                            sembarang</span>
                                     </div>
                                     <div
                                         class="flex items-center gap-3 bg-gradient-to-r from-green-50 to-green-100 border-l-4 border-green-500 rounded-xl px-4 py-3 font-bold text-sm text-gray-800 hover:translate-x-1 transition-transform duration-200">
                                         <span class="text-2xl">⬜</span>
-                                        <span>Mengenal jenis-jenis segitiga dan segiempat beserta
-                                            sifat-sifatnya</span>
+                                        <span>Mengenal persegi, persegi panjang, jajar genjang, belah ketupat,
+                                            trapesium, dan layang-layang</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Pendahuluan -->
+                            <!-- ===== A. AY0 MENGAMATI ===== -->
                             <div>
-                                <h3 class="font-fredoka text-xl text-blue-600 mb-3 flex items-center gap-2">🖼️
-                                    Perhatikan Gambar-Gambar di Bawah Ini!</h3>
+                                <h3 class="font-fredoka text-xl text-sky-600 mb-3 flex items-center gap-2">👀 A.
+                                    Ayo Mengamati!</h3>
 
-                                <!-- Grid 4 Gambar Pengamatan -->
-                                    <div class="grid grid-cols-2 gap-3 mb-4">
-                                        <figure
-                                            class="bg-white rounded-xl overflow-hidden border-2 border-sky-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                                            <img src="/resources/views/learning/low/bangun_datar/img/1.jpg"
-                                                alt="Jembatan Rangka Baja" class="w-full h-40 object-cover">
-                                            <figcaption
-                                                class="px-3 py-2 text-xs font-bold text-gray-600 text-center">🌉
-                                                Jembatan Rangka Baja</figcaption>
-                                        </figure>
-                                        <figure
-                                            class="bg-white rounded-xl overflow-hidden border-2 border-sky-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                                            <img src="/resources/views/learning/low/bangun_datar/img/2.jpg"
-                                                alt="Kue Lupis" class="w-full h-40 object-cover">
-                                            <figcaption
-                                                class="px-3 py-2 text-xs font-bold text-gray-600 text-center">🍡 Kue
-                                                Lupis / Wadai Lupis</figcaption>
-                                        </figure>
-                                        <figure
-                                            class="bg-white rounded-xl overflow-hidden border-2 border-sky-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                                            <img src="/resources/views/learning/low/bangun_datar/img/3.jpg"
-                                                alt="Papan Petunjuk Jalan Kampung Biru"
-                                                class="w-full h-40 object-cover">
-                                            <figcaption
-                                                class="px-3 py-2 text-xs font-bold text-gray-600 text-center">🪧 Papan
-                                                Petunjuk Jalan "Kampung Biru"</figcaption>
-                                        </figure>
-                                        <figure
-                                            class="bg-white rounded-xl overflow-hidden border-2 border-sky-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                                            <img src="/resources/views/learning/low/bangun_datar/img/4.jpg"
-                                                alt="Kain Sasirangan dengan Motif Geometris"
-                                                class="w-full h-40 object-cover">
-                                            <figcaption
-                                                class="px-3 py-2 text-xs font-bold text-gray-600 text-center">🧵 Kain
-                                                Sasirangan dengan Motif Geometris</figcaption>
-                                        </figure>
-                                    </div>
-
-                                    <p class="text-sm leading-relaxed text-gray-700 mb-4">
-                                        Gambar-gambar tersebut menunjukkan berbagai benda yang dapat kita temukan
-                                        dalam kehidupan sehari-hari, termasuk benda yang berkaitan dengan
-                                        <strong class="text-sky-700">budaya dan lingkungan masyarakat
-                                            Banjar</strong>.
-                                    </p>
-
-                                    <div
-                                        class="bg-gradient-to-br from-sky-50 to-sky-100 border-2 border-sky-200 rounded-2xl p-4">
-                                        <div class="bg-white rounded-xl p-4 border-2 border-dashed border-sky-300">
-                                            <p class="font-bold text-sky-700 text-sm mb-3">Setelah mengamati gambar,
-                                                coba jawab pertanyaan berikut:</p>
-                                            <ul class="text-sm text-gray-700 space-y-2">
-                                            <li class="flex items-start gap-2">
-                                                <span class="text-sky-600 font-bold">•</span>
-                                                <span>Bentuk apa saja yang kamu temukan pada gambar?</span>
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <span class="text-sky-600 font-bold">•</span>
-                                                <span>Apakah ada bentuk yang memiliki 3 sisi?</span>
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <span class="text-sky-600 font-bold">•</span>
-                                                <span>Apakah ada bentuk yang memiliki 4 sisi?</span>
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <span class="text-sky-600 font-bold">•</span>
-                                                <span>Benda atau bagian gambar mana yang menyerupai segitiga?</span>
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <span class="text-sky-600 font-bold">•</span>
-                                                <span>Benda atau bagian gambar mana yang menyerupai segiempat?</span>
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <span class="text-sky-600 font-bold">•</span>
-                                                <span>Apa perbedaan bentuk yang memiliki 3 sisi dan bentuk yang
-                                                    memiliki 4 sisi?</span>
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <span class="text-sky-600 font-bold">•</span>
-                                                <span>Menurutmu, mengapa bentuk-bentuk tersebut dapat dikelompokkan
-                                                    sebagai bangun datar?</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Kesimpulan Pengamatan -->
-                            <div
-                                class="relative bg-gradient-to-br from-amber-50 to-yellow-100 border-4 border-dashed border-yellow-400 rounded-2xl p-4 pt-6">
-                                <span class="absolute -top-4 left-4 text-2xl">✨</span>
-                                <p class="text-center text-sm font-bold text-gray-700">Bentuk-bentuk yang kamu temukan
-                                    tersebut merupakan <strong class="text-amber-600 text-base">bangun datar</strong>.
+                                <p class="text-sm leading-relaxed text-gray-700 mb-3">
+                                    Hai, teman-teman! Pernahkah kamu melihat <strong>rumah Banjar</strong>,
+                                    <strong>jukung</strong>, <strong>kain sasirangan</strong>,
+                                    <strong>ketupat</strong>, atau <strong>lupis</strong>? Coba perhatikan bentuk
+                                    benda-benda tersebut!
                                 </p>
+
+                                <!-- Foto pengamatan -->
+                                <div class="grid grid-cols-2 gap-3 mb-4">
+                                    <figure
+                                        class="bg-white rounded-xl overflow-hidden border-2 border-sky-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                                        <img src="/resources/views/learning/low/bangun_datar/img/1.jpg"
+                                            alt="Jembatan Rangka Baja"
+                                            class="w-full h-40 object-cover">
+                                        <figcaption
+                                            class="px-3 py-2 text-xs font-bold text-gray-600 text-center">🌉
+                                            Jembatan Rangka Baja</figcaption>
+                                    </figure>
+                                    <figure
+                                        class="bg-white rounded-xl overflow-hidden border-2 border-sky-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                                        <img src="/resources/views/learning/low/bangun_datar/img/2.jpg"
+                                            alt="Kue Lupis"
+                                            class="w-full h-40 object-cover">
+                                        <figcaption
+                                            class="px-3 py-2 text-xs font-bold text-gray-600 text-center">🍡
+                                            Wadai Lupis</figcaption>
+                                    </figure>
+                                    <figure
+                                        class="bg-white rounded-xl overflow-hidden border-2 border-sky-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                                        <img src="/resources/views/learning/low/bangun_datar/img/3.jpg"
+                                            alt="Papan Petunjuk Jalan Kampung Biru"
+                                            class="w-full h-40 object-cover">
+                                        <figcaption
+                                            class="px-3 py-2 text-xs font-bold text-gray-600 text-center">🪧 Papan
+                                            Petunjuk Jalan "Kampung Biru"</figcaption>
+                                    </figure>
+                                    <figure
+                                        class="bg-white rounded-xl overflow-hidden border-2 border-sky-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                                        <img src="/resources/views/learning/low/bangun_datar/img/4.jpg"
+                                            alt="Kain Sasirangan dengan Motif Geometris"
+                                            class="w-full h-40 object-cover">
+                                        <figcaption
+                                            class="px-3 py-2 text-xs font-bold text-gray-600 text-center">🧵 Kain
+                                            Sasirangan dengan Motif Geometris</figcaption>
+                                    </figure>
+                                </div>
+
+                                <!-- Benda sekitar kita -->
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
+                                    <div
+                                        class="flex items-center gap-2 bg-sky-50 border-2 border-sky-200 rounded-xl px-3 py-2.5 font-bold text-sm text-gray-700">
+                                        <span class="text-xl">🏠</span> <span>Rumah Banjar</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-2 bg-sky-50 border-2 border-sky-200 rounded-xl px-3 py-2.5 font-bold text-sm text-gray-700">
+                                        <span class="text-xl">🛶</span> <span>Jukung</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-2 bg-sky-50 border-2 border-sky-200 rounded-xl px-3 py-2.5 font-bold text-sm text-gray-700">
+                                        <span class="text-xl">🧻</span> <span>Kain Sasirangan</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-2 bg-sky-50 border-2 border-sky-200 rounded-xl px-3 py-2.5 font-bold text-sm text-gray-700">
+                                        <span class="text-xl">🍙</span> <span>Ketupat</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-2 bg-sky-50 border-2 border-sky-200 rounded-xl px-3 py-2.5 font-bold text-sm text-gray-700">
+                                        <span class="text-xl">🍡</span> <span>Lupis</span>
+                                    </div>
+                                </div>
+
+                                <!-- Bagian yang menyerupai bangun datar -->
+                                <div class="bg-gradient-to-br from-sky-50 to-sky-100 border-2 border-sky-200 rounded-2xl p-4">
+                                    <p class="font-bold text-sky-700 text-sm mb-3">Beberapa bagian dari benda tersebut
+                                        memiliki bentuk yang mirip dengan bangun datar:</p>
+                                    <ul class="text-sm text-gray-700 space-y-2">
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-sky-600 font-bold">•</span>
+                                            <span><strong>Atap rumah Banjar</strong> dapat kita gunakan untuk mengenal
+                                                segitiga.</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-sky-600 font-bold">•</span>
+                                            <span><strong>Motif kain sasirangan</strong> dapat memiliki bentuk segitiga
+                                                atau segiempat.</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-sky-600 font-bold">•</span>
+                                            <span><strong>Bentuk lontong, ketupat, atau lupis</strong> dapat membantu kita
+                                                mengenal segitiga.</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-sky-600 font-bold">•</span>
+                                            <span><strong>Bentuk jukung</strong> memiliki beberapa bagian untuk mengenal
+                                                segitiga dan segiempat.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div
+                                    class="mt-3 bg-gradient-to-br from-amber-50 to-yellow-100 border-2 border-amber-300 rounded-xl p-3">
+                                    <p class="text-sm text-gray-700">
+                                        <strong class="text-amber-700">💡 Tahukah kamu?</strong> Matematika ada di sekitar
+                                        kita. Kita bisa belajar matematika sambil mengamati lingkungan sekitar kita!
+                                    </p>
+                                </div>
                             </div>
 
-                            <!-- Apa Itu Bangun Datar -->
+                            <!-- ===== B. APA ITU BANGUN DATAR ===== -->
                             <div>
-                                <h3 class="font-fredoka text-xl text-purple-600 mb-3 flex items-center gap-2">📐 Apa
-                                    Itu Bangun Datar?</h3>
-                                <div
-                                    class="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-300 rounded-2xl p-4">
+                                <h3 class="font-fredoka text-xl text-purple-600 mb-3 flex items-center gap-2">📐 B.
+                                    Apa Itu Bangun Datar?</h3>
+                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-300 rounded-2xl p-4">
                                     <p class="text-sm leading-relaxed text-gray-700 mb-3">
                                         <strong class="text-purple-700">Bangun datar</strong> adalah bentuk yang memiliki
-                                        <strong>panjang</strong> dan <strong>lebar</strong> serta dapat digambar pada
-                                        permukaan datar. Bangun datar dapat kita temukan pada berbagai benda di sekitar
-                                        kita.
+                                        panjang dan lebar serta dapat digambar pada permukaan datar. Bangun datar
+                                        <strong>tidak mempunyai tebal</strong>.
                                     </p>
+
+                                    <p class="text-sm font-bold text-gray-700 mb-2">Contoh bangun datar:</p>
+                                    <div class="grid grid-cols-2 gap-2 mb-3">
+                                        <div
+                                            class="flex items-center gap-2 bg-white border-2 border-purple-200 rounded-xl px-3 py-2.5 font-bold text-sm text-gray-700">
+                                            <span class="text-xl">🔺</span> <span>Segitiga</span>
+                                        </div>
+                                        <div
+                                            class="flex items-center gap-2 bg-white border-2 border-purple-200 rounded-xl px-3 py-2.5 font-bold text-sm text-gray-700">
+                                            <span class="text-xl">⬜</span> <span>Segiempat</span>
+                                        </div>
+                                    </div>
+
                                     <div class="bg-white rounded-xl p-4 border-2 border-dashed border-purple-300">
-                                        <p class="text-sm leading-relaxed text-gray-700 mb-2">Bangun datar dapat kita
-                                            temukan dalam berbagai benda di sekitar kita, termasuk pada <strong
-                                                class="text-purple-700">budaya dan lingkungan masyarakat Banjar</strong>.
-                                            Misalnya, kita dapat mengamati bentuk-bentuk bangun datar pada:</p>
-                                        <div class="grid grid-cols-2 gap-2 text-sm text-gray-700">
-                                            <div class="flex items-center gap-2">
-                                                <span>🏠</span> <span>Rumah tradisional</span>
-                                            </div>
-                                            <div class="flex items-center gap-2">
-                                                <span>🛶</span> <span>Perahu</span>
-                                            </div>
-                                            <div class="flex items-center gap-2">
-                                                <span>🧵</span> <span>Motif kain sasirangan</span>
-                                            </div>
-                                            <div class="flex items-center gap-2">
-                                                <span>🧶</span> <span>Anyaman</span>
-                                            </div>
-                                            <div class="flex items-center gap-2">
-                                                <span>✨</span> <span>Hiasan</span>
-                                            </div>
-                                            <div class="flex items-center gap-2">
-                                                <span>🌉</span> <span>Jembatan</span>
-                                            </div>
-                                            <div class="flex items-center gap-2">
-                                                <span>🍡</span> <span>Makanan tradisional</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="text-sm leading-relaxed text-gray-700 mt-3">
-                                        Walaupun benda-benda tersebut memiliki bentuk yang beragam, bagian tertentu
-                                        dari benda dapat berbentuk bangun datar. Oleh karena itu, lingkungan sekitar
-                                        dapat membantu kita belajar mengenali dan memahami bangun datar.
-                                    </p>
-                                    <div
-                                        class="mt-3 bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-300 rounded-xl p-3">
-                                        <p class="text-sm text-gray-700">
-                                            <strong class="text-amber-700">💡 Ingat!</strong> Pada materi ini, bangun
-                                            datar yang akan kamu pelajari dikelompokkan menjadi <strong>segitiga</strong>
-                                            dan <strong>segiempat</strong>.
+                                        <p class="text-sm leading-relaxed text-gray-700">
+                                            Coba lihat motif kain sasirangan. Pada motif kain tersebut, kita dapat
+                                            menemukan berbagai bentuk. Ada yang berbentuk segitiga dan ada pula yang
+                                            berbentuk segiempat.
+                                        </p>
+                                        <p class="text-sm leading-relaxed text-gray-700 mt-2">
+                                            Jadi, bangun datar tidak hanya ada di buku matematika. Bangun datar juga
+                                            ada di sekitar kita! 🌟
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Unsur-Unsur Bangun Datar -->
+                            <!-- ===== C. SIFAT-SIFAT BANGUN DATAR ===== -->
                             <div>
-                                <h3 class="font-fredoka text-xl text-red-600 mb-3 flex items-center gap-2">🧩 Unsur-Unsur
-                                    Bangun Datar</h3>
-                                <div
-                                    class="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-200 rounded-2xl p-4">
+                                <h3 class="font-fredoka text-xl text-rose-600 mb-1 flex items-center gap-2">🧩 C.
+                                    Sifat-Sifat Bangun Datar</h3>
+                                <p class="text-sm text-gray-600 mb-3">Sebelum mengenal berbagai jenis bangun datar, mari
+                                    kita pelajari lima bagian-bagiannya satu per satu.</p>
+
+                                <!-- 1. TITIK SUDUT -->
+                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-4 mb-4">
+                                    <h4 class="font-fredoka text-lg text-blue-700 mb-2">1. 📍 Titik Sudut</h4>
+
+                                    <figure class="bg-white rounded-xl p-3 border-2 border-dashed border-blue-300 mb-3">
+                                        <svg viewBox="0 0 220 184" class="w-full max-w-[260px] mx-auto h-auto">
+                                            <polygon points="110,26 26,150 194,150" fill="#DBEAFE" stroke="#2563EB"
+                                                stroke-width="3" stroke-linejoin="round" class="muncul" style="--d:0s" />
+                                            <g class="muncul" style="--d:.5s">
+                                                <circle cx="110" cy="26" r="20" fill="#2563EB" opacity=".18" />
+                                                <circle class="kedip" style="--d:2.4s" cx="110" cy="26" r="6"
+                                                    fill="#1D4ED8" />
+                                                <text class="tampil-teks" style="--d:.6s" x="110" y="18"
+                                                    text-anchor="middle" font-size="17" font-weight="bold"
+                                                    fill="#1E40AF">A</text>
+                                            </g>
+                                            <g class="muncul" style="--d:1.1s">
+                                                <circle cx="26" cy="150" r="20" fill="#2563EB" opacity=".18" />
+                                                <circle class="kedip" style="--d:2.7s" cx="26" cy="150" r="6"
+                                                    fill="#1D4ED8" />
+                                                <text class="tampil-teks" style="--d:1.2s" x="16" y="176"
+                                                    text-anchor="middle" font-size="17" font-weight="bold"
+                                                    fill="#1E40AF">B</text>
+                                            </g>
+                                            <g class="muncul" style="--d:1.7s">
+                                                <circle cx="194" cy="150" r="20" fill="#2563EB" opacity=".18" />
+                                                <circle class="kedip" style="--d:3s" cx="194" cy="150" r="6"
+                                                    fill="#1D4ED8" />
+                                                <text class="tampil-teks" style="--d:1.8s" x="204" y="176"
+                                                    text-anchor="middle" font-size="17" font-weight="bold"
+                                                    fill="#1E40AF">C</text>
+                                            </g>
+                                        </svg>
+                                        <figcaption class="text-center text-xs font-bold text-gray-500 mt-2">Perhatikan
+                                            atap rumah — tiga titik sudutnya muncul satu per satu</figcaption>
+                                    </figure>
+
+                                    <p class="text-sm leading-relaxed text-gray-700 mb-2">
+                                        <strong class="text-blue-700">Titik sudut</strong> adalah tempat bertemunya dua
+                                        garis.
+                                    </p>
                                     <p class="text-sm leading-relaxed text-gray-700 mb-3">
-                                        Sebelum mengenal berbagai jenis bangun datar, kita perlu mengetahui beberapa
-                                        bagian yang terdapat pada bangun datar:
+                                        Pada segitiga terdapat <strong>3 titik sudut</strong>, yaitu <strong>Titik A</strong>,
+                                        <strong>Titik B</strong>, dan <strong>Titik C</strong>.
                                     </p>
 
-                                    <!-- Sisi -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-red-200 mb-3 flex items-start gap-3">
-                                        <span
-                                            class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center font-black text-sm flex-shrink-0">1</span>
-                                        <div>
-                                            <p class="font-bold text-red-700 text-sm">Sisi</p>
-                                            <p class="text-sm text-gray-700">Sisi adalah garis yang membatasi suatu
-                                                bangun datar.</p>
-                                            <ul class="text-sm text-gray-600 mt-1 ml-4 list-disc">
-                                                <li>Segitiga memiliki <strong>3 sisi</strong>.</li>
-                                                <li>Segiempat memiliki <strong>4 sisi</strong>.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <!-- Titik Sudut -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-red-200 mb-3 flex items-start gap-3">
-                                        <span
-                                            class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center font-black text-sm flex-shrink-0">2</span>
-                                        <div>
-                                            <p class="font-bold text-red-700 text-sm">Titik Sudut</p>
-                                            <p class="text-sm text-gray-700">Titik sudut adalah titik tempat dua sisi
-                                                bertemu.</p>
-                                            <ul class="text-sm text-gray-600 mt-1 ml-4 list-disc">
-                                                <li>Segitiga memiliki <strong>3 titik sudut</strong>.</li>
-                                                <li>Segiempat memiliki <strong>4 titik sudut</strong>.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <!-- Sudut -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-red-200 flex items-start gap-3">
-                                        <span
-                                            class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center font-black text-sm flex-shrink-0">3</span>
-                                        <div>
-                                            <p class="font-bold text-red-700 text-sm">Sudut</p>
-                                            <p class="text-sm text-gray-700">Sudut adalah daerah yang terbentuk dari dua
-                                                sisi yang bertemu pada satu titik. Besar sudut dapat berbeda-beda.</p>
-                                            <div class="flex flex-wrap gap-2 mt-2">
-                                                <span
-                                                    class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">Siku-siku
-                                                    (90°)</span>
-                                                <span
-                                                    class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">Lancip
-                                                    (&lt;90°)</span>
-                                                <span
-                                                    class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-bold">Tumpul
-                                                    (&gt;90°)</span>
+                                    <div class="bg-white rounded-xl p-3 border-2 border-blue-200 mb-3">
+                                        <p class="text-xs font-bold text-gray-500 mb-2">Coba ingat jumlahnya:</p>
+                                        <div class="grid grid-cols-2 gap-2 text-center">
+                                            <div class="bg-blue-50 rounded-lg py-2">
+                                                <p class="font-fredoka text-blue-700">Segitiga</p>
+                                                <p class="text-sm font-bold text-blue-800">3 titik sudut</p>
+                                            </div>
+                                            <div class="bg-blue-50 rounded-lg py-2">
+                                                <p class="font-fredoka text-blue-700">Segiempat</p>
+                                                <p class="text-sm font-bold text-blue-800">4 titik sudut</p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div
-                                        class="mt-3 bg-gradient-to-br from-sky-50 to-sky-100 border-2 border-sky-300 rounded-xl p-3">
+                                    <div class="bg-gradient-to-br from-amber-50 to-yellow-100 border-2 border-amber-300 rounded-xl p-3 mb-3">
                                         <p class="text-sm text-gray-700">
-                                            <strong class="text-sky-700">💡 Ingat!</strong> Untuk mengenali suatu bangun
-                                            datar, kamu dapat mulai dengan <strong>menghitung jumlah sisi dan titik
-                                                sudutnya</strong>.
+                                            <strong class="text-amber-700">⭐ Ingat!</strong> Titik sudut adalah tempat
+                                            bertemunya dua garis.
                                         </p>
                                     </div>
+
+                                    <!-- Coba Jawab -->
+                                    <div id="card-c1" class="bg-white rounded-2xl p-4 border-2 border-blue-300 shadow-sm">
+                                        <p class="font-bold text-blue-700 text-sm mb-2">🎮 Coba Jawab!</p>
+                                        <p class="text-sm text-gray-700 mb-2">Perhatikan motif kain sasirangan berikut.
+                                            Ada berapa titik sudut pada gambar tersebut?</p>
+                                        <svg viewBox="0 0 200 150" class="w-full max-w-[190px] mx-auto h-auto mb-3">
+                                            <polygon points="100,20 172,74 100,132 28,74" fill="#FEF3C7" stroke="#D97706"
+                                                stroke-width="3" stroke-linejoin="round" />
+                                            <circle cx="100" cy="20" r="6" fill="#B45309" />
+                                            <circle cx="172" cy="74" r="6" fill="#B45309" />
+                                            <circle cx="100" cy="132" r="6" fill="#B45309" />
+                                            <circle cx="28" cy="74" r="6" fill="#B45309" />
+                                            <text x="100" y="14" text-anchor="middle" font-size="15"
+                                                font-weight="bold" fill="#92400E">A</text>
+                                            <text x="186" y="79" text-anchor="middle" font-size="15"
+                                                font-weight="bold" fill="#92400E">B</text>
+                                            <text x="100" y="148" text-anchor="middle" font-size="15"
+                                                font-weight="bold" fill="#92400E">C</text>
+                                            <text x="14" y="79" text-anchor="middle" font-size="15"
+                                                font-weight="bold" fill="#92400E">D</text>
+                                            <text x="100" y="80" text-anchor="middle" font-size="12"
+                                                font-weight="bold" fill="#92400E">motif segiempat</text>
+                                        </svg>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-c1" type="text" placeholder="Contoh: 4"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('c1')"
+                                                class="flex-1 rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('c1')"
+                                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-c1" class="mt-3"></div>
+                                        <div id="sol-c1"
+                                            class="hidden mt-3 bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
+                                            <p class="font-bold text-blue-700 text-sm mb-2">📘 Pembahasan:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                Motif sasirangan tersebut berupa segiempat yang memiliki titik sudut
+                                                A, B, C, dan D.<br>
+                                                Jadi, banyaknya titik sudut = <strong>4</strong>.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
 
-                        </div>
-                    </div>
+                                <!-- 2. SISI -->
+                                <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-200 rounded-2xl p-4 mb-4">
+                                    <h4 class="font-fredoka text-lg text-emerald-700 mb-2">2. 📏 Sisi</h4>
 
-                    <!-- ===== MATERI CARD: Segitiga ===== -->
-                    <div
-                        class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-blue-100 flex flex-col">
-                        <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-5 py-5 text-center">
-                            <h2 class="font-fredoka text-2xl text-white"
-                                style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">
-                                🔺 1. Segitiga</h2>
-                        </div>
+                                    <figure class="bg-white rounded-xl p-3 border-2 border-dashed border-emerald-300 mb-3">
+                                        <svg viewBox="0 0 220 184" class="w-full max-w-[260px] mx-auto h-auto">
+                                            <rect x="30" y="46" width="160" height="92" fill="#D1FAE5" stroke="#059669"
+                                                stroke-width="3" rx="4" class="muncul" style="--d:0s" />
+                                            <line x1="30" y1="46" x2="190" y2="46" stroke="#047857" stroke-width="5"
+                                                class="muncul" style="--d:.5s" />
+                                            <text class="tampil-teks" style="--d:.6s" x="110" y="36" text-anchor="middle"
+                                                font-size="15" font-weight="bold" fill="#065F46">AB</text>
+                                            <line x1="190" y1="46" x2="190" y2="138" stroke="#047857" stroke-width="5"
+                                                class="muncul" style="--d:1.1s" />
+                                            <text class="tampil-teks" style="--d:1.2s" x="206" y="96"
+                                                text-anchor="middle" font-size="15" font-weight="bold"
+                                                fill="#065F46">BC</text>
+                                            <line x1="190" y1="138" x2="30" y2="138" stroke="#047857" stroke-width="5"
+                                                class="muncul" style="--d:1.7s" />
+                                            <text class="tampil-teks" style="--d:1.8s" x="110" y="160"
+                                                text-anchor="middle" font-size="15" font-weight="bold"
+                                                fill="#065F46">CD</text>
+                                            <line x1="30" y1="138" x2="30" y2="46" stroke="#047857" stroke-width="5"
+                                                class="muncul" style="--d:2.3s" />
+                                            <text class="tampil-teks" style="--d:2.4s" x="14" y="96" text-anchor="middle"
+                                                font-size="15" font-weight="bold" fill="#065F46">DA</text>
+                                        </svg>
+                                        <figcaption class="text-center text-xs font-bold text-gray-500 mt-2">Sisi-sisi
+                                            garis yang membentuk keramba ikan</figcaption>
+                                    </figure>
 
-                        <div class="p-6 flex flex-col gap-5 flex-1">
+                                    <p class="text-sm leading-relaxed text-gray-700 mb-2">
+                                        <strong class="text-emerald-700">Sisi</strong> adalah garis yang menghubungkan satu
+                                        titik sudut dengan titik sudut lainnya.
+                                    </p>
+                                    <p class="text-sm leading-relaxed text-gray-700 mb-3">
+                                        Segiempat mempunyai <strong>4 sisi</strong>, yaitu <strong>Sisi AB</strong>,
+                                        <strong>Sisi BC</strong>, <strong>Sisi CD</strong>, dan <strong>Sisi DA</strong>.
+                                    </p>
 
-                            <!-- Pengertian -->
-                            <div
-                                class="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-4">
-                                <p class="text-sm leading-relaxed text-gray-700">
-                                    <strong class="text-blue-700">Segitiga</strong> adalah bangun datar yang memiliki
-                                    <strong>tiga sisi</strong>, <strong>tiga titik sudut</strong>, dan <strong>tiga
-                                        sudut</strong>. Ketiga sisi segitiga saling bertemu pada tiga titik sehingga
-                                    membentuk sebuah bangun tertutup.
-                                </p>
-                                <p class="text-sm leading-relaxed text-gray-700 mt-2">
-                                    Segitiga dapat ditemukan dalam berbagai benda di sekitar kita, misalnya pada
-                                    bagian tertentu dari <strong>atap rumah</strong>, <strong>rangka
-                                        jembatan</strong>, <strong>hiasan</strong>, <strong>motif kain</strong>,
-                                    atau <strong>benda budaya</strong>.
-                                </p>
-                                <p class="text-sm leading-relaxed text-gray-700 mt-2">
-                                    Segitiga dapat dikelompokkan berdasarkan <strong>panjang sisi</strong> dan
-                                    <strong>besar sudutnya</strong>:
-                                </p>
-                            </div>
-
-                            <!-- Berdasarkan Panjang Sisi -->
-                            <div>
-                                <h3 class="font-fredoka text-lg text-blue-600 mb-3 flex items-center gap-2">📏 A.
-                                    Berdasarkan Panjang Sisi</h3>
-                                <div class="flex flex-col gap-3">
-
-                                    <!-- Sama Sisi -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-blue-200 flex items-start gap-3 hover:shadow-md transition-shadow duration-200">
-                                        <span
-                                            class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center text-lg flex-shrink-0">△</span>
-                                        <div>
-                                            <p class="font-bold text-blue-700 text-sm">Segitiga Sama Sisi</p>
-                                            <p class="text-sm text-gray-700">Segitiga yang memiliki <strong>tiga
-                                                sisi sama panjang</strong>. Ketiga sudut pada segitiga sama sisi juga
-                                                memiliki besar yang sama.</p>
+                                    <div class="bg-white rounded-xl p-3 border-2 border-emerald-200 mb-3">
+                                        <p class="text-xs font-bold text-gray-500 mb-2">Coba ingat jumlahnya:</p>
+                                        <div class="grid grid-cols-2 gap-2 text-center">
+                                            <div class="bg-emerald-50 rounded-lg py-2">
+                                                <p class="font-fredoka text-emerald-700">Segitiga</p>
+                                                <p class="text-sm font-bold text-emerald-800">3 sisi</p>
+                                            </div>
+                                            <div class="bg-emerald-50 rounded-lg py-2">
+                                                <p class="font-fredoka text-emerald-700">Segiempat</p>
+                                                <p class="text-sm font-bold text-emerald-800">4 sisi</p>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <!-- Sama Kaki -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-blue-200 flex items-start gap-3 hover:shadow-md transition-shadow duration-200">
-                                        <span
-                                            class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center text-lg flex-shrink-0">△</span>
-                                        <div>
-                                            <p class="font-bold text-blue-700 text-sm">Segitiga Sama Kaki</p>
-                                            <p class="text-sm text-gray-700">Segitiga yang memiliki <strong>dua
-                                                sisi sama panjang</strong>. Dua sisi yang sama panjang disebut <em>sisi
-                                                    kaki</em>, sedangkan sisi yang berbeda disebut <em>sisi alas</em>.</p>
-                                        </div>
+                                    <div class="bg-gradient-to-br from-amber-50 to-yellow-100 border-2 border-amber-300 rounded-xl p-3 mb-3">
+                                        <p class="text-sm text-gray-700">
+                                            <strong class="text-amber-700">⭐ Ingat!</strong> Sisi adalah garis yang
+                                            menghubungkan satu titik sudut dengan titik sudut lainnya.
+                                        </p>
                                     </div>
 
-                                    <!-- Sembarang -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-blue-200 flex items-start gap-3 hover:shadow-md transition-shadow duration-200">
-                                        <span
-                                            class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center text-lg flex-shrink-0">△</span>
-                                        <div>
-                                            <p class="font-bold text-blue-700 text-sm">Segitiga Sembarang</p>
-                                            <p class="text-sm text-gray-700">Segitiga yang memiliki <strong>tiga
-                                                sisi dengan panjang yang berbeda</strong>.</p>
+                                    <!-- Coba Jawab -->
+                                    <div id="card-c2"
+                                        class="bg-white rounded-2xl p-4 border-2 border-emerald-300 shadow-sm">
+                                        <p class="font-bold text-emerald-700 text-sm mb-2">🎮 Coba Jawab!</p>
+                                        <p class="text-sm text-gray-700 mb-2">Perhatikan potongan ketupat (lontong)
+                                            berikut. Ada berapa sisi pada gambar tersebut?</p>
+                                        <svg viewBox="0 0 200 150" class="w-full max-w-[190px] mx-auto h-auto mb-3">
+                                            <polygon points="100,20 30,132 170,132" fill="#D1FAE5" stroke="#059669"
+                                                stroke-width="3" stroke-linejoin="round" />
+                                            <text x="100" y="14" text-anchor="middle" font-size="13"
+                                                font-weight="bold" fill="#065F46">A</text>
+                                            <text x="14" y="147" text-anchor="middle" font-size="13"
+                                                font-weight="bold" fill="#065F46">B</text>
+                                            <text x="188" y="147" text-anchor="middle" font-size="13"
+                                                font-weight="bold" fill="#065F46">C</text>
+                                            <text x="100" y="80" text-anchor="middle" font-size="13"
+                                                font-weight="bold" fill="#065F46">potongan lontong</text>
+                                        </svg>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-c2" type="text" placeholder="Contoh: 3"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('c2')"
+                                                class="flex-1 rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('c2')"
+                                                class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-c2" class="mt-3"></div>
+                                        <div id="sol-c2"
+                                            class="hidden mt-3 bg-emerald-50 border-2 border-emerald-200 rounded-xl p-4">
+                                            <p class="font-bold text-emerald-700 text-sm mb-2">📘 Pembahasan:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                Potongan lontong tersebut berupa segitiga.<br>
+                                                Sisi AB, sisi BC, dan sisi CA.<br>
+                                                Jadi, banyaknya sisi = <strong>3</strong>.
+                                            </p>
                                         </div>
                                     </div>
-
                                 </div>
+
+                                <!-- 3. SUDUT -->
+                                <div class="bg-gradient-to-br from-amber-50 to-orange-100 border-2 border-amber-200 rounded-2xl p-4 mb-4">
+                                    <h4 class="font-fredoka text-lg text-orange-700 mb-2">3. 📐 Sudut</h4>
+
+                                    <figure class="bg-white rounded-xl p-3 border-2 border-dashed border-amber-300 mb-3">
+                                        <svg viewBox="0 0 220 184" class="w-full max-w-[260px] mx-auto h-auto">
+                                            <rect x="34" y="42" width="152" height="100" fill="#FEF3C7" stroke="#D97706"
+                                                stroke-width="3" rx="4" class="muncul" style="--d:0s" />
+                                            <g class="muncul" style="--d:.5s">
+                                                <circle cx="34" cy="42" r="6" fill="#B45309" />
+                                                <circle cx="186" cy="42" r="6" fill="#B45309" />
+                                                <circle cx="186" cy="142" r="6" fill="#B45309" />
+                                                <circle cx="34" cy="142" r="6" fill="#B45309" />
+                                                <text x="22" y="34" text-anchor="middle" font-size="16"
+                                                    font-weight="bold" fill="#92400E">A</text>
+                                                <text x="200" y="34" text-anchor="middle" font-size="16"
+                                                    font-weight="bold" fill="#92400E">B</text>
+                                                <text x="200" y="160" text-anchor="middle" font-size="16"
+                                                    font-weight="bold" fill="#92400E">C</text>
+                                                <text x="22" y="160" text-anchor="middle" font-size="16"
+                                                    font-weight="bold" fill="#92400E">D</text>
+                                            </g>
+                                            <path d="M34 42 L74 42 A40 40 0 0 1 34 82 Z" fill="#F97316" opacity=".55"
+                                                class="muncul" style="--d:1.2s" />
+                                            <path d="M186 42 L146 42 A40 40 0 0 0 186 82 Z" fill="#F97316" opacity=".55"
+                                                class="muncul" style="--d:1.7s" />
+                                            <path d="M186 142 L146 142 A40 40 0 0 1 186 102 Z" fill="#F97316" opacity=".55"
+                                                class="muncul" style="--d:2.2s" />
+                                            <path d="M34 142 L74 142 A40 40 0 0 0 34 102 Z" fill="#F97316" opacity=".55"
+                                                class="muncul" style="--d:2.7s" />
+                                            <text x="66" y="70" font-size="12" font-weight="bold" fill="#7C2D12"
+                                                class="tampil-teks" style="--d:1.4s">sudut A</text>
+                                            <text x="134" y="70" font-size="12" font-weight="bold" fill="#7C2D12"
+                                                class="tampil-teks" style="--d:1.9s">sudut B</text>
+                                            <text x="134" y="128" font-size="12" font-weight="bold" fill="#7C2D12"
+                                                class="tampil-teks" style="--d:2.4s">sudut C</text>
+                                            <text x="66" y="128" font-size="12" font-weight="bold" fill="#7C2D12"
+                                                class="tampil-teks" style="--d:2.9s">sudut D</text>
+                                        </svg>
+                                        <figcaption class="text-center text-xs font-bold text-gray-500 mt-2">Wadai gegatas
+                                            berbentuk segiempat: titik sudut A, B, C, D lalu daerah sudutnya</figcaption>
+                                    </figure>
+
+                                    <p class="text-sm leading-relaxed text-gray-700 mb-2">
+                                        <strong class="text-orange-700">Sudut</strong> adalah daerah yang terbentuk ketika dua
+                                        sisi bertemu pada satu titik sudut.
+                                    </p>
+                                    <p class="text-sm leading-relaxed text-gray-700 mb-3">
+                                        Pada segiempat terdapat <strong>4 sudut</strong>, yaitu <strong>Sudut A</strong>,
+                                        <strong>Sudut B</strong>, <strong>Sudut C</strong>, dan <strong>Sudut D</strong>.
+                                    </p>
+
+                                    <div class="bg-white rounded-xl p-3 border-2 border-amber-200 mb-3">
+                                        <p class="text-xs font-bold text-gray-500 mb-2">Coba ingat jumlahnya:</p>
+                                        <div class="grid grid-cols-2 gap-2 text-center">
+                                            <div class="bg-amber-50 rounded-lg py-2">
+                                                <p class="font-fredoka text-amber-700">Segitiga</p>
+                                                <p class="text-sm font-bold text-amber-800">3 sudut</p>
+                                            </div>
+                                            <div class="bg-amber-50 rounded-lg py-2">
+                                                <p class="font-fredoka text-amber-700">Segiempat</p>
+                                                <p class="text-sm font-bold text-amber-800">4 sudut</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-gradient-to-br from-amber-50 to-yellow-100 border-2 border-amber-300 rounded-xl p-3 mb-3">
+                                        <p class="text-sm text-gray-700">
+                                            <strong class="text-amber-700">⭐ Ingat!</strong> Sudut adalah daerah yang
+                                            terbentuk ketika dua sisi bertemu pada satu titik sudut.
+                                        </p>
+                                    </div>
+
+                                    <!-- Coba Jawab -->
+                                    <div id="card-c3"
+                                        class="bg-white rounded-2xl p-4 border-2 border-amber-300 shadow-sm">
+                                        <p class="font-bold text-orange-700 text-sm mb-2">🎮 Coba Jawab!</p>
+                                        <p class="text-sm text-gray-700 mb-2">Perhatikan motif kain tenun sasirangan
+                                            berikut. Ada berapa sudut pada gambar motif segitiga tersebut?</p>
+                                        <svg viewBox="0 0 200 160" class="w-full max-w-[190px] mx-auto h-auto mb-3">
+                                            <polygon points="100,24 34,134 166,134" fill="#FEF3C7" stroke="#D97706"
+                                                stroke-width="3" stroke-linejoin="round" />
+                                            <path d="M100 24 L100 66 A42 42 0 0 1 129 45 Z" fill="#F97316" opacity=".55" />
+                                            <path d="M34 134 L63 122 A32 32 0 0 1 52 104 Z" fill="#F97316" opacity=".55" />
+                                            <path d="M166 134 L137 122 A32 32 0 0 0 148 104 Z" fill="#F97316" opacity=".55" />
+                                            <text x="100" y="86" text-anchor="middle" font-size="12"
+                                                font-weight="bold" fill="#7C2D12">A</text>
+                                            <text x="22" y="150" text-anchor="middle" font-size="12"
+                                                font-weight="bold" fill="#7C2D12">B</text>
+                                            <text x="178" y="150" text-anchor="middle" font-size="12"
+                                                font-weight="bold" fill="#7C2D12">C</text>
+                                        </svg>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-c3" type="text" placeholder="Contoh: 3"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('c3')"
+                                                class="flex-1 rounded-xl border-2 border-amber-200 px-4 py-2.5 text-sm text-gray-700 focus:border-amber-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('c3')"
+                                                class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-c3" class="mt-3"></div>
+                                        <div id="sol-c3"
+                                            class="hidden mt-3 bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
+                                            <p class="font-bold text-orange-700 text-sm mb-2">📘 Pembahasan:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                Gambar tersebut berupa segitiga: sudut A, sudut B, dan sudut
+                                                C.<br>
+                                                Jadi, banyaknya sudut = <strong>3</strong>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 4. SIMETRI LIPAT -->
+                                <div class="bg-gradient-to-br from-pink-50 to-rose-100 border-2 border-pink-200 rounded-2xl p-4 mb-4">
+                                    <h4 class="font-fredoka text-lg text-pink-700 mb-2">4. 🪞 Simetri Lipat</h4>
+
+                                    <figure class="bg-white rounded-xl p-3 border-2 border-dashed border-pink-300 mb-3">
+                                        <svg viewBox="0 0 220 184" class="w-full max-w-[260px] mx-auto h-auto">
+                                            <polygon points="110,26 26,150 194,150" fill="#FCE7F3" stroke="#DB2777"
+                                                stroke-width="3" stroke-linejoin="round" class="muncul"
+                                                style="--d:0s" />
+                                            <line x1="110" y1="20" x2="110" y2="158" stroke="#DB2777" stroke-width="2.5"
+                                                stroke-dasharray="7 6" class="muncul" style="--d:.7s" />
+                                            <path d="M110 26 L194 150 L110 150 Z" fill="#F472B6" opacity=".55"
+                                                class="lipat" />
+                                            <text x="110" y="14" text-anchor="middle" font-size="13"
+                                                font-weight="bold" fill="#9D174D">belah ketupat</text>
+                                            <text class="tampil-teks" style="--d:4.2s" x="110" y="176"
+                                                text-anchor="middle" font-size="13" font-weight="bold"
+                                                fill="#9D174D">bagian kanan melipat ke kiri until ✓</text>
+                                        </svg>
+                                        <figcaption class="text-center text-xs font-bold text-gray-500 mt-2">Motif
+                                            sasirangan berbentuk belah ketupat dilipat pada garis tengahnya</figcaption>
+                                    </figure>
+
+                                    <p class="text-sm leading-relaxed text-gray-700 mb-2">
+                                        <strong class="text-pink-700">Simetri lipat</strong> adalah jumlah lipatan pada suatu
+                                        bangun datar yang membagi bangun tersebut menjadi dua bagian yang sama besar dan
+                                        saling menutupi tanpa sisa.
+                                    </p>
+
+                                    <div class="bg-white rounded-xl p-3 border-2 border-pink-200 mb-3">
+                                        <p class="text-xs font-bold text-gray-500 mb-2">Contoh simetri lipat:</p>
+                                        <div class="grid grid-cols-3 gap-2 text-center">
+                                            <div class="bg-pink-50 rounded-lg py-2">
+                                                <p class="text-lg">🔺</p>
+                                                <p class="text-xs font-bold text-pink-800">Segitiga sama sisi</p>
+                                                <p class="text-xs font-bold text-pink-600">3 lipatan</p>
+                                            </div>
+                                            <div class="bg-pink-50 rounded-lg py-2">
+                                                <p class="text-lg">⬜</p>
+                                                <p class="text-xs font-bold text-pink-800">Persegi</p>
+                                                <p class="text-xs font-bold text-pink-600">4 lipatan</p>
+                                            </div>
+                                            <div class="bg-pink-50 rounded-lg py-2">
+                                                <p class="text-lg">◇</p>
+                                                <p class="text-xs font-bold text-pink-800">Belah ketupat</p>
+                                                <p class="text-xs font-bold text-pink-600">2 lipatan</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-gradient-to-br from-amber-50 to-yellow-100 border-2 border-amber-300 rounded-xl p-3 mb-3">
+                                        <p class="text-sm text-gray-700">
+                                            <strong class="text-amber-700">⭐ Ingat!</strong> Simetri lipat membagi bangun
+                                            menjadi dua bagian yang sama besar dan saling menutupi tanpa sisa.
+                                        </p>
+                                    </div>
+
+                                    <!-- Coba Jawab -->
+                                    <div id="card-c4"
+                                        class="bg-white rounded-2xl p-4 border-2 border-pink-300 shadow-sm">
+                                        <p class="font-bold text-pink-700 text-sm mb-2">🎮 Coba Jawab!</p>
+                                        <p class="text-sm text-gray-700 mb-2">Perhatikan wadai lupis berbentuk segitiga
+                                            sama sisi berikut. Ada berapa simetri lipat pada gambar tersebut?</p>
+                                        <svg viewBox="0 0 200 165" class="w-full max-w-[190px] mx-auto h-auto mb-3">
+                                            <polygon points="100,22 24,140 176,140" fill="#FCE7F3" stroke="#DB2777"
+                                                stroke-width="3" stroke-linejoin="round" />
+                                            <line x1="100" y1="22" x2="100" y2="140" stroke="#DB2777" stroke-width="2"
+                                                stroke-dasharray="6 5" />
+                                            <line x1="62" y1="81" x2="138" y2="81" stroke="#DB2777" stroke-width="2"
+                                                stroke-dasharray="6 5" />
+                                            <line x1="62" y1="81" x2="62" y2="140" stroke="#DB2777" stroke-width="2"
+                                                stroke-dasharray="6 5" />
+                                            <line x1="138" y1="81" x2="138" y2="140" stroke="#DB2777" stroke-width="2"
+                                                stroke-dasharray="6 5" />
+                                            <text x="100" y="158" text-anchor="middle" font-size="12"
+                                                font-weight="bold" fill="#9D174D">3 garis lipatan</text>
+                                        </svg>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-c4" type="text" placeholder="Contoh: 3"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('c4')"
+                                                class="flex-1 rounded-xl border-2 border-pink-200 px-4 py-2.5 text-sm text-gray-700 focus:border-pink-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('c4')"
+                                                class="bg-pink-500 hover:bg-pink-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-c4" class="mt-3"></div>
+                                        <div id="sol-c4"
+                                            class="hidden mt-3 bg-pink-50 border-2 border-pink-200 rounded-xl p-4">
+                                            <p class="font-bold text-pink-700 text-sm mb-2">📘 Pembahasan:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                Segitiga sama sisi dapat dilipat pada 3 garis yang membaginya menjadi
+                                                dua bagian sama besar.<br>
+                                                Jadi, banyaknya simetri lipat = <strong>3</strong>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 5. SIMETRI PUTAR -->
+                                <div class="bg-gradient-to-br from-indigo-50 to-violet-100 border-2 border-indigo-200 rounded-2xl p-4 mb-4">
+                                    <h4 class="font-fredoka text-lg text-indigo-700 mb-2">5. 🔄 Simetri Putar</h4>
+
+                                    <figure class="bg-white rounded-xl p-3 border-2 border-dashed border-indigo-300 mb-3">
+                                        <svg viewBox="0 0 220 184" class="w-full max-w-[260px] mx-auto h-auto">
+                                            <polygon points="110,26 26,150 194,150" fill="none" stroke="#A5B4FC"
+                                                stroke-width="2.5" stroke-dasharray="6 6" />
+                                            <g class="putar">
+                                                <polygon points="110,26 26,150 194,150" fill="#E0E7FF" stroke="#4F46E5"
+                                                    stroke-width="3" stroke-linejoin="round" />
+                                            </g>
+                                            <path d="M110 92 m0 0 a52 52 0 1 1 -36.8 15.2" fill="none" stroke="#4F46E5"
+                                                stroke-width="2.5" stroke-dasharray="5 5" class="muncul"
+                                                style="--d:.6s" />
+                                            <polygon points="76,102 70,116 84,112" fill="#4F46E5" class="muncul"
+                                                style="--d:.6s" />
+                                            <text x="110" y="14" text-anchor="middle" font-size="13" font-weight="bold"
+                                                fill="#3730A3">berputar 120° • 240° • 360°</text>
+                                            <text x="110" y="176" text-anchor="middle" font-size="12" font-weight="bold"
+                                                fill="#3730A3">kembali tepat seperti posisi awal</text>
+                                        </svg>
+                                        <figcaption class="text-center text-xs font-bold text-gray-500 mt-2">Wadai lupis
+                                            berbentuk segitiga sama sisi berputar pada titik pusatnya</figcaption>
+                                    </figure>
+
+                                    <p class="text-sm leading-relaxed text-gray-700 mb-2">
+                                        <strong class="text-indigo-700">Simetri putar</strong> adalah jumlah posisi suatu
+                                        bangun datar ketika diputar hingga kembali tepat seperti posisi awal.
+                                    </p>
+                                    <ul class="text-sm text-gray-700 ml-4 list-disc space-y-1 mb-3">
+                                        <li>Segitiga sama sisi dapat kembali terlihat sama ketika diputar pada sudut
+                                            <strong>120°</strong>, <strong>240°</strong>, dan <strong>360°</strong>.
+                                        </li>
+                                        <li>Jadi, segitiga sama sisi mempunyai <strong class="text-indigo-700">3 simetri
+                                                putar</strong>.</li>
+                                    </ul>
+
+                                    <div class="bg-white rounded-xl p-3 border-2 border-indigo-200 mb-3">
+                                        <p class="text-xs font-bold text-gray-500 mb-2">Contoh simetri putar:</p>
+                                        <div class="grid grid-cols-3 gap-2 text-center">
+                                            <div class="bg-indigo-50 rounded-lg py-2">
+                                                <p class="text-lg">🔺</p>
+                                                <p class="text-xs font-bold text-indigo-800">Segitiga sama sisi</p>
+                                                <p class="text-xs font-bold text-indigo-600">3 putaran</p>
+                                            </div>
+                                            <div class="bg-indigo-50 rounded-lg py-2">
+                                                <p class="text-lg">⬜</p>
+                                                <p class="text-xs font-bold text-indigo-800">Persegi</p>
+                                                <p class="text-xs font-bold text-indigo-600">4 putaran</p>
+                                            </div>
+                                            <div class="bg-indigo-50 rounded-lg py-2">
+                                                <p class="text-lg">◇</p>
+                                                <p class="text-xs font-bold text-indigo-800">Belah ketupat</p>
+                                                <p class="text-xs font-bold text-indigo-600">2 putaran</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-gradient-to-br from-amber-50 to-yellow-100 border-2 border-amber-300 rounded-xl p-3 mb-3">
+                                        <p class="text-sm text-gray-700">
+                                            <strong class="text-amber-700">⭐ Ingat!</strong> Simetri putar adalah jumlah
+                                            posisi bangun datar yang kembali seperti posisi awal saat diputar.
+                                        </p>
+                                    </div>
+
+                                    <!-- Coba Jawab -->
+                                    <div id="card-c5"
+                                        class="bg-white rounded-2xl p-4 border-2 border-indigo-300 shadow-sm">
+                                        <p class="font-bold text-indigo-700 text-sm mb-2">🎮 Coba Jawab!</p>
+                                        <p class="text-sm text-gray-700 mb-2">Perhatikan dinding jambang berbentuk
+                                            persegi berikut. Ada berapa simetri putar pada bentuk tersebut?</p>
+                                        <svg viewBox="0 0 200 160" class="w-full max-w-[190px] mx-auto h-auto mb-3">
+                                            <rect x="50" y="24" width="100" height="100" fill="#E0E7FF" stroke="#4F46E5"
+                                                stroke-width="3" />
+                                            <circle cx="100" cy="74" r="62" fill="none" stroke="#4F46E5"
+                                                stroke-width="2" stroke-dasharray="5 5" />
+                                            <polygon points="96,70 100,80 108,72" fill="#4F46E5" />
+                                            <path d="M100 74 L100 24" stroke="#4F46E5" stroke-width="2"
+                                                stroke-dasharray="4 4" />
+                                            <text x="100" y="146" text-anchor="middle" font-size="12"
+                                                font-weight="bold" fill="#3730A3">90° • 180° • 270° • 360°</text>
+                                        </svg>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-c5" type="text" placeholder="Contoh: 4"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('c5')"
+                                                class="flex-1 rounded-xl border-2 border-indigo-200 px-4 py-2.5 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('c5')"
+                                                class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-c5" class="mt-3"></div>
+                                        <div id="sol-c5"
+                                            class="hidden mt-3 bg-indigo-50 border-2 border-indigo-200 rounded-xl p-4">
+                                            <p class="font-bold text-indigo-700 text-sm mb-2">📘 Pembahasan:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                Persegi kembali terlihat sama pada setiap putaran 90°: 90°, 180°,
+                                                270°, dan 360°.<br>
+                                                Jadi, banyaknya simetri putar = <strong>4</strong>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
-                            <!-- Berdasarkan Besar Sudut -->
-                            <div>
-                                <h3 class="font-fredoka text-lg text-blue-600 mb-3 flex items-center gap-2">📐 B.
-                                    Berdasarkan Besar Sudut</h3>
-                                <div class="flex flex-col gap-3">
-
-                                    <!-- Siku-Siku -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-blue-200 flex items-start gap-3 hover:shadow-md transition-shadow duration-200">
-                                        <span
-                                            class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center text-lg flex-shrink-0">📐</span>
-                                        <div>
-                                            <p class="font-bold text-green-700 text-sm">Segitiga Siku-Siku</p>
-                                            <p class="text-sm text-gray-700">Segitiga yang memiliki <strong>satu
-                                                sudut siku-siku atau 90°</strong>.</p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Lancip -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-blue-200 flex items-start gap-3 hover:shadow-md transition-shadow duration-200">
-                                        <span
-                                            class="w-10 h-10 rounded-full bg-yellow-500 text-white flex items-center justify-center text-lg flex-shrink-0">△</span>
-                                        <div>
-                                            <p class="font-bold text-yellow-700 text-sm">Segitiga Lancip</p>
-                                            <p class="text-sm text-gray-700">Segitiga yang memiliki <strong>tiga
-                                                sudut yang masing-masing kurang dari 90°</strong>.</p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Tumpul -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-blue-200 flex items-start gap-3 hover:shadow-md transition-shadow duration-200">
-                                        <span
-                                            class="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center text-lg flex-shrink-0">△</span>
-                                        <div>
-                                            <p class="font-bold text-orange-700 text-sm">Segitiga Tumpul</p>
-                                            <p class="text-sm text-gray-700">Segitiga yang memiliki <strong>satu
-                                                sudut yang besarnya lebih dari 90°</strong>.</p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- ===== MATERI CARD: Segiempat ===== -->
-                    <div
-                        class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-purple-100 flex flex-col">
-                        <div class="bg-gradient-to-r from-purple-500 to-purple-600 px-5 py-5 text-center">
-                            <h2 class="font-fredoka text-2xl text-white"
-                                style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">
-                                ⬜ 2. Segiempat</h2>
-                        </div>
-
-                        <div class="p-6 flex flex-col gap-5 flex-1">
-
-                            <!-- Pengertian -->
-                            <div
-                                class="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 rounded-2xl p-4">
-                                <p class="text-sm leading-relaxed text-gray-700">
-                                    <strong class="text-purple-700">Segiempat</strong> adalah bangun datar yang memiliki
-                                    <strong>empat sisi</strong>, <strong>empat titik sudut</strong>, dan <strong>empat
-                                        sudut</strong>. Keempat sisinya saling bertemu pada empat titik sehingga membentuk
-                                    sebuah bangun tertutup.
-                                </p>
-                                <p class="text-sm leading-relaxed text-gray-700 mt-2">
-                                    Segiempat banyak ditemukan dalam kehidupan sehari-hari. Misalnya, bentuk
-                                    <strong>pintu</strong>, <strong>jendela</strong>, <strong>lantai</strong>,
-                                    <strong>papan</strong>, <strong>motif kain</strong>, <strong>anyaman</strong>, dan
-                                    bagian tertentu dari <strong>bangunan</strong> dapat membantu kita mengenali
-                                    berbagai jenis segiempat.
-                                </p>
-                                <p class="text-sm leading-relaxed text-gray-700 mt-2">
-                                    Segiempat memiliki beberapa jenis dengan bentuk dan sifat yang berbeda:
-                                </p>
-                            </div>
-
-                            <!-- Jenis Segiempat -->
-                            <div class="flex flex-col gap-3">
-
-                                <!-- Persegi -->
-                                <div
-                                    class="bg-white rounded-xl p-4 border-2 border-purple-200 flex items-start gap-3 hover:shadow-md transition-shadow duration-200">
-                                    <span
-                                        class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center text-lg flex-shrink-0">⬛</span>
-                                    <div>
-                                        <p class="font-bold text-blue-700 text-sm">Persegi</p>
-                                        <p class="text-sm text-gray-700">Segiempat yang memiliki <strong>empat sisi sama
-                                            panjang</strong> dan <strong>empat sudut siku-siku</strong>.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Persegi Panjang -->
-                                <div
-                                    class="bg-white rounded-xl p-4 border-2 border-purple-200 flex items-start gap-3 hover:shadow-md transition-shadow duration-200">
-                                    <span
-                                        class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center text-lg flex-shrink-0">▬</span>
-                                    <div>
-                                        <p class="font-bold text-green-700 text-sm">Persegi Panjang</p>
-                                        <p class="text-sm text-gray-700">Segiempat yang memiliki <strong>dua pasang sisi
-                                            berhadapan sama panjang</strong> dan <strong>empat sudut
-                                            siku-siku</strong>.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Trapesium -->
-                                <div
-                                    class="bg-white rounded-xl p-4 border-2 border-purple-200 flex items-start gap-3 hover:shadow-md transition-shadow duration-200">
-                                    <span
-                                        class="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center text-lg flex-shrink-0">⏢</span>
-                                    <div>
-                                        <p class="font-bold text-orange-700 text-sm">Trapesium</p>
-                                        <p class="text-sm text-gray-700">Segiempat yang memiliki <strong>sepasang sisi
-                                            yang berhadapan sejajar</strong>.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Jajar Genjang -->
-                                <div
-                                    class="bg-white rounded-xl p-4 border-2 border-purple-200 flex items-start gap-3 hover:shadow-md transition-shadow duration-200">
-                                    <span
-                                        class="w-10 h-10 rounded-full bg-yellow-500 text-white flex items-center justify-center text-lg flex-shrink-0">▱</span>
-                                    <div>
-                                        <p class="font-bold text-yellow-700 text-sm">Jajar Genjang</p>
-                                        <p class="text-sm text-gray-700">Segiempat yang memiliki <strong>dua pasang sisi
-                                            berhadapan yang sejajar dan sama panjang</strong>.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Belah Ketupat -->
-                                <div
-                                    class="bg-white rounded-xl p-4 border-2 border-purple-200 flex items-start gap-3 hover:shadow-md transition-shadow duration-200">
-                                    <span
-                                        class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center text-lg flex-shrink-0">◇</span>
-                                    <div>
-                                        <p class="font-bold text-red-700 text-sm">Belah Ketupat</p>
-                                        <p class="text-sm text-gray-700">Segiempat yang memiliki <strong>empat sisi sama
-                                            panjang</strong>.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Layang-Layang -->
-                                <div
-                                    class="bg-white rounded-xl p-4 border-2 border-purple-200 flex items-start gap-3 hover:shadow-md transition-shadow duration-200">
-                                    <span
-                                        class="w-10 h-10 rounded-full bg-pink-500 text-white flex items-center justify-center text-lg flex-shrink-0">🪁</span>
-                                    <div>
-                                        <p class="font-bold text-pink-700 text-sm">Layang-Layang</p>
-                                        <p class="text-sm text-gray-700">Segiempat yang memiliki <strong>dua pasang sisi
-                                            yang berdekatan sama panjang</strong>.</p>
-                                    </div>
-                                </div>
-
-                            </div>
                         </div>
                     </div>
 
@@ -704,15 +977,25 @@
                                 <table class="w-full text-sm border-collapse">
                                     <thead>
                                         <tr class="bg-amber-100">
-                                            <th class="border-2 border-amber-300 px-3 py-2 text-center font-bold text-amber-700 w-12">No.</th>
-                                            <th class="border-2 border-amber-300 px-3 py-2 text-left font-bold text-amber-700">Benda yang Diamati</th>
-                                            <th class="border-2 border-amber-300 px-3 py-2 text-left font-bold text-amber-700">Bentuk Bangun Datar</th>
-                                            <th class="border-2 border-amber-300 px-3 py-2 text-left font-bold text-amber-700">Alasan</th>
+                                            <th
+                                                class="border-2 border-amber-300 px-3 py-2 text-center font-bold text-amber-700 w-12">
+                                                No.</th>
+                                            <th
+                                                class="border-2 border-amber-300 px-3 py-2 text-left font-bold text-amber-700">
+                                                Benda yang Diamati</th>
+                                            <th
+                                                class="border-2 border-amber-300 px-3 py-2 text-left font-bold text-amber-700">
+                                                Bentuk Bangun Datar</th>
+                                            <th
+                                                class="border-2 border-amber-300 px-3 py-2 text-left font-bold text-amber-700">
+                                                Alasan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="border-2 border-amber-200 px-3 py-3 text-center font-bold text-gray-600">1.</td>
+                                            <td
+                                                class="border-2 border-amber-200 px-3 py-3 text-center font-bold text-gray-600">
+                                                1.</td>
                                             <td class="border-2 border-amber-200 px-2 py-2 bg-gray-50">
                                                 <input type="text" placeholder="Nama bendanya..."
                                                     class="w-full rounded-lg border-2 border-amber-200 bg-white px-3 py-2 text-sm text-gray-700 placeholder-amber-400 focus:border-amber-500 focus:outline-none transition-colors">
@@ -727,7 +1010,9 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="border-2 border-amber-200 px-3 py-3 text-center font-bold text-gray-600">2.</td>
+                                            <td
+                                                class="border-2 border-amber-200 px-3 py-3 text-center font-bold text-gray-600">
+                                                2.</td>
                                             <td class="border-2 border-amber-200 px-2 py-2 bg-gray-50">
                                                 <input type="text" placeholder="Nama bendanya..."
                                                     class="w-full rounded-lg border-2 border-amber-200 bg-white px-3 py-2 text-sm text-gray-700 placeholder-amber-400 focus:border-amber-500 focus:outline-none transition-colors">
@@ -742,7 +1027,9 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="border-2 border-amber-200 px-3 py-3 text-center font-bold text-gray-600">3.</td>
+                                            <td
+                                                class="border-2 border-amber-200 px-3 py-3 text-center font-bold text-gray-600">
+                                                3.</td>
                                             <td class="border-2 border-amber-200 px-2 py-2 bg-gray-50">
                                                 <input type="text" placeholder="Nama bendanya..."
                                                     class="w-full rounded-lg border-2 border-amber-200 bg-white px-3 py-2 text-sm text-gray-700 placeholder-amber-400 focus:border-amber-500 focus:outline-none transition-colors">
@@ -783,6 +1070,46 @@
     </div>
 
     <script>
+        // ===== JAWABAN COBA JAWAB (menurut materi_low.md) =====
+        const JAWABAN_SOAL = {
+            c1: 4,
+            c2: 3,
+            c3: 3,
+            c4: 3,
+            c5: 4,
+        };
+
+        function periksaSoal(id) {
+            const input = document.getElementById('ans-' + id);
+            const fb = document.getElementById('fb-' + id);
+            const sol = document.getElementById('sol-' + id);
+            const card = document.getElementById('card-' + id);
+            const m = input.value.replace(/,/g, '.').match(/-?\d+(?:\.\d+)?/);
+
+            if (!m) {
+                fb.innerHTML = '<div class="bg-yellow-100 border-2 border-yellow-400 rounded-xl p-3 text-sm font-bold text-yellow-700 animate-feedback-in">✏️ Tulis jawabanmu dulu ya!</div>';
+                return;
+            }
+
+            if (Math.abs(parseFloat(m[0]) - JAWABAN_SOAL[id]) <= 0.1) {
+                fb.innerHTML = '<div class="bg-green-100 border-2 border-green-400 rounded-xl p-3 text-sm font-bold text-green-700 animate-pop-in">🎉 Benar! Kamu menemukan banyak ' + ({
+                    c1: 'titik sudut',
+                    c2: 'sisi',
+                    c3: 'sudut',
+                    c4: 'simetri lipat',
+                    c5: 'simetri putar'
+                }[id] || 'jawaban') + '. Hebat!</div>';
+                sol.classList.add('hidden');
+                card.classList.add('pulse-correct');
+                setTimeout(() => card.classList.remove('pulse-correct'), 600);
+            } else {
+                fb.innerHTML = '<div class="bg-red-100 border-2 border-red-400 rounded-xl p-3 text-sm font-bold text-red-600 animate-feedback-in">😊 BELUM TEPAT! Coba perhatikan lagi ya!</div>';
+                sol.classList.remove('hidden');
+                card.classList.add('shake');
+                setTimeout(() => card.classList.remove('shake'), 500);
+            }
+        }
+
         // ===== SIDEBAR =====
         let sidebarOpen = true;
 

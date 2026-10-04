@@ -40,7 +40,11 @@
                 <li>
                     <a href="/learning/bangun_datar/02/{{ current_user.id }}/{{ current_user.klasifikasi }}"
                         class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_bangun_datar_2' else inactive }}">
+                        {% if current_user.klasifikasi == 0 %}
+                        🔺 Segitiga &amp; Segiempat
+                        {% else %}
                         🔺 Segitiga
+                        {% endif %}
                     </a>
                 </li>
 
