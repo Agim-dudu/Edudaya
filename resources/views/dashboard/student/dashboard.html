@@ -32,7 +32,7 @@
     </script>
 </head>
 
-<body class="sasirangan-bg">
+<body class="sasirangan-bg dashboard-page">
 
     {% if waiting_analysis %}
     <div id="waiting-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
@@ -86,7 +86,7 @@
                 <div class="motif-strip mt-3 opacity-60 rounded-full"></div>
             </div>
 
-            <div class="p-6">
+            <div class="p-4 md:p-6 max-w-7xl mx-auto w-full">
                 <!-- Tab: Dashboard Siswa -->
                 <div id="siswa-dashboard" class="siswa-tab">
                     <!-- Summary cards -->
@@ -116,13 +116,13 @@
                     <!-- Lanjutkan Belajar -->
                     <div class="bg-white rounded-2xl shadow p-5 mb-6">
                         <h3 class="font-fredoka text-xl text-cokelat-general mb-4">📖 Lanjutkan Belajar</h3>
-                        <div class="flex items-center gap-4 p-4 bg-biru-light rounded-xl">
-                            <div class="text-5xl">🔷</div>
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-4 p-4 bg-biru-light rounded-xl">
+                            <div class="text-4xl sm:text-5xl" aria-hidden="true">🔷</div>
                             <div class="flex-1">
                                 <div class="font-700 text-cokelat-general">Konsep Bangun Datar</div>
                                 <div class="text-sm text-gray-500">Pelajari pengertian, unsur, dan jenis-jenis bangun datar</div>
                             </div>
-                            <a href="/learning/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi if current_user.klasifikasi is not none else 0 }}" class="bg-biru-general hover:bg-biru-dark text-white font-700 px-4 py-2 rounded-xl text-sm shrink-0 transition">Mulai →</a>
+                            <a href="/learning/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi if current_user.klasifikasi is not none else 0 }}" class="bg-biru-general hover:bg-biru-dark text-white font-700 px-4 py-2 rounded-xl text-sm shrink-0 transition text-center w-full sm:w-auto">Mulai Belajar →</a>
                         </div>
                     </div>
 
@@ -149,115 +149,11 @@
                     </div>
                 </div>
 
-                <!-- Tab: Nilai Siswa -->
-                <div id="siswa-nilai" class="siswa-tab hidden">
-                    <h2 class="font-fredoka text-2xl text-cokelat-general mb-6">🏆 Nilai Saya</h2>
-                    <div class="grid grid-cols-3 gap-4 mb-6">
-                        <div class="bg-white rounded-2xl p-4 shadow text-center">
-                            <div class="font-fredoka text-5xl text-hijau-general mb-1">{{ overview.nilai_terbaik if overview.nilai_terbaik is not none else '–' }}</div>
-                            <div class="text-sm text-gray-500 font-600">Nilai Terbaik</div>
-                        </div>
-                        <div class="bg-white rounded-2xl p-4 shadow text-center">
-                            <div class="font-fredoka text-5xl text-biru-general mb-1">{{ overview.nilai_rata if overview.nilai_rata is not none else '–' }}</div>
-                            <div class="text-sm text-gray-500 font-600">Rata-rata</div>
-                        </div>
-                        <div class="bg-white rounded-2xl p-4 shadow text-center">
-                            <div class="font-fredoka text-5xl text-kuning-general mb-1">{{ overview.kuis_selesai }}</div>
-                            <div class="text-sm text-gray-500 font-600">Kuis Selesai</div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-2xl shadow overflow-hidden">
-                        <div class="px-5 py-4 border-b border-gray-100">
-                            <h3 class="font-fredoka text-lg text-cokelat-general">Detail Nilai per Materi</h3>
-                        </div>
-                        <div class="divide-y divide-gray-100">
-                            {% for item in overview.nilai_detail %}
-                            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50">
-                                <div class="text-3xl">{{ item.icon }}</div>
-                                <div class="flex-1">
-                                    <div class="font-700 text-cokelat-general text-sm">{{ item.title }}</div>
-                                    <div class="text-xs text-gray-400">Dikerjakan: {{ item.created_at.strftime('%d %b %Y') if item.created_at else '—' }}</div>
-                                    <div class="progress-bar mt-2 w-32">
-                                        <div class="progress-fill" style="width: {{ item.value }}%"></div>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="font-fredoka text-3xl {{ 'text-hijau-general' if item.value >= 75 else 'text-kuning-general' }}">{{ item.value }}</div>
-                                    <div class="text-xs text-gray-400">{{ item.label }}</div>
-                                </div>
-                            </div>
-                            {% else %}
-                            <div class="px-5 py-8 text-center">
-                                <div class="text-4xl mb-2">📭</div>
-                                <div class="text-sm text-gray-500 font-600">Belum ada nilai.</div>
-                                <div class="text-xs text-gray-400 mt-1">Kerjakan kuis Bangun Datar untuk melihat nilaimu di sini!</div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab: Profil Siswa -->
-                <div id="siswa-profile" class="siswa-tab hidden">
-                    <h2 class="font-fredoka text-2xl text-cokelat-general mb-6">⚙️ Profil Saya</h2>
-                    <div class="max-w-lg bg-white rounded-2xl shadow p-6">
-                        <div class="flex flex-col items-center mb-6">
-                            <div class="w-24 h-24 bg-biru-general rounded-2xl flex items-center justify-center text-5xl mb-3">👦</div>
-                            <div class="font-fredoka text-2xl text-cokelat-general">{{ current_user.full_name }}</div>
-                            
-                            <!-- 🔥 FIX: Menampilkan nama sekolah secara dinamis dari model baru -->
-                            <div class="text-sm text-gray-400">
-                                {% if current_user.class_obj %}
-                                    {{ current_user.class_obj.name }} · {{ current_user.class_obj.school }}
-                                {% else %}
-                                    Belum Terikat Kelas
-                                {% endif %}
-                            </div>
-                            <button class="mt-2 text-xs text-biru-general hover:underline">Ubah foto profil</button>
-                        </div>
-                        
-                        <!-- Achievement summary -->
-                        <div class="grid grid-cols-3 gap-3 mb-6 text-center">
-                            <div class="bg-kuning-light rounded-xl p-3">
-                                <div class="font-fredoka text-2xl text-kuning-dark">{{ current_user.star }}</div>
-                                <div class="text-xs text-gray-500">Total Poin</div>
-                            </div>
-                            <div class="bg-hijau-light rounded-xl p-3">
-                                <div class="font-fredoka text-2xl text-hijau-dark">{{ overview.materi_selesai }}</div>
-                                <div class="text-xs text-gray-500">Materi Selesai</div>
-                            </div>
-                            <div class="bg-merah-light rounded-xl p-3">
-                                <div class="font-fredoka text-2xl text-merah-dark">{{ '#' ~ overview.peringkat if overview.peringkat else '–' }}</div>
-                                <div class="text-xs text-gray-500">Peringkat</div>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-700 text-cokelat-general mb-1">Nama Lengkap</label>
-                                <input type="text" value="{{ current_user.full_name }}" class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-700 text-cokelat-general mb-1">Jenis Kelamin</label>
-                                <select class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm bg-white">
-                                    <option value="L" {% if current_user.gender == 'L' %}selected{% endif %}>Laki-laki</option>
-                                    <option value="P" {% if current_user.gender == 'P' %}selected{% endif %}>Perempuan</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-700 text-cokelat-general mb-1">Password Baru</label>
-                                <input type="password" placeholder="Kosongkan jika tidak diubah" class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 font-nunito text-sm">
-                            </div>
-                            <button class="w-full bg-biru-general hover:bg-biru-dark text-white font-800 py-3 rounded-xl transition shadow-md">💾 Simpan Perubahan</button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </main>
     </div>
 
-    <!-- Script Flash Message & Tab Switcher -->
+    <!-- Script Flash Message -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const flashContainer = document.getElementById('flash-messages');
@@ -271,13 +167,6 @@
                 }, 3000);
             }
         });
-
-        function switchSiswaTab(tabId) {
-            document.querySelectorAll('.siswa-tab').forEach(t => t.classList.add('hidden'));
-            document.getElementById(tabId)?.classList.remove('hidden');
-            document.querySelectorAll('#dash-siswa .sidebar-link').forEach(b => b.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-        }
     </script>
 {% include 'dashboard/partials/mobile_toggle.html' %}
 </body>

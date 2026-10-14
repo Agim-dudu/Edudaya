@@ -217,9 +217,9 @@
                                 Riwayat</h2>
                         </div>
 
-                        <div class="bg-white">
+                        <div class="bg-white overflow-x-auto">
                             <!-- Tabel Riwayat -->
-                            <table class="w-full table-auto border-collapse">
+                            <table class="w-full table-auto border-collapse" data-table-controls>
                                 <thead>
                                     <tr class="bg-gray-200">
                                         <th class="px-4 py-2 text-center text-sm font-semibold text-gray-800">Tanggal
@@ -272,12 +272,12 @@
 
                 <!-- FOOTER NAV -->
                 <div class="flex justify-between items-center flex-wrap gap-3 pb-4">
-                    <a href="/learning/bab2/quiz/{{ current_user.id }}/{{ current_user.klasifikasi }}"
+                    <a href="/quiz/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}"
                         class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">
                         Halaman Sebelumnya
                     </a>
                     <p class="text-gray-400 text-xs font-semibold">© 2026 Edudaya 🌟</p>
-                    <a href="/learning/finish/{{ current_user.id }}/{{ current_user.klasifikasi }}"
+                    <a href="/"
                         class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">
                         Halaman Selanjutnya
                     </a>
@@ -360,6 +360,7 @@
     </script>
     <script src="/resources/js/flash_message.js"></script>
 
+<script src="{{ url_for('static', filename='js/table_controls.js') }}"></script>
 </body>
 
 </html>

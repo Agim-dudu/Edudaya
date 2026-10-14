@@ -27,7 +27,6 @@
         
         <nav class="space-y-1">
             <a href="/dashboard/student/{{ user_id }}"
-               onclick="switchSiswaTab('siswa-dashboard')"
                class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition 
                {{ 'active' if request.path == '/dashboard/student/' ~ user_id|string else 'hover:bg-white/10' }}">
                 <span>🏠</span> Dashboard
@@ -47,7 +46,7 @@
         </nav>
         
         <div class="mt-4 border-t border-white/10 pt-4">
-            <a href="/dashboard/student/{{ user_id }}"
+            <a href="/learning/bangun_datar/{{ user_id }}/{{ current_user.klasifikasi if current_user.klasifikasi is not none else 0 }}"
                class="sidebar-link w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-white transition hover:bg-white/10">
                 <span>📚</span> Lanjut Belajar
             </a>

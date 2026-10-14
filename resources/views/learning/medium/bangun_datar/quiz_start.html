@@ -400,7 +400,9 @@
 
             // --- GURU: preview mode (hitung lokal hanya untuk preview) ---
             if (userLevel !== 0) {
+                {% if user_level != 0 %}
                 const kunciPreview = {1:"soal1-b",2:"soal2-a",3:"soal3-c",4:"soal4-c",5:"soal5-b",6:"soal6-c",7:"soal7-b",8:"soal8-c",9:"soal9-c",10:"soal10-a"};
+                {% endif %}
                 let benar = 0;
                 for (let i = 1; i <= totalSoal; i++) {
                     const ok = jawabanUser[i] === kunciPreview[i];
@@ -434,7 +436,7 @@
                         popup: 'rounded-2xl shadow-xl',
                     },
                     buttonsStyling: false,
-                }).then(r => { if (r.isConfirmed) window.location.href = "/learning/bab1/quiz/{{ current_user.id }}/{{ current_user.klasifikasi }}"; });
+                }).then(r => { if (r.isConfirmed) window.location.href = "/quiz/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}"; });
                 return;
             }
 

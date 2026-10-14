@@ -28,7 +28,7 @@
         }
     </script>
 </head>
-<body class="sasirangan-bg">
+<body class="sasirangan-bg dashboard-page">
     <div id="dash-admin" class="page flex">
         <aside class="sidebar bg-gradient-to-b from-cokelat-general to-cokelat-dark text-white flex-shrink-0">
             <div class="p-5 border-b border-white/10">
@@ -91,7 +91,7 @@
 
                 <div class="bg-white rounded-2xl shadow overflow-hidden">
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm">
+                        <table class="w-full text-sm" data-table-controls>
                             <thead class="bg-gray-50 text-gray-500 text-xs font-700 uppercase">
                                 <tr>
                                     <th class="px-4 py-3 text-left">No</th>
@@ -111,7 +111,7 @@
                                     <td class="px-4 py-3 flex gap-1">
                                         <a href="{{ url_for('admin_guru_edit', teacher_id=t.id) }}"
                                             class="p-1.5 bg-biru-light text-biru-dark rounded-lg hover:bg-biru-general hover:text-white transition">✏️</a>
-                                        <form method="POST" action="{{ url_for('admin_guru_delete', teacher_id=t.id) }}" class="inline" onsubmit="return confirm('Hapus guru {{ t.full_name }}?')">
+                                        <form method="POST" action="{{ url_for('admin_guru_delete', teacher_id=t.id) }}" class="inline" data-confirm="Hapus guru {{ t.full_name }}?">
                                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                             <button class="p-1.5 bg-merah-light text-merah-general rounded-lg hover:bg-merah-general hover:text-white transition">🗑️</button>
                                         </form>
@@ -130,5 +130,7 @@
         </main>
     </div>
 {% include 'dashboard/partials/mobile_toggle.html' %}
+<script src="{{ url_for('static', filename='js/admin_confirm.js') }}"></script>
+<script src="{{ url_for('static', filename='js/table_controls.js') }}"></script>
 </body>
 </html>

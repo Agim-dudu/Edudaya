@@ -34,7 +34,7 @@
     </script>
 </head>
 
-<body class="sasirangan-bg">
+<body class="sasirangan-bg dashboard-page">
 
     <div id="dash-guru" class="page flex">
 
@@ -59,13 +59,12 @@
                 </div>
             </div>
 
-            <div class="p-6">
+            <div class="p-4 md:p-6 max-w-7xl mx-auto w-full">
                 <div>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="grid grid-cols-2 gap-4 mb-8 max-w-2xl">
                         <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-green-500">
                             <div class="text-2xl mb-2">🏫</div>
-                            <div class="font-fredoka text-3xl text-amber-500">{{ current_user.teacher_classes|length }}
-                            </div>
+                            <div class="font-fredoka text-3xl text-amber-500">{{ amount_class }}</div>
                             <div class="text-sm text-gray-500">Kelas Saya</div>
                         </div>
                         <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-blue-500">
@@ -74,57 +73,16 @@
                                 {{ amount_student if amount_student else 0 }}</div>
                             <div class="text-sm text-gray-500">Total Siswa</div>
                         </div>
-                        <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-yellow-500">
-                            <div class="text-2xl mb-2">📋</div>
-                            <div class="font-fredoka text-3xl text-cokelat-general">245</div>
-                            <div class="text-sm text-gray-500">Latihan Dikerjakan</div>
-                        </div>
-                        <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-purple-500">
-                            <div class="text-2xl mb-2">⭐</div>
-                            <div class="font-fredoka text-3xl text-cokelat-general">82.4</div>
-                            <div class="text-sm text-gray-500">Rata-rata Nilai</div>
-                        </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-white rounded-2xl shadow p-6">
-                            <h3 class="font-fredoka text-lg text-amber-500 mb-4">🔔 Notifikasi</h3>
-                            <div class="space-y-3">
-                                <div class="flex gap-3 text-sm p-3 bg-biru-light rounded-xl"><span>📝</span>
-                                    <div>
-                                        <div class="font-700">Ahmad Fauzi menyelesaikan Latihan 3</div>
-                                        <div class="text-gray-400 text-xs">2 menit lalu</div>
-                                    </div>
-                                </div>
-                                <div class="flex gap-3 text-sm p-3 bg-hijau-light rounded-xl"><span>🏆</span>
-                                    <div>
-                                        <div class="font-700">Siti Rahma meraih skor sempurna!</div>
-                                        <div class="text-gray-400 text-xs">15 menit lalu</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl shadow p-6">
-                            <h3 class="font-fredoka text-lg text-cokelat-general mb-4">📊 Progress Belajar Kelas</h3>
-                            <div class="space-y-3">
-                                <div>
-                                    <div class="flex justify-between text-sm mb-1"><span
-                                            class="font-600">Penjumlahan</span><span class="text-gray-400">85%</span>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width:85%"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between text-sm mb-1"><span
-                                            class="font-600">Pengurangan</span><span class="text-gray-400">60%</span>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width:60%"></div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="bg-white rounded-2xl shadow p-6 max-w-2xl">
+                        <h3 class="font-fredoka text-lg text-cokelat-general mb-2">Kelola pembelajaran kelas</h3>
+                        <p class="text-sm text-gray-600 mb-5">Lihat data siswa, rekap nilai, atau tinjau hasil analisis dari kelas yang Anda ampu.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="{{ url_for('my_classes', user_id=user_id) }}" class="bg-hijau-general hover:bg-hijau-dark text-white font-bold px-4 py-2 rounded-xl transition">🏫 Kelas Saya</a>
+                            <a href="{{ url_for('teacher_students', user_id=user_id) }}" class="bg-biru-general hover:bg-biru-dark text-white font-bold px-4 py-2 rounded-xl transition">👧 Data Siswa</a>
+                            <a href="{{ url_for('teacher_grades', user_id=user_id) }}" class="bg-kuning-general hover:bg-kuning-dark text-white font-bold px-4 py-2 rounded-xl transition">📋 Rekap Nilai</a>
+                            <a href="{{ url_for('dashboard_analysis', user_id=user_id) }}" class="bg-ungu-general hover:bg-ungu-dark text-white font-bold px-4 py-2 rounded-xl transition">✨ AI Analisis</a>
                         </div>
                     </div>
                 </div>

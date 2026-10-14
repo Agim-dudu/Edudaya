@@ -270,43 +270,22 @@
 
       <!-- Materi Featured -->
       <h2 class="font-fredoka text-3xl text-cokelat-general mb-6">🌟 Materi Unggulan</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div class="bg-white rounded-2xl overflow-hidden shadow card-hover cursor-pointer"
-          onclick="{% if current_user.is_authenticated and current_user.level == 0 %}window.location.href='/learning/medium/1/1/{{ current_user.id }}'{% endif %}">
+      <div class="grid grid-cols-1 gap-6 mb-12">
+        <a href="{% if current_user.is_authenticated and current_user.level == 0 %}{{ url_for('learning_bangun_datar', user_id=current_user.id, klasifikasi=current_user.klasifikasi if current_user.klasifikasi is not none else 0) }}{% elif current_user.is_authenticated and current_user.level == 1 %}{{ url_for('dashboard_teacher', user_id=current_user.id) }}{% elif current_user.is_authenticated %}{{ url_for('dashboard_admin', user_id=current_user.id) }}{% else %}{{ url_for('login') }}{% endif %}"
+          class="block bg-white rounded-2xl overflow-hidden shadow card-hover">
           <div class="h-36 flex items-center justify-center text-6xl"
             style="background:linear-gradient(135deg,#FEF3DB,#FFF8EE)">🛶</div>
           <div class="p-4">
-            <div class="badge bg-merah-light text-merah-general mb-2">Kelas 1</div>
-            <h3 class="font-fredoka text-lg text-cokelat-general">Operasi Hitung Dasar</h3>
-            <p class="text-sm text-gray-500 mt-1 font-600">Penjumlahan & pengurangan ala budaya Banjar!</p>
-            <div class="mt-3 text-xs text-biru-general font-700">
-              {{ total_materi }} Materi · 4 latihan + 1 kuis
-            </div>
+            <div class="badge bg-biru-light text-biru-dark mb-2">Matematika</div>
+            <h3 class="font-fredoka text-lg text-cokelat-general">Konsep Bangun Datar</h3>
+            <p class="text-sm text-gray-500 mt-1 font-600">Pelajari pengertian, unsur, dan jenis-jenis bangun datar.</p>
           </div>
-        </div>
-        <div class="bg-white rounded-2xl overflow-hidden shadow card-hover" style="opacity:0.6">
-          <div class="h-36 flex items-center justify-center text-6xl"
-            style="background:linear-gradient(135deg,#E8F8F0,#FFF8EE)">🔮</div>
-          <div class="p-4">
-            <div class="badge bg-hijau-light text-hijau-dark mb-2">Materi 2</div>
-            <h3 class="font-fredoka text-lg text-cokelat-general">Segera Hadir</h3>
-            <p class="text-sm text-gray-500 mt-1 font-600">Materi baru sedang disiapkan. Nantikan ya!</p>
-          </div>
-        </div>
-        <div class="bg-white rounded-2xl overflow-hidden shadow card-hover" style="opacity:0.6">
-          <div class="h-36 flex items-center justify-center text-6xl"
-            style="background:linear-gradient(135deg,#EAF4FB,#FFF8EE)">🔮</div>
-          <div class="p-4">
-            <div class="badge bg-biru-light text-biru-dark mb-2">Materi 3</div>
-            <h3 class="font-fredoka text-lg text-cokelat-general">Segera Hadir</h3>
-            <p class="text-sm text-gray-500 mt-1 font-600">Materi baru sedang disiapkan. Nantikan ya!</p>
-          </div>
-        </div>
+        </a>
       </div>
 
       <!-- Leaderboard mini -->
       <div class="bg-white rounded-2xl shadow p-6">
-        <h3 class="font-fredoka text-2xl text-cokelat-general mb-4">🏆 Juara Pekan Ini</h3>
+        <h3 class="font-fredoka text-2xl text-cokelat-general mb-4">🏆 Juara Belajar</h3>
         <div class="space-y-3">
           {% if leaderboard %}
           {% for entry in leaderboard %}
@@ -324,9 +303,15 @@
               {{ entry.score }}</div>
           </div>
           {% endfor %}
+          {% else %}
+          <div class="rounded-xl bg-gray-50 p-5 text-center">
+            <div class="text-3xl mb-2">🌱</div>
+            <p class="font-700 text-gray-600">Belum ada juara belajar.</p>
+            <p class="text-sm text-gray-500 mt-1">Peringkat akan muncul setelah siswa menyelesaikan kuis.</p>
+          </div>
+          {% endif %}
         </div>
       </div>
-      {% endif %}
     </div>
   </div>
 

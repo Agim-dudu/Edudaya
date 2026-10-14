@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Edudaya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/resources/css/main.css">
+    <script>
+        tailwind.config = {
+        theme: {
+            extend: {
+            colors: {
+                // Palet Sasirangan Kalimantan Selatan
+                kuning: {
+                general: '#F5A623',
+                light: '#FEF3DB',
+                dark: '#C47D0E'
+                },
+                merah: {
+                general: '#C0392B',
+                light: '#FDECEA',
+                dark: '#922B21'
+                },
+                hijau: {
+                general: '#27AE60',
+                light: '#E8F8F0',
+                dark: '#1E8449'
+                },
+                biru: {
+                general: '#2980B9',
+                light: '#EAF4FB',
+                dark: '#1A5276'
+                },
+                ungu: {
+                general: '#8E44AD',
+                light: '#F5EEF8',
+                dark: '#6C3483'
+                },
+                cokelat: {
+                general: '#6D4C41',
+                light: '#EFEBE9',
+                dark: '#4E342E'
+                },
+                krem: {
+                general: '#FFF8EE',
+                dark: '#F5E6CC'
+                },
+            },
+            fontFamily: {
+                nunito: ['Nunito', 'sans-serif'],
+                fredoka: ['Fredoka One', 'cursive'],
+                poppins: ['Poppins', 'sans-serif'],
+            },
+            }
+        }
+        }
+    </script>
+</head>
+
+<body class="sasirangan-bg">
+    <!-- ============================================================ -->
+    <!-- 6. LIST MATERI                                               -->
+    <!-- ============================================================ -->
+    <div id="list-materi" class="page active">
+        <!-- Reuse nav -->
+        <nav class="sasirangan-header sticky top-0 z-40 shadow-lg">
+            <div class="relative z-10 max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+                <a href="/" class="flex items-center gap-2 text-white font-700">
+                    <span>←</span><span class="font-fredoka text-xl">Edudaya</span>
+                </a>
+                <span class="font-fredoka text-xl text-white">📚 Daftar Materi</span>
+                <div
+                    class="w-9 h-9 bg-kuning-general rounded-full flex items-center justify-center text-white font-800 text-sm">
+                    AN</div>
+            </div>
+            <div class="motif-strip opacity-70"></div>
+        </nav>
+
+        <div class="max-w-6xl mx-auto px-4 py-8">
+            <!-- Filter -->
+            <div class="bg-white rounded-2xl shadow p-4 mb-8 flex flex-wrap gap-3 items-center">
+                <span class="font-700 text-cokelat-general">Filter:</span>
+                <button class="px-4 py-1.5 bg-kuning-general text-white rounded-xl font-700 text-sm">Semua</button>
+                <button
+                    class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-xl font-700 text-sm hover:bg-kuning-light transition">Kelas
+                    1-2</button>
+                <button
+                    class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-xl font-700 text-sm hover:bg-kuning-light transition">Kelas
+                    3-4</button>
+                <button
+                    class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-xl font-700 text-sm hover:bg-kuning-light transition">Kelas
+                    5-6</button>
+                <div class="ml-auto">
+                    <input type="search" placeholder="🔍 Cari materi..."
+                        class="border-2 border-gray-200 rounded-xl px-4 py-2 text-sm font-nunito">
+                </div>
+            </div>
+
+            <!-- Grid materi -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Template materi cards -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow card-hover cursor-pointer"
+                    onclick="showPage('belajar')">
+                    <div class="h-28 flex items-center justify-between px-6 text-6xl"
+                        style="background:linear-gradient(135deg,#FEF3DB,#FDECEA)">
+                        🛶 <div class="text-right">
+                            <div class="badge bg-kuning-general text-white">Kelas 1</div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-fredoka text-lg text-cokelat-general mb-1">Mengenal Bilangan 1-10</h3>
+                        <p class="text-sm text-gray-500 font-600 mb-3">Belajar menghitung ikan di sungai Barito</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="badge bg-hijau-light text-hijau-dark">✅ Selesai</span>
+                            <span class="text-gray-400">⏱ 20 menit</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl overflow-hidden shadow card-hover cursor-pointer"
+                    onclick="showPage('belajar')">
+                    <div class="h-28 flex items-center justify-between px-6 text-6xl"
+                        style="background:linear-gradient(135deg,#E8F8F0,#EAF4FB)">
+                        🌺 <div class="badge bg-hijau-general text-white self-start mt-2">Kelas 2</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-fredoka text-lg text-cokelat-general mb-1">Penjumlahan Bunga Sasirangan</h3>
+                        <p class="text-sm text-gray-500 font-600 mb-3">Hitung pola motif kain tradisional Kalsel</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="badge bg-biru-light text-biru-dark">🔄 Sedang Belajar</span>
+                            <span class="text-gray-400">⏱ 25 menit</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl overflow-hidden shadow card-hover cursor-pointer"
+                    onclick="showPage('belajar')">
+                    <div class="h-28 flex items-center justify-between px-6 text-6xl"
+                        style="background:linear-gradient(135deg,#F5EEF8,#FEF3DB)">
+                        🦜 <div class="badge bg-ungu-general text-white self-start mt-2">Kelas 3</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-fredoka text-lg text-cokelat-general mb-1">Pengurangan di Pasar Terapung</h3>
+                        <p class="text-sm text-gray-500 font-600 mb-3">Transaksi jual beli dengan pengurangan</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="badge bg-gray-100 text-gray-500">🔒 Terkunci</span>
+                            <span class="text-gray-400">⏱ 30 menit</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl overflow-hidden shadow card-hover cursor-pointer"
+                    onclick="showPage('belajar')">
+                    <div class="h-28 flex items-center justify-between px-6 text-6xl"
+                        style="background:linear-gradient(135deg,#FDECEA,#F5EEF8)">
+                        🐟 <div class="badge bg-merah-general text-white self-start mt-2">Kelas 4</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-fredoka text-lg text-cokelat-general mb-1">Perkalian Hasil Tambak</h3>
+                        <p class="text-sm text-gray-500 font-600 mb-3">Menghitung produksi ikan dengan perkalian</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="badge bg-gray-100 text-gray-500">🔒 Terkunci</span>
+                            <span class="text-gray-400">⏱ 35 menit</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl overflow-hidden shadow card-hover cursor-pointer"
+                    onclick="showPage('belajar')">
+                    <div class="h-28 flex items-center justify-between px-6 text-6xl"
+                        style="background:linear-gradient(135deg,#EAF4FB,#E8F8F0)">
+                        🥥 <div class="badge bg-biru-general text-white self-start mt-2">Kelas 5</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-fredoka text-lg text-cokelat-general mb-1">Pembagian Hasil Panen</h3>
+                        <p class="text-sm text-gray-500 font-600 mb-3">Membagi kelapa sawit sama rata</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="badge bg-gray-100 text-gray-500">🔒 Terkunci</span>
+                            <span class="text-gray-400">⏱ 40 menit</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl overflow-hidden shadow card-hover cursor-pointer"
+                    onclick="showPage('belajar')">
+                    <div class="h-28 flex items-center justify-between px-6 text-6xl"
+                        style="background:linear-gradient(135deg,#FEF3DB,#E8F8F0)">
+                        🏞️ <div class="badge bg-kuning-dark text-white self-start mt-2">Kelas 6</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-fredoka text-lg text-cokelat-general mb-1">Geometri Bangunan Banua</h3>
+                        <p class="text-sm text-gray-500 font-600 mb-3">Luas & keliling Rumah Banjar tradisional</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="badge bg-gray-100 text-gray-500">🔒 Terkunci</span>
+                            <span class="text-gray-400">⏱ 45 menit</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

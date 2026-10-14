@@ -1,7 +1,7 @@
 import secrets
 import string
 from app import db
-from app.model import User, Classes, ClassTeachers
+from app.model import User, Classes, ClassTeachers, Score
 from flask import flash
 from werkzeug.security import generate_password_hash
 
@@ -13,6 +13,75 @@ def get_amount_teacher_all(user_id=None):
 
 def get_amount_classes_all():
     return Classes.query.count()
+
+
+def get_admin_dashboard_stats():
+    active_tokens = Classes.query.filter_by(is_active=True).count()
+    total_students = User.query.filter(User.level == 0).count()
+    total_teachers = User.query.filter(User.level == 1).count()
+    total_classes = Classes.query.count()
+    top_students = (
+        db.session.query(
+            User.id,
+            User.full_name,
+            db.func.coalesce(db.func.avg(Score.value), 0).label('average_score'),
+        )
+        .outerjoin(Score, Score.user_id == User.id)
+        .filter(User.level == 0)
+        .group_by(User.id, User.full_name)
+        .order_by(db.func.coalesce(db.func.avg(Score.value), 0).desc(), User.full_name.asc())
+        .limit(5)
+        .all()
+    )
+    return {
+        'active_tokens': active_tokens,
+        'top_students': [
+            {'id': row.id, 'full_name': row.full_name, 'average_score': round(row.average_score)}
+            for row in top_students
+        ],
+        'total_students': total_students,
+        'total_teachers': total_teachers,
+        'total_classes': total_classes,
+    }
+
+
+def get_admin_scores():
+    return (
+        db.session.query(Score, User, Classes)
+        .join(User, Score.user_id == User.id)
+        .outerjoin(Classes, Score.class_id == Classes.id)
+        .filter(User.level == 0)
+        .order_by(Score.created_at.desc(), Score.id.desc())
+        .all()
+    )
+
+
+def update_admin_profile(admin_id, full_name, username, password=None, password_confirm=None):
+    admin = User.query.filter_by(id=admin_id, level=2).first_or_404()
+    username = (username or '').strip()
+    full_name = (full_name or '').strip()
+    if not username or not full_name:
+        return False, 'Username dan nama lengkap wajib diisi.'
+
+    existing = User.query.filter(User.username == username, User.id != admin_id).first()
+    if existing:
+        return False, 'Username sudah digunakan.'
+
+    if password is not None:
+        if len(password) < 6:
+            return False, 'Password baru minimal 6 karakter.'
+        if password != password_confirm:
+            return False, 'Konfirmasi password baru tidak cocok.'
+        admin.set_password(password)
+
+    admin.username = username
+    admin.full_name = full_name
+    try:
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return False, 'Perubahan profil gagal disimpan.'
+    return True, 'Profil admin berhasil diperbarui.'
 
 def _generate_token():
     suffix = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(6))

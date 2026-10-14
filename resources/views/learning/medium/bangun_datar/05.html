@@ -1,0 +1,1007 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Segiempat — Edudaya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        nunito: ['Nunito', 'sans-serif'],
+                        fredoka: ['Fredoka One', 'cursive'],
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 2s ease-in-out infinite',
+                        'float': 'floatUp 8s ease-in-out infinite',
+                        'star-pop': 'starPop 0.5s cubic-bezier(0.34,1.56,0.64,1)',
+                        'soal-in': 'soalIn 0.35s ease',
+                        'feedback-in': 'feedbackIn 0.4s cubic-bezier(0.34,1.56,0.64,1)',
+                        'pop-in': 'popIn 0.5s cubic-bezier(0.34,1.56,0.64,1)',
+                        'confetti-fall': 'confettiFall linear forwards',
+                        'shake': 'wrongShake 0.4s ease',
+                        'pulse-correct': 'correctPulse 0.5s ease',
+                        'spin-slow': 'spin 10s linear infinite',
+                    },
+                    keyframes: {
+                        floatUp: {
+                            '0%,100%': {
+                                transform: 'translateY(0px) rotate(0deg)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-20px) rotate(10deg)'
+                            },
+                        },
+                        starPop: {
+                            '0%': {
+                                transform: 'scale(0)'
+                            },
+                            '60%': {
+                                transform: 'scale(1.4)'
+                            },
+                            '100%': {
+                                transform: 'scale(1)'
+                            },
+                        },
+                        soalIn: {
+                            '0%': {
+                                opacity: '0',
+                                transform: 'translateX(24px)'
+                            },
+                            '100%': {
+                                opacity: '1',
+                                transform: 'translateX(0)'
+                            },
+                        },
+                        feedbackIn: {
+                            '0%': {
+                                transform: 'scale(0.85)',
+                                opacity: '0'
+                            },
+                            '100%': {
+                                transform: 'scale(1)',
+                                opacity: '1'
+                            },
+                        },
+                        popIn: {
+                            '0%': {
+                                transform: 'scale(0.5)',
+                                opacity: '0'
+                            },
+                            '100%': {
+                                transform: 'scale(1)',
+                                opacity: '1'
+                            },
+                        },
+                        confettiFall: {
+                            '0%': {
+                                transform: 'translateY(0) rotate(0deg)',
+                                opacity: '1'
+                            },
+                            '100%': {
+                                transform: 'translateY(100vh) rotate(720deg)',
+                                opacity: '0'
+                            },
+                        },
+                        wrongShake: {
+                            '0%,100%': {
+                                transform: 'translateX(0)'
+                            },
+                            '25%': {
+                                transform: 'translateX(-8px)'
+                            },
+                            '75%': {
+                                transform: 'translateX(8px)'
+                            },
+                        },
+                        correctPulse: {
+                            '0%': {
+                                transform: 'scale(1)'
+                            },
+                            '50%': {
+                                transform: 'scale(1.02)'
+                            },
+                            '100%': {
+                                transform: 'scale(1)'
+                            },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-nunito bg-gradient-to-br from-cyan-50 via-green-50 to-yellow-50 min-h-screen flex">
+
+    <!-- Sidebar Overlay (mobile) -->
+    <div id="sidebarOverlay" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-[99]"></div>
+
+    <!-- Floating decorations -->
+    <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0"
+        style="top:18%;left:60%;animation-delay:0s">🔷</div>
+    <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0"
+        style="top:55%;left:75%;animation-delay:1.5s">🔺</div>
+    <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0"
+        style="top:78%;left:85%;animation-delay:0.8s">⬜</div>
+
+    <!-- ===== SIDEBAR ===== -->
+    {% include 'learning/partial/sidebar.html' %}
+
+
+    <!-- ===== MAIN AREA ===== -->
+    <div id="mainArea" class="ml-[280px] flex-1 flex flex-col min-h-screen transition-all duration-300">
+
+        <!-- NAVBAR -->
+        <nav
+            class="sticky top-0 z-[101] bg-white border-b-2 border-gray-200 px-5 py-3 flex items-center justify-between shadow-sm flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <span id="menuToggleBtn" onclick="toggleSidebar()"
+                    class="text-[1.8rem] cursor-pointer text-gray-700 hover:text-emerald-500 transition-colors duration-200 flex items-center">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </span>
+                <span class="font-fredoka text-lg text-gray-700">⬜ Segiempat</span>
+            </div>
+        </nav>
+
+        <!-- CONTENT SCROLL AREA -->
+        <div class="flex-1 px-6 py-6 bg-gradient-to-br from-cyan-50 via-green-50 to-yellow-50">
+            <div class="max-w-5xl mx-auto flex flex-col gap-5">
+                <div class="grid grid-cols-1 gap-5">
+
+                    <!-- Flash Message Section -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <div id="flash-messages" class="mb-4 space-y-2 transition duration-300">
+                        {% for category, message in messages %}
+                        <div
+                            class="text-white px-4 py-2 rounded-lg shadow-md animate-pulse {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-gray-500{% endif %}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+
+
+
+                    <!-- ===== MATERI CARD: PERSEGI ===== -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-sky-100 flex flex-col">
+                        <div class="bg-gradient-to-r from-sky-500 to-sky-600 px-5 py-5 text-center">
+                            <h2 class="font-fredoka text-2xl text-white"
+                                style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">
+                                ⬜ B.1. Persegi</h2>
+                        </div>
+
+                        <div class="p-6 flex flex-col gap-5 flex-1">
+
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div
+                                    class="bg-gradient-to-br from-sky-50 to-sky-100 border-2 border-sky-200 rounded-2xl p-4">
+                                    <p class="text-sm leading-relaxed text-gray-700 mb-2">
+                                        <strong class="text-sky-700">Persegi</strong> merupakan segiempat yang mempunyai
+                                        <strong>empat sisi sama panjang</strong> dan <strong>empat sudut
+                                            siku-siku</strong>.
+                                    </p>
+                                    <p class="text-sm leading-relaxed text-gray-700">
+                                        <strong>Contoh:</strong> Permukaan Wadai Lam, Papan Rambu Perahu 🪧
+                                    </p>
+                                </div>
+<div class="source-gallery rounded-2xl border border-sky-100 bg-sky-50/60 p-3">
+                                <p class="text-xs font-bold text-gray-600 mb-2">Persegi</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2"><figure class="bg-white rounded-xl border border-sky-100 p-2 shadow-sm">
+                                    <img src="/resources/views/learning/medium/bangun_datar/img/dokumen/image49.jpeg" alt="Ilustrasi persegi dari materi sumber" loading="lazy" class="w-full h-28 sm:h-36 object-contain rounded-lg">
+                                </figure>
+                                </div>
+                            </div>
+
+                                <figure class="bg-white rounded-2xl border-2 border-sky-200 p-3">
+                                    <svg viewBox="0 0 200 165" class="w-full h-auto">
+                                        <rect x="42" y="22" width="116" height="116" fill="#E0F2FE" stroke="#0284C7"
+                                            stroke-width="3" rx="4" />
+                                        <polyline points="42,52 54,52 54,40" fill="none" stroke="#0369A1"
+                                            stroke-width="2" />
+                                        <polyline points="146,40 146,52 158,52" fill="none" stroke="#0369A1"
+                                            stroke-width="2" />
+                                        <polyline points="146,126 158,126 158,138" fill="none" stroke="#0369A1"
+                                            stroke-width="2" />
+                                        <polyline points="42,138 54,138 54,126" fill="none" stroke="#0369A1"
+                                            stroke-width="2" />
+                                        <text x="100" y="14" text-anchor="middle" font-size="14" font-weight="bold"
+                                            fill="#075985">A</text>
+                                        <text x="30" y="26" text-anchor="middle" font-size="14" font-weight="bold"
+                                            fill="#075985">B</text>
+                                        <text x="172" y="26" text-anchor="middle" font-size="14" font-weight="bold"
+                                            fill="#075985">C</text>
+                                        <text x="172" y="156" text-anchor="middle" font-size="14" font-weight="bold"
+                                            fill="#075985">D</text>
+                                        <text x="100" y="86" text-anchor="middle" font-size="13" font-weight="bold"
+                                            fill="#0369A1">s = s = s = s</text>
+                                    </svg>
+                                    <figcaption class="text-center text-xs font-bold text-gray-500 mt-1">AB = BC = CD =
+                                        DA</figcaption>
+                                </figure>
+                            </div>
+
+                            <div class="bg-white rounded-2xl border-2 border-sky-200 p-4">
+                                <h3 class="font-fredoka text-lg text-sky-600 mb-3 flex items-center gap-2">🧩
+                                    Sifat-Sifatnya</h3>
+                                <ul class="text-sm text-gray-700 space-y-1.5">
+                                    <li class="flex items-start gap-2"><span class="text-sky-600 font-bold">✓</span>
+                                        <span>4 titik sudut</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-sky-600 font-bold">✓</span>
+                                        <span>4 sisi sama panjang</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-sky-600 font-bold">✓</span>
+                                        <span>4 sudut siku-siku (90°)</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-sky-600 font-bold">✓</span>
+                                        <span>4 simetri lipat</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-sky-600 font-bold">✓</span>
+                                        <span>4 simetri putar</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white rounded-2xl border-2 border-sky-300 p-4 text-center">
+                                    <p class="text-xs font-bold text-gray-500 mb-2">Rumus Keliling</p>
+                                    <p class="font-fredoka text-lg text-sky-700">K = 4 × sisi</p>
+                                </div>
+                                <div class="bg-white rounded-2xl border-2 border-sky-300 p-4 text-center">
+                                    <p class="text-xs font-bold text-gray-500 mb-2">Rumus Luas</p>
+                                    <p class="font-fredoka text-lg text-sky-700">L = sisi × sisi</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="font-fredoka text-lg text-sky-600 mb-3 flex items-center gap-2">✏️ Contoh Soal
+                                    — Keliling</h3>
+                                <div class="flex flex-col gap-4">
+
+                                    <div id="card-pg-k1"
+                                        class="bg-white rounded-2xl p-4 border-2 border-sky-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-sky-700">1.</span> Wadai Lam berbentuk persegi
+                                            memiliki panjang sisi 5 cm. Berapakah kelilingnya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-pg-k1" type="text" placeholder="Contoh: 20 cm"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('pg-k1')"
+                                                class="flex-1 rounded-xl border-2 border-sky-200 px-4 py-2.5 text-sm text-gray-700 focus:border-sky-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('pg-k1')"
+                                                class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-pg-k1" class="mt-3"></div>
+                                        <div id="sol-pg-k1"
+                                            class="hidden mt-3 bg-sky-50 border-2 border-sky-200 rounded-xl p-4">
+                                            <p class="font-bold text-sky-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">s = 5 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                K = 4 × sisi<br>
+                                                K = 4 × 5 cm<br>
+                                                K = 20 cm
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, keliling wadai lam tersebut
+                                                adalah <strong>20 cm</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                    <div id="card-pg-k2"
+                                        class="bg-white rounded-2xl p-4 border-2 border-sky-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-sky-700">2.</span> Sebuah papan
+                                            rambu-rambu perahu mempunyai keliling 20 cm. Berapakah panjang satu
+                                            sisinya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-pg-k2" type="text" placeholder="Contoh: 5 cm"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('pg-k2')"
+                                                class="flex-1 rounded-xl border-2 border-sky-200 px-4 py-2.5 text-sm text-gray-700 focus:border-sky-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('pg-k2')"
+                                                class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-pg-k2" class="mt-3"></div>
+                                        <div id="sol-pg-k2"
+                                            class="hidden mt-3 bg-sky-50 border-2 border-sky-200 rounded-xl p-4">
+                                            <p class="font-bold text-sky-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">K = 20 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                K = 4 × sisi<br>
+                                                20 = 4 × sisi<br>
+                                                sisi = 20 ÷ 4<br>
+                                                sisi = 5 cm
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, panjang satu sisinya adalah
+                                                <strong>5 cm</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="font-fredoka text-lg text-sky-600 mb-3 flex items-center gap-2">🟦 Contoh Soal
+                                    — Luas</h3>
+                                <div class="flex flex-col gap-4">
+
+                                    <div id="card-pg-l1"
+                                        class="bg-white rounded-2xl p-4 border-2 border-sky-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-sky-700">1.</span> Wadai Lam berbentuk persegi
+                                                memiliki panjang sisi 5 cm. Berapakah luas permukaannya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-pg-l1" type="text" placeholder="Contoh: 25 cm²"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('pg-l1')"
+                                                class="flex-1 rounded-xl border-2 border-sky-200 px-4 py-2.5 text-sm text-gray-700 focus:border-sky-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('pg-l1')"
+                                                class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-pg-l1" class="mt-3"></div>
+                                        <div id="sol-pg-l1"
+                                            class="hidden mt-3 bg-sky-50 border-2 border-sky-200 rounded-xl p-4">
+                                            <p class="font-bold text-sky-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">s = 5 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                L = sisi × sisi<br>
+                                                L = 5 cm × 5 cm<br>
+                                                L = 25 cm²
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, luas wadai lam adalah
+                                                <strong>25 cm²</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                    <div id="card-pg-l2"
+                                        class="bg-white rounded-2xl p-4 border-2 border-sky-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-sky-700">2.</span> Sebuah papan
+                                            rambu-rambu perahu mempunyai luas 9 m². Berapakah panjang sisinya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-pg-l2" type="text" placeholder="Contoh: 3 m"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('pg-l2')"
+                                                class="flex-1 rounded-xl border-2 border-sky-200 px-4 py-2.5 text-sm text-gray-700 focus:border-sky-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('pg-l2')"
+                                                class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-pg-l2" class="mt-3"></div>
+                                        <div id="sol-pg-l2"
+                                            class="hidden mt-3 bg-sky-50 border-2 border-sky-200 rounded-xl p-4">
+                                            <p class="font-bold text-sky-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">L = 9 m²</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                L = sisi × sisi<br>
+                                                9 = sisi × sisi<br>
+                                                sisi = √9<br>
+                                                sisi = 3 m
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, panjang sisi papan
+                                                rambu-rambu perahu adalah <strong>3 m</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+<!-- ===== MATERI CARD: PERSEGI PANJANG ===== -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-teal-100 flex flex-col">
+                        <div class="bg-gradient-to-r from-teal-500 to-teal-600 px-5 py-5 text-center">
+                            <h2 class="font-fredoka text-2xl text-white"
+                                style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">
+                                ⬜ B.2. Persegi Panjang</h2>
+                        </div>
+
+                        <div class="p-6 flex flex-col gap-5 flex-1">
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div
+                                    class="bg-gradient-to-br from-teal-50 to-teal-100 border-2 border-teal-200 rounded-2xl p-4">
+                                    <p class="text-sm leading-relaxed text-gray-700 mb-2">
+                                        <strong class="text-teal-700">Persegi panjang</strong> merupakan segiempat yang
+                                        mempunyai <strong>dua pasang sisi berhadapan sama panjang</strong> dan
+                                        <strong>empat sudut siku-siku</strong>.
+                                    </p>
+                                    <p class="text-sm leading-relaxed text-gray-700">
+                                        <strong>Contoh:</strong> Tas Purun, Jendela Jukung, Kain Sasirangan 🧵
+                                    </p>
+                                </div>
+<div class="source-gallery rounded-2xl border border-sky-100 bg-sky-50/60 p-3">
+                                <p class="text-xs font-bold text-gray-600 mb-2">Persegi panjang</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2"><figure class="bg-white rounded-xl border border-sky-100 p-2 shadow-sm">
+                                    <img src="/resources/views/learning/medium/bangun_datar/img/dokumen/image56.jpeg" alt="Ilustrasi persegi panjang dari materi sumber" loading="lazy" class="w-full h-28 sm:h-36 object-contain rounded-lg">
+                                </figure>
+                                </div>
+                            </div>
+
+                                <figure class="bg-white rounded-2xl border-2 border-teal-200 p-3">
+                                    <svg viewBox="0 0 200 165" class="w-full h-auto">
+                                        <rect x="26" y="40" width="148" height="84" fill="#CCFBF1" stroke="#0D9488"
+                                            stroke-width="3" rx="4" />
+                                        <polyline points="26,62 38,62 38,50" fill="none" stroke="#0F766E"
+                                            stroke-width="2" />
+                                        <polyline points="162,50 162,62 174,62" fill="none" stroke="#0F766E"
+                                            stroke-width="2" />
+                                        <polyline points="162,112 174,112 174,124" fill="none" stroke="#0F766E"
+                                            stroke-width="2" />
+                                        <polyline points="26,124 38,124 38,112" fill="none" stroke="#0F766E"
+                                            stroke-width="2" />
+                                        <text x="100" y="32" text-anchor="middle" font-size="13" font-weight="bold"
+                                            fill="#115E59">p</text>
+                                        <text x="100" y="104" text-anchor="middle" font-size="13" font-weight="bold"
+                                            fill="#115E59">p</text>
+                                        <text x="14" y="88" text-anchor="middle" font-size="13" font-weight="bold"
+                                            fill="#115E59">l</text>
+                                        <text x="186" y="88" text-anchor="middle" font-size="13" font-weight="bold"
+                                            fill="#115E59">l</text>
+                                    </svg>
+                                    <figcaption class="text-center text-xs font-bold text-gray-500 mt-1">AB = CD, BC =
+                                        DA</figcaption>
+                                </figure>
+                            </div>
+
+                            <div class="bg-white rounded-2xl border-2 border-teal-200 p-4">
+                                <h3 class="font-fredoka text-lg text-teal-600 mb-3 flex items-center gap-2">🧩
+                                    Sifat-Sifatnya</h3>
+                                <ul class="text-sm text-gray-700 space-y-1.5">
+                                    <li class="flex items-start gap-2"><span class="text-teal-600 font-bold">✓</span>
+                                        <span>4 titik sudut</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-teal-600 font-bold">✓</span>
+                                        <span>4 sisi (sisi berhadapan sama panjang: AB = CD dan BC = DA)</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-teal-600 font-bold">✓</span>
+                                        <span>4 sudut siku-siku (90°)</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-teal-600 font-bold">✓</span>
+                                        <span>2 simetri lipat</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-teal-600 font-bold">✓</span>
+                                        <span>2 simetri putar</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white rounded-2xl border-2 border-teal-300 p-4 text-center">
+                                    <p class="text-xs font-bold text-gray-500 mb-2">Rumus Keliling</p>
+                                    <p class="font-fredoka text-lg text-teal-700">K = 2 × (panjang + lebar)</p>
+                                </div>
+                                <div class="bg-white rounded-2xl border-2 border-teal-300 p-4 text-center">
+                                    <p class="text-xs font-bold text-gray-500 mb-2">Rumus Luas</p>
+                                    <p class="font-fredoka text-lg text-teal-700">L = panjang × lebar</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="font-fredoka text-lg text-teal-600 mb-3 flex items-center gap-2">✏️ Contoh Soal
+                                    — Keliling</h3>
+                                <div class="flex flex-col gap-4">
+
+                                    <div id="card-pp-k1"
+                                        class="bg-white rounded-2xl p-4 border-2 border-teal-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-teal-700">1.</span> Jendela jukung berbentuk persegi
+                                            panjang dengan panjang 8 cm dan lebar 4 cm. Berapakah kelilingnya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-pp-k1" type="text" placeholder="Contoh: 24 cm"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('pp-k1')"
+                                                class="flex-1 rounded-xl border-2 border-teal-200 px-4 py-2.5 text-sm text-gray-700 focus:border-teal-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('pp-k1')"
+                                                class="bg-teal-500 hover:bg-teal-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-pp-k1" class="mt-3"></div>
+                                        <div id="sol-pp-k1"
+                                            class="hidden mt-3 bg-teal-50 border-2 border-teal-200 rounded-xl p-4">
+                                            <p class="font-bold text-teal-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">p = 8 cm, l = 4 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                K = 2 × (p + l)<br>
+                                                K = 2 × (8 cm + 4 cm)<br>
+                                                K = 2 × 12 cm<br>
+                                                K = 24 cm
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, keliling jendela jukung
+                                                adalah <strong>24 cm</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                    <div id="card-pp-k2"
+                                        class="bg-white rounded-2xl p-4 border-2 border-teal-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-teal-700">2.</span> Tas purun mempunyai panjang
+                                                8 cm dan keliling 24 cm. Berapakah lebarnya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-pp-k2" type="text" placeholder="Contoh: 4 cm"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('pp-k2')"
+                                                class="flex-1 rounded-xl border-2 border-teal-200 px-4 py-2.5 text-sm text-gray-700 focus:border-teal-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('pp-k2')"
+                                                class="bg-teal-500 hover:bg-teal-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-pp-k2" class="mt-3"></div>
+                                        <div id="sol-pp-k2"
+                                            class="hidden mt-3 bg-teal-50 border-2 border-teal-200 rounded-xl p-4">
+                                            <p class="font-bold text-teal-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">K = 24 cm, p = 8 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                K = 2 × (p + l)<br>
+                                                24 = 2 × (8 + l)<br>
+                                                12 = 8 + l<br>
+                                                l = 12 − 8<br>
+                                                l = 4 cm
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, lebar tas purun adalah
+                                                <strong>4 cm</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="font-fredoka text-lg text-teal-600 mb-3 flex items-center gap-2">🟦 Contoh Soal
+                                    — Luas</h3>
+                                <div class="flex flex-col gap-4">
+
+                                    <div id="card-pp-l1"
+                                        class="bg-white rounded-2xl p-4 border-2 border-teal-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-teal-700">1.</span> Pengrajin mewarnai kain sasirangan
+                                                berbentuk persegi panjang dengan panjang 8 m dan lebar 4 m. Berapakah
+                                                luasnya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-pp-l1" type="text" placeholder="Contoh: 32 m²"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('pp-l1')"
+                                                class="flex-1 rounded-xl border-2 border-teal-200 px-4 py-2.5 text-sm text-gray-700 focus:border-teal-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('pp-l1')"
+                                                class="bg-teal-500 hover:bg-teal-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-pp-l1" class="mt-3"></div>
+                                        <div id="sol-pp-l1"
+                                            class="hidden mt-3 bg-teal-50 border-2 border-teal-200 rounded-xl p-4">
+                                            <p class="font-bold text-teal-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">p = 8 m, l = 4 m</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                L = p × l<br>
+                                                L = 8 m × 4 m<br>
+                                                L = 32 m²
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, luas kain sasirangan yang
+                                                diwarnai adalah <strong>32 m²</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                    <div id="card-pp-l2"
+                                        class="bg-white rounded-2xl p-4 border-2 border-teal-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-teal-700">2.</span> Tas purun mempunyai luas 32 cm²
+                                                dan lebar 4 cm. Berapakah panjangnya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-pp-l2" type="text" placeholder="Contoh: 8 cm"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('pp-l2')"
+                                                class="flex-1 rounded-xl border-2 border-teal-200 px-4 py-2.5 text-sm text-gray-700 focus:border-teal-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('pp-l2')"
+                                                class="bg-teal-500 hover:bg-teal-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-pp-l2" class="mt-3"></div>
+                                        <div id="sol-pp-l2"
+                                            class="hidden mt-3 bg-teal-50 border-2 border-teal-200 rounded-xl p-4">
+                                            <p class="font-bold text-teal-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">L = 32 cm², l = 4 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                L = p × l<br>
+                                                32 = p × 4<br>
+                                                p = 32 ÷ 4<br>
+                                                p = 8 cm
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, panjang tas purun adalah
+                                                <strong>8 cm</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+<!-- ===== MATERI CARD: JAJAR GENJANG ===== -->
+                    <div
+                        class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-amber-100 flex flex-col">
+                        <div class="bg-gradient-to-r from-amber-500 to-amber-600 px-5 py-5 text-center">
+                            <h2 class="font-fredoka text-2xl text-white"
+                                style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">
+                                ⬜ B.3. Jajar Genjang</h2>
+                        </div>
+
+                        <div class="p-6 flex flex-col gap-5 flex-1">
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div
+                                    class="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-200 rounded-2xl p-4">
+                                    <p class="text-sm leading-relaxed text-gray-700 mb-2">
+                                        <strong class="text-amber-700">Jajar genjang</strong> merupakan segiempat yang
+                                        mempunyai <strong>dua pasang sisi berhadapan sama panjang dan sejajar</strong>.
+                                    </p>
+                                    <p class="text-sm leading-relaxed text-gray-700">
+                                        <strong>Contoh:</strong> Wadai Gagatas, Motif Kain Sasirangan 🧵
+                                    </p>
+                                </div>
+<div class="source-gallery rounded-2xl border border-sky-100 bg-sky-50/60 p-3">
+                                <p class="text-xs font-bold text-gray-600 mb-2">Jajar genjang</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2"><figure class="bg-white rounded-xl border border-sky-100 p-2 shadow-sm">
+                                    <img src="/resources/views/learning/medium/bangun_datar/img/dokumen/image63.jpeg" alt="Ilustrasi jajar genjang dari materi sumber" loading="lazy" class="w-full h-28 sm:h-36 object-contain rounded-lg">
+                                </figure>
+                                </div>
+                            </div>
+
+                                <figure class="bg-white rounded-2xl border-2 border-amber-200 p-3">
+                                    <svg viewBox="0 0 200 165" class="w-full h-auto">
+                                        <polygon points="62,32 170,32 138,132 30,132" fill="#FEF3C7" stroke="#D97706"
+                                            stroke-width="3" stroke-linejoin="round" />
+                                        <text x="112" y="24" text-anchor="middle" font-size="14" font-weight="bold"
+                                            fill="#92400E">s₂</text>
+                                        <text x="112" y="152" text-anchor="middle" font-size="14" font-weight="bold"
+                                            fill="#92400E">s₂</text>
+                                        <text x="22" y="88" text-anchor="middle" font-size="14" font-weight="bold"
+                                            fill="#92400E">s₁</text>
+                                        <text x="180" y="88" text-anchor="middle" font-size="14" font-weight="bold"
+                                            fill="#92400E">s₁</text>
+                                        <text x="100" y="86" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="#B45309">sisi sejajar</text>
+                                    </svg>
+                                    <figcaption class="text-center text-xs font-bold text-gray-500 mt-1">AB ∥ CD, BC ∥
+                                        DA</figcaption>
+                                </figure>
+                            </div>
+
+                            <div class="bg-white rounded-2xl border-2 border-amber-200 p-4">
+                                <h3 class="font-fredoka text-lg text-amber-600 mb-3 flex items-center gap-2">🧩
+                                    Sifat-Sifatnya</h3>
+                                <ul class="text-sm text-gray-700 space-y-1.5">
+                                    <li class="flex items-start gap-2"><span class="text-amber-600 font-bold">✓</span>
+                                        <span>4 titik sudut</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-amber-600 font-bold">✓</span>
+                                        <span>4 sisi: AB = CD, BC = DA serta AB ∥ CD dan BC ∥ DA</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-amber-600 font-bold">✓</span>
+                                        <span>4 sudut (sudut berhadopan sama besar: ∠A = ∠C dan ∠B = ∠D)</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-amber-600 font-bold">✓</span>
+                                        <span>Tidak ada simetri lipat</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-amber-600 font-bold">✓</span>
+                                        <span>2 simetri putar</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white rounded-2xl border-2 border-amber-300 p-4 text-center">
+                                    <p class="text-xs font-bold text-gray-500 mb-2">Rumus Keliling</p>
+                                    <p class="font-fredoka text-lg text-amber-700">K = 2 × (s₁ + s₂)</p>
+                                </div>
+                                <div class="bg-white rounded-2xl border-2 border-amber-300 p-4 text-center">
+                                    <p class="text-xs font-bold text-gray-500 mb-2">Rumus Luas</p>
+                                    <p class="font-fredoka text-lg text-amber-700">L = alas × tinggi</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="font-fredoka text-lg text-amber-600 mb-3 flex items-center gap-2">✏️ Contoh Soal
+                                    — Keliling</h3>
+                                <div class="flex flex-col gap-4">
+
+                                    <div id="card-jg-k1"
+                                        class="bg-white rounded-2xl p-4 border-2 border-amber-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-amber-700">1.</span> Motif sasirangan jajar genjang
+                                            memiliki dua sisi, yaitu 3 cm dan 2 cm. Berapakah kelilingnya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-jg-k1" type="text" placeholder="Contoh: 10 cm"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('jg-k1')"
+                                                class="flex-1 rounded-xl border-2 border-amber-200 px-4 py-2.5 text-sm text-gray-700 focus:border-amber-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('jg-k1')"
+                                                class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-jg-k1" class="mt-3"></div>
+                                        <div id="sol-jg-k1"
+                                            class="hidden mt-3 bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
+                                            <p class="font-bold text-amber-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">s₁ = 3 cm, s₂ = 2 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                K = 2 × (s₁ + s₂)<br>
+                                                K = 2 × (3 cm + 2 cm)<br>
+                                                K = 2 × 5 cm<br>
+                                                K = 10 cm
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, keliling motif sasirangan
+                                                tersebut adalah <strong>10 cm</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                    <div id="card-jg-k2"
+                                        class="bg-white rounded-2xl p-4 border-2 border-amber-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-amber-700">2.</span> Wadai gagatas berbentuk jajar
+                                                genjang dengan keliling 26 cm. Jika salah satu sisinya 8 cm, berapakah
+                                                panjang sisi lainnya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-jg-k2" type="text" placeholder="Contoh: 5 cm"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('jg-k2')"
+                                                class="flex-1 rounded-xl border-2 border-amber-200 px-4 py-2.5 text-sm text-gray-700 focus:border-amber-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('jg-k2')"
+                                                class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-jg-k2" class="mt-3"></div>
+                                        <div id="sol-jg-k2"
+                                            class="hidden mt-3 bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
+                                            <p class="font-bold text-amber-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">K = 26 cm, s₁ = 8 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                K = 2 × (s₁ + s₂)<br>
+                                                26 = 2 × (8 + s₂)<br>
+                                                13 = 8 + s₂<br>
+                                                s₂ = 13 − 8<br>
+                                                s₂ = 5 cm
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, panjang sisi lainnya (BC) adalah
+                                                <strong>5 cm</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="font-fredoka text-lg text-amber-600 mb-3 flex items-center gap-2">🟦 Contoh Soal
+                                    — Luas</h3>
+                                <div class="flex flex-col gap-4">
+
+                                    <div id="card-jg-l1"
+                                        class="bg-white rounded-2xl p-4 border-2 border-amber-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-amber-700">1.</span> Wadai gagatas mempunyai alas
+                                                8 cm dan tinggi 4 cm. Berapakah luas permukaannya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-jg-l1" type="text" placeholder="Contoh: 32 cm²"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('jg-l1')"
+                                                class="flex-1 rounded-xl border-2 border-amber-200 px-4 py-2.5 text-sm text-gray-700 focus:border-amber-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('jg-l1')"
+                                                class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-jg-l1" class="mt-3"></div>
+                                        <div id="sol-jg-l1"
+                                            class="hidden mt-3 bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
+                                            <p class="font-bold text-amber-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">alas = 8 cm, tinggi = 4 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                L = alas × tinggi<br>
+                                                L = 8 cm × 4 cm<br>
+                                                L = 32 cm²
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, luas wadai gagatas tersebut
+                                                adalah <strong>32 cm²</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                    <div id="card-jg-l2"
+                                        class="bg-white rounded-2xl p-4 border-2 border-amber-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-amber-700">2.</span> Motif sasirangan berbentuk jajar
+                                                genjang memiliki luas 24 cm² dan tinggi 4 cm. Berapakah panjang
+                                                alasnya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-jg-l2" type="text" placeholder="Contoh: 6 cm"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('jg-l2')"
+                                                class="flex-1 rounded-xl border-2 border-amber-200 px-4 py-2.5 text-sm text-gray-700 focus:border-amber-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('jg-l2')"
+                                                class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-jg-l2" class="mt-3"></div>
+                                        <div id="sol-jg-l2"
+                                            class="hidden mt-3 bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
+                                            <p class="font-bold text-amber-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">L = 24 cm², tinggi = 4 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                L = alas × tinggi<br>
+                                                24 = alas × 4<br>
+                                                alas = 24 ÷ 4<br>
+                                                alas = 6 cm
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, panjang alas motif sasirangan
+                                                adalah <strong>6 cm</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                <!-- FOOTER NAV -->
+                <div class="flex justify-between items-center flex-wrap gap-3 pb-4">
+                    <a href="/learning/bangun_datar/04/{{ user_id }}/{{ klasifikasi }}"
+                        class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">← Halaman Sebelumnya</a>
+                    <p class="text-gray-400 text-xs font-semibold">© 2026 Edudaya 🔺</p>
+                    <a href="/learning/bangun_datar/06/{{ user_id }}/{{ klasifikasi }}"
+                        class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">Lanjut ke Segiempat Berikutnya ➡️</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== KUIS CONTOH SOAL =====
+        const JAWABAN_SOAL = { 'pg-k1': 20, 'pg-k2': 5, 'pg-l1': 25, 'pg-l2': 3, 'pp-k1': 24, 'pp-k2': 4, 'pp-l1': 32, 'pp-l2': 8, 'jg-k1': 10, 'jg-k2': 5, 'jg-l1': 32, 'jg-l2': 6 };
+
+        function periksaSoal(id) {
+            const input = document.getElementById('ans-' + id);
+            const fb = document.getElementById('fb-' + id);
+            const sol = document.getElementById('sol-' + id);
+            const card = document.getElementById('card-' + id);
+            const m = input.value.replace(/,/g, '.').match(/-?\d+(?:\.\d+)?/);
+
+            if (!m) {
+                fb.innerHTML = '<div class="bg-yellow-100 border-2 border-yellow-400 rounded-xl p-3 text-sm font-bold text-yellow-700 animate-feedback-in">✏️ Tulis jawabanmu dulu ya!</div>';
+                return;
+            }
+
+            if (Math.abs(parseFloat(m[0]) - JAWABAN_SOAL[id]) <= 0.1) {
+                fb.innerHTML = '<div class="bg-green-100 border-2 border-green-400 rounded-xl p-3 text-sm font-bold text-green-700 animate-pop-in">🎉 Benar! Jawabanmu tepat. Kerja bagus!</div>';
+                sol.classList.add('hidden');
+                card.classList.add('pulse-correct');
+                setTimeout(() => card.classList.remove('pulse-correct'), 600);
+            } else {
+                fb.innerHTML = '<div class="bg-red-100 border-2 border-red-400 rounded-xl p-3 text-sm font-bold text-red-600 animate-feedback-in">😅 Belum tepat. Perhatikan cara mengerjakan yang benar di bawah ini ya!</div>';
+                sol.classList.remove('hidden');
+                card.classList.add('shake');
+                setTimeout(() => card.classList.remove('shake'), 500);
+            }
+        }
+
+        // ===== SIDEBAR =====
+        let sidebarOpen = true;
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainArea = document.getElementById('mainArea');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isMobile = window.innerWidth <= 768;
+
+            if (isMobile) {
+                const isHidden = sidebar.classList.contains('-translate-x-full');
+                if (isHidden) {
+                    sidebar.classList.remove('-translate-x-full');
+                    overlay.classList.remove('hidden');
+                    overlay.classList.add('flex');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex');
+                }
+            } else {
+                sidebarOpen = !sidebarOpen;
+                if (sidebarOpen) {
+                    sidebar.classList.remove('-translate-x-full');
+                    mainArea.classList.remove('ml-0');
+                    mainArea.classList.add('ml-[280px]');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    mainArea.classList.remove('ml-[280px]');
+                    mainArea.classList.add('ml-0');
+                }
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+        }
+
+        function toggleSidebarMenu(header) {
+            const icon = header.querySelector('ion-icon');
+            const list = header.nextElementSibling;
+            const isOpen = !list.classList.contains('hidden');
+            list.classList.toggle('hidden', isOpen);
+            list.classList.toggle('flex', !isOpen);
+            icon.style.transform = isOpen ? '' : 'rotate(180deg)';
+        }
+
+        function initSidebar() {
+            var currentPath = window.location.pathname;
+            var sidebarLinks = document.querySelectorAll('#sidebar a');
+            sidebarLinks.forEach(function (link) {
+                if (link.getAttribute('href') && currentPath.startsWith(link.getAttribute('href').split('/')
+                        .slice(0, 5).join('/'))) {
+                    var ul = link.closest('ul');
+                    if (ul && ul.classList.contains('hidden')) {
+                        var header = ul.previousElementSibling;
+                        if (header && header.querySelector('ion-icon')) {
+                            ul.classList.remove('hidden');
+                            ul.classList.add('flex');
+                            header.querySelector('ion-icon').style.transform = 'rotate(180deg)';
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+                document.getElementById('mainArea').classList.remove('ml-[280px]');
+                document.getElementById('mainArea').classList.add('ml-0');
+            }
+            initSidebar();
+        });
+    </script>
+</body>
+
+</html>

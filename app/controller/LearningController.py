@@ -1,51 +1,30 @@
-import json
 from app import db
-from app.model import User, ActivityLog, Score, Classes
+from app.model import ActivityLog, Score, Classes
 from flask_login import current_user
-from datetime import datetime
+from datetime import datetime, timezone
 from app.controller.EvaluationController import QUESTIONS_EVALUATION
-from flask import jsonify, request, render_template, redirect, url_for, flash, session
+from flask import abort, jsonify, render_template, redirect, url_for, flash, session
 
 # ---------------------------------------------------------------------------
-# BAB CONFIGURATION REGISTRY
-# ---------------------------------------------------------------------------
-
+# Learning routes retained by the active curriculum.
 BAB_CONFIG = {
-    "bab1": {
-        "label": "Bab 1",
-        "flow": [
-            {"activity_key": "bab1_chapter1_activity", "route": "learning_bab1_chapter1"},
-            {"activity_key": "bab1_chapter2_activity", "route": "learning_bab1_chapter2"},
-            {"activity_key": "bab1_summary",           "route": "learning_bab1_summary"},
-            {"activity_key": "bab1_quiz",              "route": "learning_bab1_quiz"},
-        ],
-        "dir": "bab1",
+    "bangun_datar": {
+        "label": "Bangun Datar",
+        "quiz_route": "quiz_bangun_datar",
         "prerequisite_quiz": None,
-    },
-    "bab2": {
-        "label": "Bab 2",
-        "flow": [
-            {"activity_key": "bab2_chapter1_activity", "route": "learning_bab2_chapter1"},
-            {"activity_key": "bab2_chapter2_activity", "route": "learning_bab2_chapter2"},
-            {"activity_key": "bab2_summary",           "route": "learning_bab2_summary"},
-            {"activity_key": "bab2_quiz",              "route": "learning_bab2_quiz"},
-        ],
-        "dir": "bab2",
-        "prerequisite_quiz": "Bab 1",
     },
     "evaluation": {
         "label": "Evaluation",
-        "flow": [
-            {"activity_key": "evaluation", "route": "learning_evaluation"},
-        ],
+        "flow": [{"activity_key": "evaluation", "route": "learning_evaluation"}],
         "dir": "evaluation",
-        "prerequisite_quiz": "Bab 2",
+        "prerequisite_quiz": "Bangun Datar",
     },
 }
 
 FOLDERS = ["low", "medium", "high"]
 QUIZ_COOLDOWN_SECONDS = 180
 QUIZ_DURATION_SECONDS = 900
+EVALUATION_DURATION_SECONDS = 20 * 60
 DEFAULT_KKM = 75
 
 # ---------------------------------------------------------------------------
@@ -83,6 +62,7 @@ def _get_kkm(user) -> int:
     user_class = Classes.query.get(user.class_id)
     return user_class.kkm if user_class else DEFAULT_KKM
 
+
 def _guard_prerequisite_quiz(user_id: int, klasifikasi: int, bab_key: str):
     prereq_label = BAB_CONFIG[bab_key].get("prerequisite_quiz")
     if not prereq_label or current_user.level != 0:
@@ -103,9 +83,10 @@ def _guard_prerequisite_quiz(user_id: int, klasifikasi: int, bab_key: str):
             f"sebelum mengakses materi ini. Nilai tertinggimu: {achieved}.",
             "warning",
         )
+        prereq_config = next((v for v in BAB_CONFIG.values() if v["label"] == prereq_label), None)
         prereq_key = next(k for k, v in BAB_CONFIG.items() if v["label"] == prereq_label)
         return redirect(url_for(
-            f"learning_{prereq_key}_quiz",
+            prereq_config.get("quiz_route", f"learning_{prereq_key}_quiz"),
             user_id=user_id,
             klasifikasi=klasifikasi,
         ))
@@ -128,164 +109,7 @@ def _compute_cooldown(last_score) -> int:
     return int(QUIZ_COOLDOWN_SECONDS - delta)
 
 # ---------------------------------------------------------------------------
-# GENERIC ACCESS FUNCTIONS
-# ---------------------------------------------------------------------------
-
-def can_access_chapter(user_id: int, klasifikasi: int, bab_key: str, chapter_num: int):
-    guard = _guard(user_id)
-    if guard:
-        return guard
-
-    cfg    = BAB_CONFIG[bab_key]
-    folder = _folder(klasifikasi)
-    tmpl   = f"learning/{folder}/{cfg['dir']}/{chapter_num:02d}.html"
-
-    block = _guard_prerequisite_quiz(user_id, klasifikasi, bab_key)
-    if block:
-        return block
-
-    if current_user.level == 0 and chapter_num > 1:
-        prev_key   = cfg["flow"][chapter_num - 2]["activity_key"]
-        prev_route = cfg["flow"][chapter_num - 2]["route"]
-        if not has_activity(user_id, prev_key):
-            return redirect(url_for(prev_route, user_id=user_id, klasifikasi=klasifikasi))
-
-    return render_template(tmpl, user_id=user_id)
-
-
-def can_access_summary(user_id: int, klasifikasi: int, bab_key: str):
-    guard = _guard(user_id)
-    if guard:
-        return guard
-
-    cfg    = BAB_CONFIG[bab_key]
-    folder = _folder(klasifikasi)
-
-    block = _guard_prerequisite_quiz(user_id, klasifikasi, bab_key)
-    if block:
-        return block
-
-    if current_user.level == 0:
-        block = get_first_incomplete_route(user_id, klasifikasi, cfg["flow"][:-2])
-        if block:
-            return block
-        _log_activity(user_id, f"{bab_key}_summary")
-
-    return render_template(f"learning/{folder}/{cfg['dir']}/summary.html", user_id=user_id)
-
-
-def can_access_quiz(user_id: int, klasifikasi: int, bab_key: str):
-    guard = _guard(user_id)
-    if guard:
-        return guard
-
-    cfg    = BAB_CONFIG[bab_key]
-    folder = _folder(klasifikasi)
-
-    block = _guard_prerequisite_quiz(user_id, klasifikasi, bab_key)
-    if block:
-        return block
-
-    if current_user.level == 0:
-        block = get_first_incomplete_route(user_id, klasifikasi, cfg["flow"][:-1])
-        if block:
-            return block
-
-        _log_activity(user_id, f"{bab_key}_quiz")
-
-        quiz_history = Score.query.filter_by(
-            user_id=user_id,
-            score_type="quiz",
-            chapter=cfg["label"],
-        ).order_by(Score.created_at.desc()).all()
-
-        return render_template(
-            f"learning/{folder}/{cfg['dir']}/quiz.html",
-            user_id=user_id,
-            quiz_history=quiz_history,
-            user_kkm=_get_kkm(current_user),
-        )
-
-    return render_template(f"learning/{folder}/{cfg['dir']}/quiz.html", user_id=user_id)
-
-def can_access_quiz_start(user_id: int, klasifikasi: int, bab_key: str):
-    guard = _guard(user_id)
-    if guard:
-        return guard
-
-    cfg        = BAB_CONFIG[bab_key]
-    folder     = _folder(klasifikasi)
-    quiz_route = f"learning_{bab_key}_quiz"
-
-    block = _guard_prerequisite_quiz(user_id, klasifikasi, bab_key)
-    if block:
-        return block
-
-    # Ambil KKM (Gunakan helper _get_kkm milikmu, default ke 70 jika tidak ketemu)
-    kkm = _get_kkm(current_user) if current_user.is_authenticated else 70
-
-    # ==================== JIKA USER ADALAH SISWA (LEVEL 0) ====================
-    if current_user.level == 0:
-        block = get_first_incomplete_route(user_id, klasifikasi, cfg["flow"][:-1])
-        if block:
-            return block
-
-        if not has_activity(user_id, f"{bab_key}_quiz"):
-            return redirect(url_for(quiz_route, user_id=user_id, klasifikasi=klasifikasi))
-
-        last_score = _get_last_score(user_id, "quiz", cfg["label"])
-
-        # Pengecekan apakah siswa sudah lulus KKM sebelumnya
-        if last_score:
-            if last_score.value >= kkm:
-                flash(
-                    f"Kamu sudah mencapai nilai KKM ({kkm}). "
-                    f"Tidak perlu mengulang kuis ini lagi! 🎉",
-                    "success",
-                )
-                return redirect(url_for(quiz_route, user_id=user_id, klasifikasi=klasifikasi))
-
-            # Pengecekan masa tunggu (cooldown) siswa
-            sisa_cooldown = _compute_cooldown(last_score)
-            if sisa_cooldown > 0:
-                flash(
-                    f"Kamu baru saja mengerjakan kuis. "
-                    f"Tunggu {sisa_cooldown // 60} menit {sisa_cooldown % 60} detik lagi.",
-                    "warning",
-                )
-                return redirect(url_for(quiz_route, user_id=user_id, klasifikasi=klasifikasi))
-
-        # Atur waktu mulai kuis di session jika belum ada
-        if "quiz_start_time" not in session:
-            session["quiz_start_time"] = datetime.utcnow().isoformat()
-
-        # Hitung sisa detik kuis untuk siswa
-        sisa_detik = QUIZ_DURATION_SECONDS - int(
-            (datetime.utcnow() - datetime.fromisoformat(session["quiz_start_time"])).total_seconds()
-        )
-        if sisa_detik <= 0:
-            session.pop("quiz_start_time", None)
-            flash("Waktu pengerjaan kuis telah habis.", "warning")
-            return redirect(url_for(quiz_route, user_id=user_id, klasifikasi=klasifikasi))
-
-        # Render template dengan data lengkap untuk Siswa
-        return render_template(
-            f"learning/{folder}/{cfg['dir']}/quiz_start.html",
-            user_id=user_id,
-            sisa_detik=sisa_detik,
-            user_kkm=kkm,
-            user_level=0  # Penanda di JS bahwa ini Siswa
-        )
-
-    # ==================== JIKA USER ADALAH GURU (LEVEL != 0) ====================
-    # Guru atau admin melewati semua validasi di atas (Bypass mode preview)
-    return render_template(
-        f"learning/{folder}/{cfg['dir']}/quiz_start.html", 
-        user_id=user_id,
-        sisa_detik=15 * 60,                # Berikan waktu default 15 menit untuk simulasi
-        user_kkm=kkm,                      # Berikan nilai KKM asli kelas tersebut
-        user_level=current_user.level      # Mengirim level asli guru (misal: 1 atau 2)
-    )
+# Active assessment access functions
 
 def can_access_evaluation(user_id: int, klasifikasi: int):
     guard = _guard(user_id)
@@ -373,14 +197,15 @@ def can_access_evaluation_start(user_id: int, klasifikasi: int, bab_key: str):
                 )
                 return redirect(url_for(quiz_route, user_id=user_id, klasifikasi=klasifikasi))
 
-        if "quiz_start_time" not in session:
-            session["quiz_start_time"] = datetime.utcnow().isoformat()
+        session_key = f"quiz_start_time_{bab_key}"
+        if session_key not in session:
+            session[session_key] = datetime.utcnow().isoformat()
 
-        sisa_detik = QUIZ_DURATION_SECONDS - int(
-            (datetime.utcnow() - datetime.fromisoformat(session["quiz_start_time"])).total_seconds()
+        sisa_detik = EVALUATION_DURATION_SECONDS - int(
+            (datetime.utcnow() - datetime.fromisoformat(session[session_key])).total_seconds()
         )
         if sisa_detik <= 0:
-            session.pop("quiz_start_time", None)
+            session.pop(session_key, None)
             flash("Waktu pengerjaan quiz telah habis.", "warning")
             return redirect(url_for(quiz_route, user_id=user_id, klasifikasi=klasifikasi))
 
@@ -395,38 +220,6 @@ def can_access_evaluation_start(user_id: int, klasifikasi: int, bab_key: str):
 # ---------------------------------------------------------------------------
 # PUBLIC API
 # ---------------------------------------------------------------------------
-
-# BAB 1
-def can_access_bab1_chapter1(user_id, klasifikasi):
-    return can_access_chapter(user_id, klasifikasi, "bab1", 1)
-
-def can_access_bab1_chapter2(user_id, klasifikasi):
-    return can_access_chapter(user_id, klasifikasi, "bab1", 2)
-
-def can_access_bab1_summary(user_id, klasifikasi):
-    return can_access_summary(user_id, klasifikasi, "bab1")
-
-def can_access_bab1_quiz(user_id, klasifikasi):
-    return can_access_quiz(user_id, klasifikasi, "bab1")
-
-def can_access_bab1_quiz_start(user_id, klasifikasi):
-    return can_access_quiz_start(user_id, klasifikasi, "bab1")
-
-# BAB 2
-def can_access_bab2_chapter1(user_id, klasifikasi):
-    return can_access_chapter(user_id, klasifikasi, "bab2", 1)
-
-def can_access_bab2_chapter2(user_id, klasifikasi):
-    return can_access_chapter(user_id, klasifikasi, "bab2", 2)
-
-def can_access_bab2_summary(user_id, klasifikasi):
-    return can_access_summary(user_id, klasifikasi, "bab2")
-
-def can_access_bab2_quiz(user_id, klasifikasi):
-    return can_access_quiz(user_id, klasifikasi, "bab2")
-
-def can_access_bab2_quiz_start(user_id, klasifikasi):
-    return can_access_quiz_start(user_id, klasifikasi, "bab2")
 
 # Evaluation
 def can_access_learning_evaluation(user_id, klasifikasi):
@@ -458,13 +251,52 @@ def can_access_bangun_datar_2(user_id, klasifikasi):
         klasifikasi=klasifikasi,
     )
 
-def can_access_bangun_datar_2(user_id, klasifikasi):
+def can_access_bangun_datar_3(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:
         return guard
     folder = _folder(klasifikasi)
     return render_template(
-        f"learning/{folder}/bangun_datar/02.html",
+        f"learning/{folder}/bangun_datar/03.html",
+        user_id=user_id,
+        klasifikasi=klasifikasi,
+    )
+
+def can_access_bangun_datar_4(user_id, klasifikasi):
+    guard = _guard(user_id)
+    if guard:
+        return guard
+    if klasifikasi not in (0, 1):
+        abort(404)
+    folder = _folder(klasifikasi)
+    return render_template(
+        f"learning/{folder}/bangun_datar/04.html",
+        user_id=user_id,
+        klasifikasi=klasifikasi,
+    )
+
+def can_access_bangun_datar_5(user_id, klasifikasi):
+    guard = _guard(user_id)
+    if guard:
+        return guard
+    if klasifikasi not in (0, 1):
+        abort(404)
+    folder = _folder(klasifikasi)
+    return render_template(
+        f"learning/{folder}/bangun_datar/05.html",
+        user_id=user_id,
+        klasifikasi=klasifikasi,
+    )
+
+def can_access_bangun_datar_6(user_id, klasifikasi):
+    guard = _guard(user_id)
+    if guard:
+        return guard
+    if klasifikasi not in (0, 1):
+        abort(404)
+    folder = _folder(klasifikasi)
+    return render_template(
+        f"learning/{folder}/bangun_datar/06.html",
         user_id=user_id,
         klasifikasi=klasifikasi,
     )

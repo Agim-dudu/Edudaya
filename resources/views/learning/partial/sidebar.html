@@ -19,7 +19,7 @@
         <div>
             <div onclick="toggleSidebarMenu(this)"
                 class="flex justify-between items-center px-3 py-2.5 border-2
-                {% if request.endpoint in ['learning_bangun_datar', 'learning_bangun_datar_2'] %}
+                {% if request.endpoint in ['learning_bangun_datar', 'learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_6'] %}
                     border-emerald-400 bg-emerald-50
                 {% else %}
                     border-gray-200 bg-white hover:bg-gray-50 hover:border-emerald-400
@@ -28,7 +28,7 @@
                 <span>🔷 Bangun Datar</span>
                 <ion-icon name="chevron-down-outline" class="transition-transform duration-300 text-base"></ion-icon>
             </div>
-            <ul class="{% if request.endpoint in ['learning_bangun_datar', 'learning_bangun_datar_2'] %}flex{% else %}hidden{% endif %} flex-col gap-1 pt-1 pl-1 list-none">
+            <ul class="{% if request.endpoint in ['learning_bangun_datar', 'learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_6'] %}flex{% else %}hidden{% endif %} flex-col gap-1 pt-1 pl-1 list-none">
 
                 <li>
                     <a href="/learning/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}"
@@ -39,14 +39,19 @@
 
                 <li>
                     <a href="/learning/bangun_datar/02/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_bangun_datar_2' else inactive }}">
-                        {% if current_user.klasifikasi == 0 %}
-                        🔺 Segitiga &amp; Segiempat
-                        {% else %}
+                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint in ['learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4'] else inactive }}">
                         🔺 Segitiga
-                        {% endif %}
                     </a>
                 </li>
+
+                {% if current_user.klasifikasi in [0, 1] %}
+                <li>
+                    <a href="/learning/bangun_datar/05/{{ current_user.id }}/{{ current_user.klasifikasi }}"
+                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint in ['learning_bangun_datar_5', 'learning_bangun_datar_6'] else inactive }}">
+                        ⬜ Segiempat
+                    </a>
+                </li>
+                {% endif %}
 
             </ul>
         </div>

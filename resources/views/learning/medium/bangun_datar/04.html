@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Segitiga Sembarang — Edudaya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        nunito: ['Nunito', 'sans-serif'],
+                        fredoka: ['Fredoka One', 'cursive'],
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 2s ease-in-out infinite',
+                        'float': 'floatUp 8s ease-in-out infinite',
+                        'star-pop': 'starPop 0.5s cubic-bezier(0.34,1.56,0.64,1)',
+                        'soal-in': 'soalIn 0.35s ease',
+                        'feedback-in': 'feedbackIn 0.4s cubic-bezier(0.34,1.56,0.64,1)',
+                        'pop-in': 'popIn 0.5s cubic-bezier(0.34,1.56,0.64,1)',
+                        'confetti-fall': 'confettiFall linear forwards',
+                        'shake': 'wrongShake 0.4s ease',
+                        'pulse-correct': 'correctPulse 0.5s ease',
+                        'spin-slow': 'spin 10s linear infinite',
+                    },
+                    keyframes: {
+                        floatUp: {
+                            '0%,100%': {
+                                transform: 'translateY(0px) rotate(0deg)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-20px) rotate(10deg)'
+                            },
+                        },
+                        starPop: {
+                            '0%': {
+                                transform: 'scale(0)'
+                            },
+                            '60%': {
+                                transform: 'scale(1.4)'
+                            },
+                            '100%': {
+                                transform: 'scale(1)'
+                            },
+                        },
+                        soalIn: {
+                            '0%': {
+                                opacity: '0',
+                                transform: 'translateX(24px)'
+                            },
+                            '100%': {
+                                opacity: '1',
+                                transform: 'translateX(0)'
+                            },
+                        },
+                        feedbackIn: {
+                            '0%': {
+                                transform: 'scale(0.85)',
+                                opacity: '0'
+                            },
+                            '100%': {
+                                transform: 'scale(1)',
+                                opacity: '1'
+                            },
+                        },
+                        popIn: {
+                            '0%': {
+                                transform: 'scale(0.5)',
+                                opacity: '0'
+                            },
+                            '100%': {
+                                transform: 'scale(1)',
+                                opacity: '1'
+                            },
+                        },
+                        confettiFall: {
+                            '0%': {
+                                transform: 'translateY(0) rotate(0deg)',
+                                opacity: '1'
+                            },
+                            '100%': {
+                                transform: 'translateY(100vh) rotate(720deg)',
+                                opacity: '0'
+                            },
+                        },
+                        wrongShake: {
+                            '0%,100%': {
+                                transform: 'translateX(0)'
+                            },
+                            '25%': {
+                                transform: 'translateX(-8px)'
+                            },
+                            '75%': {
+                                transform: 'translateX(8px)'
+                            },
+                        },
+                        correctPulse: {
+                            '0%': {
+                                transform: 'scale(1)'
+                            },
+                            '50%': {
+                                transform: 'scale(1.02)'
+                            },
+                            '100%': {
+                                transform: 'scale(1)'
+                            },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-nunito bg-gradient-to-br from-cyan-50 via-green-50 to-yellow-50 min-h-screen flex">
+
+    <!-- Sidebar Overlay (mobile) -->
+    <div id="sidebarOverlay" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-[99]"></div>
+
+    <!-- Floating decorations -->
+    <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0"
+        style="top:18%;left:60%;animation-delay:0s">🔷</div>
+    <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0"
+        style="top:55%;left:75%;animation-delay:1.5s">🔺</div>
+    <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0"
+        style="top:78%;left:85%;animation-delay:0.8s">⬜</div>
+
+    <!-- ===== SIDEBAR ===== -->
+    {% include 'learning/partial/sidebar.html' %}
+
+
+    <!-- ===== MAIN AREA ===== -->
+    <div id="mainArea" class="ml-[280px] flex-1 flex flex-col min-h-screen transition-all duration-300">
+
+        <!-- NAVBAR -->
+        <nav
+            class="sticky top-0 z-[101] bg-white border-b-2 border-gray-200 px-5 py-3 flex items-center justify-between shadow-sm flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <span id="menuToggleBtn" onclick="toggleSidebar()"
+                    class="text-[1.8rem] cursor-pointer text-gray-700 hover:text-emerald-500 transition-colors duration-200 flex items-center">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </span>
+                <span class="font-fredoka text-lg text-gray-700">🔺 Segitiga Sembarang</span>
+            </div>
+        </nav>
+
+        <!-- CONTENT SCROLL AREA -->
+        <div class="flex-1 px-6 py-6 bg-gradient-to-br from-cyan-50 via-green-50 to-yellow-50">
+            <div class="max-w-5xl mx-auto flex flex-col gap-5">
+                <div class="grid grid-cols-1 gap-5">
+
+                    <!-- Flash Message Section -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <div id="flash-messages" class="mb-4 space-y-2 transition duration-300">
+                        {% for category, message in messages %}
+                        <div
+                            class="text-white px-4 py-2 rounded-lg shadow-md animate-pulse {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-gray-500{% endif %}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+
+
+
+                    <!-- ===== MATERI CARD: SEGITIGA SEMB ARANG ===== -->
+                    <div
+                        class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-violet-100 flex flex-col">
+                        <div class="bg-gradient-to-r from-violet-500 to-violet-600 px-5 py-5 text-center">
+                            <h2 class="font-fredoka text-2xl text-white"
+                                style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">
+                                🔺 A.3. Segitiga Sembarang</h2>
+                        </div>
+
+                        <div class="p-6 flex flex-col gap-5 flex-1">
+<div class="source-gallery rounded-2xl border border-violet-100 bg-violet-50/60 p-3">
+                                <p class="text-xs font-bold text-gray-600 mb-2">Segitiga sembarang</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2"><figure class="bg-white rounded-xl border border-violet-100 p-2 shadow-sm">
+                                    <img src="/resources/views/learning/medium/bangun_datar/img/dokumen/image40.jpeg" alt="Ilustrasi segitiga sembarang dari materi sumber" loading="lazy" class="w-full h-28 sm:h-36 object-contain rounded-lg">
+                                </figure>
+<figure class="bg-white rounded-xl border border-violet-100 p-2 shadow-sm">
+                                    <img src="/resources/views/learning/medium/bangun_datar/img/dokumen/image42.jpg" alt="Ilustrasi segitiga sembarang dari materi sumber" loading="lazy" class="w-full h-28 sm:h-36 object-contain rounded-lg">
+                                </figure>
+                                </div>
+                            </div>
+
+
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div
+                                    class="bg-gradient-to-br from-violet-50 to-violet-100 border-2 border-violet-200 rounded-2xl p-4">
+                                    <p class="text-sm leading-relaxed text-gray-700 mb-2">
+                                        <strong class="text-violet-700">Segitiga sembarang</strong> merupakan bangun datar
+                                        segitiga yang mempunyai <strong>tiga sisi dengan panjang yang berbeda</strong>.
+                                    </p>
+                                    <p class="text-sm leading-relaxed text-gray-700">
+                                        <strong>Contoh:</strong> motif segitiga Sasirangan 🍙
+                                    </p>
+                                </div>
+                                <figure class="bg-white rounded-2xl border-2 border-violet-200 p-3">
+                                    <svg viewBox="0 0 200 165" class="w-full h-auto">
+                                        <polygon points="100,22 32,140 168,140" fill="#EDE9FE" stroke="#7C3AED"
+                                            stroke-width="3" stroke-linejoin="round" />
+                                        <text x="100" y="16" text-anchor="middle" font-size="15" font-weight="bold"
+                                            fill="#5B21B6">A</text>
+                                        <text x="20" y="156" text-anchor="middle" font-size="15" font-weight="bold"
+                                            fill="#5B21B6">B</text>
+                                        <text x="180" y="156" text-anchor="middle" font-size="15" font-weight="bold"
+                                            fill="#5B21B6">C</text>
+                                        <text x="66" y="82" font-size="12" font-weight="bold" fill="#5B21B6">s₁</text>
+                                        <text x="134" y="82" font-size="12" font-weight="bold" fill="#5B21B6">s₂</text>
+                                        <text x="100" y="156" text-anchor="middle" font-size="12" font-weight="bold"
+                                            fill="#5B21B6">s₃</text>
+                                    </svg>
+                                    <figcaption class="text-center text-xs font-bold text-gray-500 mt-1">AB ≠ BC ≠ CA
+                                    </figcaption>
+                                </figure>
+                            </div>
+
+                            <!-- Sifat -->
+                            <div class="bg-white rounded-2xl border-2 border-violet-200 p-4">
+                                <h3 class="font-fredoka text-lg text-violet-600 mb-3 flex items-center gap-2">🧩
+                                    Sifat-Sifatnya</h3>
+                                <ul class="text-sm text-gray-700 space-y-1.5">
+                                    <li class="flex items-start gap-2"><span class="text-violet-600 font-bold">✓</span>
+                                        <span>3 titik sudut</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-violet-600 font-bold">✓</span>
+                                        <span>3 sisi dengan panjang berbeda</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-violet-600 font-bold">✓</span>
+                                        <span>3 sudut</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-violet-600 font-bold">✓</span>
+                                        <span>Tidak ada simetri lipat</span>
+                                    </li>
+                                    <li class="flex items-start gap-2"><span class="text-violet-600 font-bold">✓</span>
+                                        <span>Tidak ada simetri putar</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Rumus -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white rounded-2xl border-2 border-violet-300 p-4 text-center">
+                                    <p class="text-xs font-bold text-gray-500 mb-2">Rumus Keliling</p>
+                                    <p class="font-fredoka text-lg text-violet-700">K = s₁ + s₂ + s₃</p>
+                                </div>
+                                <div class="bg-white rounded-2xl border-2 border-violet-300 p-4 text-center">
+                                    <p class="text-xs font-bold text-gray-500 mb-2">Rumus Luas</p>
+                                    <p class="font-fredoka text-lg text-violet-700">L = ½ × alas × tinggi</p>
+                                </div>
+                            </div>
+
+                            <!-- Soal Keliling -->
+                            <div>
+                                <h3 class="font-fredoka text-lg text-violet-600 mb-3 flex items-center gap-2">✏️ Contoh
+                                    Soal — Keliling</h3>
+                                <div class="flex flex-col gap-4">
+
+                                    <div id="card-sb-k1"
+                                        class="bg-white rounded-2xl p-4 border-2 border-violet-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-violet-700">1.</span> Potongan motif segitiga Sasirangan
+                                            memiliki sisi AB = 4 cm, BC = 5 cm, dan CA = 6 cm. Berapakah kelilingnya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-sb-k1" type="text" placeholder="Contoh: 15 cm"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('sb-k1')"
+                                                class="flex-1 rounded-xl border-2 border-violet-200 px-4 py-2.5 text-sm text-gray-700 focus:border-violet-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('sb-k1')"
+                                                class="bg-violet-500 hover:bg-violet-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-sb-k1" class="mt-3"></div>
+                                        <div id="sol-sb-k1"
+                                            class="hidden mt-3 bg-violet-50 border-2 border-violet-200 rounded-xl p-4">
+                                            <p class="font-bold text-violet-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">s₁ = 4 cm, s₂ = 5 cm, s₃ = 6 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                K = s₁ + s₂ + s₃<br>
+                                                K = 4 cm + 5 cm + 6 cm<br>
+                                                K = 15 cm
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, keliling motif segitiga Sasirangan
+                                                tersebut adalah <strong>15 cm</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                    <div id="card-sb-k2"
+                                        class="bg-white rounded-2xl p-4 border-2 border-violet-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-violet-700">2.</span> Sebuah motif segitiga mempunyai
+                                                keliling 15 cm. Dua sisinya berukuran 4 cm dan 5 cm. Berapakah panjang
+                                                sisi ketiganya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-sb-k2" type="text" placeholder="Contoh: 6 cm"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('sb-k2')"
+                                                class="flex-1 rounded-xl border-2 border-violet-200 px-4 py-2.5 text-sm text-gray-700 focus:border-violet-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('sb-k2')"
+                                                class="bg-violet-500 hover:bg-violet-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-sb-k2" class="mt-3"></div>
+                                        <div id="sol-sb-k2"
+                                            class="hidden mt-3 bg-violet-50 border-2 border-violet-200 rounded-xl p-4">
+                                            <p class="font-bold text-violet-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">K = 15 cm, s₁ = 4 cm, s₂ = 5 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                K = s₁ + s₂ + s₃<br>
+                                                15 = 4 + 5 + s₃<br>
+                                                15 = 9 + s₃<br>
+                                                s₃ = 15 − 9<br>
+                                                s₃ = 6 cm
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, panjang sisi ketiga (CA) adalah
+                                                <strong>6 cm</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- Soal Luas -->
+                            <div>
+                                <h3 class="font-fredoka text-lg text-violet-600 mb-3 flex items-center gap-2">🟪 Contoh
+                                    Soal — Luas</h3>
+                                <div class="flex flex-col gap-4">
+
+                                    <div id="card-sb-l1"
+                                        class="bg-white rounded-2xl p-4 border-2 border-violet-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-violet-700">1.</span> Potongan motif segitiga Sasirangan
+                                            memiliki panjang alas 6 cm dan tinggi 4 cm. Berapakah luasnya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-sb-l1" type="text" placeholder="Contoh: 12 cm²"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('sb-l1')"
+                                                class="flex-1 rounded-xl border-2 border-violet-200 px-4 py-2.5 text-sm text-gray-700 focus:border-violet-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('sb-l1')"
+                                                class="bg-violet-500 hover:bg-violet-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-sb-l1" class="mt-3"></div>
+                                        <div id="sol-sb-l1"
+                                            class="hidden mt-3 bg-violet-50 border-2 border-violet-200 rounded-xl p-4">
+                                            <p class="font-bold text-violet-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">alas = 6 cm, tinggi = 4 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                L = ½ × alas × tinggi<br>
+                                                L = ½ × 6 cm × 4 cm<br>
+                                                L = 12 cm²
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, luas motif segitiga Sasirangan tersebut
+                                                adalah <strong>12 cm²</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                    <div id="card-sb-l2"
+                                        class="bg-white rounded-2xl p-4 border-2 border-violet-200 shadow-sm">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
+                                                class="font-bold text-violet-700">2.</span> Potongan motif segitiga Sasirangan
+                                                mempunyai luas 12 cm² dan tinggi 4 cm. Berapakah panjang alasnya?</p>
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <input id="ans-sb-l2" type="text" placeholder="Contoh: 6 cm"
+                                                onkeydown="if(event.key==='Enter')periksaSoal('sb-l2')"
+                                                class="flex-1 rounded-xl border-2 border-violet-200 px-4 py-2.5 text-sm text-gray-700 focus:border-violet-500 focus:outline-none transition-colors">
+                                            <button onclick="periksaSoal('sb-l2')"
+                                                class="bg-violet-500 hover:bg-violet-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
+                                                Jawaban</button>
+                                        </div>
+                                        <div id="fb-sb-l2" class="mt-3"></div>
+                                        <div id="sol-sb-l2"
+                                            class="hidden mt-3 bg-violet-50 border-2 border-violet-200 rounded-xl p-4">
+                                            <p class="font-bold text-violet-700 text-sm mb-2">📘 Cara mengerjakan yang
+                                                benar:</p>
+                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
+                                            <p class="text-sm text-gray-700">L = 12 cm², tinggi = 4 cm</p>
+                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
+                                            <p class="text-sm font-bold text-gray-800 leading-loose">
+                                                L = ½ × alas × tinggi<br>
+                                                12 = ½ × alas × 4<br>
+                                                12 = 2 × alas<br>
+                                                alas = 12 ÷ 2<br>
+                                                alas = 6 cm
+                                            </p>
+                                            <p class="text-sm text-gray-700 mt-2">Jadi, panjang alas ketupat adalah
+                                                <strong>6 cm</strong>.</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                <!-- FOOTER NAV -->
+                <div class="flex justify-between items-center flex-wrap gap-3 pb-4">
+                    <a href="/learning/bangun_datar/03/{{ user_id }}/{{ klasifikasi }}"
+                        class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">← Halaman Sebelumnya</a>
+                    <p class="text-gray-400 text-xs font-semibold">© 2026 Edudaya 🔺</p>
+                    <a href="/learning/bangun_datar/05/{{ user_id }}/{{ klasifikasi }}"
+                        class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">Lanjut ke Segiempat ➡️</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== KUIS CONTOH SOAL =====
+        const JAWABAN_SOAL = { 'sb-k1': 15, 'sb-k2': 6, 'sb-l1': 12, 'sb-l2': 6 };
+
+        function periksaSoal(id) {
+            const input = document.getElementById('ans-' + id);
+            const fb = document.getElementById('fb-' + id);
+            const sol = document.getElementById('sol-' + id);
+            const card = document.getElementById('card-' + id);
+            const m = input.value.replace(/,/g, '.').match(/-?\d+(?:\.\d+)?/);
+
+            if (!m) {
+                fb.innerHTML = '<div class="bg-yellow-100 border-2 border-yellow-400 rounded-xl p-3 text-sm font-bold text-yellow-700 animate-feedback-in">✏️ Tulis jawabanmu dulu ya!</div>';
+                return;
+            }
+
+            if (Math.abs(parseFloat(m[0]) - JAWABAN_SOAL[id]) <= 0.1) {
+                fb.innerHTML = '<div class="bg-green-100 border-2 border-green-400 rounded-xl p-3 text-sm font-bold text-green-700 animate-pop-in">🎉 Benar! Jawabanmu tepat. Kerja bagus!</div>';
+                sol.classList.add('hidden');
+                card.classList.add('pulse-correct');
+                setTimeout(() => card.classList.remove('pulse-correct'), 600);
+            } else {
+                fb.innerHTML = '<div class="bg-red-100 border-2 border-red-400 rounded-xl p-3 text-sm font-bold text-red-600 animate-feedback-in">😅 Belum tepat. Perhatikan cara mengerjakan yang benar di bawah ini ya!</div>';
+                sol.classList.remove('hidden');
+                card.classList.add('shake');
+                setTimeout(() => card.classList.remove('shake'), 500);
+            }
+        }
+
+        // ===== SIDEBAR =====
+        let sidebarOpen = true;
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainArea = document.getElementById('mainArea');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isMobile = window.innerWidth <= 768;
+
+            if (isMobile) {
+                const isHidden = sidebar.classList.contains('-translate-x-full');
+                if (isHidden) {
+                    sidebar.classList.remove('-translate-x-full');
+                    overlay.classList.remove('hidden');
+                    overlay.classList.add('flex');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex');
+                }
+            } else {
+                sidebarOpen = !sidebarOpen;
+                if (sidebarOpen) {
+                    sidebar.classList.remove('-translate-x-full');
+                    mainArea.classList.remove('ml-0');
+                    mainArea.classList.add('ml-[280px]');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    mainArea.classList.remove('ml-[280px]');
+                    mainArea.classList.add('ml-0');
+                }
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+        }
+
+        function toggleSidebarMenu(header) {
+            const icon = header.querySelector('ion-icon');
+            const list = header.nextElementSibling;
+            const isOpen = !list.classList.contains('hidden');
+            list.classList.toggle('hidden', isOpen);
+            list.classList.toggle('flex', !isOpen);
+            icon.style.transform = isOpen ? '' : 'rotate(180deg)';
+        }
+
+        function initSidebar() {
+            var currentPath = window.location.pathname;
+            var sidebarLinks = document.querySelectorAll('#sidebar a');
+            sidebarLinks.forEach(function (link) {
+                if (link.getAttribute('href') && currentPath.startsWith(link.getAttribute('href').split('/')
+                        .slice(0, 5).join('/'))) {
+                    var ul = link.closest('ul');
+                    if (ul && ul.classList.contains('hidden')) {
+                        var header = ul.previousElementSibling;
+                        if (header && header.querySelector('ion-icon')) {
+                            ul.classList.remove('hidden');
+                            ul.classList.add('flex');
+                            header.querySelector('ion-icon').style.transform = 'rotate(180deg)';
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+                document.getElementById('mainArea').classList.remove('ml-[280px]');
+                document.getElementById('mainArea').classList.add('ml-0');
+            }
+            initSidebar();
+        });
+    </script>
+</body>
+
+</html>

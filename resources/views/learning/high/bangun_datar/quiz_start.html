@@ -534,6 +534,7 @@
 
             // --- GURU: preview mode (hitung lokal hanya untuk preview) ---
             if (userLevel !== 0) {
+                {% if user_level != 0 %}
                 const kunciPreview = {
                     1: "soal1-b",
                     2: "soal2-b",
@@ -546,6 +547,7 @@
                     9: "soal9-b",
                     10: "soal10-c"
                 };
+                {% endif %}
                 let benar = 0;
                 for (let i = 1; i <= totalSoal; i++) {
                     const ok = jawabanUser[i] === kunciPreview[i];
@@ -581,7 +583,7 @@
                     buttonsStyling: false,
                 }).then(r => {
                     if (r.isConfirmed) window.location.href =
-                        "/learning/bab1/quiz/{{ current_user.id }}/{{ current_user.klasifikasi }}";
+                        "/quiz/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}";
                 });
                 return;
             }

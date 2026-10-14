@@ -2,7 +2,6 @@ from .HomeController import *
 from .UserController import *
 from .PretestController import *
 from .EvaluationController import *
-from .ActivityController import *
 from .LearningController import *
 from .ArtificialController import *
 from .dashboard.AdminDashboardController import *

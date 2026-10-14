@@ -8,6 +8,55 @@ body {
     background: #FFF8EE;
 }
 
+/* Dashboard surfaces are deliberately calmer so data and actions stay readable. */
+body.dashboard-page {
+    min-height: 100vh;
+    background: #F4F6FA;
+    background-image: none;
+    color: #263238;
+}
+
+.dashboard-page main {
+    min-width: 0;
+}
+
+.dashboard-page .bg-white.rounded-2xl.shadow,
+.dashboard-page .bg-white.rounded-2xl.shadow-sm {
+    border: 1px solid #E5EAF0;
+    box-shadow: 0 2px 8px rgba(36, 54, 74, 0.05);
+}
+
+.dashboard-page .sidebar {
+    box-shadow: 3px 0 16px rgba(29, 42, 58, 0.12);
+}
+
+.dashboard-page a:focus-visible,
+.dashboard-page button:focus-visible,
+.dashboard-page input:focus-visible,
+.dashboard-page select:focus-visible {
+    outline: 3px solid rgba(41, 128, 185, 0.45);
+    outline-offset: 2px;
+}
+
+.table-controls {
+    background: #FAFBFC;
+    border-top: 1px solid #EEF1F5;
+}
+
+@media (max-width: 640px) {
+    .dashboard-page main > .p-6 {
+        padding: 1rem;
+    }
+
+    .table-controls {
+        align-items: stretch;
+    }
+
+    .table-controls > * {
+        max-width: 100%;
+    }
+}
+
 .page {
     display: none;
     min-height: 100vh;

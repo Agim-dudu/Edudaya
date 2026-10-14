@@ -294,7 +294,7 @@
       <span class="text-[10px] font-bold tracking-[.12em] uppercase text-ink3 flex items-center gap-2 after:content-[''] after:flex-1 after:h-px after:bg-borderSoft">Detail Jawaban Siswa</span>
     </div>
     <div class="overflow-x-auto">
-      <table class="w-full border-collapse text-xs">
+      <table class="w-full border-collapse text-xs" data-table-controls>
         <thead>
           <tr>
             <th class="text-left text-[10px] font-bold tracking-[.1em] uppercase text-ink3 px-4 py-[.7rem] border-b border-borderSoft bg-[#faf9f6] w-11">No</th>
@@ -341,5 +341,6 @@
   {% endif %}
 
 </div><!-- /page -->
+<script src="{{ url_for('static', filename='js/table_controls.js') }}"></script>
 </body>
 </html>

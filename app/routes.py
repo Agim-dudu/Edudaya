@@ -4,7 +4,34 @@ from app.decorator.utils import level_required
 from flask_login import current_user, login_required
 from app.model import Classes
 from app.controller.PretestController import QUESTIONS_PRETEST
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, Response
+from flask import session
+from datetime import datetime, timezone
+import csv
+import io
+
+
+QUIZ_ATTEMPT_DURATION_SECONDS = 15 * 60
+EVALUATION_ATTEMPT_DURATION_SECONDS = 20 * 60
+
+
+def _consume_quiz_attempt(session_key):
+    started_at = session.pop(session_key, None)
+    if not isinstance(started_at, str):
+        return False
+    try:
+        parsed_start = datetime.fromisoformat(started_at)
+        if parsed_start.tzinfo is None:
+            parsed_start = parsed_start.replace(tzinfo=timezone.utc)
+        elapsed = (datetime.now(timezone.utc) - parsed_start).total_seconds()
+    except (TypeError, ValueError):
+        return False
+    max_duration = (
+        EVALUATION_ATTEMPT_DURATION_SECONDS
+        if session_key == 'quiz_start_time_evaluation'
+        else QUIZ_ATTEMPT_DURATION_SECONDS
+    )
+    return 0 <= elapsed <= max_duration
 
 
 @app.route("/")
@@ -13,8 +40,10 @@ def index():
     amount_classes=get_amount_classes()
     amount_teacher=get_amount_teacher()
     amount_student=get_amount_student()
+    total_materi=get_total_materi()
+    leaderboard=get_home_leaderboard()
     
-    return render_template("index.html", ac=amount_classes, at=amount_teacher, ast=amount_student)
+    return render_template("index.html", ac=amount_classes, at=amount_teacher, ast=amount_student, total_materi=total_materi, leaderboard=leaderboard)
 
 @app.route("/login", methods=["GET"])
 def login_page():
@@ -151,8 +180,11 @@ def submit_evaluation(user_id):
     if user_id != current_user.id:
         return render_template("403.html")
 
-    data = request.get_json()
-    print(data)
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or not isinstance(data.get('answers'), dict):
+        return jsonify({'error': 'Format jawaban evaluasi tidak valid.'}), 400
+    if current_user.level == 0 and not _consume_quiz_attempt('quiz_start_time_evaluation'):
+        return jsonify({'error': 'Percobaan evaluasi tidak aktif, kedaluwarsa, atau sudah dikirim.'}), 409
 
     return save_evaluation(data, user_id)
 
@@ -201,6 +233,26 @@ def learning_bangun_datar(user_id, klasifikasi):
 def learning_bangun_datar_2(user_id, klasifikasi):
     return can_access_bangun_datar_2(user_id, klasifikasi)
 
+@app.route("/learning/bangun_datar/03/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bangun_datar_3(user_id, klasifikasi):
+    return can_access_bangun_datar_3(user_id, klasifikasi)
+
+@app.route("/learning/bangun_datar/04/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bangun_datar_4(user_id, klasifikasi):
+    return can_access_bangun_datar_4(user_id, klasifikasi)
+
+@app.route("/learning/bangun_datar/05/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bangun_datar_5(user_id, klasifikasi):
+    return can_access_bangun_datar_5(user_id, klasifikasi)
+
+@app.route("/learning/bangun_datar/06/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bangun_datar_6(user_id, klasifikasi):
+    return can_access_bangun_datar_6(user_id, klasifikasi)
+
 @app.route("/quiz/bangun_datar/<int:user_id>/<int:klasifikasi>", methods=["GET"])
 @login_required
 def quiz_bangun_datar(user_id, klasifikasi):
@@ -212,11 +264,18 @@ def quiz_start_bangun_datar(user_id, klasifikasi):
     return can_access_bangun_datar_quiz_start(user_id, klasifikasi)
 
 @app.route('/api/bangun_datar/quiz/<int:user_id>/0', methods=['POST'])
+@login_required
 def api_bangun_datar_quiz_submit_low(user_id):
     if user_id != current_user.id:
         return jsonify({'error': 'Unauthorized'}), 403
+    if current_user.level != 0:
+        return jsonify({'error': 'Hanya siswa yang dapat mengirim hasil kuis.'}), 403
 
-    data = request.get_json()
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or not isinstance(data.get('jawaban'), dict):
+        return jsonify({'error': 'Format jawaban tidak valid.'}), 400
+    if not _consume_quiz_attempt('quiz_start_time_bangun_datar'):
+        return jsonify({'error': 'Percobaan kuis tidak aktif, kedaluwarsa, atau sudah dikirim.'}), 409
 
     # Jawaban dikirim dari frontend sebagai { 1: "soal1-c", 2: "soal2-b", ... }
     # Key bisa berupa int (JSON number) atau string — normalkan ke string semua
@@ -225,15 +284,15 @@ def api_bangun_datar_quiz_submit_low(user_id):
 
     kunci = {
         "1":  "soal1-b",
-        "2":  "soal2-c",
-        "3":  "soal3-b",
-        "4":  "soal4-c",
-        "5":  "soal5-c",
+        "2":  "soal2-a",
+        "3":  "soal3-c",
+        "4":  "soal4-b",
+        "5":  "soal5-d",
         "6":  "soal6-a",
         "7":  "soal7-c",
-        "8":  "soal8-c",
-        "9":  "soal9-b",
-        "10": "soal10-b"
+        "8":  "soal8-b",
+        "9":  "soal9-d",
+        "10": "soal10-c"
     }
 
     total_soal  = len(kunci)
@@ -241,9 +300,8 @@ def api_bangun_datar_quiz_submit_low(user_id):
     total_salah = total_soal - total_benar
     score       = round((total_benar / total_soal) * 100)
 
-    session.pop('quiz_start_time', None)
 
-    # Cek apakah sudah ada score sebelumnya
+    # Simpan nilai tertinggi; riwayat tetap menampilkan satu nilai terbaik.
     existing_score = Score.query.filter_by(
         user_id=user_id,
         score_type='quiz',
@@ -251,9 +309,10 @@ def api_bangun_datar_quiz_submit_low(user_id):
     ).first()
 
     if existing_score:
-        existing_score.correct   = total_benar
-        existing_score.incorrect = total_salah
-        existing_score.value     = score
+        if score > existing_score.value:
+            existing_score.correct = total_benar
+            existing_score.incorrect = total_salah
+            existing_score.value = score
     else:
         db.session.add(Score(
             user_id=user_id,
@@ -282,11 +341,18 @@ def api_bangun_datar_quiz_submit_low(user_id):
     })
     
 @app.route('/api/bangun_datar/quiz/<int:user_id>/1', methods=['POST'])
+@login_required
 def api_bangun_datar_quiz_submit_medium(user_id):
     if user_id != current_user.id:
         return jsonify({'error': 'Unauthorized'}), 403
+    if current_user.level != 0:
+        return jsonify({'error': 'Hanya siswa yang dapat mengirim hasil kuis.'}), 403
 
-    data = request.get_json()
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or not isinstance(data.get('jawaban'), dict):
+        return jsonify({'error': 'Format jawaban tidak valid.'}), 400
+    if not _consume_quiz_attempt('quiz_start_time_bangun_datar'):
+        return jsonify({'error': 'Percobaan kuis tidak aktif, kedaluwarsa, atau sudah dikirim.'}), 409
 
     # Jawaban dikirim dari frontend sebagai { 1: "soal1-c", 2: "soal2-b", ... }
     # Key bisa berupa int (JSON number) atau string — normalkan ke string semua
@@ -311,9 +377,8 @@ def api_bangun_datar_quiz_submit_medium(user_id):
     total_salah = total_soal - total_benar
     score       = round((total_benar / total_soal) * 100)
 
-    session.pop('quiz_start_time', None)
 
-    # Cek apakah sudah ada score sebelumnya
+    # Simpan nilai tertinggi; riwayat tetap menampilkan satu nilai terbaik.
     existing_score = Score.query.filter_by(
         user_id=user_id,
         score_type='quiz',
@@ -321,9 +386,10 @@ def api_bangun_datar_quiz_submit_medium(user_id):
     ).first()
 
     if existing_score:
-        existing_score.correct   = total_benar
-        existing_score.incorrect = total_salah
-        existing_score.value     = score
+        if score > existing_score.value:
+            existing_score.correct = total_benar
+            existing_score.incorrect = total_salah
+            existing_score.value = score
     else:
         db.session.add(Score(
             user_id=user_id,
@@ -352,11 +418,18 @@ def api_bangun_datar_quiz_submit_medium(user_id):
     })
     
 @app.route('/api/bangun_datar/quiz/<int:user_id>/2', methods=['POST'])
+@login_required
 def api_bangun_datar_quiz_submit_high(user_id):
     if user_id != current_user.id:
         return jsonify({'error': 'Unauthorized'}), 403
+    if current_user.level != 0:
+        return jsonify({'error': 'Hanya siswa yang dapat mengirim hasil kuis.'}), 403
 
-    data = request.get_json()
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or not isinstance(data.get('jawaban'), dict):
+        return jsonify({'error': 'Format jawaban tidak valid.'}), 400
+    if not _consume_quiz_attempt('quiz_start_time_bangun_datar'):
+        return jsonify({'error': 'Percobaan kuis tidak aktif, kedaluwarsa, atau sudah dikirim.'}), 409
 
     # Jawaban dikirim dari frontend sebagai { 1: "soal1-c", 2: "soal2-b", ... }
     # Key bisa berupa int (JSON number) atau string — normalkan ke string semua
@@ -381,9 +454,8 @@ def api_bangun_datar_quiz_submit_high(user_id):
     total_salah = total_soal - total_benar
     score       = round((total_benar / total_soal) * 100)
 
-    session.pop('quiz_start_time', None)
 
-    # Cek apakah sudah ada score sebelumnya
+    # Simpan nilai tertinggi; riwayat tetap menampilkan satu nilai terbaik.
     existing_score = Score.query.filter_by(
         user_id=user_id,
         score_type='quiz',
@@ -391,9 +463,10 @@ def api_bangun_datar_quiz_submit_high(user_id):
     ).first()
 
     if existing_score:
-        existing_score.correct   = total_benar
-        existing_score.incorrect = total_salah
-        existing_score.value     = score
+        if score > existing_score.value:
+            existing_score.correct = total_benar
+            existing_score.incorrect = total_salah
+            existing_score.value = score
     else:
         db.session.add(Score(
             user_id=user_id,
@@ -420,358 +493,6 @@ def api_bangun_datar_quiz_submit_high(user_id):
         'next_url':      url_for('quiz_bangun_datar', user_id=user_id, klasifikasi=current_user.klasifikasi),
         'jawaban_benar': kunci
         })
-
-# Routing Learning Bab 1 ====================================================================================
-
-@app.route("/learning/bab1/chapter1/<int:user_id>/<int:klasifikasi>", methods=["GET"])
-@login_required
-def learning_bab1_chapter1(user_id, klasifikasi):
-    return can_access_bab1_chapter1(user_id, klasifikasi)
-
-@app.route('/api/learning/bab1/chapter1/<int:user_id>', methods=['POST'])
-@login_required
-def submit_activity_learning_bab1_chapter1(user_id):
-    return bab1_chapter1_activity(user_id)
-
-@app.route("/learning/bab1/chapter2/<int:user_id>/<int:klasifikasi>", methods=["GET"])
-@login_required
-def learning_bab1_chapter2(user_id, klasifikasi):
-    return can_access_bab1_chapter2(user_id, klasifikasi)
-
-@app.route('/api/learning/bab1/chapter2/<int:user_id>', methods=['POST'])
-@login_required
-def submit_activity_learning_bab1_chapter2(user_id):
-    return bab1_chapter2_activity(user_id)
-
-@app.route("/learning/bab1/summary/<int:user_id>/<int:klasifikasi>", methods=["GET"])
-@login_required
-def learning_bab1_summary(user_id, klasifikasi):
-    return can_access_bab1_summary(user_id, klasifikasi)
-
-@app.route("/learning/bab1/quiz/<int:user_id>/<int:klasifikasi>", methods=["GET"])
-@login_required
-def learning_bab1_quiz(user_id, klasifikasi):
-    return can_access_bab1_quiz(user_id, klasifikasi)
-
-@app.route('/api/bab1/quiz/<int:user_id>/0', methods=['POST'])
-def api_bab1_quiz_submit_low(user_id):
-    if user_id != current_user.id:
-        return jsonify({'error': 'Unauthorized'}), 403
-
-    data = request.get_json()
-
-    # Jawaban dikirim dari frontend sebagai { 1: "soal1-c", 2: "soal2-b", ... }
-    # Key bisa berupa int (JSON number) atau string — normalkan ke string semua
-    jawaban_user_raw = data.get('jawaban', {})
-    jawaban_user = {str(k): v for k, v in jawaban_user_raw.items()}
-
-    kunci = {
-        "1":  "soal1-b",
-        "2":  "soal2-c",
-        "3":  "soal3-b",
-        "4":  "soal4-c",
-        "5":  "soal5-c",
-        "6":  "soal6-a",
-        "7":  "soal7-c",
-        "8":  "soal8-c",
-        "9":  "soal9-b",
-        "10": "soal10-b"
-    }
-
-    total_soal  = len(kunci)
-    total_benar = sum(1 for k, v in kunci.items() if jawaban_user.get(k) == v)
-    total_salah = total_soal - total_benar
-    score       = round((total_benar / total_soal) * 100)
-
-    session.pop('quiz_start_time', None)
-
-    # Cek apakah sudah ada score sebelumnya
-    existing_score = Score.query.filter_by(
-        user_id=user_id,
-        score_type='quiz',
-        chapter='Bab 1'
-    ).first()
-
-    if existing_score:
-        existing_score.correct   = total_benar
-        existing_score.incorrect = total_salah
-        existing_score.value     = score
-    else:
-        db.session.add(Score(
-            user_id=user_id,
-            class_id=current_user.class_id,
-            score_type='quiz',
-            chapter='Bab 1',
-            correct=total_benar,
-            incorrect=total_salah,
-            value=score,
-        ))
-
-    db.session.commit()
-
-    user_class = Classes.query.get(current_user.class_id)
-    user_kkm   = user_class.kkm if user_class else 75
-    lulus      = score >= user_kkm
-
-    return jsonify({
-        'score':         score,
-        'total_benar':   total_benar,
-        'total_salah':   total_salah,
-        'lulus':         lulus,
-        'user_kkm':      user_kkm,
-        'next_url':      url_for('learning_bab1_quiz', user_id=user_id, klasifikasi=current_user.klasifikasi),
-        'jawaban_benar': kunci
-    })
-    
-@app.route('/api/bab1/quiz/<int:user_id>/1', methods=['POST'])
-def api_bab1_quiz_submit_medium(user_id):
-    if user_id != current_user.id:
-        return jsonify({'error': 'Unauthorized'}), 403
-
-    data = request.get_json()
-
-    # Jawaban dikirim dari frontend sebagai { 1: "soal1-c", 2: "soal2-b", ... }
-    # Key bisa berupa int (JSON number) atau string — normalkan ke string semua
-    jawaban_user_raw = data.get('jawaban', {})
-    jawaban_user = {str(k): v for k, v in jawaban_user_raw.items()}
-
-    kunci = {
-        "1":  "soal1-b",
-        "2":  "soal2-a",
-        "3":  "soal3-c",
-        "4":  "soal4-c",
-        "5":  "soal5-b",
-        "6":  "soal6-c",
-        "7":  "soal7-b",
-        "8":  "soal8-c",
-        "9":  "soal9-c",
-        "10": "soal10-a"
-    }
-
-    total_soal  = len(kunci)
-    total_benar = sum(1 for k, v in kunci.items() if jawaban_user.get(k) == v)
-    total_salah = total_soal - total_benar
-    score       = round((total_benar / total_soal) * 100)
-
-    session.pop('quiz_start_time', None)
-
-    # Cek apakah sudah ada score sebelumnya
-    existing_score = Score.query.filter_by(
-        user_id=user_id,
-        score_type='quiz',
-        chapter='Bab 1'
-    ).first()
-
-    if existing_score:
-        existing_score.correct   = total_benar
-        existing_score.incorrect = total_salah
-        existing_score.value     = score
-    else:
-        db.session.add(Score(
-            user_id=user_id,
-            class_id=current_user.class_id,
-            score_type='quiz',
-            chapter='Bab 1',
-            correct=total_benar,
-            incorrect=total_salah,
-            value=score,
-        ))
-
-    db.session.commit()
-
-    user_class = Classes.query.get(current_user.class_id)
-    user_kkm   = user_class.kkm if user_class else 75
-    lulus      = score >= user_kkm
-
-    return jsonify({
-        'score':         score,
-        'total_benar':   total_benar,
-        'total_salah':   total_salah,
-        'lulus':         lulus,
-        'user_kkm':      user_kkm,
-        'next_url':      url_for('learning_bab1_quiz', user_id=user_id, klasifikasi=current_user.klasifikasi),
-        'jawaban_benar': kunci
-    })
-
-@app.route('/api/bab1/quiz/<int:user_id>/2', methods=['POST'])
-def api_bab1_quiz_submit_high(user_id):
-    if user_id != current_user.id:
-        return jsonify({'error': 'Unauthorized'}), 403
-
-    data = request.get_json()
-
-    # Jawaban dikirim dari frontend sebagai { 1: "soal1-c", 2: "soal2-b", ... }
-    # Key bisa berupa int (JSON number) atau string — normalkan ke string semua
-    jawaban_user_raw = data.get('jawaban', {})
-    jawaban_user = {str(k): v for k, v in jawaban_user_raw.items()}
-
-    kunci = {
-        "1":  "soal1-b",
-        "2":  "soal2-b",
-        "3":  "soal3-c",
-        "4":  "soal4-a",
-        "5":  "soal5-c",
-        "6":  "soal6-b",
-        "7":  "soal7-d",
-        "8":  "soal8-c",
-        "9":  "soal9-b",
-        "10": "soal10-c"
-    }
-
-    total_soal  = len(kunci)
-    total_benar = sum(1 for k, v in kunci.items() if jawaban_user.get(k) == v)
-    total_salah = total_soal - total_benar
-    score       = round((total_benar / total_soal) * 100)
-
-    session.pop('quiz_start_time', None)
-
-    # Cek apakah sudah ada score sebelumnya
-    existing_score = Score.query.filter_by(
-        user_id=user_id,
-        score_type='quiz',
-        chapter='Bab 1'
-    ).first()
-
-    if existing_score:
-        existing_score.correct   = total_benar
-        existing_score.incorrect = total_salah
-        existing_score.value     = score
-    else:
-        db.session.add(Score(
-            user_id=user_id,
-            class_id=current_user.class_id,
-            score_type='quiz',
-            chapter='Bab 1',
-            correct=total_benar,
-            incorrect=total_salah,
-            value=score,
-        ))
-
-    db.session.commit()
-
-    user_class = Classes.query.get(current_user.class_id)
-    user_kkm   = user_class.kkm if user_class else 75
-    lulus      = score >= user_kkm
-
-    return jsonify({
-        'score':         score,
-        'total_benar':   total_benar,
-        'total_salah':   total_salah,
-        'lulus':         lulus,
-        'user_kkm':      user_kkm,
-        'next_url':      url_for('learning_bab1_quiz', user_id=user_id, klasifikasi=current_user.klasifikasi),
-        'jawaban_benar': kunci
-    })
-# End Routing Learning Bab 1 ====================================================================================
-
-# Routing Learning Bab 2 ====================================================================================
-
-@app.route("/learning/bab2/chapter1/<int:user_id>/<int:klasifikasi>", methods=["GET"])
-@login_required
-def learning_bab2_chapter1(user_id, klasifikasi):
-    return can_access_bab2_chapter1(user_id, klasifikasi)
-
-@app.route('/api/learning/bab2/chapter1/<int:user_id>', methods=['POST'])
-@login_required
-def submit_activity_learning_bab2_chapter1(user_id):
-    return bab2_chapter1_activity(user_id)
-
-@app.route("/learning/bab2/chapter2/<int:user_id>/<int:klasifikasi>", methods=["GET"])
-@login_required
-def learning_bab2_chapter2(user_id, klasifikasi):
-    return can_access_bab2_chapter2(user_id, klasifikasi)
-
-@app.route('/api/learning/bab2/chapter2/<int:user_id>', methods=['POST'])
-@login_required
-def submit_activity_learning_bab2_chapter2(user_id):
-    return bab2_chapter2_activity(user_id)
-
-@app.route("/learning/bab2/summary/<int:user_id>/<int:klasifikasi>", methods=["GET"])
-@login_required
-def learning_bab2_summary(user_id, klasifikasi):
-    return can_access_bab2_summary(user_id, klasifikasi)
-
-@app.route("/learning/bab2/quiz/<int:user_id>/<int:klasifikasi>", methods=["GET"])
-@login_required
-def learning_bab2_quiz(user_id, klasifikasi):
-    return can_access_bab2_quiz(user_id, klasifikasi)
-
-@app.route("/quiz/bab2/<int:user_id>/<int:klasifikasi>", methods=["GET"])
-@login_required
-def quiz_start_bab2(user_id, klasifikasi):
-    return can_access_bab2_quiz_start(user_id, klasifikasi)
-
-@app.route('/api/bab2/quiz/<int:user_id>', methods=['POST'])
-def api_bab2_quiz_submit(user_id):
-    if user_id != current_user.id:
-        return jsonify({'error': 'Unauthorized'}), 403
-
-    data = request.get_json()
-
-    # Jawaban dikirim dari frontend sebagai { 1: "soal1-c", 2: "soal2-b", ... }
-    # Key bisa berupa int (JSON number) atau string — normalkan ke string semua
-    jawaban_user_raw = data.get('jawaban', {})
-    jawaban_user = {str(k): v for k, v in jawaban_user_raw.items()}
-
-    kunci = {
-        "1":  "soal1-c",
-        "2":  "soal2-b",
-        "3":  "soal3-c",
-        "4":  "soal4-b",
-        "5":  "soal5-a",
-        "6":  "soal6-b",
-        "7":  "soal7-c",
-        "8":  "soal8-a",
-        "9":  "soal9-c",
-        "10": "soal10-b"
-    }
-
-    total_soal  = len(kunci)
-    total_benar = sum(1 for k, v in kunci.items() if jawaban_user.get(k) == v)
-    total_salah = total_soal - total_benar
-    score       = round((total_benar / total_soal) * 100)
-
-    session.pop('quiz_start_time', None)
-
-    # Cek apakah sudah ada score sebelumnya
-    existing_score = Score.query.filter_by(
-        user_id=user_id,
-        score_type='quiz',
-        chapter='Bab 2'
-    ).first()
-
-    if existing_score:
-        existing_score.correct   = total_benar
-        existing_score.incorrect = total_salah
-        existing_score.value     = score
-    else:
-        db.session.add(Score(
-            user_id=user_id,
-            class_id=current_user.class_id,
-            score_type='quiz',
-            chapter='Bab 2',
-            correct=total_benar,
-            incorrect=total_salah,
-            value=score,
-        ))
-
-    db.session.commit()
-
-    user_class = Classes.query.get(current_user.class_id)
-    user_kkm   = user_class.kkm if user_class else 75
-    lulus      = score >= user_kkm
-
-    return jsonify({
-        'score':         score,
-        'total_benar':   total_benar,
-        'total_salah':   total_salah,
-        'lulus':         lulus,
-        'user_kkm':      user_kkm,
-        'next_url':      url_for('learning_bab2_quiz', user_id=user_id, klasifikasi=current_user.klasifikasi),
-        'jawaban_benar': kunci
-    })
-
-# End Routing Learning Bab 2 ====================================================================================
 
 # Halaman Khusus Dashboard Students ==============================================================
 
@@ -880,9 +601,9 @@ def teacher_update_klasifikasi(user_id):
     else:
         pilihan = "high"
 
-    # 5. Render template sesuai pilihan
+    # 5. Render template aktif sesuai klasifikasi
     return render_template(
-        f'learning/{pilihan}/bab1/01.html',
+        f'learning/{pilihan}/bangun_datar/01.html',
         user_id=user_id
     )
 
@@ -925,7 +646,11 @@ def dashboard_analysis(user_id):
 @login_required
 @level_required(1)
 def dashboard_result_pretest_analysis(user_id, class_id):
-    
+    if user_id != current_user.id or not any(
+        assignment.class_id == class_id for assignment in current_user.teacher_classes
+    ):
+        return render_template("403.html"), 403
+
     pretest_analysis = get_pretest_analysis(class_id)
 
     return render_template(
@@ -966,7 +691,11 @@ def dashboard_teacher_batch_analyze_pretest(teacher_id, class_id):
 @login_required
 @level_required(1)
 def dashboard_result_final_analysis(user_id, class_id):
-    
+    if user_id != current_user.id or not any(
+        assignment.class_id == class_id for assignment in current_user.teacher_classes
+    ):
+        return render_template("403.html"), 403
+
     final_analysis = get_final_analysis(class_id)
 
     return render_template(
@@ -1123,9 +852,9 @@ def admin_update_klasifikasi(user_id):
     else:
         pilihan = "high"
 
-    # 5. Render template sesuai pilihan
+    # 5. Render template aktif sesuai klasifikasi
     return render_template(
-        f'learning/{pilihan}/bab1/01.html',
+        f'learning/{pilihan}/bangun_datar/01.html',
         user_id=user_id
     )
 
@@ -1137,19 +866,68 @@ def dashboard_admin(user_id):
     if user_id != current_user.id:
         return render_template("403.html"), 403
 
-    # Ambil jumlah siswa
-    amount_student = get_amount_student_all()
-    amount_teacher = get_amount_teacher_all()
-    amount_classes = get_amount_classes_all()
-    
-    print(amount_classes)
+    dashboard_stats = get_admin_dashboard_stats()
+    admin_scores = get_admin_scores()
 
     return render_template(
         'dashboard/admin/dashboard.html',
-        amount_student=amount_student,
-        amount_teacher=amount_teacher,
-        amount_classes=amount_classes
+        amount_student=dashboard_stats['total_students'],
+        amount_teacher=dashboard_stats['total_teachers'],
+        amount_classes=dashboard_stats['total_classes'],
+        active_tokens=dashboard_stats['active_tokens'],
+        top_students=dashboard_stats['top_students'],
+        admin_scores=admin_scores,
     )
+
+
+@app.route('/admin/scores/export.csv', methods=['GET'])
+@login_required
+@level_required(2)
+def admin_scores_export():
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(['Siswa', 'Username', 'Kelas', 'Sekolah', 'Materi', 'Jenis', 'Benar', 'Salah', 'Nilai', 'Tanggal'])
+    for score, student, kelas in get_admin_scores():
+        writer.writerow([
+            _csv_safe(student.full_name),
+            _csv_safe(student.username),
+            _csv_safe(kelas.name if kelas else ''),
+            _csv_safe(kelas.school if kelas else ''),
+            _csv_safe(score.chapter or ''),
+            _csv_safe(score.score_type),
+            score.correct,
+            score.incorrect,
+            score.value,
+            score.created_at.strftime('%Y-%m-%d %H:%M:%S') if score.created_at else '',
+        ])
+
+    return Response(
+        '\ufeff' + output.getvalue(),
+        mimetype='text/csv; charset=utf-8',
+        headers={'Content-Disposition': 'attachment; filename="edudaya-nilai-siswa.csv"'},
+    )
+
+
+def _csv_safe(value):
+    value = '' if value is None else str(value)
+    formula_candidate = value.lstrip(' \t\r\n')
+    return "'" + value if formula_candidate.startswith(('=', '+', '-', '@')) else value
+
+
+@app.route('/admin/profile/update/<int:user_id>', methods=['POST'])
+@login_required
+@level_required(2)
+def admin_profile_update(user_id):
+    if user_id != current_user.id:
+        return render_template('403.html'), 403
+
+    full_name = request.form.get('full_name', '')
+    username = request.form.get('username', '')
+    password = request.form.get('password') or None
+    password_confirm = request.form.get('password_confirm')
+    success, message = update_admin_profile(user_id, full_name, username, password, password_confirm)
+    flash(message, 'success' if success else 'danger')
+    return redirect(url_for('dashboard_admin', user_id=user_id) + '#admin-profile')
 
 # Admin CRUD Kelas =============================================================================
 
