@@ -17,9 +17,9 @@
 
         <!-- Menu: Bangun Datar (semua level) -->
         <div>
-            <div onclick="toggleSidebarMenu(this)"
+            <div onclick="var u=this.nextElementSibling; if(u){u.classList.toggle('hidden');u.classList.toggle('flex'); var ic=this.querySelector('ion-icon'); if(ic) ic.style.transform=u.classList.contains('hidden')?'':'rotate(180deg)';} event.stopPropagation();"
                 class="flex justify-between items-center px-3 py-2.5 border-2
-                {% if request.endpoint in ['learning_bangun_datar', 'learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_6'] %}
+                {% if request.endpoint in ['learning_bangun_datar', 'learning_bangun_datar_1d', 'learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] %}
                     border-emerald-400 bg-emerald-50
                 {% else %}
                     border-gray-200 bg-white hover:bg-gray-50 hover:border-emerald-400
@@ -28,7 +28,7 @@
                 <span>🔷 Bangun Datar</span>
                 <ion-icon name="chevron-down-outline" class="transition-transform duration-300 text-base"></ion-icon>
             </div>
-            <ul class="{% if request.endpoint in ['learning_bangun_datar', 'learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_6'] %}flex{% else %}hidden{% endif %} flex-col gap-1 pt-1 pl-1 list-none">
+            <ul class="{% if request.endpoint in ['learning_bangun_datar', 'learning_bangun_datar_1d', 'learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] %}flex{% else %}hidden{% endif %} flex-col gap-1 pt-1 pl-1 list-none">
 
                 <li>
                     <a href="/learning/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}"
@@ -38,20 +38,43 @@
                 </li>
 
                 <li>
-                    <a href="/learning/bangun_datar/02/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint in ['learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4'] else inactive }}">
-                        🔺 Segitiga
-                    </a>
-                </li>
+                    <div class="flex justify-between items-center px-3 py-2 rounded-xl text-sm font-semibold {{ active if request.endpoint in ['learning_bangun_datar_1d', 'learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] else inactive }}">
+                        <a href="/learning/bangun_datar/01_d/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex-1">📚 Jenis-jenis Bangun Datar</a>
+                        <span onclick="var d=this.closest('div').nextElementSibling; if(d){d.classList.toggle('hidden');d.classList.toggle('flex'); this.querySelector('ion-icon').style.transform=d.classList.contains('hidden')?'':'rotate(180deg)'; event.stopPropagation();}" class="cursor-pointer"><ion-icon name="chevron-down-outline" class="transition-transform duration-300 text-base" style="{{ 'transform: rotate(180deg)' if request.endpoint in ['learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] else '' }}"></ion-icon></span>
+                    </div>
+                    <ul class="{{ 'flex' if request.endpoint in ['learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] else 'hidden' }} flex-col gap-1 pt-1 pl-3 list-none">
+                        <li>
+                            <div onclick="var u=this.nextElementSibling; if(u){u.classList.toggle('hidden');u.classList.toggle('flex'); var ic=this.querySelector('ion-icon'); if(ic) ic.style.transform=u.classList.contains('hidden')?'':'rotate(180deg)';} event.stopPropagation();"
+                                class="flex justify-between items-center px-3 py-2 rounded-xl cursor-pointer text-xs font-semibold {{ active if request.endpoint in ['learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4'] else inactive }}">
+                                <span>🔺 Segitiga</span>
+                                <ion-icon name="chevron-down-outline" class="transition-transform duration-300 text-sm" style="{{ 'transform: rotate(180deg)' if request.endpoint in ['learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4'] else '' }}"></ion-icon>
+                            </div>
+                            <ul class="{{ 'flex' if request.endpoint in ['learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4'] else 'hidden' }} flex-col gap-1 pt-1 pl-2 list-none">
+                                <li><a href="/learning/bangun_datar/02/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_2' else inactive }}">Segitiga Sama Sisi</a></li>
+                                <li><a href="/learning/bangun_datar/03/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_3' else inactive }}">Segitiga Sama Kaki</a></li>
+                                <li><a href="/learning/bangun_datar/04/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_4' else inactive }}">Segitiga Sembarang</a></li>
+                            </ul>
+                        </li>
 
-                {% if current_user.klasifikasi in [0, 1] %}
-                <li>
-                    <a href="/learning/bangun_datar/05/{{ current_user.id }}/{{ current_user.klasifikasi }}"
-                        class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint in ['learning_bangun_datar_5', 'learning_bangun_datar_6'] else inactive }}">
-                        ⬜ Segiempat
-                    </a>
+                        {% if current_user.klasifikasi in [0, 1] %}
+                        <li>
+                            <div onclick="var u=this.nextElementSibling; if(u){u.classList.toggle('hidden');u.classList.toggle('flex'); var ic=this.querySelector('ion-icon'); if(ic) ic.style.transform=u.classList.contains('hidden')?'':'rotate(180deg)';} event.stopPropagation();"
+                                class="flex justify-between items-center px-3 py-2 rounded-xl cursor-pointer text-xs font-semibold {{ active if request.endpoint in ['learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] else inactive }}">
+                                <span>⬜ Segiempat</span>
+                                <ion-icon name="chevron-down-outline" class="transition-transform duration-300 text-sm" style="{{ 'transform: rotate(180deg)' if request.endpoint in ['learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] else '' }}"></ion-icon>
+                            </div>
+                            <ul class="{{ 'flex' if request.endpoint in ['learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] else 'hidden' }} flex-col gap-1 pt-1 pl-2 list-none">
+                                <li><a href="/learning/bangun_datar/05/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_5' else inactive }}">Persegi</a></li>
+                                <li><a href="/learning/bangun_datar/05_2/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_5_2' else inactive }}">Persegi Panjang</a></li>
+                                <li><a href="/learning/bangun_datar/05_3/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_5_3' else inactive }}">Jajar Genjang</a></li>
+                                <li><a href="/learning/bangun_datar/06/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_6' else inactive }}">Belah Ketupat</a></li>
+                                <li><a href="/learning/bangun_datar/06_2/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_6_2' else inactive }}">Trapesium</a></li>
+                                <li><a href="/learning/bangun_datar/06_3/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_6_3' else inactive }}">Layang-Layang</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                    </ul>
                 </li>
-                {% endif %}
 
             </ul>
         </div>

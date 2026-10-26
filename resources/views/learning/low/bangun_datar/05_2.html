@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Persegi Panjang — Edudaya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+    <script>tailwind.config = { theme: { extend: { fontFamily: { nunito: ['Nunito', 'sans-serif'], fredoka: ['Fredoka One', 'cursive'] } } } }</script>
+</head>
+
+<body class="font-nunito bg-gradient-to-br from-cyan-50 via-green-50 to-yellow-50 min-h-screen flex">
+    <div id="sidebarOverlay" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-[99]"></div>
+    {% include 'learning/partial/sidebar.html' %}
+    <div id="mainArea" class="ml-[280px] flex-1 flex flex-col min-h-screen transition-all duration-300">
+        <nav class="sticky top-0 z-[101] bg-white border-b-2 border-gray-200 px-5 py-3 flex items-center justify-between shadow-sm flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <span id="menuToggleBtn" onclick="toggleSidebar()" class="text-[1.8rem] cursor-pointer text-gray-700 hover:text-emerald-500"><ion-icon name="menu-outline"></ion-icon></span>
+                <span class="font-fredoka text-lg text-gray-700">⬜ Persegi Panjang</span>
+            </div>
+        </nav>
+        <div class="flex-1 px-6 py-6 bg-gradient-to-br from-cyan-50 via-green-50 to-yellow-50">
+            <div class="max-w-5xl mx-auto flex flex-col gap-5">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-purple-100 flex flex-col">
+                    <div class="bg-gradient-to-r from-purple-500 to-purple-600 px-5 py-5 text-center">
+                        <h2 class="font-fredoka text-2xl text-white" style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">SEGIEMPAT</h2>
+                        <p class="text-purple-50 text-sm font-bold mt-1">Persegi Panjang</p>
+                    </div>
+                    <div class="p-6 flex flex-col gap-5">
+<!-- 2. PERSEGI PANJANG -->
+                        <div>
+                            <h3 class="font-fredoka text-xl text-teal-700 mb-2">2. Persegi Panjang</h3>
+                            <p class="text-sm text-gray-700 mb-3">Persegi panjang adalah bangun datar yang mempunyai dua pasang sisi berhadapan sama panjang dan empat sudut siku-siku.<br>Contoh: tas purun</p>
+                            <figure class="bg-white rounded-xl overflow-hidden border-2 border-teal-200 shadow-sm max-w-xs mx-auto">
+                                <img src="/resources/views/learning/low/bangun_datar/persegi_asset/img/23.jpg" alt="Tas purun" class="w-full h-40 object-contain bg-white">
+                                <figcaption class="px-3 py-2 text-xs font-bold text-gray-600 text-center">Tas Purun</figcaption>
+                            </figure>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-teal-50 to-teal-100 border-2 border-teal-200 rounded-2xl p-4">
+                            <h4 class="font-fredoka text-lg text-teal-700 mb-3">Sifat-Sifat Persegi Panjang</h4>
+                            <div class="grid gap-3">
+                                <div class="bg-white rounded-xl p-3 border border-teal-200">
+                                    <p class="text-sm font-bold text-teal-700 mb-2">• 4 titik sudut</p>
+                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/titik_sudut_tas.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                </div>
+                                <div class="bg-white rounded-xl p-3 border border-teal-200">
+                                    <p class="text-sm font-bold text-teal-700 mb-2">• 4 sisi (2 pasang sama panjang)</p>
+                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/tas_purun_4_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                </div>
+                                <div class="bg-white rounded-xl p-3 border border-teal-200">
+                                    <p class="text-sm font-bold text-teal-700 mb-2">• 4 sudut</p>
+                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/tas_purun_4_sudut.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                </div>
+                                <div class="bg-white rounded-xl p-3 border border-teal-200">
+                                    <p class="text-sm font-bold text-teal-700 mb-2">• Simetri lipat (ada 2 simetri lipat)</p>
+                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/tas_purun_simetri_lipat.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                </div>
+                                <div class="bg-white rounded-xl p-3 border border-teal-200">
+                                    <p class="text-sm font-bold text-teal-700 mb-2">• Simetri putar (ada 2 simetri putar)</p>
+                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/tas_purun_simetri_putar.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-fredoka text-xl text-teal-700 mb-2">Keliling Persegi Panjang</h3>
+                            <p class="text-sm text-gray-700 mb-3">Rumus: <strong>K = p + p + l + l</strong> atau <strong>K = 2 × (p + l)</strong></p>
+                            <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/tas_purun_keliling.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-teal-200">
+                        </div>
+
+                        <div class="bg-white rounded-2xl border-2 border-teal-200 overflow-hidden">
+                            <div class="bg-teal-50 px-4 py-2"><p class="font-fredoka text-teal-700">🎮 Coba Jawab! - Keliling Persegi Panjang</p></div>
+                            <div class="p-4 space-y-3 text-sm text-gray-700">
+                                <p>Sebuah jendela pada jukung berbentuk persegi panjang. Panjang 8 cm dan lebar 4 cm. Berapakah kelilingnya?</p>
+                                <figure class="bg-white rounded-xl overflow-hidden border-2 border-teal-200 shadow-sm max-w-xs mx-auto">
+                                    <img src="/resources/views/learning/low/bangun_datar/persegi_asset/img/24.jpg" alt="Jendela jukung" class="w-full h-40 object-contain bg-white">
+                                    <figcaption class="px-3 py-2 text-xs font-bold text-gray-600 text-center">Jendela Jukung</figcaption>
+                                </figure>
+                                <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/jendela_jukung_persegi_panjang.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input id="ans-p5" type="text" placeholder="Contoh: 24" onkeydown="if(event.key==='Enter')periksaSoal('p5')" class="flex-1 rounded-xl border-2 border-teal-200 px-4 py-2.5 text-sm">
+                                    <button onclick="periksaSoal('p5')" class="bg-teal-500 hover:bg-teal-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button>
+                                </div>
+                                <div id="fb-p5"></div>
+                                <div id="sol-p5" class="hidden bg-teal-50/60 rounded-xl p-3">
+                                    <p class="font-bold text-teal-700 mb-1">Pembahasan:</p>
+                                    <p>K = 2 × (8 + 4) = 2 × 12 = <strong>24 cm</strong></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border-2 border-teal-200 overflow-hidden">
+                            <div class="bg-teal-50 px-4 py-2"><p class="font-fredoka text-teal-700">🎮 Coba Jawab! - Mencari Lebar Persegi Panjang</p></div>
+                            <div class="p-4 space-y-3 text-sm text-gray-700">
+                                <p>Sebuah tas purun mempunyai panjang 8 cm dan keliling 24 cm. Berapakah lebarnya?</p>
+                                <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/tas_purun_keliling_cari_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input id="ans-p6" type="text" placeholder="Contoh: 4" onkeydown="if(event.key==='Enter')periksaSoal('p6')" class="flex-1 rounded-xl border-2 border-teal-200 px-4 py-2.5 text-sm">
+                                    <button onclick="periksaSoal('p6')" class="bg-teal-500 hover:bg-teal-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button>
+                                </div>
+                                <div id="fb-p6"></div>
+                                <div id="sol-p6" class="hidden bg-teal-50/60 rounded-xl p-3">
+                                    <p class="font-bold text-teal-700 mb-1">Pembahasan:</p>
+                                    <p>24 = 2 × (8 + lebar) → 12 = 8 + lebar → lebar = <strong>4 cm</strong></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-fredoka text-xl text-teal-700 mb-2">Luas Persegi Panjang</h3>
+                            <p class="text-sm text-gray-700 mb-3">Rumus: <strong>L = panjang × lebar</strong></p>
+                            <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/jendela_jukung_luas.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-teal-200">
+                        </div>
+
+                        <div class="bg-white rounded-2xl border-2 border-teal-200 overflow-hidden">
+                            <div class="bg-teal-50 px-4 py-2"><p class="font-fredoka text-teal-700">🎮 Coba Jawab! - Luas Persegi Panjang</p></div>
+                            <div class="p-4 space-y-3 text-sm text-gray-700">
+                                <p>Kain sasirangan berbentuk persegi panjang, panjang 8 cm, lebar 4 cm. Berapakah luasnya?</p>
+                                <figure class="bg-white rounded-xl overflow-hidden border-2 border-teal-200 shadow-sm max-w-xs mx-auto">
+                                    <img src="/resources/views/learning/low/bangun_datar/persegi_asset/img/25.jpg" alt="Kain sasirangan" class="w-full h-40 object-contain bg-white">
+                                    <figcaption class="px-3 py-2 text-xs font-bold text-gray-600 text-center">Kain Sasirangan</figcaption>
+                                </figure>
+                                <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/kain_sasirangan_persegi_panjang.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input id="ans-p7" type="text" placeholder="Contoh: 32" onkeydown="if(event.key==='Enter')periksaSoal('p7')" class="flex-1 rounded-xl border-2 border-teal-200 px-4 py-2.5 text-sm">
+                                    <button onclick="periksaSoal('p7')" class="bg-teal-500 hover:bg-teal-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button>
+                                </div>
+                                <div id="fb-p7"></div>
+                                <div id="sol-p7" class="hidden bg-teal-50/60 rounded-xl p-3">
+                                    <p class="font-bold text-teal-700 mb-1">Pembahasan:</p>
+                                    <p>L = 8 × 4 = <strong>32 cm²</strong></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border-2 border-teal-200 overflow-hidden">
+                            <div class="bg-teal-50 px-4 py-2"><p class="font-fredoka text-teal-700">🎮 Coba Jawab! - Mencari Panjang Persegi Panjang</p></div>
+                            <div class="p-4 space-y-3 text-sm text-gray-700">
+                                <p>Sebuah tas purun mempunyai luas 32 cm² dan lebar 4 cm. Berapakah panjangnya?</p>
+                                <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/tas_purun_luas_cari_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input id="ans-p8" type="text" placeholder="Contoh: 8" onkeydown="if(event.key==='Enter')periksaSoal('p8')" class="flex-1 rounded-xl border-2 border-teal-200 px-4 py-2.5 text-sm">
+                                    <button onclick="periksaSoal('p8')" class="bg-teal-500 hover:bg-teal-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button>
+                                </div>
+                                <div id="fb-p8"></div>
+                                <div id="sol-p8" class="hidden bg-teal-50/60 rounded-xl p-3">
+                                    <p class="font-bold text-teal-700 mb-1">Pembahasan:</p>
+                                    <p>L = p × l → 32 = p × 4 → p = 32 ÷ 4 = <strong>8 cm</strong></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+
+                                <div class="grid grid-cols-3 items-center gap-3 pb-4">
+                    <div class="justify-self-start">
+                        <a href="/learning/bangun_datar/05/{{ user_id }}/{{ klasifikasi }}" class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md inline-block">⬅️ Halaman Sebelumnya</a>
+                    </div>
+                    <div class="justify-self-center">
+                        <p class="text-gray-400 text-xs font-semibold">© 2026 Edudaya 🔷</p>
+                    </div>
+                    <div class="justify-self-end">
+                        <a href="/learning/bangun_datar/05_3/{{ user_id }}/{{ klasifikasi }}" class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md inline-block">Halaman Selanjutnya ➡️</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>window.JAWABAN_SOAL = {};</script>
+<script src="/resources/views/learning/low/bangun_datar/learning-common.js"></script>
+    <div id="imgLightbox" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[9999] p-4" onclick="document.getElementById('imgLightbox').classList.add('hidden');document.getElementById('imgLightbox').classList.remove('flex');document.body.style.overflow='';">
+        <button class="absolute top-4 right-4 text-white text-3xl" onclick="event.stopPropagation();document.getElementById('imgLightbox').classList.add('hidden');document.getElementById('imgLightbox').classList.remove('flex');document.body.style.overflow='';">&times;</button>
+        <img id="imgLightboxImg" src="" alt="Preview" class="max-w-full max-h-full rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+    </div>
+</body>
+</html>

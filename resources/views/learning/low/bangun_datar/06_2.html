@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Trapesium — Edudaya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+    <script>tailwind.config = { theme: { extend: { fontFamily: { nunito: ['Nunito', 'sans-serif'], fredoka: ['Fredoka One', 'cursive'] } } } }</script>
+</head>
+
+<body class="font-nunito bg-gradient-to-br from-cyan-50 via-green-50 to-yellow-50 min-h-screen flex">
+    <div id="sidebarOverlay" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-[99]"></div>
+    {% include 'learning/partial/sidebar.html' %}
+    <div id="mainArea" class="ml-[280px] flex-1 flex flex-col min-h-screen transition-all duration-300">
+        <nav class="sticky top-0 z-[101] bg-white border-b-2 border-gray-200 px-5 py-3 flex items-center justify-between shadow-sm flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <span id="menuToggleBtn" onclick="toggleSidebar()" class="text-[1.8rem] cursor-pointer text-gray-700 hover:text-emerald-500"><ion-icon name="menu-outline"></ion-icon></span>
+                <span class="font-fredoka text-lg text-gray-700">⬜ Trapesium</span>
+            </div>
+        </nav>
+        <div class="flex-1 px-6 py-6 bg-gradient-to-br from-cyan-50 via-green-50 to-yellow-50">
+            <div class="max-w-5xl mx-auto flex flex-col gap-5">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-purple-100 flex flex-col">
+                    <div class="bg-gradient-to-r from-purple-500 to-purple-600 px-5 py-5 text-center">
+                        <h2 class="font-fredoka text-2xl text-white" style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">SEGIEMPAT</h2>
+                        <p class="text-purple-50 text-sm font-bold mt-1">Trapesium</p>
+                    </div>
+                    <div class="p-6 flex flex-col gap-5">
+<!-- 5. TRAPESIUM -->
+                        <div><h3 class="font-fredoka text-xl text-cyan-700 mb-2">5. Trapesium</h3><p class="text-sm text-gray-700 mb-3">Trapesium adalah bangun datar yang mempunyai sepasang sisi sejajar.<br>Contoh: Atap Rumah Bumbungan Tinggi</p><figure class="bg-white rounded-xl overflow-hidden border-2 border-cyan-200 shadow-sm max-w-xs mx-auto"><img src="/resources/views/learning/low/bangun_datar/persegi_asset/img/31.jpg" alt="Atap Rumah Bumbungan Tinggi" class="w-full h-40 object-contain bg-white"><figcaption class="px-3 py-2 text-xs font-bold text-gray-600 text-center">Atap Rumah Bumbungan Tinggi</figcaption></figure></div>
+                        <div class="bg-gradient-to-br from-cyan-50 to-cyan-100 border-2 border-cyan-200 rounded-2xl p-4"><h4 class="font-fredoka text-lg text-cyan-700 mb-3">Sifat-Sifat Trapesium</h4><div class="grid gap-3"><div class="bg-white rounded-xl p-3 border border-cyan-200"><p class="text-sm font-bold text-cyan-700 mb-2">• 4 titik sudut</p><img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/bubungan_trapesium_empat_titik_sudut.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg"></div><div class="bg-white rounded-xl p-3 border border-cyan-200"><p class="text-sm font-bold text-cyan-700 mb-2">• 4 sisi</p><img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/bubungan_trapesium_empat_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg"></div><div class="bg-white rounded-xl p-3 border border-cyan-200"><p class="text-sm font-bold text-cyan-700 mb-2">• 4 sudut</p><img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/sudut_bumbungan_tinggi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg"></div><div class="bg-white rounded-xl p-3 border border-cyan-200"><p class="text-sm font-bold text-cyan-700 mb-2">• Simetri lipat (ada 1)</p><img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/simetri_lipat_bumbungan_tinggi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg"></div><div class="bg-white rounded-xl p-3 border border-cyan-200"><p class="text-sm font-bold text-cyan-700 mb-2">• Simetri putar (tidak ada)</p><img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/simetri_putar_bumbungan_tinggi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg"></div></div></div>
+                        <div><h3 class="font-fredoka text-xl text-cyan-700 mb-2">Keliling Trapesium</h3><p class="text-sm text-gray-700 mb-3">Rumus: <strong>K = sisi 1 + sisi 2 + sisi 3 + sisi 4</strong></p><img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/keliling_bumbungan_tinggi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-cyan-200"></div>
+                        <div class="bg-white rounded-2xl border-2 border-cyan-200 overflow-hidden"><div class="bg-cyan-50 px-4 py-2"><p class="font-fredoka text-cyan-700">🎮 Coba Jawab! - Keliling Trapesium</p></div><div class="p-4 space-y-3 text-sm text-gray-700"><p>Atap trapesium sisi AB=8 cm, BC=5 cm, CD=6 cm, DA=5 cm. Berapakah kelilingnya?</p><img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/keliling_bumbungan_tinggi_8_5_6_5.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg"><div class="flex flex-col sm:flex-row gap-2"><input id="ans-q5" type="text" placeholder="Contoh: 24" onkeydown="if(event.key==='Enter')periksaSoal('q5')" class="flex-1 rounded-xl border-2 border-cyan-200 px-4 py-2.5 text-sm"><button onclick="periksaSoal('q5')" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div><div id="fb-q5"></div><div id="sol-q5" class="hidden bg-cyan-50/60 rounded-xl p-3"><p class="font-bold text-cyan-700 mb-1">Pembahasan:</p><p>K = 8 + 5 + 6 + 5 = <strong>24 cm</strong></p></div></div></div>
+                        <div class="bg-white rounded-2xl border-2 border-cyan-200 overflow-hidden"><div class="bg-cyan-50 px-4 py-2"><p class="font-fredoka text-cyan-700">🎮 Coba Jawab! - Mencari Sisi Trapesium</p></div><div class="p-4 space-y-3 text-sm text-gray-700"><p>Keliling trapesium 18 m, tiga sisi 6 m, 4 m, 3 m. Berapakah sisi keempat?</p><img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/keliling_atap_rumah_6_4_3.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg"><div class="flex flex-col sm:flex-row gap-2"><input id="ans-q6" type="text" placeholder="Contoh: 5" onkeydown="if(event.key==='Enter')periksaSoal('q6')" class="flex-1 rounded-xl border-2 border-cyan-200 px-4 py-2.5 text-sm"><button onclick="periksaSoal('q6')" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div><div id="fb-q6"></div><div id="sol-q6" class="hidden bg-cyan-50/60 rounded-xl p-3"><p class="font-bold text-cyan-700 mb-1">Pembahasan:</p><p>18 = 6 + 4 + 3 + DA → DA = <strong>5 m</strong></p></div></div></div>
+                        <div><h3 class="font-fredoka text-xl text-cyan-700 mb-2">Luas Trapesium</h3><p class="text-sm text-gray-700 mb-3">Rumus: <strong>L = ½ × (a + b) × t</strong></p><img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/luas_bumbungan_tinggi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-cyan-200"></div>
+                        <div class="bg-white rounded-2xl border-2 border-cyan-200 overflow-hidden"><div class="bg-cyan-50 px-4 py-2"><p class="font-fredoka text-cyan-700">🎮 Coba Jawab! - Luas Trapesium</p></div><div class="p-4 space-y-3 text-sm text-gray-700"><p>Sisi sejajar 4 m dan 10 m, tinggi 3 m. Berapakah luasnya?</p><figure class="bg-white rounded-xl overflow-hidden border-2 border-cyan-200 shadow-sm max-w-xs mx-auto"><img src="/resources/views/learning/low/bangun_datar/persegi_asset/img/32.jpg" alt="Atap Rumah Bumbungan Tinggi" class="w-full h-40 object-contain bg-white"><figcaption class="px-3 py-2 text-xs font-bold text-gray-600 text-center">Atap Rumah Bumbungan Tinggi</figcaption></figure><img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/luas_atap_4_10_3.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg"><div class="flex flex-col sm:flex-row gap-2"><input id="ans-q7" type="text" placeholder="Contoh: 21" onkeydown="if(event.key==='Enter')periksaSoal('q7')" class="flex-1 rounded-xl border-2 border-cyan-200 px-4 py-2.5 text-sm"><button onclick="periksaSoal('q7')" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div><div id="fb-q7"></div><div id="sol-q7" class="hidden bg-cyan-50/60 rounded-xl p-3"><p class="font-bold text-cyan-700 mb-1">Pembahasan:</p><p>L = ½ × (4+10) × 3 = ½ × 14 × 3 = <strong>21 m²</strong></p></div></div></div>
+                        <div class="bg-white rounded-2xl border-2 border-cyan-200 overflow-hidden"><div class="bg-cyan-50 px-4 py-2"><p class="font-fredoka text-cyan-700">🎮 Coba Jawab! - Mencari Tinggi Trapesium</p></div><div class="p-4 space-y-3 text-sm text-gray-700"><p>Luas 28 cm², sisi sejajar 8 cm dan 6 cm. Berapakah tingginya?</p><div class="flex flex-col sm:flex-row gap-2"><input id="ans-q8" type="text" placeholder="Contoh: 4" onkeydown="if(event.key==='Enter')periksaSoal('q8')" class="flex-1 rounded-xl border-2 border-cyan-200 px-4 py-2.5 text-sm"><button onclick="periksaSoal('q8')" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaan</button></div><div id="fb-q8"></div><div id="sol-q8" class="hidden bg-cyan-50/60 rounded-xl p-3"><p class="font-bold text-cyan-700 mb-1">Pembahasan:</p><p>28 = ½ × (14) × t → 28 = 7 × t → t = <strong>4 cm</strong></p></div></div></div>
+
+                        
+                    </div>
+                </div>
+
+                                <div class="grid grid-cols-3 items-center gap-3 pb-4">
+                    <div class="justify-self-start">
+                        <a href="/learning/bangun_datar/06/{{ user_id }}/{{ klasifikasi }}" class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md inline-block">⬅️ Halaman Sebelumnya</a>
+                    </div>
+                    <div class="justify-self-center">
+                        <p class="text-gray-400 text-xs font-semibold">© 2026 Edudaya 🔷</p>
+                    </div>
+                    <div class="justify-self-end">
+                        <a href="/learning/bangun_datar/06_3/{{ user_id }}/{{ klasifikasi }}" class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md inline-block">Halaman Selanjutnya ➡️</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>window.JAWABAN_SOAL = {};</script>
+<script src="/resources/views/learning/low/bangun_datar/learning-common.js"></script>
+    <div id="imgLightbox" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[9999] p-4" onclick="document.getElementById('imgLightbox').classList.add('hidden');document.getElementById('imgLightbox').classList.remove('flex');document.body.style.overflow='';">
+        <button class="absolute top-4 right-4 text-white text-3xl" onclick="event.stopPropagation();document.getElementById('imgLightbox').classList.add('hidden');document.getElementById('imgLightbox').classList.remove('flex');document.body.style.overflow='';">&times;</button>
+        <img id="imgLightboxImg" src="" alt="Preview" class="max-w-full max-h-full rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+    </div>
+</body>
+</html>

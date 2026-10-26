@@ -240,6 +240,18 @@ def can_access_bangun_datar(user_id, klasifikasi):
         klasifikasi=klasifikasi,
     )
 
+
+
+def can_access_bangun_datar_1d(user_id, klasifikasi):
+    guard = _guard(user_id)
+    if guard:
+        return guard
+    if klasifikasi not in (0, 1):
+        abort(404)
+    folder = _folder(klasifikasi)
+    return render_template(f"learning/{folder}/bangun_datar/01_d.html", user_id=user_id, klasifikasi=klasifikasi)
+
+
 def can_access_bangun_datar_2(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:
@@ -301,6 +313,49 @@ def can_access_bangun_datar_6(user_id, klasifikasi):
         klasifikasi=klasifikasi,
     )
     
+
+
+def can_access_bangun_datar_5_2(user_id, klasifikasi):
+    guard = _guard(user_id)
+    if guard:
+        return guard
+    if klasifikasi not in (0, 1):
+        abort(404)
+    folder = _folder(klasifikasi)
+    return render_template(f"learning/{folder}/bangun_datar/05_2.html", user_id=user_id, klasifikasi=klasifikasi)
+
+
+def can_access_bangun_datar_5_3(user_id, klasifikasi):
+    guard = _guard(user_id)
+    if guard:
+        return guard
+    if klasifikasi not in (0, 1):
+        abort(404)
+    folder = _folder(klasifikasi)
+    return render_template(f"learning/{folder}/bangun_datar/05_3.html", user_id=user_id, klasifikasi=klasifikasi)
+
+
+def can_access_bangun_datar_6_2(user_id, klasifikasi):
+    guard = _guard(user_id)
+    if guard:
+        return guard
+    if klasifikasi not in (0, 1):
+        abort(404)
+    folder = _folder(klasifikasi)
+    return render_template(f"learning/{folder}/bangun_datar/06_2.html", user_id=user_id, klasifikasi=klasifikasi)
+
+
+def can_access_bangun_datar_6_3(user_id, klasifikasi):
+    guard = _guard(user_id)
+    if guard:
+        return guard
+    if klasifikasi not in (0, 1):
+        abort(404)
+    folder = _folder(klasifikasi)
+    return render_template(f"learning/{folder}/bangun_datar/06_3.html", user_id=user_id, klasifikasi=klasifikasi)
+
+
+
 def can_access_bangun_datar_quiz(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:

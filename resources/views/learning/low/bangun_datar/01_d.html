@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Jenis-Jenis Bangun Datar — Edudaya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+    <script>tailwind.config = { theme: { extend: { fontFamily: { nunito: ['Nunito', 'sans-serif'], fredoka: ['Fredoka One', 'cursive'] } } } }</script>
+</head>
+
+<body class="font-nunito bg-gradient-to-br from-cyan-50 via-green-50 to-yellow-50 min-h-screen flex">
+    <div id="sidebarOverlay" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-[99]"></div>
+    {% include 'learning/partial/sidebar.html' %}
+    <div id="mainArea" class="ml-[280px] flex-1 flex flex-col min-h-screen transition-all duration-300">
+        <nav class="sticky top-0 z-[101] bg-white border-b-2 border-gray-200 px-5 py-3 flex items-center justify-between shadow-sm flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <span id="menuToggleBtn" onclick="toggleSidebar()" class="text-[1.8rem] cursor-pointer text-gray-700 hover:text-emerald-500"><ion-icon name="menu-outline"></ion-icon></span>
+                <span class="font-fredoka text-lg text-gray-700">🔷 Bangun Datar</span>
+            </div>
+        </nav>
+        <div class="flex-1 px-6 py-6 bg-gradient-to-br from-cyan-50 via-green-50 to-yellow-50">
+            <div class="max-w-5xl mx-auto flex flex-col gap-5">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-purple-100 flex flex-col">
+                    <div class="bg-gradient-to-r from-purple-500 to-purple-600 px-5 py-5 text-center">
+                        <h2 class="font-fredoka text-2xl text-white" style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">BANGUN DATAR</h2>
+                        <p class="text-purple-50 text-sm font-bold mt-1">Jenis-Jenis Bangun Datar</p>
+                    </div>
+                    <div class="p-6 flex flex-col gap-5">
+<!-- ===== D. JENIS-JENIS BANGUN DATAR ===== -->
+                                <div id="jenis-jenis-bangun-datar">
+                                    <h3 class="font-fredoka text-xl text-green-600 mb-1 flex items-center gap-2">🔺 D.
+                                        Jenis-Jenis Bangun Datar (Menu)</h3>
+                                    <p class="text-sm text-gray-600 mb-3">Sekarang kita sudah mengenal bagian-bagian bangun datar. Ada sisi, titik sudut, sudut, simetri lipat, dan simetri putar.</p>
+                                    <div class="bg-gradient-to-br from-green-50 to-emerald-100 border-2 border-green-300 rounded-2xl p-4">
+                                        <p class="text-sm leading-relaxed text-gray-700 mb-3">
+                                            Sekarang, yuk kita mengenal jenis-jenis bangun datar!<br><br>
+                                            Ada dua kelompok bangun datar yang akan kita pelajari:
+                                        </p>
+                                        <div class="grid grid-cols-2 gap-2 mb-3">
+                                            <div class="flex items-center gap-2 bg-white border-2 border-green-200 rounded-xl px-3 py-2.5 font-bold text-sm text-gray-700">
+                                                <span class="text-xl">🔺</span> <span>Segitiga</span>
+                                            </div>
+                                            <div class="flex items-center gap-2 bg-white border-2 border-green-200 rounded-xl px-3 py-2.5 font-bold text-sm text-gray-700">
+                                                <span class="text-xl">⬜</span> <span>Segiempat</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-sm leading-relaxed text-gray-700">
+                                            Setiap bangun memiliki bentuk dan sifat yang berbeda.<br>
+                                            Kita juga dapat menghitung keliling dan luas setiap bangun.<br><br>
+                                            Yuk, kita pelajari satu per satu! 😊
+                                        </p>
+                                    </div>
+                                </div>
+
+                <div class="grid grid-cols-3 items-center gap-3 pb-4">
+                    <div class="justify-self-start">
+                        <a href="/learning/bangun_datar/{{ user_id }}/{{ klasifikasi }}" class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md inline-block">⬅️ Halaman Sebelumnya</a>
+                    </div>
+                    <div class="justify-self-center">
+                        <p class="text-gray-400 text-xs font-semibold">© 2026 Edudaya 🔷</p>
+                    </div>
+                    <div class="justify-self-end">
+                        <a href="/learning/bangun_datar/02/{{ user_id }}/{{ klasifikasi }}" class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md inline-block">Halaman Selanjutnya ➡️</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/resources/views/learning/low/bangun_datar/learning-common.js"></script>
+    <div id="imgLightbox" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[9999] p-4" onclick="document.getElementById('imgLightbox').classList.add('hidden');document.getElementById('imgLightbox').classList.remove('flex');document.body.style.overflow='';">
+        <button class="absolute top-4 right-4 text-white text-3xl" onclick="event.stopPropagation();document.getElementById('imgLightbox').classList.add('hidden');document.getElementById('imgLightbox').classList.remove('flex');document.body.style.overflow='';">&times;</button>
+        <img id="imgLightboxImg" src="" alt="Preview" class="max-w-full max-h-full rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+    </div>
+</body>
+</html>

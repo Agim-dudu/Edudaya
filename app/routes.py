@@ -228,6 +228,11 @@ def _block_student_if_waiting_analysis():
 def learning_bangun_datar(user_id, klasifikasi):
     return can_access_bangun_datar(user_id, klasifikasi)
 
+@app.route("/learning/bangun_datar/01_d/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bangun_datar_1d(user_id, klasifikasi):
+    return can_access_bangun_datar_1d(user_id, klasifikasi)
+
 @app.route("/learning/bangun_datar/02/<int:user_id>/<int:klasifikasi>", methods=["GET"])
 @login_required
 def learning_bangun_datar_2(user_id, klasifikasi):
@@ -252,6 +257,29 @@ def learning_bangun_datar_5(user_id, klasifikasi):
 @login_required
 def learning_bangun_datar_6(user_id, klasifikasi):
     return can_access_bangun_datar_6(user_id, klasifikasi)
+@app.route("/learning/bangun_datar/05_2/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bangun_datar_5_2(user_id, klasifikasi):
+    return can_access_bangun_datar_5_2(user_id, klasifikasi)
+
+
+@app.route("/learning/bangun_datar/05_3/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bangun_datar_5_3(user_id, klasifikasi):
+    return can_access_bangun_datar_5_3(user_id, klasifikasi)
+
+
+@app.route("/learning/bangun_datar/06_2/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bangun_datar_6_2(user_id, klasifikasi):
+    return can_access_bangun_datar_6_2(user_id, klasifikasi)
+
+
+@app.route("/learning/bangun_datar/06_3/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bangun_datar_6_3(user_id, klasifikasi):
+    return can_access_bangun_datar_6_3(user_id, klasifikasi)
+
 
 @app.route("/quiz/bangun_datar/<int:user_id>/<int:klasifikasi>", methods=["GET"])
 @login_required
