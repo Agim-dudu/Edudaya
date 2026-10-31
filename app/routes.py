@@ -233,6 +233,14 @@ def learning_bangun_datar(user_id, klasifikasi):
 def learning_bangun_datar_1d(user_id, klasifikasi):
     return can_access_bangun_datar_1d(user_id, klasifikasi)
 
+
+@app.route("/learning/bangun_datar/01/<int:user_id>/<int:klasifikasi>", methods=["GET"])
+@login_required
+def learning_bangun_datar_1(user_id, klasifikasi):
+    from app.controller.LearningController import can_access_bangun_datar
+    return can_access_bangun_datar(user_id, klasifikasi)
+
+
 @app.route("/learning/bangun_datar/02/<int:user_id>/<int:klasifikasi>", methods=["GET"])
 @login_required
 def learning_bangun_datar_2(user_id, klasifikasi):

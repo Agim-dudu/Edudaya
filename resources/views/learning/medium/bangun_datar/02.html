@@ -9,1042 +9,340 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap"
-        rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        nunito: ['Nunito', 'sans-serif'],
-                        fredoka: ['Fredoka One', 'cursive'],
-                    },
-                    animation: {
-                        'bounce-slow': 'bounce 2s ease-in-out infinite',
-                        'float': 'floatUp 8s ease-in-out infinite',
-                        'star-pop': 'starPop 0.5s cubic-bezier(0.34,1.56,0.64,1)',
-                        'soal-in': 'soalIn 0.35s ease',
-                        'feedback-in': 'feedbackIn 0.4s cubic-bezier(0.34,1.56,0.64,1)',
-                        'pop-in': 'popIn 0.5s cubic-bezier(0.34,1.56,0.64,1)',
-                        'confetti-fall': 'confettiFall linear forwards',
-                        'shake': 'wrongShake 0.4s ease',
-                        'pulse-correct': 'correctPulse 0.5s ease',
-                        'spin-slow': 'spin 10s linear infinite',
-                    },
-                    keyframes: {
-                        floatUp: {
-                            '0%,100%': {
-                                transform: 'translateY(0px) rotate(0deg)'
-                            },
-                            '50%': {
-                                transform: 'translateY(-20px) rotate(10deg)'
-                            },
-                        },
-                        starPop: {
-                            '0%': {
-                                transform: 'scale(0)'
-                            },
-                            '60%': {
-                                transform: 'scale(1.4)'
-                            },
-                            '100%': {
-                                transform: 'scale(1)'
-                            },
-                        },
-                        soalIn: {
-                            '0%': {
-                                opacity: '0',
-                                transform: 'translateX(24px)'
-                            },
-                            '100%': {
-                                opacity: '1',
-                                transform: 'translateX(0)'
-                            },
-                        },
-                        feedbackIn: {
-                            '0%': {
-                                transform: 'scale(0.85)',
-                                opacity: '0'
-                            },
-                            '100%': {
-                                transform: 'scale(1)',
-                                opacity: '1'
-                            },
-                        },
-                        popIn: {
-                            '0%': {
-                                transform: 'scale(0.5)',
-                                opacity: '0'
-                            },
-                            '100%': {
-                                transform: 'scale(1)',
-                                opacity: '1'
-                            },
-                        },
-                        confettiFall: {
-                            '0%': {
-                                transform: 'translateY(0) rotate(0deg)',
-                                opacity: '1'
-                            },
-                            '100%': {
-                                transform: 'translateY(100vh) rotate(720deg)',
-                                opacity: '0'
-                            },
-                        },
-                        wrongShake: {
-                            '0%,100%': {
-                                transform: 'translateX(0)'
-                            },
-                            '25%': {
-                                transform: 'translateX(-8px)'
-                            },
-                            '75%': {
-                                transform: 'translateX(8px)'
-                            },
-                        },
-                        correctPulse: {
-                            '0%': {
-                                transform: 'scale(1)'
-                            },
-                            '50%': {
-                                transform: 'scale(1.02)'
-                            },
-                            '100%': {
-                                transform: 'scale(1)'
-                            },
-                        },
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+    <script>tailwind.config = { theme: { extend: { fontFamily: { nunito: ['Nunito', 'sans-serif'], fredoka: ['Fredoka One', 'cursive'] } } } }</script>
 </head>
 
 <body class="font-nunito bg-gradient-to-br from-cyan-50 via-green-50 to-yellow-50 min-h-screen flex">
-
-    <!-- Sidebar Overlay (mobile) -->
     <div id="sidebarOverlay" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/40 z-[99]"></div>
-
-    <!-- Floating decorations -->
-    <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0"
-        style="top:18%;left:60%;animation-delay:0s">🔷</div>
-    <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0"
-        style="top:55%;left:75%;animation-delay:1.5s">🔺</div>
-    <div class="fixed pointer-events-none text-3xl animate-float opacity-20 z-0"
-        style="top:78%;left:85%;animation-delay:0.8s">⬜</div>
-
-    <!-- ===== SIDEBAR ===== -->
     {% include 'learning/partial/sidebar.html' %}
-
-
-    <!-- ===== MAIN AREA ===== -->
     <div id="mainArea" class="ml-[280px] flex-1 flex flex-col min-h-screen transition-all duration-300">
-
-        <!-- NAVBAR -->
-        <nav
-            class="sticky top-0 z-[101] bg-white border-b-2 border-gray-200 px-5 py-3 flex items-center justify-between shadow-sm flex-shrink-0">
+        <nav class="sticky top-0 z-[101] bg-white border-b-2 border-gray-200 px-5 py-3 flex items-center justify-between shadow-sm flex-shrink-0">
             <div class="flex items-center gap-3">
-                <span id="menuToggleBtn" onclick="toggleSidebar()"
-                    class="text-[1.8rem] cursor-pointer text-gray-700 hover:text-emerald-500 transition-colors duration-200 flex items-center">
-                    <ion-icon name="menu-outline"></ion-icon>
-                </span>
-                <span class="font-fredoka text-lg text-gray-700">🔺 Segitiga Sama Sisi</span>
+                <span id="menuToggleBtn" onclick="toggleSidebar()" class="text-[1.8rem] cursor-pointer text-gray-700 hover:text-emerald-500"><ion-icon name="menu-outline"></ion-icon></span>
+                <span class="font-fredoka text-lg text-gray-700">🔷 Bangun Datar</span>
             </div>
         </nav>
-
-        <!-- CONTENT SCROLL AREA -->
-        <div class="flex-1 px-6 py-6 bg-gradient-to-br from-cyan-50 via-green-50 to-yellow-50">
+        <div class="flex-1 px-6 py-6">
             <div class="max-w-5xl mx-auto flex flex-col gap-5">
-                <div class="grid grid-cols-1 gap-5">
-
-                    <!-- Flash Message Section -->
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                    <div id="flash-messages" class="mb-4 space-y-2 transition duration-300">
-                        {% for category, message in messages %}
-                        <div
-                            class="text-white px-4 py-2 rounded-lg shadow-md animate-pulse {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-red-500{% else %}bg-gray-500{% endif %}">
-                            {{ message }}
-                        </div>
-                        {% endfor %}
+                <div class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-emerald-100">
+                    <div class="bg-gradient-to-r from-emerald-500 to-green-600 px-5 py-4 text-center">
+                        <h2 class="font-fredoka text-2xl text-white">E. SEGITIGA</h2>
                     </div>
-                    {% endif %}
-                    {% endwith %}
+                    <div class="p-6 flex flex-col gap-6">
+                        <div>
+                            <h3 class="font-fredoka text-xl text-emerald-700 mb-3">1. SEGITIGA SAMA SISI</h3>
+                            <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 mb-4">
+                                <p class="font-bold text-emerald-800 mb-2">(Menu Mengenal Konsep)</p>
+                                <p class="text-sm text-gray-700">Segitiga sama sisi adalah segitiga yang mempunyai <span class="font-bold">tiga sisi sama panjang</span>.</p>
+                                <p class="text-sm text-gray-700 mt-2">Contoh budaya: Wadai lupis berbentuk segitiga sama sisi.</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+                                    <img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/100000000000029C0000029C39E7C7CE.jpg" class="w-full h-48 object-contain rounded-xl bg-white">
+                                    <img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/100000000000029F0000029FC74FD5C0.png" class="w-full h-48 object-contain rounded-xl bg-white">
+                                </div>
+                            </div>
+                            <div class="bg-white border-2 border-emerald-200 rounded-2xl p-4 mb-4">
+                                <p class="font-bold text-emerald-700 mb-3">(Menu Sifat-sifat Segitiga Sama Sisi)</p>
+                                <div class="space-y-4 text-sm text-gray-700">
+                                    <div><p class="font-semibold">1. Mempunyai 3 titik sudut</p><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/10000000000003C6000003597F8AA5EB.png" class="w-full max-w-md mx-auto rounded-xl mt-2"></div>
+                                    <div><p class="font-semibold">2. Mempunyai 3 sisi. Ketiga sisi sama panjang.</p><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/10000000000003AE000003438B19204F.png" class="w-full max-w-md mx-auto rounded-xl mt-2"><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/1000000000000431000003B87DBEADBF.png" class="w-full max-w-md mx-auto rounded-xl mt-2"></div>
+                                    <div><p class="font-semibold">3. Mempunyai 3 sudut</p><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/1000000000000351000002F121F38BC8.png" class="w-full max-w-md mx-auto rounded-xl mt-2"></div>
+                                    <div><p class="font-semibold">4. Mempunyai 3 simetri lipat</p><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/10000000000004DF0000033F7481997C.png" class="w-full max-w-md mx-auto rounded-xl mt-2"></div>
+                                    <div><p class="font-semibold">5. Mempunyai 3 simetri putar</p><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/1000000000000598000003BBDE2BD9A2.png" class="w-full max-w-md mx-auto rounded-xl mt-2"></div>
+                                </div>
+                            </div>
+                            <div class="bg-white border-2 border-emerald-200 rounded-2xl p-4 mb-4">
+                                <p class="font-bold text-emerald-700 mb-2">(Menu Keliling Segitiga Sama Sisi)</p>
+                                <p class="text-sm text-gray-700 mb-2">Keliling adalah panjang seluruh sisi yang mengelilingi bangun.</p>
+                                <p class="text-sm text-gray-700 mb-2"><span class="font-bold">Rumus:</span> K = sisi + sisi + sisi atau K = 3 × sisi</p>
+                                <img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/10000000000003BD0000033B205558E0.png" class="w-full max-w-md mx-auto rounded-xl mb-3">
+                                <div class="space-y-3">
+                                    <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200"><p class="text-sm text-gray-700">Contoh: Setiap sisi 5 cm, K = 5+5+5 = 15 cm. Jika keliling 21 cm, panjang sisi = 21 ÷ 3 = 7 cm.</p></div>
 
-                    <!-- ===== MATERI CARD: Segitiga Sama Sisi ===== -->
-                    <div
-                        class="bg-white rounded-lg shadow-md overflow-hidden border-2 border-blue-100 flex flex-col">
-                        <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-5 py-5 text-center">
-                            <h2 class="font-fredoka text-2xl text-white"
-                                style="text-shadow:2px 2px 0 rgba(0,0,0,0.15)">
-                                🔺 1. Segitiga Sama Sisi</h2>
+                            <div class="bg-white rounded-2xl border-2 border-emerald-200 overflow-hidden">
+                                <div class="bg-emerald-50 px-4 py-2"><p class="font-fredoka text-emerald-700">🎮 Coba Jawab! - Keliling Segitiga Sama Sisi</p></div>
+                                <div class="p-4 space-y-3 text-sm text-gray-700">
+                                    <p>Ibu membuat wadai lupis berbentuk segitiga sama sisi. Setiap sisinya panjangnya 5 cm. Berapakah keliling wadai lupis tersebut?</p>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <input id="ans-m2a" type="text" placeholder="Contoh: 15" onkeydown="if(event.key==='Enter')periksaSoal('m2a')" class="flex-1 rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none">
+                                        <button onclick="periksaSoal('m2a')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button>
+                                    </div>
+                                    <div id="fb-m2a"></div>
+                                    <div id="sol-m2a" class="hidden bg-emerald-50/60 rounded-xl p-3">
+                                        <p class="font-bold text-emerald-700 mb-1">Pembahasan:</p>
+                                        <p>K = 5 + 5 + 5 = <strong>15 cm</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-2xl border-2 border-emerald-200 overflow-hidden">
+                                <div class="bg-emerald-50 px-4 py-2"><p class="font-fredoka text-emerald-700">🎮 Coba Jawab! - Mencari Sisi</p></div>
+                                <div class="p-4 space-y-3 text-sm text-gray-700">
+                                    <p>Keliling suatu segitiga sama sisi adalah 21 cm. Berapakah panjang setiap sisinya?</p>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <input id="ans-m2b" type="text" placeholder="Contoh: 7" onkeydown="if(event.key==='Enter')periksaSoal('m2b')" class="flex-1 rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none">
+                                        <button onclick="periksaSoal('m2b')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button>
+                                    </div>
+                                    <div id="fb-m2b"></div>
+                                    <div id="sol-m2b" class="hidden bg-emerald-50/60 rounded-xl p-3">
+                                        <p class="font-bold text-emerald-700 mb-1">Pembahasan:</p>
+                                        <p>sisi = 21 ÷ 3 = <strong>7 cm</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                                </div>
+                            </div>
+                            <div class="bg-white border-2 border-emerald-200 rounded-2xl p-4">
+                                <p class="font-bold text-emerald-700 mb-2">(Menu Luas Segitiga Sama Sisi)</p>
+                                <p class="text-sm text-gray-700 mb-2">Luas adalah besar daerah yang berada di dalam bangun.</p>
+                                <p class="text-sm text-gray-700 mb-2"><span class="font-bold">Rumus:</span> L = ½ × alas × tinggi</p>
+                                <img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/100000000000036C0000036C98D5CA3F.png" class="w-full max-w-md mx-auto rounded-xl mb-3">
+                                <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200"><p class="text-sm text-gray-700">Contoh: Alas 6 cm, tinggi 4 cm, L = ½ × 6 × 4 = 12 cm².</p></div>
+
+                            <div class="bg-white rounded-2xl border-2 border-emerald-200 overflow-hidden mt-4">
+                                <div class="bg-emerald-50 px-4 py-2"><p class="font-fredoka text-emerald-700">🎮 Coba Jawab! - Luas Segitiga Sama Sisi</p></div>
+                                <div class="p-4 space-y-3 text-sm text-gray-700">
+                                    <p>Sebuah wadai berbentuk segitiga mempunyai alas <strong>6 cm</strong> dan tinggi <strong>4 cm</strong>. Berapakah luasnya?</p>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <input id="ans-m2c" type="text" placeholder="Contoh: 12" onkeydown="if(event.key==='Enter')periksaSoal('m2c')" class="flex-1 rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none">
+                                        <button onclick="periksaSoal('m2c')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button>
+                                    </div>
+                                    <div id="fb-m2c"></div>
+                                    <div id="sol-m2c" class="hidden bg-emerald-50/60 rounded-xl p-3">
+                                        <p class="font-bold text-emerald-700 mb-1">Pembahasan:</p>
+                                        <p>L = ½ × alas × tinggi = ½ × 6 × 4 = <strong>12 cm²</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </div>
                         </div>
 
-                        <div class="p-6 flex flex-col gap-5 flex-1">
-<div class="source-gallery rounded-2xl border border-blue-100 bg-blue-50/60 p-3">
-                                <p class="text-xs font-bold text-gray-600 mb-2">Segitiga sama sisi</p>
-                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2"><figure class="bg-white rounded-xl border border-blue-100 p-2 shadow-sm">
-                                    <img src="/resources/views/learning/medium/bangun_datar/img/dokumen/image21.jpeg" alt="Ilustrasi segitiga sama sisi dari materi sumber" loading="lazy" class="w-full h-28 sm:h-36 object-contain rounded-lg">
-                                </figure>
-<figure class="bg-white rounded-xl border border-blue-100 p-2 shadow-sm">
-                                    <img src="/resources/views/learning/medium/bangun_datar/img/dokumen/image23.jpg" alt="Ilustrasi segitiga sama sisi dari materi sumber" loading="lazy" class="w-full h-28 sm:h-36 object-contain rounded-lg">
-                                </figure>
+                        <div>
+                            <h3 class="font-fredoka text-xl text-emerald-700 mb-3">2. SEGITIGA SAMA KAKI</h3>
+                            <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 mb-4">
+                                <p class="font-bold text-emerald-800 mb-2">(Menu Mengenal Konsep)</p>
+                                <p class="text-sm text-gray-700">Segitiga sama kaki mempunyai dua sisi yang sama panjang.</p>
+                                <p class="text-sm text-gray-700 mt-2">Contoh: Tiang jembatan berbentuk segitiga sama kaki.</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+                                    <img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/10000000000002E7000002E79C7C9A19.png" class="w-full h-48 object-contain rounded-xl bg-white">
+                                    <img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/100000000000024B0000024610C18F0C.png" class="w-full h-48 object-contain rounded-xl bg-white">
+                                </div>
+                            </div>
+                            <div class="bg-white border-2 border-emerald-200 rounded-2xl p-4 mb-4">
+                                <p class="font-bold text-emerald-700 mb-3">(Menu Sifat-sifat Segitiga Sama Kaki)</p>
+                                <div class="space-y-4 text-sm text-gray-700">
+                                    <div><p class="font-semibold">1. Mempunyai 3 titik sudut</p><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/10000000000003610000036180D08D0E.jpg" class="w-full max-w-md mx-auto rounded-xl mt-2"></div>
+                                    <div><p class="font-semibold">2. Mempunyai 3 sisi, dua sisi sama panjang</p><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/1000000000000481000003BB558543E4.jpg" class="w-full max-w-md mx-auto rounded-xl mt-2"><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/10000000000004100000032D220997C4.jpg" class="w-full max-w-md mx-auto rounded-xl mt-2"></div>
+                                    <div><p class="font-semibold">3. Mempunyai 3 sudut</p><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/10000000000004AA000003BBE815049F.jpg" class="w-full max-w-md mx-auto rounded-xl mt-2"></div>
+                                    <div><p class="font-semibold">4. Mempunyai 1 simetri lipat</p><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/1000000000000427000002C4822F4A9C.png" class="w-full max-w-md mx-auto rounded-xl mt-2"></div>
+                                    <div><p class="font-semibold">5. Tidak mempunyai simetri putar selain posisi awal</p><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/10000000000004A50000052B586D69DB.png" class="w-full max-w-md mx-auto rounded-xl mt-2"></div>
+                                </div>
+                            </div>
+                            <div class="bg-white border-2 border-emerald-200 rounded-2xl p-4 mb-4">
+                                <p class="font-bold text-emerald-700 mb-2">Keliling Segitiga Sama Kaki</p>
+                                <p class="text-sm text-gray-700 mb-2"><span class="font-bold">Rumus:</span> K = sisi + sisi + sisi</p>
+                                <img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/1000000000000402000003FC69698AB7.png" class="w-full max-w-md mx-auto rounded-xl mb-3">
+                                <p class="text-sm text-gray-700">Contoh: Dua sisi 8 m, sisi lain 6 m, K = 8+8+6 = 22 m. Jika keliling 26 cm, BC=8 cm, AB=AC sama, AB = (26-8)÷2 = 9 cm.</p>
+
+                            <div class="bg-white rounded-2xl border-2 border-emerald-200 overflow-hidden mt-4">
+                                <div class="bg-emerald-50 px-4 py-2"><p class="font-fredoka text-emerald-700">🎮 Coba Jawab! - Keliling Segitiga Sama Kaki</p></div>
+                                <div class="p-4 space-y-3 text-sm text-gray-700">
+                                    <p>Sebuah segitiga sama kaki memiliki dua sisi sama panjang yaitu 8 cm, sisi alas 6 cm. Berapakah kelilingnya?</p>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <input id="ans-m2d" type="text" placeholder="Contoh: 22" onkeydown="if(event.key==='Enter')periksaSoal('m2d')" class="flex-1 rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none">
+                                        <button onclick="periksaSoal('m2d')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button>
+                                    </div>
+                                    <div id="fb-m2d"></div>
+                                    <div id="sol-m2d" class="hidden bg-emerald-50/60 rounded-xl p-3">
+                                        <p class="font-bold text-emerald-700 mb-1">Pembahasan:</p>
+                                        <p>K = 8 + 8 + 6 = <strong>22 cm</strong></p>
+                                    </div>
                                 </div>
                             </div>
 
-
-
-                            <!-- Pengenalan -->
-                            <div>
-                                <h3 class="font-fredoka text-xl text-blue-600 mb-3 flex items-center gap-2">🍡 Mari
-                                    Mengamati!</h3>
-                                <p class="text-sm leading-relaxed text-gray-700 mb-3">Perhatikan jajanan khas Banjar
-                                    pada gambar.</p>
-                                <figure
-                                    class="bg-white rounded-xl overflow-hidden border-2 border-blue-200 shadow-sm hover:shadow-md transition-shadow duration-200 max-w-xs mx-auto">
-                                    <img src="/resources/views/learning/medium/bangun_datar/img/2.jpg"
-                                        alt="Wadai Lupis" class="w-full h-40 object-cover">
-                                    <figcaption
-                                        class="px-3 py-2 text-xs font-bold text-gray-600 text-center">🍡 Wadai
-                                        Lupis — jajanan khas Banjar</figcaption>
-                                </figure>
-                                <p class="text-sm leading-relaxed text-gray-700 mt-3">Wadai lupis berbentuk <strong
-                                        class="text-blue-700">segitiga sama sisi</strong>.</p>
-                            </div>
-
-                            <!-- Apa itu Segitiga Sama Sisi -->
-                            <div>
-                                <h3 class="font-fredoka text-xl text-blue-600 mb-3 flex items-center gap-2">❓ Apa
-                                    itu Segitiga Sama Sisi?</h3>
-                                <div
-                                    class="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-4 flex flex-col gap-3">
-
-                                    <p class="text-sm leading-relaxed text-gray-700"><strong
-                                            class="text-blue-700">Segitiga sama sisi</strong> adalah segitiga yang
-                                        mempunyai <strong>tiga sisi sama panjang</strong>.</p>
-
-                                    <figure class="bg-white rounded-xl p-3 border-2 border-dashed border-blue-300">
-                                        <svg viewBox="0 0 200 170" class="w-full max-w-[220px] mx-auto h-auto">
-                                            <polygon points="100,20 30,140 170,140" fill="#DBEAFE" stroke="#2563EB"
-                                                stroke-width="3" stroke-linejoin="round" />
-                                            <line x1="61.5" y1="78" x2="68.5" y2="82" stroke="#2563EB"
-                                                stroke-width="3" stroke-linecap="round" />
-                                            <line x1="131.5" y1="82" x2="138.5" y2="78" stroke="#2563EB"
-                                                stroke-width="3" stroke-linecap="round" />
-                                            <line x1="100" y1="135" x2="100" y2="145" stroke="#2563EB"
-                                                stroke-width="3" stroke-linecap="round" />
-                                            <text x="100" y="14" text-anchor="middle" font-size="16"
-                                                font-weight="bold" fill="#1E40AF">A</text>
-                                            <text x="18" y="158" text-anchor="middle" font-size="16"
-                                                font-weight="bold" fill="#1E40AF">B</text>
-                                            <text x="182" y="158" text-anchor="middle" font-size="16"
-                                                font-weight="bold" fill="#1E40AF">C</text>
-                                        </svg>
-                                        <figcaption class="text-center text-xs font-bold text-gray-500 mt-2">Segitiga
-                                            sama sisi ABC — tanda garis kecil berarti sama panjang</figcaption>
-                                    </figure>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Misalnya pada segitiga ABC:</p>
-
-                                    <div class="bg-white rounded-xl p-3 border-2 border-dashed border-blue-300 text-center">
-                                        <p class="font-fredoka text-lg text-blue-700">AB = BC = AC</p>
+                            <div class="bg-white rounded-2xl border-2 border-emerald-200 overflow-hidden mt-4">
+                                <div class="bg-emerald-50 px-4 py-2"><p class="font-fredoka text-emerald-700">🎮 Coba Jawab! - Mencari Sisi Kaki</p></div>
+                                <div class="p-4 space-y-3 text-sm text-gray-700">
+                                    <p>Keliling segitiga sama kaki 26 cm. Panjang alas 8 cm. Berapa panjang masing-masing sisi kakinya?</p>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <input id="ans-m2e" type="text" placeholder="Contoh: 9" onkeydown="if(event.key==='Enter')periksaSoal('m2e')" class="flex-1 rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none">
+                                        <button onclick="periksaSoal('m2e')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button>
                                     </div>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Garis <strong>AB, BC, dan
-                                            AC</strong> adalah sisi segitiga. Ketiga sisi tersebut mempunyai panjang
-                                        yang sama.</p>
-
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-l-4 border-blue-500 shadow-sm">
-                                        <p class="text-sm leading-relaxed text-gray-700 italic">"Diketahui panjang kayu
-                                            6 cm, 6 cm, dan 6 cm. Bangun datar apa yang dapat dibentuk?"</p>
+                                    <div id="fb-m2e"></div>
+                                    <div id="sol-m2e" class="hidden bg-emerald-50/60 rounded-xl p-3">
+                                        <p class="font-bold text-emerald-700 mb-1">Pembahasan:</p>
+                                        <p>sisi kaki = (26 - 8) ÷ 2 = 18 ÷ 2 = <strong>9 cm</strong></p>
                                     </div>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Maka <strong>AB, BC, dan AC</strong>
-                                        mempunyai panjang yang sama.</p>
-
-                                    <div
-                                        class="relative bg-gradient-to-br from-amber-50 to-yellow-100 border-4 border-dashed border-yellow-400 rounded-2xl p-4 pt-6">
-                                        <span class="absolute -top-4 left-4 text-2xl">✨</span>
-                                        <p class="text-center text-sm font-bold text-gray-700">Jadi, segitiga tersebut
-                                            merupakan <strong class="text-amber-600 text-base">segitiga sama sisi</strong>.</p>
-                                    </div>
-
-                                    <!-- Pengingat Penting -->
-                                    <div
-                                        class="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-300 rounded-xl p-3">
-                                        <p class="text-sm text-gray-700">
-                                            <strong class="text-amber-700">💡 Ingat!</strong> Segitiga sama sisi
-                                            mempunyai <strong>tiga sisi sama panjang</strong>.
-                                        </p>
-                                    </div>
-
                                 </div>
                             </div>
 
-                            <!-- Sifat-Sifat -->
-                            <div>
-                                <h3 class="font-fredoka text-xl text-blue-600 mb-3 flex items-center gap-2">🧩
-                                    Sifat-Sifat Segitiga Sama Sisi</h3>
-                                <p class="text-sm leading-relaxed text-gray-700 mb-3">Segitiga sama sisi mempunyai
-                                    beberapa sifat yang dapat membantu kita mengenalinya.</p>
-                                <div class="flex flex-col gap-3">
+                            </div>
+                            <div class="bg-white border-2 border-emerald-200 rounded-2xl p-4">
+                                <p class="font-bold text-emerald-700 mb-2">Luas Segitiga Sama Kaki</p>
+                                <p class="text-sm text-gray-700 mb-2"><span class="font-bold">Rumus:</span> L = ½ × alas × tinggi</p>
+                                <img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/10000000000003740000039C3ED4EB90.jpg" class="w-full max-w-md mx-auto rounded-xl mb-3">
+                                <p class="text-sm text-gray-700">Contoh: Alas 8 m, tinggi 6 m, L = ½×8×6 = 24 m². Luas 30 cm², alas 10 cm, tinggi = (30×2)/10 = 6 cm.</p>
+                            </div>
+                        </div>
 
-                                    <!-- 1. Titik Sudut -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-blue-200 flex flex-col gap-3 hover:shadow-md transition-shadow duration-200">
-                                        <div class="flex items-center gap-3">
-                                            <span
-                                                class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-black text-sm flex-shrink-0">1</span>
-                                            <p class="font-bold text-blue-700 text-sm">Memiliki 3 titik sudut</p>
-                                        </div>
-                                        <p class="text-sm text-gray-700">Segitiga sama sisi memiliki <strong>3 titik
-                                                sudut</strong>.</p>
-                                        <figure class="bg-blue-50 rounded-xl p-3 border border-blue-100">
-                                            <svg viewBox="0 0 200 170" class="w-full max-w-[200px] mx-auto h-auto">
-                                                <polygon points="100,20 30,140 170,140" fill="#DBEAFE" stroke="#2563EB"
-                                                    stroke-width="3" stroke-linejoin="round" />
-                                                <circle cx="100" cy="20" r="6" fill="#EF4444" />
-                                                <circle cx="30" cy="140" r="6" fill="#EF4444" />
-                                                <circle cx="170" cy="140" r="6" fill="#EF4444" />
-                                                <text x="100" y="14" text-anchor="middle" font-size="16"
-                                                    font-weight="bold" fill="#1E40AF">A</text>
-                                                <text x="18" y="158" text-anchor="middle" font-size="16"
-                                                    font-weight="bold" fill="#1E40AF">B</text>
-                                                <text x="182" y="158" text-anchor="middle" font-size="16"
-                                                    font-weight="bold" fill="#1E40AF">C</text>
-                                            </svg>
-                                            <figcaption class="text-center text-xs font-bold text-gray-500 mt-1">Titik
-                                                sudut segitiga sama sisi</figcaption>
-                                        </figure>
-                                        <p class="text-sm text-gray-700">Segitiga sama sisi ABC, titik sudutnya
-                                            adalah: <strong>A</strong>, <strong>B</strong>, dan <strong>C</strong>.</p>
+                        <div>
+                            <h3 class="font-fredoka text-xl text-emerald-700 mb-3">3. SEGITIGA SEMBARANG</h3>
+                            <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 mb-4">
+                                <p class="font-bold text-emerald-800 mb-2">(Menu Mengenal Konsep)</p>
+                                <p class="text-sm text-gray-700">Segitiga sembarang adalah segitiga yang mempunyai tiga sisi berbeda panjang.</p>
+                                <p class="text-sm text-gray-700 mt-2">Contoh: Potongan ketupat berbentuk segitiga sembarang.</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+                                    <img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/100000000000043E0000043EE0A2E618.jpg" class="w-full h-48 object-contain rounded-xl bg-white">
+                                    <img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/10000000000003280000021B167846A9.png" class="w-full h-48 object-contain rounded-xl bg-white">
+                                </div>
+                            </div>
+                            <div class="bg-white border-2 border-emerald-200 rounded-2xl p-4 mb-4">
+                                <p class="font-bold text-emerald-700 mb-3">Sifat-sifat Segitiga Sembarang</p>
+                                <div class="space-y-3 text-sm text-gray-700">
+                                    <p>• Mempunyai 3 titik sudut</p><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/1000000000000399000002663E1F60D4.png" class="w-full max-w-md mx-auto rounded-xl">
+                                    <p>• Mempunyai 3 sisi dengan panjang berbeda</p><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/10000000000003B000000275A4311660.png" class="w-full max-w-md mx-auto rounded-xl">
+                                    <p>• Mempunyai 3 sudut</p><img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/10000000000003470000022FAD6F9953.png" class="w-full max-w-md mx-auto rounded-xl">
+                                    <p>• Tidak mempunyai simetri lipat</p>
+                                    <p>• Tidak mempunyai simetri putar selain posisi awal</p>
+                                </div>
+                            </div>
+                            <div class="bg-white border-2 border-emerald-200 rounded-2xl p-4 mb-4">
+                                <p class="font-bold text-emerald-700 mb-2">Keliling Segitiga Sembarang</p>
+                                <p class="text-sm text-gray-700 mb-2"><span class="font-bold">Rumus:</span> K = sisi a + sisi b + sisi c</p>
+                                <img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/100000000000042600000305C8405D94.png" class="w-full max-w-md mx-auto rounded-xl mb-3">
+                                <p class="text-sm text-gray-700">Contoh: Sisi 4 cm, 5 cm, 6 cm, K = 15 cm. Keliling 24 cm, sisi 7 cm dan 8 cm, sisi ketiga = 9 cm.</p>
+
+                            <div class="bg-white rounded-2xl border-2 border-emerald-200 overflow-hidden mt-4">
+                                <div class="bg-emerald-50 px-4 py-2"><p class="font-fredoka text-emerald-700">🎮 Coba Jawab! - Keliling Segitiga Sembarang</p></div>
+                                <div class="p-4 space-y-3 text-sm text-gray-700">
+                                    <p>Sebuah segitiga sembarang mempunyai sisi 4 cm, 5 cm, dan 6 cm. Berapakah kelilingnya?</p>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <input id="ans-m2f" type="text" placeholder="Contoh: 15" onkeydown="if(event.key==='Enter')periksaSoal('m2f')" class="flex-1 rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none">
+                                        <button onclick="periksaSoal('m2f')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button>
                                     </div>
-
-                                    <!-- 2. Sudut -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-blue-200 flex flex-col gap-3 hover:shadow-md transition-shadow duration-200">
-                                        <div class="flex items-center gap-3">
-                                            <span
-                                                class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-black text-sm flex-shrink-0">2</span>
-                                            <p class="font-bold text-blue-700 text-sm">Memiliki 3 sudut</p>
-                                        </div>
-                                        <p class="text-sm text-gray-700">Segitiga sama sisi memiliki <strong>3
-                                                sudut</strong>.</p>
-                                        <figure class="bg-blue-50 rounded-xl p-3 border border-blue-100">
-                                            <svg viewBox="0 0 200 170" class="w-full max-w-[200px] mx-auto h-auto">
-                                                <polygon points="100,20 30,140 170,140" fill="#DBEAFE" stroke="#2563EB"
-                                                    stroke-width="3" stroke-linejoin="round" />
-                                                <path d="M 91 35.5 A 18 18 0 0 0 109 35.5" fill="none" stroke="#F59E0B"
-                                                    stroke-width="3" />
-                                                <path d="M 39 124.5 A 18 18 0 0 1 48 140" fill="none" stroke="#F59E0B"
-                                                    stroke-width="3" />
-                                                <path d="M 161 124.5 A 18 18 0 0 0 152 140" fill="none" stroke="#F59E0B"
-                                                    stroke-width="3" />
-                                                <text x="100" y="14" text-anchor="middle" font-size="16"
-                                                    font-weight="bold" fill="#1E40AF">A</text>
-                                                <text x="18" y="158" text-anchor="middle" font-size="16"
-                                                    font-weight="bold" fill="#1E40AF">B</text>
-                                                <text x="182" y="158" text-anchor="middle" font-size="16"
-                                                    font-weight="bold" fill="#1E40AF">C</text>
-                                            </svg>
-                                            <figcaption class="text-center text-xs font-bold text-gray-500 mt-1">Sudut
-                                                pada segitiga sama sisi</figcaption>
-                                        </figure>
-                                        <div
-                                            class="bg-white rounded-xl p-4 border-l-4 border-amber-400 shadow-sm">
-                                            <p class="text-sm leading-relaxed text-gray-700 italic mb-2">Pada segitiga
-                                                sama sisi ABC terdapat:</p>
-                                            <ul class="text-sm text-gray-700 ml-4 list-disc space-y-0.5">
-                                                <li>sudut A</li>
-                                                <li>sudut B</li>
-                                                <li>sudut C</li>
-                                            </ul>
-                                        </div>
+                                    <div id="fb-m2f"></div>
+                                    <div id="sol-m2f" class="hidden bg-emerald-50/60 rounded-xl p-3">
+                                        <p class="font-bold text-emerald-700 mb-1">Pembahasan:</p>
+                                        <p>K = 4 + 5 + 6 = <strong>15 cm</strong></p>
                                     </div>
-
-                                    <!-- 3. Sisi -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-blue-200 flex flex-col gap-3 hover:shadow-md transition-shadow duration-200">
-                                        <div class="flex items-center gap-3">
-                                            <span
-                                                class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-black text-sm flex-shrink-0">3</span>
-                                            <p class="font-bold text-blue-700 text-sm">Memiliki 3 sisi</p>
-                                        </div>
-                                        <p class="text-sm text-gray-700">Segitiga sama sisi memiliki <strong>3
-                                                sisi</strong>.</p>
-                                        <figure class="bg-blue-50 rounded-xl p-3 border border-blue-100">
-                                            <svg viewBox="0 0 200 170" class="w-full max-w-[200px] mx-auto h-auto">
-                                                <polygon points="100,20 30,140 170,140" fill="#DBEAFE" stroke="#2563EB"
-                                                    stroke-width="3" stroke-linejoin="round" />
-                                                <text x="44" y="72" text-anchor="middle" font-size="13"
-                                                    font-weight="bold" fill="#1D4ED8">AB</text>
-                                                <text x="156" y="72" text-anchor="middle" font-size="13"
-                                                    font-weight="bold" fill="#1D4ED8">AC</text>
-                                                <text x="100" y="163" text-anchor="middle" font-size="13"
-                                                    font-weight="bold" fill="#1D4ED8">BC</text>
-                                                <text x="100" y="14" text-anchor="middle" font-size="16"
-                                                    font-weight="bold" fill="#1E40AF">A</text>
-                                                <text x="18" y="158" text-anchor="middle" font-size="16"
-                                                    font-weight="bold" fill="#1E40AF">B</text>
-                                                <text x="182" y="158" text-anchor="middle" font-size="16"
-                                                    font-weight="bold" fill="#1E40AF">C</text>
-                                            </svg>
-                                            <figcaption class="text-center text-xs font-bold text-gray-500 mt-1">Sisi
-                                                segitiga sama sisi</figcaption>
-                                        </figure>
-                                        <p class="text-sm text-gray-700 mb-1">Pada segitiga sama sisi ABC terdapat:</p>
-                                        <ul class="text-sm text-gray-700 ml-4 list-disc space-y-0.5">
-                                            <li>Sisi AB</li>
-                                            <li>Sisi BC</li>
-                                            <li>Sisi AC</li>
-                                        </ul>
-                                    </div>
-
-                                    <!-- 4. Simetri Lipat -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-blue-200 flex flex-col gap-3 hover:shadow-md transition-shadow duration-200">
-                                        <div class="flex items-center gap-3">
-                                            <span
-                                                class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-black text-sm flex-shrink-0">4</span>
-                                            <p class="font-bold text-blue-700 text-sm">Memiliki 3 simetri lipat</p>
-                                        </div>
-                                        <p class="text-sm text-gray-700">Segitiga sama sisi memiliki <strong>3
-                                                simetri lipat</strong>.</p>
-                                        <figure class="bg-blue-50 rounded-xl p-3 border border-blue-100">
-                                            <svg viewBox="0 0 200 170" class="w-full max-w-[200px] mx-auto h-auto">
-                                                <polygon points="100,20 30,140 170,140" fill="#DBEAFE" stroke="#2563EB"
-                                                    stroke-width="3" stroke-linejoin="round" />
-                                                <line x1="100" y1="20" x2="100" y2="140" stroke="#EF4444"
-                                                    stroke-width="2.5" stroke-dasharray="6 5" />
-                                                <line x1="30" y1="140" x2="135" y2="80" stroke="#10B981"
-                                                    stroke-width="2.5" stroke-dasharray="6 5" />
-                                                <line x1="170" y1="140" x2="65" y2="80" stroke="#F59E0B"
-                                                    stroke-width="2.5" stroke-dasharray="6 5" />
-                                                <text x="100" y="14" text-anchor="middle" font-size="16"
-                                                    font-weight="bold" fill="#1E40AF">A</text>
-                                                <text x="18" y="158" text-anchor="middle" font-size="16"
-                                                    font-weight="bold" fill="#1E40AF">B</text>
-                                                <text x="182" y="158" text-anchor="middle" font-size="16"
-                                                    font-weight="bold" fill="#1E40AF">C</text>
-                                            </svg>
-                                            <figcaption class="text-center text-xs font-bold text-gray-500 mt-1">3
-                                                garis simetri lipat</figcaption>
-                                        </figure>
-                                        <div class="grid grid-cols-3 gap-2">
-                                            <figure class="bg-blue-50 rounded-xl p-2 border border-blue-100">
-                                                <svg viewBox="0 0 120 105" class="w-full h-auto">
-                                                    <polygon points="60,12 18,92 102,92" fill="#DBEAFE"
-                                                        stroke="#2563EB" stroke-width="2.5" stroke-linejoin="round" />
-                                                    <line x1="60" y1="12" x2="60" y2="92" stroke="#EF4444"
-                                                        stroke-width="2" stroke-dasharray="5 4" />
-                                                </svg>
-                                                <figcaption class="text-center text-[10px] font-bold text-gray-500 mt-1">Simetri 1</figcaption>
-                                            </figure>
-                                            <figure class="bg-blue-50 rounded-xl p-2 border border-blue-100">
-                                                <svg viewBox="0 0 120 105" class="w-full h-auto">
-                                                    <polygon points="60,12 18,92 102,92" fill="#DBEAFE"
-                                                        stroke="#2563EB" stroke-width="2.5" stroke-linejoin="round" />
-                                                    <line x1="18" y1="92" x2="81" y2="52" stroke="#10B981"
-                                                        stroke-width="2" stroke-dasharray="5 4" />
-                                                </svg>
-                                                <figcaption class="text-center text-[10px] font-bold text-gray-500 mt-1">Simetri 2</figcaption>
-                                            </figure>
-                                            <figure class="bg-blue-50 rounded-xl p-2 border border-blue-100">
-                                                <svg viewBox="0 0 120 105" class="w-full h-auto">
-                                                    <polygon points="60,12 18,92 102,92" fill="#DBEAFE"
-                                                        stroke="#2563EB" stroke-width="2.5" stroke-linejoin="round" />
-                                                    <line x1="102" y1="92" x2="39" y2="52" stroke="#F59E0B"
-                                                        stroke-width="2" stroke-dasharray="5 4" />
-                                                </svg>
-                                                <figcaption class="text-center text-[10px] font-bold text-gray-500 mt-1">Simetri 3</figcaption>
-                                            </figure>
-                                        </div>
-                                    </div>
-
-                                    <!-- 5. Simetri Putar -->
-                                    <div
-                                        class="bg-white rounded-xl p-4 border-2 border-blue-200 flex flex-col gap-3 hover:shadow-md transition-shadow duration-200">
-                                        <div class="flex items-center gap-3">
-                                            <span
-                                                class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-black text-sm flex-shrink-0">5</span>
-                                            <p class="font-bold text-blue-700 text-sm">Memiliki 3 simetri putar</p>
-                                        </div>
-                                        <p class="text-sm text-gray-700">Segitiga sama sisi memiliki <strong>3
-                                                simetri putar</strong>.</p>
-                                        <figure class="bg-blue-50 rounded-xl p-3 border border-blue-100">
-                                            <svg viewBox="0 0 200 170" class="w-full max-w-[200px] mx-auto h-auto">
-                                                <circle cx="100" cy="100" r="48" fill="none" stroke="#94A3B8"
-                                                    stroke-width="2" stroke-dasharray="5 5" />
-                                                <polygon points="100,20 30,140 170,140" fill="#DBEAFE" stroke="#2563EB"
-                                                    stroke-width="3" stroke-linejoin="round" />
-                                                <circle cx="100" cy="100" r="4" fill="#374151" />
-                                                <path d="M 58.4 76 A 48 48 0 0 1 141.6 76" fill="none" stroke="#2563EB"
-                                                    stroke-width="3.5" />
-                                                <polygon points="147,85 136,74 134,84" fill="#2563EB" />
-                                                <text x="100" y="45" text-anchor="middle" font-size="12"
-                                                    font-weight="bold" fill="#475569">120°</text>
-                                            </svg>
-                                            <figcaption class="text-center text-xs font-bold text-gray-500 mt-1">Segitiga
-                                                sama sisi berputar 120° pada satu titik pusat</figcaption>
-                                        </figure>
-                                        <div class="grid grid-cols-3 gap-2">
-                                            <figure class="bg-blue-50 rounded-xl p-2 border border-blue-100">
-                                                <svg viewBox="0 0 120 105" class="w-full h-auto">
-                                                    <g transform="rotate(0 60 65)">
-                                                        <polygon points="60,12 18,92 102,92" fill="#DBEAFE"
-                                                            stroke="#2563EB" stroke-width="2.5"
-                                                            stroke-linejoin="round" />
-                                                        <circle cx="60" cy="12" r="5" fill="#EF4444" />
-                                                    </g>
-                                                </svg>
-                                                <figcaption class="text-center text-[10px] font-bold text-gray-500 mt-1">Posisi awal (0°)</figcaption>
-                                            </figure>
-                                            <figure class="bg-blue-50 rounded-xl p-2 border border-blue-100">
-                                                <svg viewBox="0 0 120 105" class="w-full h-auto">
-                                                    <g transform="rotate(120 60 65)">
-                                                        <polygon points="60,12 18,92 102,92" fill="#DBEAFE"
-                                                            stroke="#2563EB" stroke-width="2.5"
-                                                            stroke-linejoin="round" />
-                                                        <circle cx="60" cy="12" r="5" fill="#EF4444" />
-                                                    </g>
-                                                </svg>
-                                                <figcaption class="text-center text-[10px] font-bold text-gray-500 mt-1">Putaran 1 (120°)</figcaption>
-                                            </figure>
-                                            <figure class="bg-blue-50 rounded-xl p-2 border border-blue-100">
-                                                <svg viewBox="0 0 120 105" class="w-full h-auto">
-                                                    <g transform="rotate(240 60 65)">
-                                                        <polygon points="60,12 18,92 102,92" fill="#DBEAFE"
-                                                            stroke="#2563EB" stroke-width="2.5"
-                                                            stroke-linejoin="round" />
-                                                        <circle cx="60" cy="12" r="5" fill="#EF4444" />
-                                                    </g>
-                                                </svg>
-                                                <figcaption class="text-center text-[10px] font-bold text-gray-500 mt-1">Putaran 2 (240°)</figcaption>
-                                            </figure>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
 
-                            <!-- Keliling Segitiga Sama Sisi -->
-                            <div>
-                                <h3 class="font-fredoka text-xl text-blue-600 mb-3 flex items-center gap-2">📏 Keliling
-                                    Segitiga Sama Sisi</h3>
-                                <div
-                                    class="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-4 flex flex-col gap-3">
-
-                                    <p class="text-sm leading-relaxed text-gray-700"><strong
-                                            class="text-blue-700">Keliling</strong> adalah panjang seluruh sisi yang
-                                        mengelilingi suatu bangun.</p>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Segitiga sama sisi memiliki 3
-                                        sisi yang sama panjang. Kelilingnya diperoleh dengan <strong>menjumlahkan
-                                            ketiga sisinya</strong>.</p>
-
-                                    <p class="text-sm leading-relaxed text-gray-700 mb-1">Misalnya:</p>
-                                    <ul class="text-sm text-gray-700 ml-4 list-disc space-y-0.5">
-                                        <li>AB = 8 cm</li>
-                                        <li>BC = 8 cm</li>
-                                        <li>AC = 8 cm</li>
-                                    </ul>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Maka:</p>
-                                    <div class="bg-white rounded-xl p-4 border-2 border-dashed border-blue-300">
-                                        <p class="text-sm font-bold text-gray-800 leading-loose">
-                                            K = AB + BC + AC<br>
-                                            K = 8 cm + 8 cm + 8 cm<br>
-                                            K = 24 cm
-                                        </p>
+                            <div class="bg-white rounded-2xl border-2 border-emerald-200 overflow-hidden mt-4">
+                                <div class="bg-emerald-50 px-4 py-2"><p class="font-fredoka text-emerald-700">🎮 Coba Jawab! - Mencari Sisi Ketiga</p></div>
+                                <div class="p-4 space-y-3 text-sm text-gray-700">
+                                    <p>Keliling segitiga sembarang 24 cm. Dua sisinya 7 cm dan 8 cm. Berapa panjang sisi ketiganya?</p>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <input id="ans-m2g" type="text" placeholder="Contoh: 9" onkeydown="if(event.key==='Enter')periksaSoal('m2g')" class="flex-1 rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none">
+                                        <button onclick="periksaSoal('m2g')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button>
                                     </div>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Jadi, keliling segitiga tersebut
-                                        adalah <strong>24 cm</strong>.</p>
-
-                                    <div class="bg-white rounded-xl p-4 border-2 border-dashed border-blue-300 text-center">
-                                        <p class="text-xs text-gray-500 font-bold mb-1">Rumus keliling segitiga sama
-                                            sisi</p>
-                                        <p class="font-fredoka text-lg text-blue-700">K = S + S + S</p>
-                                        <p class="text-xs text-gray-500 font-bold mt-1">atau</p>
-                                        <p class="font-fredoka text-lg text-blue-700 mt-1">K = 3 × S</p>
+                                    <div id="fb-m2g"></div>
+                                    <div id="sol-m2g" class="hidden bg-emerald-50/60 rounded-xl p-3">
+                                        <p class="font-bold text-emerald-700 mb-1">Pembahasan:</p>
+                                        <p>sisi ketiga = 24 - 7 - 8 = <strong>9 cm</strong></p>
                                     </div>
-
                                 </div>
                             </div>
 
-                            <!-- Contoh Soal Keliling -->
-                            <div>
-                                <h3 class="font-fredoka text-xl text-blue-600 mb-3 flex items-center gap-2">✏️ Contoh
-                                    Soal — Keliling</h3>
-                                <div class="flex flex-col gap-4">
-
-                                    <!-- Soal 1 -->
-                                    <div id="card-q1"
-                                        class="bg-white rounded-2xl p-4 border-2 border-blue-200 shadow-sm">
-                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
-                                                class="font-bold text-blue-700">1.</span> Ibu Lina membuat hiasan
-                                            berbentuk segitiga sama sisi untuk menghias perahu dagang di pasar
-                                            terapung. Setiap sisi hiasan memiliki panjang 15 cm. Ibu Lina akan
-                                            memasang pita di sepanjang seluruh sisi hiasan tersebut. Berapa panjang
-                                            pita yang diperlukan Ibu Lina?</p>
-                                        <div class="flex flex-col sm:flex-row gap-2">
-                                            <input id="ans-q1" type="text" placeholder="Contoh: 10 cm"
-                                                onkeydown="if(event.key==='Enter')periksaSoal('q1')"
-                                                class="flex-1 rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none transition-colors">
-                                            <button onclick="periksaSoal('q1')"
-                                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
-                                                Jawaban</button>
-                                        </div>
-                                        <div id="fb-q1" class="mt-3"></div>
-                                        <div id="sol-q1"
-                                            class="hidden mt-3 bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
-                                            <p class="font-bold text-blue-700 text-sm mb-2">📘 Cara mengerjakan yang
-                                                benar:</p>
-                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
-                                            <ul class="text-sm text-gray-700 list-disc ml-5 space-y-0.5">
-                                                <li>Sisi AB = 15 cm</li>
-                                                <li>Sisi BC = 15 cm</li>
-                                                <li>Sisi AC = 15 cm</li>
-                                            </ul>
-                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
-                                            <p class="text-sm font-bold text-gray-800 leading-loose">
-                                                K = S + S + S<br>
-                                                K = 15 cm + 15 cm + 15 cm<br>
-                                                K = 45 cm
-                                            </p>
-                                            <p class="text-sm text-gray-700 mt-2">Jadi, Ibu Lina memerlukan pita
-                                                sepanjang <strong>45 cm</strong>.</p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Soal 2 -->
-                                    <div id="card-q2"
-                                        class="bg-white rounded-2xl p-4 border-2 border-blue-200 shadow-sm">
-                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
-                                                class="font-bold text-blue-700">2.</span> Bu Rahma membuat hiasan
-                                            berbentuk segitiga sama sisi pada kain sasirangan. Setiap sisi pola
-                                            tersebut memiliki panjang 8 cm. Bu Rahma ingin memberikan hiasan pada
-                                            seluruh sisi pola tersebut. Berapa panjang seluruh sisi pola segitiga
-                                            yang akan dihias Bu Rahma?</p>
-                                        <div class="flex flex-col sm:flex-row gap-2">
-                                            <input id="ans-q2" type="text" placeholder="Contoh: 10 cm"
-                                                onkeydown="if(event.key==='Enter')periksaSoal('q2')"
-                                                class="flex-1 rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none transition-colors">
-                                            <button onclick="periksaSoal('q2')"
-                                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
-                                                Jawaban</button>
-                                        </div>
-                                        <div id="fb-q2" class="mt-3"></div>
-                                        <div id="sol-q2"
-                                            class="hidden mt-3 bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
-                                            <p class="font-bold text-blue-700 text-sm mb-2">📘 Cara mengerjakan yang
-                                                benar:</p>
-                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
-                                            <ul class="text-sm text-gray-700 list-disc ml-5 space-y-0.5">
-                                                <li>Sisi AB = 8 cm</li>
-                                                <li>Sisi BC = 8 cm</li>
-                                                <li>Sisi AC = 8 cm</li>
-                                            </ul>
-                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
-                                            <p class="text-sm font-bold text-gray-800 leading-loose">
-                                                K = S + S + S<br>
-                                                K = 8 cm + 8 cm + 8 cm<br>
-                                                K = 24 cm
-                                            </p>
-                                            <p class="text-sm text-gray-700 mt-2">Jadi, panjang seluruh sisi pola
-                                                segitiga yang akan dihias Bu Rahma adalah <strong>24 cm</strong>.</p>
-                                        </div>
-                                    </div>
-
-                                </div>
                             </div>
-
-                            <!-- Luas Segitiga Sama Sisi -->
-                            <div>
-                                <h3 class="font-fredoka text-xl text-blue-600 mb-3 flex items-center gap-2">🟦 Luas
-                                    Segitiga Sama Sisi</h3>
-                                <div
-                                    class="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-4 flex flex-col gap-3">
-
-                                    <p class="text-sm leading-relaxed text-gray-700"><strong
-                                            class="text-blue-700">Luas</strong> adalah ukuran banyaknya daerah yang
-                                        berada di dalam suatu bangun.</p>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Sebelum mencari luas perlu
-                                        mengetahui <strong>alas</strong> dan <strong>tinggi</strong> segitiga.</p>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Perhatikan segitiga sama sisi
-                                        ABC.</p>
-
-                                    <figure class="bg-white rounded-xl p-3 border-2 border-dashed border-blue-300">
-                                        <svg viewBox="0 0 200 170" class="w-full max-w-[220px] mx-auto h-auto">
-                                            <polygon points="100,20 30,140 170,140" fill="#DBEAFE" stroke="#2563EB"
-                                                stroke-width="3" stroke-linejoin="round" />
-                                            <line x1="100" y1="20" x2="100" y2="140" stroke="#EF4444"
-                                                stroke-width="2.5" stroke-dasharray="6 5" />
-                                            <polyline points="100,128 112,128 112,140" fill="none" stroke="#EF4444"
-                                                stroke-width="2" />
-                                            <line x1="65" y1="135" x2="65" y2="145" stroke="#2563EB"
-                                                stroke-width="3" stroke-linecap="round" />
-                                            <line x1="135" y1="135" x2="135" y2="145" stroke="#2563EB"
-                                                stroke-width="3" stroke-linecap="round" />
-                                            <text x="100" y="14" text-anchor="middle" font-size="16"
-                                                font-weight="bold" fill="#1E40AF">A</text>
-                                            <text x="18" y="158" text-anchor="middle" font-size="16"
-                                                font-weight="bold" fill="#1E40AF">B</text>
-                                            <text x="182" y="158" text-anchor="middle" font-size="16"
-                                                font-weight="bold" fill="#1E40AF">C</text>
-                                            <text x="94" y="156" text-anchor="middle" font-size="14"
-                                                font-weight="bold" fill="#DC2626">D</text>
-                                            <text x="112" y="82" font-size="12" font-weight="bold" fill="#DC2626">tinggi</text>
-                                            <text x="100" y="169" text-anchor="middle" font-size="12"
-                                                font-weight="bold" fill="#1D4ED8">alas (BC)</text>
-                                        </svg>
-                                        <figcaption class="text-center text-xs font-bold text-gray-500 mt-2">Garis
-                                            tinggi dari titik A membagi sisi BC sama panjang (BD = DC)</figcaption>
-                                    </figure>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Ketiga sisinya mempunyai panjang
-                                        yang sama.</p>
-                                    <div class="bg-white rounded-xl p-3 border-2 border-dashed border-blue-300 text-center">
-                                        <p class="font-fredoka text-lg text-blue-700">AB = BC = AC</p>
-                                    </div>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Jika garis tinggi ditarik dari
-                                        titik sudut A ke sisi BC, garis tersebut akan membagi sisi BC menjadi dua
-                                        bagian yang sama panjang.</p>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Misalnya panjang sisi segitiga
-                                        adalah <strong>10 cm</strong>. Maka:</p>
-                                    <ul class="text-sm text-gray-700 ml-4 list-disc space-y-0.5">
-                                        <li>AB = 10 cm</li>
-                                        <li>AC = 10 cm</li>
-                                        <li>BC = 10 cm</li>
-                                    </ul>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Karena tinggi membagi alas
-                                        menjadi dua bagian yang sama:</p>
-                                    <div class="bg-white rounded-xl p-4 border-2 border-dashed border-blue-300">
-                                        <p class="text-sm font-bold text-gray-800 leading-loose">
-                                            BD = DC<br>
-                                            BD = ½ × BC<br>
-                                            BD = ½ × 10 cm<br>
-                                            BD = 5 cm
-                                        </p>
-                                    </div>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Sekarang kita dapat mencari
-                                        tinggi menggunakan <strong class="text-blue-700">Teorema Pythagoras</strong>.</p>
-
-                                    <div class="bg-white rounded-xl p-4 border-2 border-dashed border-blue-300 text-center">
-                                        <p class="text-xs text-gray-500 font-bold mb-1">Rumus Teorema Pythagoras</p>
-                                        <p class="font-fredoka text-lg text-blue-700">c² = a² + b²</p>
-                                    </div>
-
-                                    <p class="text-sm leading-relaxed text-gray-700 mb-1">Pada segitiga siku-siku:</p>
-                                    <ul class="text-sm text-gray-700 ml-4 list-disc space-y-0.5">
-                                        <li>sisi miring = 10 cm</li>
-                                        <li>setengah alas = ½ × 10 cm = 5 cm</li>
-                                        <li>tinggi = t</li>
-                                    </ul>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Maka:</p>
-                                    <div class="bg-white rounded-xl p-4 border-2 border-dashed border-blue-300">
-                                        <p class="text-sm font-bold text-gray-800 leading-loose">
-                                            10² = 5² + t²<br>
-                                            100 = 25 + t²<br>
-                                            t² = 100 − 25<br>
-                                            t² = 75<br>
-                                            t = √75<br>
-                                            t = 5√3 cm ≈ 8,66 cm
-                                        </p>
-                                    </div>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Jadi, tinggi segitiga sama sisi
-                                        <strong>8,66 cm</strong>.</p>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Setelah mengetahui alas dan
-                                        tinggi, kita dapat menghitung luas segitiga sama sisi.</p>
-
-                                    <div class="bg-white rounded-xl p-4 border-2 border-dashed border-blue-300 text-center">
-                                        <p class="text-xs text-gray-500 font-bold mb-1">Rumus luas segitiga</p>
-                                        <p class="font-fredoka text-lg text-blue-700">L = ½ × alas × tinggi</p>
-                                    </div>
-
-                                    <p class="text-sm leading-relaxed text-gray-700 mb-1">Keterangan:</p>
-                                    <ul class="text-sm text-gray-700 ml-4 list-disc space-y-0.5">
-                                        <li>L = luas</li>
-                                        <li>alas = panjang sisi yang digunakan sebagai alas</li>
-                                        <li>tinggi = jarak tegak lurus dari titik sudut ke alas</li>
-                                    </ul>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Maka:</p>
-                                    <div class="bg-white rounded-xl p-4 border-2 border-dashed border-blue-300">
-                                        <p class="text-sm font-bold text-gray-800 leading-loose">
-                                            Alas = 10 cm<br>
-                                            Tinggi = 8,66 cm<br>
-                                            L = ½ × alas × tinggi<br>
-                                            L = ½ × 10 cm × 8,66 cm<br>
-                                            L = 5 cm × 8,66 cm<br>
-                                            L = 43,3 cm²
-                                        </p>
-                                    </div>
-
-                                    <p class="text-sm leading-relaxed text-gray-700">Jadi, luas segitiga sama sisi
-                                        tersebut adalah <strong>43,3 cm²</strong>.</p>
-
-                                </div>
+                            <div class="bg-white border-2 border-emerald-200 rounded-2xl p-4">
+                                <p class="font-bold text-emerald-700 mb-2">Luas Segitiga Sembarang</p>
+                                <p class="text-sm text-gray-700 mb-2"><span class="font-bold">Rumus:</span> L = ½ × alas × tinggi</p>
+                                <img src="/resources/views/learning/medium/bangun_datar/segitiga asset/Pictures/100000000000048100000301AC7A67EC.png" class="w-full max-w-md mx-auto rounded-xl mb-3">
+                                <p class="text-sm text-gray-700">Contoh: Alas 8 cm, tinggi 5 cm, L = 20 cm². Luas 24 cm², tinggi 6 cm, alas = 8 cm.</p>
                             </div>
-
-                            <!-- Contoh Soal Luas -->
-                            <div>
-                                <h3 class="font-fredoka text-xl text-blue-600 mb-3 flex items-center gap-2">✏️ Contoh
-                                    Soal — Luas</h3>
-                                <div class="flex flex-col gap-4">
-
-                                    <!-- Soal 3 -->
-                                    <div id="card-q3"
-                                        class="bg-white rounded-2xl p-4 border-2 border-blue-200 shadow-sm">
-                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
-                                                class="font-bold text-blue-700">1.</span> Pak Noor membuat hiasan
-                                            berbentuk segitiga sama sisi untuk menghias perahu dagangnya di pasar
-                                            terapung. Panjang setiap sisi hiasan adalah 12 cm. Berapakah luas
-                                            hiasan tersebut?</p>
-                                        <div class="flex flex-col sm:flex-row gap-2">
-                                            <input id="ans-q3" type="text" placeholder="Contoh: 10 cm²"
-                                                onkeydown="if(event.key==='Enter')periksaSoal('q3')"
-                                                class="flex-1 rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none transition-colors">
-                                            <button onclick="periksaSoal('q3')"
-                                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
-                                                Jawaban</button>
-                                        </div>
-                                        <div id="fb-q3" class="mt-3"></div>
-                                        <div id="sol-q3"
-                                            class="hidden mt-3 bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
-                                            <p class="font-bold text-blue-700 text-sm mb-2">📘 Cara mengerjakan yang
-                                                benar:</p>
-                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
-                                            <ul class="text-sm text-gray-700 list-disc ml-5 space-y-0.5">
-                                                <li>AB = 12 cm</li>
-                                                <li>AC = 12 cm</li>
-                                                <li>BC = 12 cm</li>
-                                                <li>Alas = 12 cm</li>
-                                                <li>Tinggi = ...?</li>
-                                            </ul>
-                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Mencari tinggi:</p>
-                                            <p class="text-sm font-bold text-gray-800 leading-loose">
-                                                BD = DC<br>
-                                                BD = ½ × BC<br>
-                                                BD = ½ × 12 cm<br>
-                                                BD = 6 cm
-                                            </p>
-                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Teorema
-                                                Pythagoras:</p>
-                                            <p class="text-sm font-bold text-gray-800 leading-loose">
-                                                12² = 6² + t²<br>
-                                                144 = 36 + t²<br>
-                                                t² = 144 − 36<br>
-                                                t² = 108<br>
-                                                t = √108<br>
-                                                t = 6√3 cm ≈ 10,39 cm
-                                            </p>
-                                            <p class="text-sm text-gray-700 mt-2">Jadi, tinggi hiasan tersebut
-                                                adalah <strong>10,39 cm</strong>.</p>
-                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Mencari luas:</p>
-                                            <p class="text-sm font-bold text-gray-800 leading-loose">
-                                                L = ½ × alas × tinggi<br>
-                                                L = ½ × 12 cm × 10,39 cm<br>
-                                                L = 6 × 10,39 cm<br>
-                                                L ≈ 62,34 cm²
-                                            </p>
-                                            <p class="text-sm text-gray-700 mt-2">Jadi, luas hiasan pada perahu Pak
-                                                Noor adalah <strong>62,34 cm²</strong>.</p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Soal 4 -->
-                                    <div id="card-q4"
-                                        class="bg-white rounded-2xl p-4 border-2 border-blue-200 shadow-sm">
-                                        <p class="text-sm leading-relaxed text-gray-700 mb-3"><span
-                                                class="font-bold text-blue-700">2.</span> Ibu Rahma membuat pola
-                                            sasirangan berbentuk segitiga sama sisi. Tinggi pola tersebut adalah 9
-                                            cm. Luas pola segitiga yang dibuat Bu Rahma adalah 54 cm². Berapakah
-                                            panjang alas pola segitiga tersebut?</p>
-                                        <div class="flex flex-col sm:flex-row gap-2">
-                                            <input id="ans-q4" type="text" placeholder="Contoh: 10 cm"
-                                                onkeydown="if(event.key==='Enter')periksaSoal('q4')"
-                                                class="flex-1 rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none transition-colors">
-                                            <button onclick="periksaSoal('q4')"
-                                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">Periksa
-                                                Jawaban</button>
-                                        </div>
-                                        <div id="fb-q4" class="mt-3"></div>
-                                        <div id="sol-q4"
-                                            class="hidden mt-3 bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
-                                            <p class="font-bold text-blue-700 text-sm mb-2">📘 Cara mengerjakan yang
-                                                benar:</p>
-                                            <p class="text-xs font-bold text-gray-500 mb-1">Diketahui:</p>
-                                            <ul class="text-sm text-gray-700 list-disc ml-5 space-y-0.5">
-                                                <li>Luas = 54 cm²</li>
-                                                <li>Tinggi = 9 cm</li>
-                                                <li>Alas = ...?</li>
-                                            </ul>
-                                            <p class="text-xs font-bold text-gray-500 mt-2 mb-1">Jawab:</p>
-                                            <p class="text-sm font-bold text-gray-800 leading-loose">
-                                                L = ½ × alas × tinggi<br>
-                                                54 = ½ × alas × 9 cm<br>
-                                                54 = 4,5 cm × alas<br>
-                                                Alas = 54 cm ÷ 4,5 cm<br>
-                                                Alas = 12 cm
-                                            </p>
-                                            <p class="text-sm text-gray-700 mt-2">Jadi, panjang alas pola segitiga
-                                                tersebut adalah <strong>12 cm</strong>.</p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
                         </div>
                     </div>
-
-
-
+                </div><div class="grid grid-cols-3 gap-3">
+                    <a href="/learning/bangun_datar/01/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white border-2 border-gray-300 text-gray-700 font-bold shadow hover:bg-gray-50"><ion-icon name="arrow-back-circle-outline"></ion-icon> Sebelumnya</a>
+                    <div></div>
+                    <a href="/learning/bangun_datar/03/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold shadow hover:shadow-lg">Selanjutnya <ion-icon name="arrow-forward-circle-outline"></ion-icon></a>
                 </div>
-                <!-- end grid -->
-
-                <!-- FOOTER NAV -->
-                <div class="flex justify-between items-center flex-wrap gap-3 pb-4">
-                    <a href="/learning/bangun_datar/{{ user_id }}/{{ klasifikasi }}"
-                        class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">← Konsep Bangun Datar</a>
-                    <p class="text-gray-400 text-xs font-semibold">© 2026 Edudaya 🔺</p>
-                    <a href="/learning/bangun_datar/03/{{ user_id }}/{{ klasifikasi }}"
-                        class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">Halaman Selanjutnya ➡️</a>
-                </div>
-
             </div>
         </div>
     </div>
+    <script>
+        function toggleSidebar(){const s=document.getElementById('sidebar');const o=document.getElementById('sidebarOverlay');const m=document.getElementById('mainArea');if(s.classList.contains('-translate-x-full')){s.classList.remove('-translate-x-full');o.classList.remove('hidden');m.classList.add('ml-0');}else{s.classList.add('-translate-x-full');o.classList.add('hidden');m.classList.remove('ml-0');}}
+        function closeSidebar(){document.getElementById('sidebar').classList.add('-translate-x-full');document.getElementById('sidebarOverlay').classList.add('hidden');document.getElementById('mainArea').classList.remove('ml-0');}
+    </script>
 
     <script>
-        // ===== KUIS CONTOH SOAL =====
-        const JAWABAN_SOAL = {
-            q1: 45,
-            q2: 24,
-            q3: 62.34,
-            q4: 12,
-            q5: 28,
-            q6: 32,
-            q7: 40,
-            q8: 12,
-        };
+        function toggleSidebar(){const s=document.getElementById('sidebar');const o=document.getElementById('sidebarOverlay');const m=document.getElementById('mainArea');if(s.classList.contains('-translate-x-full')){s.classList.remove('-translate-x-full');o.classList.remove('hidden');m.classList.add('ml-0');}else{s.classList.add('-translate-x-full');o.classList.add('hidden');m.classList.remove('ml-0');}}
+        function closeSidebar(){document.getElementById('sidebar').classList.add('-translate-x-full');document.getElementById('sidebarOverlay').classList.add('hidden');document.getElementById('mainArea').classList.remove('ml-0');}
+        function cek(n,k,h){const el=document.getElementsByName(n);let v='';for(const x of el){if(x.checked){v=x.value;break;}}const p=document.getElementById(h);p.classList.remove('hidden');if(v===k){p.textContent='✅ Benar!';p.className='mt-2 text-sm font-semibold text-emerald-600';}else if(v===''){p.textContent='⚠️ Pilih salah satu jawaban dulu ya.';p.className='mt-2 text-sm font-semibold text-amber-600';}else{p.textContent='❌ Belum tepat. Coba perhatikan kembali ya.';p.className='mt-2 text-sm font-semibold text-rose-600';}}
+    </script>
 
+
+    <script>
+        const JAWABAN_SOAL = {
+            'm2a': 15,
+            'm2b': 7,
+            'm2c': 12,
+            'm2d': 22,
+            'm2e': 9,
+            'm2f': 24,
+            'm2g': 9
+        };
         function periksaSoal(id) {
             const input = document.getElementById('ans-' + id);
             const fb = document.getElementById('fb-' + id);
             const sol = document.getElementById('sol-' + id);
-            const card = document.getElementById('card-' + id);
-            const m = input.value.replace(/,/g, '.').match(/-?\d+(?:\.\d+)?/);
-
-            if (!m) {
-                fb.innerHTML = '<div class="bg-yellow-100 border-2 border-yellow-400 rounded-xl p-3 text-sm font-bold text-yellow-700 animate-feedback-in">✏️ Tulis jawabanmu dulu ya!</div>';
+            if (!input || !fb) return;
+            let val = input.value.trim().replace(/\s+/g, ' ').replace(',', '.');
+            if (val === '') {
+                fb.innerHTML = '<div class="mt-2 p-2 rounded-lg bg-amber-50 border border-amber-300 text-sm text-amber-700 font-semibold">✏️ Tulis jawabanmu dulu ya</div>';
                 return;
             }
-
-            if (Math.abs(parseFloat(m[0]) - JAWABAN_SOAL[id]) <= 0.1) {
-                fb.innerHTML = '<div class="bg-green-100 border-2 border-green-400 rounded-xl p-3 text-sm font-bold text-green-700 animate-pop-in">🎉 Benar! Jawabanmu tepat. Kerja bagus!</div>';
-                sol.classList.add('hidden');
-                card.classList.add('pulse-correct');
-                setTimeout(() => card.classList.remove('pulse-correct'), 600);
+            const num = parseFloat(val);
+            const ben = JAWABAN_SOAL[id];
+            if (!isNaN(num) && Math.abs(num - ben) < 0.01) {
+                fb.innerHTML = '<div class="mt-2 p-2 rounded-lg bg-emerald-50 border border-emerald-300 text-sm text-emerald-700 font-semibold">🎉 BENAR! Hebat!</div>';
+                if (sol) sol.classList.remove('hidden');
             } else {
-                fb.innerHTML = '<div class="bg-red-100 border-2 border-red-400 rounded-xl p-3 text-sm font-bold text-red-600 animate-feedback-in">😅 Belum tepat. Perhatikan cara mengerjakan yang benar di bawah ini ya!</div>';
-                sol.classList.remove('hidden');
-                card.classList.add('shake');
-                setTimeout(() => card.classList.remove('shake'), 500);
+                fb.innerHTML = '<div class="mt-2 p-2 rounded-lg bg-rose-50 border border-rose-300 text-sm text-rose-700 font-semibold">😊 Belum tepat. Coba perhatikan lagi ya!</div>';
+                if (sol) sol.classList.remove('hidden');
             }
         }
+    </script>
 
-        // ===== SIDEBAR =====
-        let sidebarOpen = true;
+    <div id="imgLightbox" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[9999] p-4" onclick="closeLightbox()">
+        <button class="absolute top-4 right-4 text-white text-3xl leading-none" onclick="closeLightbox(event)">&times;</button>
+        <img id="imgLightboxImg" src="" alt="Preview" class="max-w-full max-h-full rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+    </div>
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const mainArea = document.getElementById('mainArea');
-            const overlay = document.getElementById('sidebarOverlay');
-            const isMobile = window.innerWidth <= 768;
-
-            if (isMobile) {
-                const isHidden = sidebar.classList.contains('-translate-x-full');
-                if (isHidden) {
-                    sidebar.classList.remove('-translate-x-full');
-                    overlay.classList.remove('hidden');
-                    overlay.classList.add('flex');
-                } else {
-                    sidebar.classList.add('-translate-x-full');
-                    overlay.classList.add('hidden');
-                    overlay.classList.remove('flex');
-                }
-            } else {
-                sidebarOpen = !sidebarOpen;
-                if (sidebarOpen) {
-                    sidebar.classList.remove('-translate-x-full');
-                    mainArea.classList.remove('ml-0');
-                    mainArea.classList.add('ml-[280px]');
-                } else {
-                    sidebar.classList.add('-translate-x-full');
-                    mainArea.classList.remove('ml-[280px]');
-                    mainArea.classList.add('ml-0');
-                }
-            }
+    <script>
+        function openLightbox(src, alt){
+            const lb = document.getElementById('imgLightbox');
+            const img = document.getElementById('imgLightboxImg');
+            if(!lb || !img) return;
+            img.src = src;
+            if(alt) img.alt = alt;
+            lb.classList.remove('hidden');
+            lb.classList.add('flex');
+            document.body.style.overflow = 'hidden';
         }
-
-        function closeSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-            overlay.classList.remove('flex');
+        function closeLightbox(e){
+            if(e) e.stopPropagation();
+            const lb = document.getElementById('imgLightbox');
+            if(!lb) return;
+            lb.classList.add('hidden');
+            lb.classList.remove('flex');
+            document.body.style.overflow = '';
         }
-
-        function toggleSidebarMenu(header) {
-            const icon = header.querySelector('ion-icon');
-            const list = header.nextElementSibling;
-            const isOpen = !list.classList.contains('hidden');
-            list.classList.toggle('hidden', isOpen);
-            list.classList.toggle('flex', !isOpen);
-            icon.style.transform = isOpen ? '' : 'rotate(180deg)';
-        }
-
-        function initSidebar() {
-            var currentPath = window.location.pathname;
-            var sidebarLinks = document.querySelectorAll('#sidebar a');
-            sidebarLinks.forEach(function (link) {
-                if (link.getAttribute('href') && currentPath.startsWith(link.getAttribute('href').split('/')
-                        .slice(0, 5).join('/'))) {
-                    var ul = link.closest('ul');
-                    if (ul && ul.classList.contains('hidden')) {
-                        var header = ul.previousElementSibling;
-                        if (header && header.querySelector('ion-icon')) {
-                            ul.classList.remove('hidden');
-                            ul.classList.add('flex');
-                            header.querySelector('ion-icon').style.transform = 'rotate(180deg)';
-                        }
-                    }
+        document.addEventListener('DOMContentLoaded', function(){
+            document.querySelectorAll('img').forEach(img => {
+                if(img.closest('#sidebar') || img.closest('nav') || img.id === 'imgLightboxImg') return;
+                if(img.src && !img.classList.contains('no-lightbox')){
+                    img.style.cursor = 'zoom-in';
+                    img.addEventListener('click', function(e){
+                        e.preventDefault();
+                        openLightbox(img.currentSrc || img.src, img.alt);
+                    });
                 }
             });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.innerWidth <= 768) {
-                document.getElementById('sidebar').classList.add('-translate-x-full');
-                document.getElementById('mainArea').classList.remove('ml-[280px]');
-                document.getElementById('mainArea').classList.add('ml-0');
-            }
-            initSidebar();
         });
     </script>
 </body>
-
 </html>

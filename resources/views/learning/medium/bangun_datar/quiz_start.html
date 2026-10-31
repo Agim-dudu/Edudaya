@@ -442,11 +442,11 @@
 
             // --- SISWA: kirim jawaban mentah ke server ---
             const csrfToken = "{{ csrf_token() }}";
-            fetch('/api/bangun_datar/quiz/{{ user_id }}/1', {
+            fetch('/api/bangun_datar/quiz/{{ current_user.id }}/1', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
                 body: JSON.stringify({
-                    userID:  '{{ user_id }}',
+                    userID:  '{{ current_user.id }}',
                     chapter: '1',
                     jawaban: jawabanUser   // { 1: "soal1-b", 2: "soal2-a", ... }
                 })
