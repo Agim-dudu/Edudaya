@@ -604,7 +604,11 @@
                         jawaban: jawabanUser // { 1: "soal1-b", 2: "soal2-a", ... }
                     })
                 })
-                .then(res => res.json())
+                .then(async res => {
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Gagal menyimpan skor kuis.');
+                    return data;
+                })
                 .then(data => {
                     // Tandai benar/salah dari kunci yang dikembalikan server
                     for (let i = 1; i <= totalSoal; i++) {

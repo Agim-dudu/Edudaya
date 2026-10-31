@@ -1,545 +1,520 @@
 # SEGITIGA
 
-## Segitiga Sama Sisi
+> *Catatan naskah: menu segitiga ada 3 — segitiga sama sisi, sama kaki, dan sembarang.*
 
-Perhatikan jajanan khas Banjar pada gambar.
+Segitiga adalah bangun datar yang mempunyai 3 sisi dan 3 titik sudut.
 
-![Gambar 1 — Wadai lupis](https://placehold.co/800x600.png?text=Gambar+1+-+Wadai+Lupis)
+Pada materi ini kita akan mengenal tiga jenis segitiga, yaitu:
 
-Wadai lupis berbentuk **segitiga sama sisi**
+1. Segitiga sama sisi
+2. Segitiga sama kaki
+3. Segitiga sembarang
 
-### Apa itu segitiga sama sisi?
+---
 
-Segitiga sama sisi adalah **segitiga yang mempunyai tiga sisi sama panjang**.
+## 1. Segitiga Sama Sisi
 
-![Gambar 2 — Segitiga sama sisi ABC](https://placehold.co/800x600.png?text=Gambar+2+-+Segitiga+ABC)
+> **(Menu konsep)**
 
-Misalnya pada segitiga ABC:
+Segitiga sama sisi mempunyai tiga sisi yang sama panjang.
 
-**AB = BC = AC**
+Contoh: bentuk segitiga sama sisi pada wadai lupis.
 
-Garis **AB, BC, dan AC** adalah sisi segitiga. Ketiga sisi tersebut mempunyai panjang yang sama.
-
-> Diketahui panjang kayu 6 cm, 6 cm, dan 6 cm.
-> Bangun datar apa yang dapat dibentuk?
-
-Maka AB, BC, dan AC mempunyai panjang yang sama.
-
-Jadi, segitiga tersebut adalah **segitiga sama sisi**.
-
-![Gambar 3 — Kotak centang](https://placehold.co/800x600.png?text=Gambar+3+-+Kotak+Centang) (berikan kotak di bawah)
-
-Segitiga sama sisi mempunyai tiga sisi sama panjang.
+![Wadai lupis](5.jpg)
 
 ### Sifat-Sifat Segitiga Sama Sisi
 
-Segitiga sama sisi mempunyai beberapa sifat yang dapat membantu kita mengenalinya.
+Segitiga sama sisi mempunyai:
 
-#### 1. Memiliki 3 titik sudut
+- **3 titik sudut**
 
-Segitiga sama sisi memiliki 3 titik sudut.
+  > *Placeholder animasi: `[titik sudut lupis.gif]`*
 
-![Gambar 4 — Titik sudut segitiga sama sisi](https://placehold.co/800x600.png?text=Gambar+4+-+Titik+Sudut)
+- **3 sisi**
 
-Segitiga sama sisi ABC, titik sudutnya adalah: A, B, dan C.
+  > *Placeholder animasi: `[sisi lupis.gif]`*
 
-#### 2. Memiliki 3 sudut
+- **3 sudut**
 
-Segitiga sama sisi memiliki 3 sudut.
+  > *Placeholder animasi: `[sudut lupis.gif]`*
 
-![Gambar 5 — Sudut segitiga sama sisi](https://placehold.co/800x600.png?text=Gambar+5+-+Sudut+Segitiga)
+- **Simetri lipat (ada 3 simetri lipat)**
 
-> Pada segitiga sama sisi ABC terdapat:
-> - sudut A
-> - sudut B
-> - sudut C
+  > *Placeholder animasi: `[simetri lipat.gif]`*
 
-#### 3. Memiliki 3 sisi
+- **Simetri putar (ada 3 simetri putar)**
 
-Segitiga sama sisi memiliki 3 sisi.
-
-![Gambar 6 — Sisi segitiga sama sisi](https://placehold.co/800x600.png?text=Gambar+6+-+Sisi+Segitiga)
-
-Pada segitiga sama sisi ABC terdapat:
-
-- Sisi AB
-- Sisi BC
-- Sisi AC
-
-#### 4. Memiliki simetri lipat
-
-Segitiga sama sisi memiliki **3 simetri lipat**.
-
-![Gambar 7 — Simetri lipat segitiga sama sisi](https://placehold.co/800x600.png?text=Gambar+7+-+Simetri+Lipat)
-
-![Gambar 8 — Diagram simetri lipat](https://placehold.co/800x600.png?text=Gambar+8+-+Diagram+Simetri+Lipat)
-
-#### 5. Memiliki simetri putar
-
-Segitiga sama sisi memiliki **3 simetri putar**.
-
-![Gambar 9 — Simetri putar segitiga sama sisi](https://placehold.co/800x600.png?text=Gambar+9+-+Simetri+Putar)
-
-![Gambar 10 — Diagram simetri putar](https://placehold.co/800x600.png?text=Gambar+10+-+Diagram+Simetri+Putar)
+  > *Placeholder animasi: `[simetri putar lupis.gif]`*
 
 ### Keliling Segitiga Sama Sisi
 
-Keliling adalah panjang seluruh sisi yang mengelilingi suatu bangun.
+Keliling adalah panjang seluruh sisi yang mengelilingi bangun.
 
-Segitiga sama sisi memiliki 3 sisi yang sama panjang. Kelilingnya diperoleh dengan menjumlahkan ketiga sisinya.
+Rumus:
 
-Misalnya:
-
-- AB = 8 cm
-- BC = 8 cm
-- AC = 8 cm
-
-Maka:
-
-K = AB + BC + AC
-
-K = 8 cm + 8 cm + 8 cm
-
-K = 24 cm
-
-Jadi, keliling segitiga tersebut adalah 24 cm.
-
-#### Rumus keliling segitiga sama sisi
-
-K = S + S + S
+**K = sisi + sisi + sisi**
 
 atau
 
-**K = 3 × S**
+**K = 3 × sisi**
 
-### Contoh Soal
+> **Clue animasi keliling:** Tampilkan gambar wadai lupis kemudian muncul titik A, B, dan C. Sebuah garis berjalan mengikuti sisi AB → BC → CA. Setiap sisi yang dilewati diberi tanda dan panjangnya dijumlahkan.
 
-> **Catatan:** masukkan soalnya saja. Ketika anak menjawab benar ada tulisan benar, kalau salah ada cara mengerjakan yang benar.
+#### Contoh Soal
 
-1. Ibu Lina membuat hiasan berbentuk segitiga sama sisi untuk menghias perahu dagang di pasar terapung. Setiap sisi hiasan memiliki panjang 15 cm. Ibu Lina akan memasang pita di sepanjang seluruh sisi hiasan tersebut. Berapa panjang pita yang diperlukan Ibu Lina?
+1. Ibu membuat wadai lupis berbentuk segitiga sama sisi untuk acara keluarga. Setiap sisi wadai lapis tersebut memiliki panjang 5 cm. Berapakah keliling wadai lupis tersebut?
 
-**Diketahui:**
+   > **Clue animasi:** Tampilkan gambar wadai lupis berbentuk segitiga sama sisi. Kemudian munculkan titik A, B, dan C pada ketiga titik sudutnya. Tampilkan tiga sisi AB, BC, dan CA. Berikan tanda yang sama pada ketiga sisi. Kemudian muncul tulisan AB = 5 cm, BC = 5 cm, dan CA = 5 cm. Sebuah garis berjalan mengikuti AB → BC → CA.
 
-- Sisi AB = 15 cm
-- Sisi BC = 15 cm
-- Sisi AC = 15 cm
+   **Diketahui:**
+   - Panjang sisi AB = 5 cm.
+   - Panjang sisi BC = 5 cm.
+   - Panjang sisi CA = 5 cm.
 
-**Jawab:**
+   **Ditanyakan:**
 
-K = S + S + S
+   Berapakah keliling wadai lupis tersebut?
 
-K = 15 cm + 15 cm + 15 cm
+   **Jawab:**
 
-K = 45 cm
+   Rumus keliling segitiga:
 
-Jadi, Ibu Lina memerlukan pita sepanjang 45 cm.
+   K = sisi + sisi + sisi
 
-2. Bu Rahma membuat hiasan berbentuk segitiga sama sisi pada kain sasirangan. Setiap sisi pola tersebut memiliki panjang 8 cm. Bu Rahma ingin memberikan hiasan pada seluruh sisi pola tersebut. Berapa panjang seluruh sisi pola segitiga yang akan dihias Bu Rahma?
+   K = 5 cm + 5 cm + 5 cm
 
-**Diketahui:**
+   K = 15 cm
 
-- Sisi AB = 8 cm
-- Sisi BC = 8 cm
-- Sisi AC = 8 cm
+   Jadi, keliling wadai lupis berbentuk segitiga sama sisi tersebut adalah 15 cm.
 
-**Jawab:**
+2. Sebuah wadai lupis berbentuk segitiga sama sisi mempunyai keliling 24 cm. Berapakah panjang setiap sisinya?
 
-K = S + S + S
+   **Diketahui:**
+   - Keliling = 24 cm
+   - Segitiga sama sisi mempunyai 3 sisi yang sama panjang.
 
-K = 8 cm + 8 cm + 8 cm
+   **Ditanyakan:**
 
-K = 24 cm
+   Panjang setiap sisi = ...?
 
-Jadi, panjang seluruh sisi pola segitiga yang akan dihias Bu Rahma adalah 24 cm.
+   **Jawab:**
+
+   Rumus:
+
+   K = 3 × sisi
+
+   24 cm = 3 × sisi
+
+   sisi = 24 cm ÷ 3
+
+   sisi = 8 cm
+
+   Jadi, panjang setiap sisi segitiga sama sisi adalah 8 cm.
 
 ### Luas Segitiga Sama Sisi
 
-Luas adalah ukuran banyaknya daerah yang berada di dalam suatu bangun.
+Luas adalah besar daerah yang berada di dalam bangun.
 
-Sebelum mencari luas perlu mengetahui alas dan tinggi segitiga.
+Rumus:
 
-Perhatikan segitiga sama sisi ABC.
+**L = ½ × alas × tinggi**
 
-![Gambar 11 — Alas dan tinggi segitiga sama sisi](https://placehold.co/800x600.png?text=Gambar+11+-+Alas+dan+Tinggi)
+> **Clue animasi luas:** Tampilkan wadai lupis. Munculkan garis tinggi dari titik sudut ke alas. Kemudian bagian dalam segitiga diwarna secara bertahap untuk menunjukkan daerah yang dihitung sebagai luas.
 
-Ketiga sisinya mempunyai panjang yang sama.
+#### Contoh Soal
 
-AB = BC = AC
+1. Ibu membuat wadai lapis berbentuk segitiga untuk acara keluarga. Wadai lapis tersebut mempunyai alas 6 cm dan tinggi 4 cm. Berapakah luas wadai lapis tersebut?
 
-Jika garis tinggi ditarik dari titik sudut A ke sisi BC, garis tersebut akan membagi sisi BC menjadi dua bagian yang sama panjang.
+   > **Clue animasi:** Tampilkan gambar wadai lapis berbentuk segitiga. Kemudian munculkan titik A, B, dan C pada ketiga titik sudutnya. Tampilkan sisi alas BC dan beri tulisan 6 cm. Setelah itu, munculkan garis tinggi dari titik A menuju alas BC secara tegak lurus dan beri tulisan 4 cm.
 
-Misalnya panjang sisi segitiga adalah 10 cm.
+   **Diketahui:**
+   - Wadai lapis berbentuk segitiga.
+   - Panjang alas = 6 cm.
+   - Tinggi = 4 cm.
 
-Maka:
+   **Ditanyakan:**
 
-- AB = 10 cm
-- AC = 10 cm
-- BC = 10 cm
+   Berapakah luas wadai lapis tersebut?
 
-Karena tinggi membagi alas menjadi dua bagian yang sama:
+   **Jawab:**
 
-BD = DC
+   Rumus luas segitiga:
 
-BD = $\frac{1}{2}$ × BC
+   L = ½ × alas × tinggi
 
-BD = $\frac{1}{2}$ × 10 cm
+   L = ½ × 6 cm × 4 cm
 
-BD = 5 cm
+   L = 12 cm²
 
-Sekarang kita dapat mencari tinggi menggunakan Teorema Pythagoras.
+   Jadi, luas wadai lapis berbentuk segitiga tersebut adalah 12 cm².
 
-**Rumus Teorema Pythagoras**
+2. Sebuah wadai lupis mempunyai luas 12 cm². Jika alasnya 6 cm, berapakah tinggi wadai tersebut?
 
-c² = a² + b²
+   > *Placeholder animasi: `[Wadai lupis tinggi.gif]`*
 
-Pada segitiga siku-siku:
+   **Diketahui:**
+   - Luas = 12 cm²
+   - Alas = 6 cm
 
-- sisi miring = 10 cm
-- setengah alas = $\frac{1}{2}$ × 10 cm = 5 cm
-- tinggi = t
+   **Ditanyakan:**
 
-Maka:
+   Tinggi segitiga = ...?
 
-10² = 5² + t²
+   **Jawab:**
 
-100 = 25 + t²
+   Rumus:
 
-t² = 100 − 25
+   L = ½ × alas × tinggi
 
-t² = 75
+   12 cm² = ½ × 6 cm × tinggi
 
-t = √75
+   12 cm² = 3 cm × tinggi
 
-t = 5√3 cm ≈ 8,66 cm
+   tinggi = 12 cm² ÷ 3 cm
 
-Jadi, tinggi segitiga sama sisi 8,66 cm.
+   tinggi = 4 cm
 
-Setelah mengetahui alas dan tinggi, kita dapat menghitung luas segitiga sama sisi.
-
-#### Rumus luas segitiga
-
-**L =** $\frac{1}{2}$ **× alas × tinggi**
-
-Keterangan:
-
-- L = luas
-- alas = panjang sisi yang digunakan sebagai alas
-- tinggi = jarak tegak lurus dari titik sudut ke alas
-
-Maka:
-
-Alas = 10 cm
-
-Tinggi = 8,66 cm
-
-L = $\frac{1}{2}$ × alas × tinggi
-
-L = $\frac{1}{2}$ × 10 cm × 8,66 cm
-
-L = 5 cm × 8,66 cm
-
-L = 43,3 cm²
-
-Jadi, luas segitiga sama sisi tersebut adalah 43,3 cm².
-
-### Contoh Soal
-
-> **Catatan:** masukkan soalnya saja. Ketika anak menjawab benar ada tulisan benar, kalau salah ada cara mengerjakan yang benar.
-
-1. Pak Noor membuat hiasan berbentuk segitiga sama sisi untuk menghias perahu dagangnya di pasar terapung. Panjang setiap sisi hiasan adalah 12 cm. Berapakah luas hiasan tersebut?
-
-**Diketahui:**
-
-- AB = 12 cm
-- AC = 12 cm
-- BC = 12 cm
-- Alas = 12 cm
-- Tinggi = ...?
-
-**Mencari tinggi**
-
-BD = DC
-
-BD = $\frac{1}{2}$ × BC
-
-BD = $\frac{1}{2}$ × 12 cm
-
-BD = 6 cm
-
-Teorema Pythagoras:
-
-12² = 6² + t²
-
-144 = 36 + t²
-
-t² = 144 − 36
-
-t² = 108
-
-t = √108
-
-t = 6√3 cm
-
-t ≈ 10,39 cm
-
-Jadi, tinggi hiasan tersebut adalah 10,39 cm.
-
-**Mencari luas**
-
-L = $\frac{1}{2}$ × alas × tinggi
-
-L = $\frac{1}{2}$ × 12 cm × 10,39 cm
-
-L = 6 × 10,39 cm
-
-L ≈ 62,34 cm²
-
-Jadi, luas hiasan pada perahu Ibu Lina adalah 62,34 cm².
-
-2. Ibu Rahma membuat pola sasirangan berbentuk segitiga sama sisi. Tinggi pola tersebut adalah 9 cm. Luas pola segitiga yang dibuat Bu Rahma adalah 54 cm². Berapakah panjang alas pola segitiga tersebut?
-
-**Diketahui:**
-
-- Luas = 54 cm²
-- Tinggi = 9 cm
-- Alas = ...?
-
-**Jawab:**
-
-L = $\frac{1}{2}$ × alas × tinggi
-
-54 = $\frac{1}{2}$ × alas × 9 cm
-
-54 = 4,5 cm × alas
-
-Alas = 54 cm ÷ 4,5 cm
-
-Alas = 12 cm
-
-Jadi, panjang alas pola segitiga tersebut adalah 12 cm.
+   Jadi, tinggi segitiga tersebut adalah 4 cm.
 
 ---
 
-## Segitiga Sama Kaki
+## 2. Segitiga Sama Kaki
 
-Perhatikan rangka jembatan pada gambar.
+> **(Menu konsep)**
 
-![Gambar 12 — Rangka jembatan](https://placehold.co/800x600.png?text=Gambar+12+-+Rangka+Jembatan)
+Segitiga sama kaki mempunyai dua sisi yang sama panjang.
 
-Pada rangka jembatan memiliki bentuk segitiga sama kaki.
+Contoh: bentuk segitiga pada bagian tiang jembatan.
 
-### Apa itu segitiga sama kaki?
-
-Segitiga sama kaki adalah segitiga yang mempunyai dua sisi sama panjang.
-
-![Gambar 13 — Segitiga sama kaki ABC](https://placehold.co/800x600.png?text=Gambar+13+-+Segitiga+Sama+Kaki+ABC)
-
-Garis AB = Garis AC
-
-Garis AB dan AC adalah kaki. Garis BC adalah alas.
-
-> Diketahui panjang kayu 6 cm, 6 cm, dan 4 cm.
-> Bangun datar apa yang dapat dibentuk?
-
-Maka AB dan AC mempunyai panjang yang sama.
-
-Jadi, segitiga tersebut adalah **segitiga sama kaki**.
-
-![Gambar 14 — Kotak centang](https://placehold.co/800x600.png?text=Gambar+14+-+Kotak+Centang) (berikan kotak di bawah)
-
-Segitiga sama kaki mempunyai dua sisi sama panjang.
+![Tiang jembatan](16.jpg)
 
 ### Sifat-Sifat Segitiga Sama Kaki
 
-Segitiga sama kaki mempunyai beberapa sifat yang dapat membantu kita mengenalinya.
+Segitiga sama kaki mempunyai:
 
-#### 1. Memiliki 3 titik sudut
+- **3 titik sudut**
 
-Segitiga sama kaki memiliki 3 titik sudut.
+  > *Placeholder animasi: `[titik sudut jembatan.gif]`*
 
-![Gambar 15 — Titik sudut segitiga sama kaki](https://placehold.co/800x600.png?text=Gambar+15+-+Titik+Sudut+Sama+Kaki)
+- **3 sisi**
 
-Pada segitiga sama kaki ABC, titik sudutnya adalah: A, B, dan C.
+  > *Placeholder animasi: `[sisi jembatan.gif]`*
 
-#### 2. Memiliki 3 sudut
+  > *Placeholder animasi: `[2 sisi sama panjang.gif]`*
 
-Segitiga sama kaki memiliki 3 sudut.
+  > *Placeholder animasi: `[1 sisi berbeda.gif]`*
 
-![Gambar 16 — Sudut segitiga sama kaki](https://placehold.co/800x600.png?text=Gambar+16+-+Sudut+Sama+Kaki)
+- **3 sudut**
 
-> Pada segitiga sama kaki ABC terdapat:
-> - sudut A
-> - sudut B
-> - sudut C
+  > *Placeholder animasi: `[sudut jembatan.gif]`*
 
-#### 3. Memiliki 3 sisi
+- **Simetri lipat (ada 1 simetri lipat)**
 
-Segitiga sama kaki memiliki 3 sisi.
+  > *Placeholder animasi: `[simetri lipat.gif]`*
 
-![Gambar 17 — Sisi segitiga sama kaki](https://placehold.co/800x600.png?text=Gambar+17+-+Sisi+Sama+Kaki)
+- **Tidak mempunyai simetri putar**
 
-Pada segitiga sama kaki ABC terdapat:
-
-- Sisi AB
-- Sisi BC
-- Sisi AC
-
-#### 4. Memiliki simetri lipat
-
-Segitiga sama kaki memiliki **1 simetri lipat**.
-
-![Gambar 18 — Simetri lipat segitiga sama kaki](https://placehold.co/800x600.png?text=Gambar+18+-+Simetri+Lipat+Sama+Kaki)
-
-![Gambar 19 — Diagram simetri lipat 1](https://placehold.co/800x600.png?text=Gambar+19+-+Diagram+Simetri+Lipat+1) ![Gambar 20 — Diagram simetri lipat 2](https://placehold.co/800x600.png?text=Gambar+20+-+Diagram+Simetri+Lipat+2)
-
-#### 5. Memiliki simetri putar
-
-Segitiga sama kaki memiliki **1 simetri putar**.
-
-![Gambar 21 — Simetri putar segitiga sama kaki](https://placehold.co/800x600.png?text=Gambar+21+-+Simetri+Putar+Sama+Kaki)
-
-![Gambar 22 — Diagram simetri putar sama kaki](https://placehold.co/800x600.png?text=Gambar+22+-+Diagram+Simetri+Putar)
+  > *Placeholder animasi: `[Segitiga tanpa simetri putar.gif]`*
 
 ### Keliling Segitiga Sama Kaki
 
-Keliling adalah panjang seluruh sisi yang mengelilingi suatu bangun.
+Keliling adalah panjang seluruh sisi yang mengelilingi bangun.
 
-Segitiga sama kaki memiliki 3 sisi, kelilingnya diperoleh dengan menjumlahkan ketiga sisinya.
+Rumus:
 
-Misalnya:
+**K = sisi + sisi + alas**
 
-- AB = 8 cm
-- AC = 8 cm
-- BC = 6 cm
+atau
 
-Maka:
+**K = 2 × sisi yang sama + alas**
 
-K = AB + AC + BC
+> **Clue animasi keliling:** Tampilkan gambar tiang jembatan kemudian muncul titik A, B, dan C. Sebuah garis berjalan mengikuti sisi AB → BC → CA. Setiap sisi yang dilewati diberi tanda dan panjangnya dijumlahkan.
 
-K = 8 + 8 + 6
+#### Contoh Soal
 
-K = 22 cm
+1. Ibu membuat wadai amparan tatak. Dua sisi kue lapis yang sama panjang masing-masing berukuran 6 cm, sedangkan panjang alasnya 5 cm. Berapakah keliling kue lapis tersebut?
 
-Jadi, keliling segitiga tersebut adalah 22 cm.
+![Wadai amparan tatak](17.jpg)
 
-#### Rumus keliling segitiga sama kaki
-
-**K = S + S + S**
-
-### Contoh Soal
-
-> **Catatan:** masukkan soalnya saja. Ketika anak menjawab benar ada tulisan benar, kalau salah ada cara mengerjakan yang benar.
-
-1. Pak Tono sedang mencat tiang jembatan. Tiang jembatan berbentuk segitiga sama kaki. Panjang sepasang sisi tiang adalah 10 m, sedangkan sisi lainnya 8 m. Berapa panjang seluruh sisi tiang jembatan yang akan dicat Pak Tono?
+> **Clue animasi:** Tampilkan gambar wadai amparan tatak. Kemudian munculkan titik A, B, dan C pada ketiga titik sudutnya. Tampilkan sisi AB = 6 cm dan AC = 6 cm dengan tanda yang sama. Setelah itu, tampilkan sisi alas BC = 5 cm. Sebuah garis berjalan mengikuti AB (6 cm) → BC (5 cm) → CA (6 cm).
 
 **Diketahui:**
+- Sisi yang sama panjang = 6 cm.
+- Sisi yang sama panjang = 6 cm.
+- Alas = 5 cm.
 
-- Sisi kaki = 10 m
-- Sisi kaki = 10 m
-- Sisi alas = 8 m
+**Ditanyakan:**
+
+Berapakah keliling kue lapis tersebut?
 
 **Jawab:**
 
-K = S + S + S
+Rumus keliling segitiga:
 
-K = 10 m + 10 m + 8 m
+K = sisi + sisi + alas
 
-K = 28 m
+K = 6 cm + 6 cm + 5 cm
 
-Jadi, panjang seluruh sisi tiang jembatan yang akan dicat Pak Tono adalah 28 m.
+K = 17 cm
 
-2. Pak Ahmad sedang membuat hiasan berbentuk segitiga sama kaki untuk memperindah bagian depan Rumah Bubungan Tinggi. Panjang kedua sisi yang sama adalah 12 cm, sedangkan panjang sisi alasnya 8 cm. Pak Ahmad ingin memasang pita di sepanjang seluruh sisi hiasan tersebut. Berapa panjang pita yang diperlukan?
+Jadi, keliling kue lapis berbentuk segitiga sama kaki tersebut adalah 17 cm.
+
+2. Sebuah tiang jembatan mempunyai keliling 16 cm. Dua sisi yang sama panjang masing-masing berukuran 5 cm. Berapakah panjang sisi alasnya?
+
+> *Placeholder animasi: `[soal keliling tiang jembatan.gif]`*
 
 **Diketahui:**
+- Keliling = 16 cm
+- AB = AC = 5 cm
 
-- Sisi kaki = 12 cm
-- Sisi kaki = 12 cm
-- Sisi alas = 8 cm
+**Ditanyakan:**
+
+Panjang alas = ...?
 
 **Jawab:**
 
-K = S + S + S
+Rumus:
 
-K = 12 cm + 12 cm + 8 cm
+K = sisi + sisi + alas
 
-K = 32 cm
+16 cm = 5 cm + 5 cm + alas
 
-Jadi, Pak Ahmad memerlukan pita sepanjang 32 cm.
+alas = 16 cm − 5 cm − 5 cm
+
+alas = 6 cm
+
+Jadi, panjang sisi alas tiang jembatan adalah 6 cm.
 
 ### Luas Segitiga Sama Kaki
 
-Luas adalah ukuran banyaknya daerah yang berada di dalam suatu bangun.
+Luas adalah besar daerah yang berada di dalam bangun.
 
-Rumus luas segitiga sama kaki:
+Rumus:
 
-**L =** $\frac{1}{2}$ **× alas × tinggi**
+**L = ½ × alas × tinggi**
 
-Keterangan:
+> **Clue animasi luas:** Tampilkan tiang jembatan. Munculkan garis tinggi dari titik sudut ke alas. Kemudian bagian dalam segitiga diwarna secara bertahap untuk menunjukkan daerah yang dihitung sebagai luas.
 
-- L = luas
-- alas = panjang sisi alas
-- tinggi = jarak tegak lurus dari titik sudut ke alas
+#### Contoh Soal
 
-Misalnya:
+1. Ibu membuat wadai amparan tatak berbentuk segitiga sama kaki untuk acara keluarga. Kue lapis tersebut mempunyai alas 8 cm dan tinggi 10 cm. Berapakah luas kue lapis tersebut?
 
-- Alas = 12 cm
-- Tinggi = 10 cm
+   > *Placeholder animasi: `[soal luas wadai amparan tatak.gif]`*
 
-Maka:
+   **Diketahui:**
+   - Alas = 8 cm.
+   - Tinggi = 10 cm.
 
-L = $\frac{1}{2}$ × alas × tinggi
+   **Ditanyakan:**
 
-L = $\frac{1}{2}$ × 12 × 10
+   Berapakah luas wadai amparan tatak tersebut?
 
-L = 6 × 10
+   **Jawab:**
 
-L = 60 cm²
+   Rumus luas segitiga:
 
-Jadi, luas segitiga tersebut adalah 60 cm².
+   L = ½ × alas × tinggi
 
-### Contoh Soal
+   L = ½ × 8 cm × 10 cm
 
-> **Catatan:** masukkan soalnya saja. Ketika anak menjawab benar ada tulisan benar, kalau salah ada cara mengerjakan yang benar.
+   L = 40 cm²
 
-1. Ibu Sari sedang membuat lupis yang dibungkus dengan daun pisang. Bentuk lupis tersebut adalah segitiga sama sisi. Panjang alas lupis adalah 10 cm dan tingginya 8 cm. Berapa luas bagian lupis yang berbentuk segitiga tersebut?
+   Jadi, luas kue lapis berbentuk segitiga sama kaki tersebut adalah 40 cm².
+
+2. Sebuah wadai ipau mempunyai luas 12 cm² dan tinggi 4 cm. Berapakah panjang alas segitiga tersebut?
+
+![Wadai ipau](18.jpg)
+
+> *Placeholder animasi: `[Wadai ipau luas.gif]`*
 
 **Diketahui:**
+- Luas = 12 cm²
+- Tinggi = 4 cm
 
-- Alas = 10 cm
-- Tinggi = 8 cm
+**Ditanyakan:**
+
+Panjang alas = ...?
 
 **Jawab:**
 
-L = $\frac{1}{2}$ × alas × tinggi
+L = ½ × alas × tinggi
 
-L = $\frac{1}{2}$ × 10 × 8
+12 cm² = ½ × alas × 4
 
-L = 5 × 8
+12 cm² = 2 × alas
 
-L = 40 cm²
+alas = 12 ÷ 2
 
-Jadi, luas bagian lupis yang berbentuk segitiga tersebut adalah 40 cm².
+alas = 6 cm
 
-2. Ibu Sari membuat lupis berbentuk segitiga sama sisi untuk disajikan dalam acara keluarga. Luas bagian lupis yang berbentuk segitiga adalah 60 cm². Tinggi lupis tersebut adalah 10 cm. Berapakah panjang alas lupis tersebut?
-
-**Diketahui:**
-
-- Luas = 60 cm²
-- Tinggi = 10 cm
-- Alas = ...?
-
-**Jawab:**
-
-L = $\frac{1}{2}$ × alas × tinggi
-
-60 = $\frac{1}{2}$ × alas × 10
-
-60 = 5 × alas
-
-Alas = 60 ÷ 5
-
-Alas = 12 cm
-
-Jadi, panjang alas lupis tersebut adalah 12 cm.
+Jadi, panjang alas segitiga sama kaki tersebut adalah 6 cm.
 
 ---
+
+## 3. Segitiga Sembarang
+
+> **(Menu konsep)**
+
+Segitiga sembarang mempunyai tiga sisi yang panjangnya berbeda.
+
+**Contoh: ketupat kandangan**
+
+![Ketupat kandangan](19.jpg)
+
+### Sifat-Sifat Segitiga Sembarang
+
+![Contoh sifat segitiga sembarang](20.jpg)
+
+> *(contoh sifat)*
+
+**Segitiga sembarang mempunyai:**
+
+- **3 titik sudut**
+
+  > *Placeholder animasi: `[titik sudut ketupat.gif]`*
+
+- **3 sisi**
+
+  > *Placeholder animasi: `[sisi ketupat.gif]`*
+
+  > *Placeholder animasi: `[3 sisi berbeda panjang.gif]`*
+
+- **3 sudut**
+
+  > *Placeholder animasi: `[sudut ketupat.gif]`*
+
+- **Tidak mempunyai simetri lipat**
+
+  > *Placeholder animasi: `[tanpa simetri lipat.gif]`*
+
+- **Tidak mempunyai simetri putar**
+
+  > *Placeholder animasi: `[tanpa simetri putar.gif]`*
+
+### Keliling Segitiga Sembarang
+
+Keliling adalah panjang seluruh sisi yang mengelilingi bangun.
+
+Rumus:
+
+**K = sisi 1 + sisi 2 + sisi 3**
+
+> **Clue animasi keliling:** Tampilkan gambar lontong Banjar kemudian muncul titik A, B, dan C. Sebuah garis berjalan mengikuti sisi AB → BC → CA. Setiap sisi yang dilewati diberi tanda dan panjangnya dijumlahkan.
+
+#### Contoh Soal
+
+1. Ibu membuat ketupat kandangan untuk disajikan kepada keluarga. Ketupat kandangan itu dipotong menjadi dua bagian yang mempunyai tiga sisi dengan panjang yang berbeda. Sisi AB = 4 cm, sisi BC = 5 cm, dan sisi CA = 6 cm. Berapakah keliling ketupat kandangan tersebut?
+
+   > *Placeholder animasi: `[keliling ketupat.gif]`*
+
+   **Diketahui:**
+   - Panjang sisi AB = 4 cm.
+   - Panjang sisi BC = 5 cm.
+   - Panjang sisi CA = 6 cm.
+
+   **Ditanyakan:**
+
+   Berapakah keliling ketupat kandangan tersebut?
+
+   **Jawab:**
+
+   Rumus keliling segitiga:
+
+   K = sisi AB + sisi BC + sisi CA
+
+   K = 4 cm + 5 cm + 6 cm
+
+   K = 15 cm
+
+   Jadi, keliling ketupat kandangan tersebut adalah 15 cm.
+
+2. Ketupat kandangan dibelah menjadi dua. Satu bagian ketupat mempunyai keliling 15 cm. Dua sisinya masing-masing berukuran 4 cm dan 5 cm. Berapakah panjang sisi ketiganya?
+
+   > *Placeholder animasi: `[sisi ketupat.gif]`*
+
+   **Diketahui:**
+   - Keliling = 15 cm
+   - AB = 4 cm
+   - BC = 5 cm
+
+   **Ditanyakan:**
+
+   Panjang CA = ...?
+
+   **Jawab:**
+
+   Rumus:
+
+   K = AB + BC + CA
+
+   15 cm = 4 cm + 5 cm + CA
+
+   15 cm = 9 cm + CA
+
+   CA = 15 cm − 9 cm
+
+   CA = 6 cm
+
+   Jadi, panjang sisi CA adalah 6 cm.
+
+### Luas Segitiga Sembarang
+
+Luas adalah besar daerah yang berada di dalam bangun.
+
+Rumus:
+
+**L = ½ × alas × tinggi**
+
+> **Clue animasi luas:** Tampilkan ketupat kandangan. Munculkan garis tinggi dari titik sudut ke alas. Kemudian bagian dalam segitiga diwarna secara bertahap untuk menunjukkan daerah yang dihitung sebagai luas.
+
+#### Contoh Soal
+
+1. Ibu membuat ketupat kandangan. Ketupat kandangan tersebut dibelah dua dan diberikan kepada Andi dan Budi yang memiliki panjang alas 6 cm dan tinggi 4 cm. Berapakah luas ketupat kandangan tersebut?
+
+   > *Placeholder animasi: `[luas ketupat.gif]`*
+
+   **Diketahui:**
+   - Panjang alas = 6 cm.
+   - Tinggi = 4 cm.
+
+   **Ditanyakan:**
+
+   Berapakah luas ketupat kandangan tersebut?
+
+   **Jawab:**
+
+   Rumus luas segitiga:
+
+   L = ½ × alas × tinggi
+
+   L = ½ × 6 × 4
+
+   L = 12 cm²
+
+   Jadi, luas ketupat kandangan tersebut adalah 12 cm².
+
+2. Ibu membuat ketupat kandangan. Ketupat kandangan tersebut dibelah dua dan diberikan kepada Andi dan Budi yang mempunyai luas 12 cm². Tinggi segitiga tersebut 4 cm. Berapakah panjang alas ketupat?
+
+   > *Placeholder animasi: `[alas ketupat.gif]`*
+
+   **Diketahui:**
+   - Luas = 12 cm²
+   - Tinggi = 4 cm
+
+   **Ditanyakan:**
+
+   Panjang alas = ...?
+
+   **Jawab:**
+
+   L = ½ × alas × tinggi
+
+   12 cm² = ½ × alas × 4
+
+   12 cm² = 2 × alas
+
+   alas = 12 ÷ 2
+
+   alas = 6 cm
+
+   Jadi, panjang alas ketupat tersebut adalah 6 cm.

@@ -182,7 +182,7 @@ def save_pretest(data, user_id):
 
     # ── JIKA GURU / ADMIN (BUKAN LEVEL 0) ──
     else:
-        print(f"User {user_id} adalah Guru/Admin (Level: {getattr(user, 'level', 'Tidak diketahui')}). Data Pretest tidak disimpan.")
+        pass
 
     return jsonify({
         "status": "success",

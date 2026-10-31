@@ -13,6 +13,7 @@ import io
 
 QUIZ_ATTEMPT_DURATION_SECONDS = 15 * 60
 EVALUATION_ATTEMPT_DURATION_SECONDS = 20 * 60
+AUTO_SUBMIT_GRACE_SECONDS = 5
 
 
 def _consume_quiz_attempt(session_key):
@@ -31,7 +32,14 @@ def _consume_quiz_attempt(session_key):
         if session_key == 'quiz_start_time_evaluation'
         else QUIZ_ATTEMPT_DURATION_SECONDS
     )
-    return 0 <= elapsed <= max_duration
+    # Browser waits two seconds after its timer reaches zero before auto-submit.
+    return 0 <= elapsed <= max_duration + AUTO_SUBMIT_GRACE_SECONDS
+
+
+@app.before_request
+def _hide_template_sources():
+    if request.path == '/resources/views' or request.path.startswith('/resources/views/'):
+        return 'Not Found', 404
 
 
 @app.route("/")
@@ -101,7 +109,9 @@ def register():
 @login_required
 def pretest(user_id):
     if user_id != current_user.id:
-        return render_template("403.html")
+        return render_template("403.html"), 403
+    if current_user.level == 0 and current_user.pretest_result is not None:
+        return redirect(url_for('dashboard_student', user_id=user_id))
     
     return render_template("pretest/preparation.html", user_id=user_id)
 
@@ -109,7 +119,9 @@ def pretest(user_id):
 @login_required
 def pretest_start(user_id):
     if user_id != current_user.id:
-        return render_template("403.html")
+        return render_template("403.html"), 403
+    if current_user.level == 0 and current_user.pretest_result is not None:
+        return redirect(url_for('dashboard_student', user_id=user_id))
     
     safe_questions = [
         {k: v for k, v in q.items() if k != "correct"}
@@ -121,10 +133,17 @@ def pretest_start(user_id):
 @login_required
 def submit_pretest(user_id):
     if user_id != current_user.id:
-        return render_template("403.html")
+        return render_template("403.html"), 403
+    if current_user.level == 0 and current_user.pretest_result is not None:
+        return jsonify({'error': 'Pretest sudah dikirim.'}), 409
 
-    data = request.get_json()
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or not isinstance(data.get('answers'), dict):
+        return jsonify({'error': 'Format jawaban pretest tidak valid.'}), 400
 
+    time_taken = data.get('time_taken', 0)
+    if not isinstance(time_taken, int) or isinstance(time_taken, bool) or not 0 <= time_taken <= 60 * 60:
+        return jsonify({'error': 'Durasi pretest tidak valid.'}), 400
     return save_pretest(data, user_id)
 
 @app.route("/api/pretest/analyze/<int:user_id>", methods=["POST"])
@@ -160,6 +179,8 @@ def waiting_analysis(user_id):
 @app.route("/waiting/pretest/<int:user_id>", methods=["GET"])
 @login_required
 def waiting_pretest(user_id):
+    if user_id != current_user.id:
+        return render_template("403.html"), 403
     return render_template(f"waiting-for-analysis.html", user_id=user_id)
 
 # Evaluation Handle ==================================================================================
@@ -183,6 +204,9 @@ def submit_evaluation(user_id):
     data = request.get_json(silent=True)
     if not isinstance(data, dict) or not isinstance(data.get('answers'), dict):
         return jsonify({'error': 'Format jawaban evaluasi tidak valid.'}), 400
+    time_taken = data.get('time_taken', 0)
+    if not isinstance(time_taken, int) or isinstance(time_taken, bool) or not 0 <= time_taken <= EVALUATION_ATTEMPT_DURATION_SECONDS:
+        return jsonify({'error': 'Durasi evaluasi tidak valid.'}), 400
     if current_user.level == 0 and not _consume_quiz_attempt('quiz_start_time_evaluation'):
         return jsonify({'error': 'Percobaan evaluasi tidak aktif, kedaluwarsa, atau sudah dikirim.'}), 409
 
@@ -210,6 +234,9 @@ def is_student_waiting_analysis():
 def _block_student_if_waiting_analysis():
     if current_user.is_authenticated and current_user.level == 0:
         path = request.path
+        requested_level = (request.view_args or {}).get('klasifikasi')
+        if requested_level is not None and requested_level != current_user.klasifikasi:
+            return render_template('403.html'), 403
         pr = current_user.pretest_result
         blocked_prefixes = ('/learning/', '/quiz/', '/evaluation/', '/api/learning/', '/api/bab')
         if path.startswith(blocked_prefixes):
@@ -306,6 +333,8 @@ def api_bangun_datar_quiz_submit_low(user_id):
         return jsonify({'error': 'Unauthorized'}), 403
     if current_user.level != 0:
         return jsonify({'error': 'Hanya siswa yang dapat mengirim hasil kuis.'}), 403
+    if current_user.klasifikasi != 0:
+        return jsonify({'error': 'Kuis tidak sesuai klasifikasi siswa.'}), 403
 
     data = request.get_json(silent=True)
     if not isinstance(data, dict) or not isinstance(data.get('jawaban'), dict):
@@ -372,6 +401,8 @@ def api_bangun_datar_quiz_submit_medium(user_id):
         return jsonify({'error': 'Unauthorized'}), 403
     if current_user.level != 0:
         return jsonify({'error': 'Hanya siswa yang dapat mengirim hasil kuis.'}), 403
+    if current_user.klasifikasi != 1:
+        return jsonify({'error': 'Kuis tidak sesuai klasifikasi siswa.'}), 403
 
     data = request.get_json(silent=True)
     if not isinstance(data, dict) or not isinstance(data.get('jawaban'), dict):
@@ -438,6 +469,8 @@ def api_bangun_datar_quiz_submit_high(user_id):
         return jsonify({'error': 'Unauthorized'}), 403
     if current_user.level != 0:
         return jsonify({'error': 'Hanya siswa yang dapat mengirim hasil kuis.'}), 403
+    if current_user.klasifikasi != 2:
+        return jsonify({'error': 'Kuis tidak sesuai klasifikasi siswa.'}), 403
 
     data = request.get_json(silent=True)
     if not isinstance(data, dict) or not isinstance(data.get('jawaban'), dict):
@@ -542,8 +575,6 @@ def student_profile(user_id):
 
     data = show_student_ai_analysis(user_id)
     user = get_user_by_id(user_id)
-    print(data)
-
     return render_template(
         'dashboard/student/student_profile.html',
         user=user,
@@ -579,6 +610,8 @@ def teacher_choise_course(user_id):
 @login_required
 @level_required(1)
 def teacher_update_klasifikasi(user_id):
+    if user_id != current_user.id:
+        return render_template('403.html'), 403
     # 1. Mengambil data dari form
     k = request.form.get('klasifikasi', type=int)
 
@@ -830,6 +863,8 @@ def admin_choise_course(user_id):
 @login_required
 @level_required(2)
 def admin_update_klasifikasi(user_id):
+    if user_id != current_user.id:
+        return render_template('403.html'), 403
     # 1. Mengambil data dari form
     k = request.form.get('klasifikasi', type=int)
 

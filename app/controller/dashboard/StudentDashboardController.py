@@ -13,6 +13,16 @@ def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+def valid_image_content(file):
+    header = file.stream.read(12)
+    file.stream.seek(0)
+    return (
+        header.startswith(b'\x89PNG\r\n\x1a\n')
+        or header.startswith(b'\xff\xd8\xff')
+        or header.startswith((b'GIF87a', b'GIF89a'))
+    )
+
 def update_student_profile(user_id):
     if user_id != current_user.id:
         abort(403)
@@ -28,7 +38,7 @@ def update_student_profile(user_id):
         if file and file.filename != '':
             
             # Validasi ekstensi file pakai fungsi allowed_file di atas
-            if allowed_file(file.filename):
+            if allowed_file(file.filename) and valid_image_content(file):
                 filename = secure_filename(file.filename)
                 ext = filename.rsplit('.', 1)[-1].lower()
 

@@ -16,6 +16,7 @@ app = Flask(__name__,
 application = app
 
 app.config.from_object(Config)
+Config.validate()
 db = SQLAlchemy(app)
 csrf = CSRFProtect(app)
 migrate = Migrate(app, db)

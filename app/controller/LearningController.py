@@ -15,6 +15,7 @@ BAB_CONFIG = {
     },
     "evaluation": {
         "label": "Evaluation",
+        "score_chapter": "evaluation",
         "flow": [{"activity_key": "evaluation", "route": "learning_evaluation"}],
         "dir": "evaluation",
         "prerequisite_quiz": "Bangun Datar",
@@ -130,7 +131,6 @@ def can_access_evaluation(user_id: int, klasifikasi: int):
             score_type="evaluation",
             chapter="evaluation",
         ).order_by(Score.created_at.desc()).all()
-        print(quiz_history)
         return render_template(
             f"learning/{folder}/evaluation/evaluation.html",
             user_id=user_id,
@@ -166,16 +166,7 @@ def can_access_evaluation_start(user_id: int, klasifikasi: int, bab_key: str):
         if not has_activity(user_id, f"{bab_key}"):
             return redirect(url_for(quiz_route, user_id=user_id, klasifikasi=klasifikasi))
 
-        last_score = _get_last_score(user_id, "evaluation", cfg["label"])
-
-        # --- DEBUG (hapus setelah confirmed fix) ---
-        print(f"[DEBUG] bab_key={bab_key} chapter={cfg['label']}")
-        print(f"[DEBUG] last_score={last_score}")
-        if last_score:
-            print(f"[DEBUG] value={last_score.value} created_at={last_score.created_at}")
-            print(f"[DEBUG] utcnow={datetime.utcnow()}")
-            print(f"[DEBUG] sisa_cooldown={_compute_cooldown(last_score)}")
-        # -------------------------------------------
+        last_score = _get_last_score(user_id, "evaluation", cfg["score_chapter"])
 
         if last_score:
             kkm = _get_kkm(current_user)
@@ -246,7 +237,7 @@ def can_access_bangun_datar_1d(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:
         return guard
-    if klasifikasi not in (0, 1):
+    if klasifikasi != 0:
         abort(404)
     folder = _folder(klasifikasi)
     return render_template(f"learning/{folder}/bangun_datar/01_d.html", user_id=user_id, klasifikasi=klasifikasi)
@@ -278,7 +269,7 @@ def can_access_bangun_datar_4(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:
         return guard
-    if klasifikasi not in (0, 1):
+    if klasifikasi != 0:
         abort(404)
     folder = _folder(klasifikasi)
     return render_template(
@@ -291,7 +282,7 @@ def can_access_bangun_datar_5(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:
         return guard
-    if klasifikasi not in (0, 1):
+    if klasifikasi != 0:
         abort(404)
     folder = _folder(klasifikasi)
     return render_template(
@@ -304,7 +295,7 @@ def can_access_bangun_datar_6(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:
         return guard
-    if klasifikasi not in (0, 1):
+    if klasifikasi != 0:
         abort(404)
     folder = _folder(klasifikasi)
     return render_template(
@@ -319,7 +310,7 @@ def can_access_bangun_datar_5_2(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:
         return guard
-    if klasifikasi not in (0, 1):
+    if klasifikasi != 0:
         abort(404)
     folder = _folder(klasifikasi)
     return render_template(f"learning/{folder}/bangun_datar/05_2.html", user_id=user_id, klasifikasi=klasifikasi)
@@ -329,7 +320,7 @@ def can_access_bangun_datar_5_3(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:
         return guard
-    if klasifikasi not in (0, 1):
+    if klasifikasi != 0:
         abort(404)
     folder = _folder(klasifikasi)
     return render_template(f"learning/{folder}/bangun_datar/05_3.html", user_id=user_id, klasifikasi=klasifikasi)
@@ -339,7 +330,7 @@ def can_access_bangun_datar_6_2(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:
         return guard
-    if klasifikasi not in (0, 1):
+    if klasifikasi != 0:
         abort(404)
     folder = _folder(klasifikasi)
     return render_template(f"learning/{folder}/bangun_datar/06_2.html", user_id=user_id, klasifikasi=klasifikasi)
@@ -349,7 +340,7 @@ def can_access_bangun_datar_6_3(user_id, klasifikasi):
     guard = _guard(user_id)
     if guard:
         return guard
-    if klasifikasi not in (0, 1):
+    if klasifikasi != 0:
         abort(404)
     folder = _folder(klasifikasi)
     return render_template(f"learning/{folder}/bangun_datar/06_3.html", user_id=user_id, klasifikasi=klasifikasi)

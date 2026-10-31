@@ -355,6 +355,16 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+def valid_image_content(file):
+    header = file.stream.read(12)
+    file.stream.seek(0)
+    return (
+        header.startswith(b'\x89PNG\r\n\x1a\n')
+        or header.startswith(b'\xff\xd8\xff')
+        or header.startswith((b'GIF87a', b'GIF89a'))
+    )
+
+
 def teacher_profile(user_id):
     user = User.query.get_or_404(user_id)
     return user
@@ -369,7 +379,7 @@ def update_teacher_profile(user_id):
     if 'avatar' in request.files:
         file = request.files['avatar']
         if file and file.filename != '':
-            if allowed_file(file.filename):
+            if allowed_file(file.filename) and valid_image_content(file):
                 filename = secure_filename(file.filename)
                 ext = filename.rsplit('.', 1)[-1].lower()
                 project_root = os.path.dirname(current_app.root_path)

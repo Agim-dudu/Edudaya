@@ -450,7 +450,7 @@
                         popup: 'rounded-2xl shadow-xl',
                     },
                     buttonsStyling: false,
-                }).then(r => { if (r.isConfirmed) window.location.href = "/quiz/bangun_datar{{ current_user.id }}/{{ current_user.klasifikasi }}"; });
+                }).then(r => { if (r.isConfirmed) window.location.href = "/quiz/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}"; });
                 return;
             }
 
@@ -465,7 +465,11 @@
                     jawaban: jawabanUser   // { 1: "soal1-b", 2: "soal2-c", ... }
                 })
             })
-            .then(res => res.json())
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Gagal menyimpan skor kuis.');
+                return data;
+            })
             .then(data => {
                 // Tandai benar/salah dari kunci yang dikembalikan server
                 for (let i = 1; i <= totalSoal; i++) {
@@ -507,7 +511,7 @@
             })
             .catch(err => {
                 console.error('Gagal update progress:', err);
-                Swal.fire({ icon: 'error', title: 'Gagal', text: 'Gagal menyimpan skor kuis. Coba lagi nanti.' });
+                Swal.fire({ icon: 'error', title: 'Gagal', text: err.message || 'Gagal menyimpan skor kuis. Coba lagi nanti.' });
             });
         }
 

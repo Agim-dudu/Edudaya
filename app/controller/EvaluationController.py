@@ -1,5 +1,6 @@
 import copy
 import json
+from datetime import datetime
 from app import db
 from sqlalchemy import case
 from flask_login import current_user 
@@ -17,7 +18,7 @@ QUESTIONS_EVALUATION = [
             {"id": "c", "text": "5 apel"},
             {"id": "d", "text": "6 apel"}
         ],
-        "correct": "c",
+        "correct": "b",
         "topic": "Pembagian"
     },
     {
@@ -95,7 +96,7 @@ QUESTIONS_EVALUATION = [
             {"id": "c", "text": "82 m²"},
             {"id": "d", "text": "84 m²"}
         ],
-        "correct": "c",
+        "correct": "d",
         "topic": "Luas Bangun Datar"
     },
     {
@@ -134,7 +135,7 @@ QUESTIONS_EVALUATION = [
             {"id": "c", "text": "75 meter"},
             {"id": "d", "text": "90 meter"}
         ],
-        "correct": "c",
+        "correct": "b",
         "topic": "Keliling Bangun Datar"
     }
 ]
@@ -210,6 +211,7 @@ def save_evaluation(data, user_id):
             existing_score.correct   = correct_count
             existing_score.incorrect = incorrect_count
             existing_score.value     = score_value
+            existing_score.created_at = datetime.utcnow()
         else:
             db.session.add(Score(
                 user_id    = user_id,
@@ -224,14 +226,13 @@ def save_evaluation(data, user_id):
         # 3. Tandai user sudah evaluasi & commit ke DB
         user.evaluation = 1
         db.session.commit()
-    
+
     # ── JIKA GURU / ADMIN (BUKAN LEVEL 0) ──
     # Database tidak akan diubah, tapi mereka tetap diarahkan ke halaman hasil evaluasi (bisa untuk simulasi/testing)
     else:
-        print(f"User {user_id} adalah Guru/Admin (Level: {getattr(user, 'level', 'Tidak diketahui')}). Data tidak disimpan.")
+        pass
 
     return jsonify({
         "status": "success",
         "redirect_url": url_for("learning_evaluation", user_id=user_id, klasifikasi=user.klasifikasi)
     })
-    
