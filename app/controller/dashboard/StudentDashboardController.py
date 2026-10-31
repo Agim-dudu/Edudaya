@@ -118,6 +118,7 @@ def get_student_dashboard_stats(user_id):
 
     chapters_meta = {
         "Bangun Datar": {"title": "Bangun Datar", "icon": "🔷"},
+        "evaluation": {"title": "Evaluasi Akhir", "icon": "📝"},
         "Bab 1": {"title": "Penjumlahan", "icon": "➕"},
         "Bab 2": {"title": "Pengurangan", "icon": "➖"},
     }
@@ -132,9 +133,15 @@ def get_student_dashboard_stats(user_id):
         completed = [s for s in ch_scores if s.value > 0]
         materials = []
         for s in ch_scores:
+            if s.score_type == 'evaluation':
+                title = meta['title']
+            elif s.score_type == 'quiz':
+                title = f"Kuis {meta['title']}"
+            else:
+                title = f"Latihan {meta['title']}"
             materials.append({
                 "icon": "🧩" if s.score_type == "quiz" else "📝",
-                "title": f"{'Kuis' if s.score_type == 'quiz' else 'Latihan'} {meta['title']}",
+                "title": title,
                 "updated_at": s.created_at or datetime.utcnow(),
                 "completed": s.value > 0,
                 "score": s.value,
@@ -204,8 +211,8 @@ def get_student_overview_stats(user_id):
             })
 
     # 📋 Detail nilai per materi (dari tabel Score, terbaru dulu)
-    icons = {"Bangun Datar": "🔷", "Bab 1": "➕", "Bab 2": "➖"}
-    titles = {"Bangun Datar": "Kuis Bangun Datar", "Bab 1": "Kuis Penjumlahan", "Bab 2": "Kuis Pengurangan"}
+    icons = {"Bangun Datar": "🔷", "evaluation": "📝", "Bab 1": "➕", "Bab 2": "➖"}
+    titles = {"Bangun Datar": "Kuis Bangun Datar", "evaluation": "Evaluasi Akhir", "Bab 1": "Kuis Penjumlahan", "Bab 2": "Kuis Pengurangan"}
     nilai_detail = []
     for s in sorted(scores, key=lambda x: x.created_at or datetime.utcnow(), reverse=True):
         nilai_detail.append({

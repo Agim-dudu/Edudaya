@@ -36,10 +36,27 @@ def _consume_quiz_attempt(session_key):
     return 0 <= elapsed <= max_duration + AUTO_SUBMIT_GRACE_SECONDS
 
 
+TEMPLATE_SOURCE_EXTENSIONS = ('.html', '.htm', '.jinja', '.j2', '.bak', '.py', '.txt', '.md')
+
+
 @app.before_request
 def _hide_template_sources():
-    if request.path == '/resources/views' or request.path.startswith('/resources/views/'):
+    # Learning pages keep their images/GIFs/JS under resources/views; only
+    # template source files must be hidden, not the assets they reference.
+    if request.path == '/resources/views':
         return 'Not Found', 404
+    if request.path.startswith('/resources/views/'):
+        if request.path.lower().endswith(TEMPLATE_SOURCE_EXTENSIONS):
+            return 'Not Found', 404
+
+
+@app.context_processor
+def _inject_navigation_level():
+    """Current level for learning navigation, with a safe fallback for previews."""
+    level = (request.view_args or {}).get('klasifikasi')
+    if level is None and current_user.is_authenticated:
+        level = getattr(current_user, 'klasifikasi', None)
+    return {'nav_klas': 0 if level is None else level}
 
 
 @app.route("/")
@@ -150,7 +167,7 @@ def submit_pretest(user_id):
 @login_required
 def api_analyze_pretest(user_id):
     if user_id != current_user.id:
-        return render_template("403.html")
+        return render_template("403.html"), 403
 
     data = request.get_json()
 
@@ -160,7 +177,7 @@ def api_analyze_pretest(user_id):
 @login_required
 def finish_pretest(user_id):
     if user_id != current_user.id:
-        return render_template("403.html")
+        return render_template("403.html"), 403
 
     # Jika akses diizinkan, render halaman ini
     return render_template("pretest/finish_pretest.html", user_id=user_id)
@@ -171,7 +188,7 @@ def finish_pretest(user_id):
 @login_required
 def waiting_analysis(user_id):
     if user_id != current_user.id:
-        return render_template("403.html")
+        return render_template("403.html"), 403
     return render_template("pretest/waiting_analysis.html", user_id=user_id)
 
 # End Pretest Handle ===============================================================================
@@ -199,7 +216,7 @@ def evaluation_start(user_id, klasifikasi):
 @login_required
 def submit_evaluation(user_id):
     if user_id != current_user.id:
-        return render_template("403.html")
+        return render_template("403.html"), 403
 
     data = request.get_json(silent=True)
     if not isinstance(data, dict) or not isinstance(data.get('answers'), dict):
@@ -235,17 +252,24 @@ def _block_student_if_waiting_analysis():
     if current_user.is_authenticated and current_user.level == 0:
         path = request.path
         requested_level = (request.view_args or {}).get('klasifikasi')
-        if requested_level is not None and requested_level != current_user.klasifikasi:
+        if (
+            requested_level is not None
+            and current_user.klasifikasi is not None
+            and requested_level != current_user.klasifikasi
+        ):
             return render_template('403.html'), 403
-        pr = current_user.pretest_result
         blocked_prefixes = ('/learning/', '/quiz/', '/evaluation/', '/api/learning/', '/api/bab')
         if path.startswith(blocked_prefixes):
-            if pr is None or pr.ai_analysis is None:
-                from flask import flash
-                if pr is None:
-                    flash("Kamu harus menyelesaikan Pretest terlebih dahulu.", "warning")
-                    return redirect(url_for('pretest', user_id=current_user.id))
+            from flask import flash
+            pr = getattr(current_user, 'pretest_result', None)
+            if pr is None:
+                flash("Kamu harus menyelesaikan Pretest terlebih dahulu.", "warning")
+                return redirect(url_for('pretest', user_id=current_user.id))
+            if pr.ai_analysis is None:
                 flash("Selesaikan Pretest atau tunggu analisis guru terlebih dahulu.", "warning")
+                return redirect(url_for('dashboard_student', user_id=current_user.id))
+            if current_user.klasifikasi is None:
+                flash("Klasifikasi kemampuanmu belum ditentukan. Silakan tunggu analisis guru.", "warning")
                 return redirect(url_for('dashboard_student', user_id=current_user.id))
 
 # Routing Learning Bangun Datar (Low) =========================================================================
@@ -590,7 +614,7 @@ def update_profile_route(user_id):
 
     update_student_profile(user_id)
     
-    return redirect(request.referrer)
+    return redirect(request.referrer or url_for('student_profile', user_id=user_id))
 
 # End Dashboard Students =========================================================================
 
@@ -602,7 +626,7 @@ def update_profile_route(user_id):
 @level_required(1)
 def teacher_choise_course(user_id):
     if user_id != current_user.id:
-        return render_template("403.html")
+        return render_template("403.html"), 403
 
     return render_template("teacher_choise_course.html", user_id=user_id)
 
@@ -626,21 +650,13 @@ def teacher_update_klasifikasi(user_id):
     db.session.commit()
     
     # 4. Menentukan folder template (Gunakan '=' bukan '==')
-    if k == 0:
-        pilihan = "low"
-        return render_template(
-            f'learning/{pilihan}/bangun_datar/01.html',
-            user_id=user_id
-        )
-    elif k == 1:
-        pilihan = "medium"
-    else:
-        pilihan = "high"
+    pilihan = "low" if k == 0 else "medium" if k == 1 else "high"
 
     # 5. Render template aktif sesuai klasifikasi
     return render_template(
         f'learning/{pilihan}/bangun_datar/01.html',
-        user_id=user_id
+        user_id=user_id,
+        klasifikasi=k
     )
 
 @app.route("/dashboard/teacher/<int:user_id>", methods=["GET"])
@@ -705,6 +721,10 @@ def dashboard_teacher_detail_pretest_analysis(teacher_id, user_id):
 
     data = get_student_pretest_analysis_detail(teacher_id, user_id)
 
+    if not data:
+        flash("Data analisis AI untuk siswa ini belum tersedia.", "warning")
+        return redirect(url_for('dashboard_result_pretest_analysis', user_id=teacher_id, class_id=current_user.teacher_classes[0].class_id))
+
     return render_template(
         'dashboard/teacher/detail_result_pretest_analysis.html',
         student=data['student'],
@@ -758,7 +778,7 @@ def dashboard_teacher_detail_final_analysis(teacher_id, user_id):
 
     if not data:
         flash("Data analisis AI untuk Final Test siswa ini belum tersedia.", "warning")
-        return redirect(url_for('dashboard_result_pretest_analysis', user_id=teacher_id, class_id=current_user.teacher_classes[0].class_id))
+        return redirect(url_for('dashboard_result_final_analysis', user_id=teacher_id, class_id=current_user.teacher_classes[0].class_id))
 
     return render_template(
         'dashboard/teacher/detail_result_final_analysis.html',
@@ -855,7 +875,7 @@ def update_teacher_profile_route(user_id):
 @level_required(2)
 def admin_choise_course(user_id):
     if user_id != current_user.id:
-        return render_template("403.html")
+        return render_template("403.html"), 403
 
     return render_template("admin_choise_course.html", user_id=user_id)
 
@@ -879,21 +899,13 @@ def admin_update_klasifikasi(user_id):
     db.session.commit()
     
     # 4. Menentukan folder template (Gunakan '=' bukan '==')
-    if k == 0:
-        pilihan = "low"
-        return render_template(
-            f'learning/{pilihan}/bangun_datar/01.html',
-            user_id=user_id
-        )
-    elif k == 1:
-        pilihan = "medium"
-    else:
-        pilihan = "high"
+    pilihan = "low" if k == 0 else "medium" if k == 1 else "high"
 
     # 5. Render template aktif sesuai klasifikasi
     return render_template(
         f'learning/{pilihan}/bangun_datar/01.html',
-        user_id=user_id
+        user_id=user_id,
+        klasifikasi=k
     )
 
 @app.route("/dashboard/admin/<int:user_id>", methods=["GET"])

@@ -254,7 +254,7 @@ def batch_analyze_pretest_logic(teacher_id, class_id, user_ids=None):
     # ── Validasi hak akses ──────────────────────────────────────────────
     if teacher_id != current_user.id:
         flash("Akses ditolak: ID Guru tidak cocok.", "danger")
-        return redirect(url_for('dashboard_result_analysis', user_id=teacher_id, class_id=class_id))
+        return redirect(url_for('dashboard_analysis', user_id=teacher_id))
  
     teacher_class_ids = [ct.class_id for ct in current_user.teacher_classes]
     if class_id not in teacher_class_ids:

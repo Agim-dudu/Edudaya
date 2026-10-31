@@ -193,17 +193,17 @@
                                     <strong>Syarat nilai kelulusan: {{user_kkm}}</strong>
                                 </li>
                                 <li>
-                                    <strong>Durasi ujian: 15 menit</strong>
+                                    <strong>Durasi ujian: 20 menit</strong>
                                 </li>
                                 <li>
-                                    <p>Apabila tidak memenuhi syarat kelulusan, Anda harus menunggu selama 5 menit
+                                    <p>Apabila tidak memenuhi syarat kelulusan, Anda harus menunggu selama 3 menit
                                         untuk mengulang pengerjaan kuis kembali. Manfaatkan waktu tunggu tersebut untuk
                                         mempelajari kembali materi sebelumnya.</p>
                                 </li>
                             </ul>
                             <!-- Tombol Mulai -->
                             <div class="py-5">
-                                <a href="/evaluation/start/{{user_id}}/{{ current_user.klasifikasi }}"
+                                <a href="/evaluation/start/{{user_id}}/{{ nav_klas }}"
                                     class="px-4 py-2 bg-blue-500 text-white rounded-sm hover:bg-blue-600 text-base rounded-lg">Mulai
                                     Evaluasi</a>
                             </div>
@@ -272,7 +272,7 @@
 
                 <!-- FOOTER NAV -->
                 <div class="flex justify-between items-center flex-wrap gap-3 pb-4">
-                    <a href="/quiz/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}"
+                    <a href="/quiz/bangun_datar/{{ current_user.id }}/{{ nav_klas }}"
                         class="font-fredoka text-base px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md hover:-translate-y-0.5 transition-transform duration-200">
                         Halaman Sebelumnya
                     </a>

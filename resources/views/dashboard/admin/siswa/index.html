@@ -130,6 +130,7 @@
                                         <a href="{{ url_for('admin_siswa_edit', siswa_id=s.id) }}"
                                             class="p-1.5 bg-biru-light text-biru-dark rounded-lg hover:bg-biru-general hover:text-white transition">✏️</a>
                                         <form method="POST" action="{{ url_for('admin_siswa_delete', siswa_id=s.id) }}" class="inline" data-confirm="Hapus siswa {{ s.full_name }}?">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                             <button class="p-1.5 bg-merah-light text-merah-general rounded-lg hover:bg-merah-general hover:text-white transition">🗑️</button>
                                         </form>
                                     </td>

@@ -11,7 +11,7 @@ QUESTIONS_EVALUATION = [
     {
         "id": 1,
         "image": "none",
-        "question": "Ibu membeli 24 apel EVALUASI. Apel tersebut akan dibagikan sama rata kepada 6 anak. Berapa apel yang didapat setiap anak?",
+        "question": "Ibu membeli 24 apel. Apel tersebut akan dibagikan sama rata kepada 6 anak. Berapa apel yang didapat setiap anak?",
         "options": [
             {"id": "a", "text": "3 apel"},
             {"id": "b", "text": "4 apel"},

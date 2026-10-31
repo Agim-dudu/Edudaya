@@ -37,7 +37,7 @@ def _folder(klasifikasi: int) -> str:
 
 def _guard(user_id: int):
     if user_id != current_user.id:
-        return render_template("403.html")
+        return render_template("403.html"), 403
     return None
 
 def has_activity(user_id: int, activity_key: str) -> bool:
@@ -138,7 +138,7 @@ def can_access_evaluation(user_id: int, klasifikasi: int):
             user_kkm=_get_kkm(current_user),
         )
 
-    return render_template(f"learning/{folder}/evaluation/evaluation.html", user_id=user_id)
+    return render_template(f"learning/{folder}/evaluation/evaluation.html", user_id=user_id, user_kkm=_get_kkm(current_user))
 
 def can_access_evaluation_start(user_id: int, klasifikasi: int, bab_key: str):
     guard = _guard(user_id)
@@ -378,6 +378,7 @@ def can_access_bangun_datar_quiz(user_id, klasifikasi):
         f"learning/{folder}/bangun_datar/quiz.html",
         user_id=user_id,
         klasifikasi=klasifikasi,
+        user_kkm=_get_kkm(current_user),
     )
     
 def can_access_bangun_datar_quiz_start(user_id, klasifikasi):

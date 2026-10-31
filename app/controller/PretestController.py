@@ -3,7 +3,7 @@ import json
 from app import db
 from sqlalchemy import case
 from flask_login import current_user 
-from flask import request, jsonify, redirect, url_for
+from flask import abort, flash, request, jsonify, redirect, url_for
 from app.model import User, Classes, PretestResult, ClassTeachers
 
 QUESTIONS_PRETEST = [

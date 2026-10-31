@@ -297,12 +297,11 @@ def get_grades_recap(teacher_id):
     ).distinct().order_by(Score.chapter).all()
     chapter_list = [row.chapter for row in chapters]
     material_keys = chapter_list
-    material_labels = chapter_list
+    material_labels = ['Evaluasi' if chapter == 'evaluation' else chapter for chapter in chapter_list]
 
     all_scores = Score.query.filter(
         Score.user_id.in_(all_student_ids),
         Score.chapter.isnot(None),
-        Score.score_type == 'quiz'
     ).all()
 
     scores_by_user = {}

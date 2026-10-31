@@ -13,63 +13,63 @@
     </div>
 
     <div class="flex-1 overflow-y-auto px-3 py-4 flex flex-col gap-2">
-        {% if current_user.klasifikasi == 1 %}
+        {% if nav_klas == 1 %}
         <!-- Medium -->
         <div>
             <div class="flex justify-between items-center px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint in ['learning_bangun_datar'] else inactive }}">
-                <a href="/learning/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex-1">📐 Bangun Datar</a>
+                <a href="/learning/bangun_datar/{{ current_user.id }}/{{ nav_klas }}" class="flex-1">📐 Bangun Datar</a>
             </div>
         </div>
         <div>
             <div class="flex justify-between items-center px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint in ['learning_bangun_datar_2'] else inactive }}">
-                <a href="/learning/bangun_datar/02/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex-1">🔺 Segitiga</a>
+                <a href="/learning/bangun_datar/02/{{ current_user.id }}/{{ nav_klas }}" class="flex-1">🔺 Segitiga</a>
             </div>
         </div>
         <div>
             <div class="flex justify-between items-center px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint in ['learning_bangun_datar_3'] else inactive }}">
-                <a href="/learning/bangun_datar/03/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex-1">▢ Segiempat</a>
+                <a href="/learning/bangun_datar/03/{{ current_user.id }}/{{ nav_klas }}" class="flex-1">▢ Segiempat</a>
             </div>
         </div>
-        {% elif current_user.klasifikasi == 2 %}
+        {% elif nav_klas == 2 %}
         <!-- High -->
         <div>
             <div class="flex justify-between items-center px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint in ['learning_bangun_datar_1','learning_bangun_datar'] else inactive }}">
-                <a href="/learning/bangun_datar/01/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex-1">📐 Bangun Datar</a>
+                <a href="/learning/bangun_datar/01/{{ current_user.id }}/{{ nav_klas }}" class="flex-1">📐 Bangun Datar</a>
             </div>
         </div>
         <div>
             <div class="flex justify-between items-center px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_bangun_datar_2' else inactive }}">
-                <a href="/learning/bangun_datar/02/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex-1">🔺 Segitiga</a>
+                <a href="/learning/bangun_datar/02/{{ current_user.id }}/{{ nav_klas }}" class="flex-1">🔺 Segitiga</a>
             </div>
         </div>
         <div>
             <div class="flex justify-between items-center px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint == 'learning_bangun_datar_3' else inactive }}">
-                <a href="/learning/bangun_datar/03/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex-1">▢ Segiempat</a>
+                <a href="/learning/bangun_datar/03/{{ current_user.id }}/{{ nav_klas }}" class="flex-1">▢ Segiempat</a>
             </div>
         </div>
         {% else %}
         <!-- Low -->
         <div>
             <div class="flex justify-between items-center px-4 py-2.5 rounded-xl text-sm font-semibold {{ active if request.endpoint in ['learning_bangun_datar', 'learning_bangun_datar_1d', 'learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] else inactive }}">
-                <a href="/learning/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex-1">📐 Bangun Datar</a>
+                <a href="/learning/bangun_datar/{{ current_user.id }}/{{ nav_klas }}" class="flex-1">📐 Bangun Datar</a>
                 <span onclick="var d=this.closest('div').nextElementSibling; if(d){d.classList.toggle('hidden');d.classList.toggle('flex'); this.querySelector('ion-icon').style.transform=d.classList.contains('hidden')?'':'rotate(180deg)'; event.stopPropagation();}" class="cursor-pointer"><ion-icon name="chevron-down-outline" class="transition-transform duration-300 text-base" style="{{ 'transform: rotate(180deg)' if request.endpoint in ['learning_bangun_datar', 'learning_bangun_datar_1d', 'learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] else '' }}"></ion-icon></span>
             </div>
             <ul class="{% if request.endpoint in ['learning_bangun_datar', 'learning_bangun_datar_1d', 'learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] %}flex{% else %}hidden{% endif %} flex-col gap-1 pt-1 pl-1 list-none">
                 <li>
                     <div class="flex justify-between items-center px-3 py-2 rounded-xl text-sm font-semibold {{ active if request.endpoint in ['learning_bangun_datar_1d', 'learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] else inactive }}">
-                        <a href="/learning/bangun_datar/01_d/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex-1">📚 Jenis-jenis Bangun Datar</a>
+                        <a href="/learning/bangun_datar/01_d/{{ current_user.id }}/{{ nav_klas }}" class="flex-1">📚 Jenis-jenis Bangun Datar</a>
                         <span onclick="var d=this.closest('div').nextElementSibling; if(d){d.classList.toggle('hidden');d.classList.toggle('flex'); this.querySelector('ion-icon').style.transform=d.classList.contains('hidden')?'':'rotate(180deg)'; event.stopPropagation();}" class="cursor-pointer"><ion-icon name="chevron-down-outline" class="transition-transform duration-300 text-base" style="{{ 'transform: rotate(180deg)' if request.endpoint in ['learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] else '' }}"></ion-icon></span>
                     </div>
                     <ul class="{{ 'flex' if request.endpoint in ['learning_bangun_datar_2', 'learning_bangun_datar_3', 'learning_bangun_datar_4', 'learning_bangun_datar_5', 'learning_bangun_datar_5_2', 'learning_bangun_datar_5_3', 'learning_bangun_datar_6', 'learning_bangun_datar_6_2', 'learning_bangun_datar_6_3'] else 'hidden' }} flex-col gap-1 pt-1 pl-3 list-none">
-                        <li><a href="/learning/bangun_datar/02/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_2' else inactive }}">Segitiga Sama Sisi</a></li>
-                        <li><a href="/learning/bangun_datar/03/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_3' else inactive }}">Segitiga Sama Kaki</a></li>
-                        <li><a href="/learning/bangun_datar/04/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_4' else inactive }}">Segitiga Sembarang</a></li>
-                        <li><a href="/learning/bangun_datar/05/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_5' else inactive }}">Persegi</a></li>
-                        <li><a href="/learning/bangun_datar/05_2/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_5_2' else inactive }}">Persegi Panjang</a></li>
-                        <li><a href="/learning/bangun_datar/05_3/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_5_3' else inactive }}">Jajar Genjang</a></li>
-                        <li><a href="/learning/bangun_datar/06/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_6' else inactive }}">Belah Ketupat</a></li>
-                        <li><a href="/learning/bangun_datar/06_2/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_6_2' else inactive }}">Trapesium</a></li>
-                        <li><a href="/learning/bangun_datar/06_3/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_6_3' else inactive }}">Layang-Layang</a></li>
+                        <li><a href="/learning/bangun_datar/02/{{ current_user.id }}/{{ nav_klas }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_2' else inactive }}">Segitiga Sama Sisi</a></li>
+                        <li><a href="/learning/bangun_datar/03/{{ current_user.id }}/{{ nav_klas }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_3' else inactive }}">Segitiga Sama Kaki</a></li>
+                        <li><a href="/learning/bangun_datar/04/{{ current_user.id }}/{{ nav_klas }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_4' else inactive }}">Segitiga Sembarang</a></li>
+                        <li><a href="/learning/bangun_datar/05/{{ current_user.id }}/{{ nav_klas }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_5' else inactive }}">Persegi</a></li>
+                        <li><a href="/learning/bangun_datar/05_2/{{ current_user.id }}/{{ nav_klas }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_5_2' else inactive }}">Persegi Panjang</a></li>
+                        <li><a href="/learning/bangun_datar/05_3/{{ current_user.id }}/{{ nav_klas }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_5_3' else inactive }}">Jajar Genjang</a></li>
+                        <li><a href="/learning/bangun_datar/06/{{ current_user.id }}/{{ nav_klas }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_6' else inactive }}">Belah Ketupat</a></li>
+                        <li><a href="/learning/bangun_datar/06_2/{{ current_user.id }}/{{ nav_klas }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_6_2' else inactive }}">Trapesium</a></li>
+                        <li><a href="/learning/bangun_datar/06_3/{{ current_user.id }}/{{ nav_klas }}" class="flex items-center px-3 py-1.5 rounded-xl text-xs {{ active if request.endpoint == 'learning_bangun_datar_6_3' else inactive }}">Layang-Layang</a></li>
                     </ul>
                 </li>
             </ul>
@@ -78,8 +78,15 @@
 
         <!-- Kuis -->
         <div>
-            <a href="/quiz/bangun_datar/{{ current_user.id }}/{{ current_user.klasifikasi }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold w-full {{ active if request.endpoint == 'quiz_bangun_datar' else inactive }}">
+            <a href="/quiz/bangun_datar/{{ current_user.id }}/{{ nav_klas }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold w-full {{ active if request.endpoint == 'quiz_bangun_datar' else inactive }}">
                 🧩 Kuis
+            </a>
+        </div>
+
+        <!-- Evaluasi Akhir -->
+        <div>
+            <a href="/learning/evaluation/{{ current_user.id }}/{{ nav_klas }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold w-full {{ active if request.endpoint in ['learning_evaluation', 'evaluation_start'] else inactive }}">
+                📝 Evaluasi Akhir
             </a>
         </div>
     </div>

@@ -297,6 +297,9 @@ def update_teacher(teacher_id, username, full_name, gender, password=None):
 
 def delete_teacher(teacher_id):
     t = User.query.get_or_404(teacher_id)
+    # ClassTeachers.teacher_id is NOT NULL and has no ORM cascade, so remove the
+    # assignments explicitly before deleting the user.
+    ClassTeachers.query.filter_by(teacher_id=teacher_id).delete()
     db.session.delete(t)
     db.session.commit()
 

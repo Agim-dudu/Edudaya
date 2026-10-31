@@ -22,6 +22,45 @@ window.onIsianAnswerChange = function (value) {
 goTo(0);
 
 // ── RENDER SOAL ──
+function renderOptions(q) {
+  const list = document.getElementById('optionsList');
+  if (!list) return false;
+
+  const options = Array.isArray(q.options) ? q.options : [];
+  if (options.length === 0) {
+    list.style.display = 'none';
+    list.innerHTML = '';
+    return false;
+  }
+
+  list.style.display = 'flex';
+  list.innerHTML = '';
+  options.forEach(opt => {
+    const label = document.createElement('label');
+    label.className = 'opt-label' + (answers[q.id] === opt.id ? ' selected' : '');
+    label.dataset.optionId = opt.id;
+
+    const radio = document.createElement('span');
+    radio.className = 'opt-radio';
+    const text = document.createElement('span');
+    text.textContent = `${String(opt.id).toUpperCase()}. ${opt.text}`;
+    label.append(radio, text);
+
+    label.addEventListener('click', () => {
+      answers[q.id] = opt.id;
+      list.querySelectorAll('.opt-label').forEach(el => {
+        el.classList.toggle('selected', el.dataset.optionId === opt.id);
+      });
+      updateNavGrid();
+      updateSidebarProgress();
+      checkAllAnswered();
+    });
+
+    list.appendChild(label);
+  });
+  return true;
+}
+
 function goTo(index) {
   if (index < 0 || index >= totalQ) return;
   currentQ = index;
@@ -35,6 +74,11 @@ function goTo(index) {
 
   // Teks soal
   document.getElementById('qText').textContent = q.question;
+
+  // Pilihan ganda (evaluation) atau isian (pretest)
+  const isChoice = renderOptions(q);
+  const isianWrap = document.getElementById('answerIsianWrap');
+  if (isianWrap) isianWrap.style.display = isChoice ? 'none' : 'flex';
 
   // Gambar (jika ada)
   const existingImg = document.getElementById('qImage');
@@ -51,13 +95,15 @@ function goTo(index) {
   // ── Sinkronkan kotak jawaban isian dengan jawaban tersimpan untuk soal ini ──
   const box = document.getElementById('answerIsianBox');
   const savedValue = answers[q.id] || '';
-  box.value = savedValue;
-  box.classList.toggle('filled', savedValue.trim().length > 0);
+  if (box) {
+    box.value = isChoice ? '' : savedValue;
+    box.classList.toggle('filled', !isChoice && savedValue.trim().length > 0);
+  }
 
   const counter = document.getElementById('isianCharCount');
   if (counter) {
-    counter.textContent = savedValue.length + ' karakter';
-    counter.classList.toggle('ok', savedValue.trim().length > 0);
+    counter.textContent = (isChoice ? 0 : savedValue.length) + ' karakter';
+    counter.classList.toggle('ok', !isChoice && savedValue.trim().length > 0);
   }
 
   // Tombol prev / next / submit
@@ -74,7 +120,7 @@ function goTo(index) {
   updateSidebarProgress();
 
   // Fokus otomatis ke kotak jawaban biar langsung bisa mengetik
-  box.focus();
+  if (box && !isChoice) box.focus();
 }
 
 // ── NAV GRID (sidebar) ──
