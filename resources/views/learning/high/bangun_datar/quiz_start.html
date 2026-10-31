@@ -407,6 +407,19 @@
         const totalSoal = 10;
         const userLevel = parseInt("{{ user_level }}") || 0;
         const jawabanUser = {};
+        const questionBank = [
+          ["Seorang pengrajin membuat motif sasirangan berbentuk segiempat. Keempat sisi motif tersebut sama panjang. Motif tersebut juga mempunyai dua garis simetri lipat. Bangun datar apakah yang sesuai dengan sifat motif tersebut?", ["Persegi, karena mempunyai empat sisi sama panjang dan empat simetri lipat.", "Persegi panjang, karena mempunyai dua pasang sisi berhadapan sama panjang dan dua simetri lipat.", "Belah ketupat, karena mempunyai empat sisi sama panjang dan dua simetri lipat.", "Layang-layang, karena mempunyai dua pasang sisi berdekatan sama panjang dan satu simetri lipat."]],
+          ["Dua potongan wadai lupis mempunyai bentuk berbeda. Lupis A berbentuk segitiga sama sisi, sedangkan lupis B berbentuk segitiga sama kaki yang bukan segitiga sama sisi. Manakah pernyataan yang benar mengenai simetri lipat kedua lupis tersebut?", ["Lupis A mempunyai 3 simetri lipat karena ketiga sisinya sama panjang, sedangkan Lupis B mempunyai 1 simetri lipat karena hanya dua sisinya yang sama panjang.", "Lupis A mempunyai 1 simetri lipat karena ketiga sisinya sama panjang, sedangkan Lupis B mempunyai 3 simetri lipat karena dua sisinya sama panjang.", "Lupis A dan B masing-masing mempunyai 3 simetri lipat karena keduanya mempunyai tiga sisi.", "Lupis A dan B masing-masing mempunyai 1 simetri lipat karena keduanya berbentuk segitiga."]],
+          ["Sebuah motif pada anyaman purun berbentuk persegi mempunyai keliling 48 cm. Pengrajin ingin membuat motif baru dengan menambah panjang setiap sisi sebesar 3 cm. Berapa keliling motif baru tersebut?", ["51 cm", "54 cm", "60 cm", "72 cm"]],
+          ["Dua motif sasirangan berbentuk persegi panjang mempunyai ukuran berbeda. Motif A mempunyai panjang 12 cm dan lebar 6 cm. Motif B mempunyai panjang 10 cm dan lebar 8 cm. Seorang pengrajin memperkirakan bahwa motif A mempunyai luas lebih besar karena panjangnya lebih besar. Apakah perkiraan pengrajin tersebut benar?", ["Benar, karena motif A mempunyai panjang 12 cm, lebih besar daripada panjang motif B.", "Benar, karena luas motif A adalah 72 cm², sedangkan motif B adalah 60 cm².", "Tidak benar, karena kedua motif mempunyai luas yang sama, yaitu 72 cm².", "Tidak benar, karena luas motif A adalah 72 cm², sedangkan luas motif B adalah 80 cm²."]],
+          ["Sebuah hiasan berbentuk jajar genjang terinspirasi dari wadai gagatas. Hiasan tersebut mempunyai luas 96 cm² dan panjang alas 12 cm. Pengrajin akan membuat hiasan baru dengan panjang alas tetap, tetapi tingginya bertambah 3 cm. Berapa luas hiasan yang baru?", ["108 cm²", "120 cm²", "132 cm²", "144 cm²"]],
+          ["Sebuah motif berbentuk belah ketupat terinspirasi dari ketupat Kandangan. Luas motif tersebut adalah 84 cm² dan panjang salah satu diagonalnya 12 cm. Pengrajin ingin memperbesar motif dengan menambah panjang diagonal lainnya sebesar 4 cm, sedangkan diagonal pertama tetap. Berapa luas motif setelah diperbesar?", ["96 cm²", "108 cm²", "120 cm²", "132 cm²"]],
+          ["Bagian depan atap Rumah Banjar berbentuk trapesium mempunyai sisi sejajar sepanjang 8 m dan 14 m serta tinggi 5 m. Sebagian permukaan atap seluas 15 m² digunakan untuk memasang hiasan. Berapa luas bagian depan atap yang tidak dipasangi hiasan?", ["40 m²", "45 m²", "55 m²", "70 m²"]],
+          ["Sebuah layang-layang tradisional mempunyai keliling 52 cm. Dua sisi pendeknya masing-masing 9 cm, sedangkan dua sisi panjangnya sama panjang. Berapa panjang masing-masing sisi panjang layang-layang tersebut?", ["13 cm", "15 cm", "17 cm", "34 cm"]],
+          ["Sebuah hiasan pada bagian depan atap Rumah Banjar berbentuk segitiga sama kaki. Hiasan tersebut mempunyai keliling 34 cm dan panjang sisi alas 10 cm. Kedua sisi miringnya sama panjang. Berapa panjang salah satu sisi miring hiasan tersebut?", ["10 cm", "12 cm", "14 cm", "24 cm"]],
+          ["Seorang pengrajin membuat empat rancangan hiasan dengan bentuk berbeda. Rancangan A berbentuk persegi dengan panjang sisi 8 cm. Rancangan B berbentuk persegi panjang dengan panjang 10 cm dan lebar 7 cm. Rancangan C berbentuk segitiga dengan alas 12 cm dan tinggi 10 cm. Rancangan D berbentuk trapesium dengan sisi sejajar 8 cm dan 12 cm serta tinggi 8 cm. Pengrajin ingin memilih rancangan yang mempunyai luas paling besar. Rancangan manakah yang sebaiknya dipilih?", ["Rancangan A, karena luasnya 64 cm².", "Rancangan B, karena luasnya 70 cm².", "Rancangan C, karena luasnya 60 cm².", "Rancangan D, karena luasnya 80 cm²."]]
+        ];
+        questionBank.forEach((item, index) => { const card = document.querySelector(`#soal-${index + 1} .bg-blue-50`); if (card) card.innerHTML = `<p class="font-semibold text-base leading-relaxed">${item[0]}</p>`; const buttons = document.querySelectorAll(`#soal-${index + 1} button[id^="soal${index + 1}-"]`); item[1].forEach((answer, option) => { if (buttons[option]) buttons[option].textContent = `${String.fromCharCode(65 + option)}. ${answer}`; }); });
 
         // Tailwind classes for answer button states — applied via JS
         const CLASS_DEFAULT = 'border-slate-200 bg-white text-slate-800';
@@ -535,18 +548,7 @@
             // --- GURU: preview mode (hitung lokal hanya untuk preview) ---
             if (userLevel !== 0) {
                 {% if user_level != 0 %}
-                const kunciPreview = {
-                    1: "soal1-b",
-                    2: "soal2-b",
-                    3: "soal3-c",
-                    4: "soal4-a",
-                    5: "soal5-c",
-                    6: "soal6-b",
-                    7: "soal7-d",
-                    8: "soal8-c",
-                    9: "soal9-b",
-                    10: "soal10-c"
-                };
+                const kunciPreview = {1:"soal1-c",2:"soal2-a",3:"soal3-c",4:"soal4-d",5:"soal5-c",6:"soal6-b",7:"soal7-a",8:"soal8-c",9:"soal9-b",10:"soal10-d"};
                 {% endif %}
                 let benar = 0;
                 for (let i = 1; i <= totalSoal; i++) {

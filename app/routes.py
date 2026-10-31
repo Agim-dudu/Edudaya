@@ -318,18 +318,7 @@ def api_bangun_datar_quiz_submit_low(user_id):
     jawaban_user_raw = data.get('jawaban', {})
     jawaban_user = {str(k): v for k, v in jawaban_user_raw.items()}
 
-    kunci = {
-        "1":  "soal1-b",
-        "2":  "soal2-a",
-        "3":  "soal3-c",
-        "4":  "soal4-b",
-        "5":  "soal5-d",
-        "6":  "soal6-a",
-        "7":  "soal7-c",
-        "8":  "soal8-b",
-        "9":  "soal9-d",
-        "10": "soal10-c"
-    }
+    kunci = {"1": "soal1-b", "2": "soal2-c", "3": "soal3-a", "4": "soal4-d", "5": "soal5-b", "6": "soal6-c", "7": "soal7-d", "8": "soal8-a", "9": "soal9-c", "10": "soal10-b"}
 
     total_soal  = len(kunci)
     total_benar = sum(1 for k, v in kunci.items() if jawaban_user.get(k) == v)
@@ -395,18 +384,7 @@ def api_bangun_datar_quiz_submit_medium(user_id):
     jawaban_user_raw = data.get('jawaban', {})
     jawaban_user = {str(k): v for k, v in jawaban_user_raw.items()}
 
-    kunci = {
-        "1":  "soal1-b",
-        "2":  "soal2-a",
-        "3":  "soal3-c",
-        "4":  "soal4-c",
-        "5":  "soal5-b",
-        "6":  "soal6-c",
-        "7":  "soal7-b",
-        "8":  "soal8-c",
-        "9":  "soal9-c",
-        "10": "soal10-a"
-    }
+    kunci = {"1": "soal1-b", "2": "soal2-c", "3": "soal3-b", "4": "soal4-c", "5": "soal5-c", "6": "soal6-b", "7": "soal7-c", "8": "soal8-b", "9": "soal9-c", "10": "soal10-b"}
 
     total_soal  = len(kunci)
     total_benar = sum(1 for k, v in kunci.items() if jawaban_user.get(k) == v)
@@ -472,18 +450,7 @@ def api_bangun_datar_quiz_submit_high(user_id):
     jawaban_user_raw = data.get('jawaban', {})
     jawaban_user = {str(k): v for k, v in jawaban_user_raw.items()}
 
-    kunci = {
-        "1":  "soal1-b",
-        "2":  "soal2-b",
-        "3":  "soal3-c",
-        "4":  "soal4-a",
-        "5":  "soal5-c",
-        "6":  "soal6-b",
-        "7":  "soal7-d",
-        "8":  "soal8-c",
-        "9":  "soal9-b",
-        "10": "soal10-c"
-    }
+    kunci = {"1": "soal1-c", "2": "soal2-a", "3": "soal3-c", "4": "soal4-d", "5": "soal5-c", "6": "soal6-b", "7": "soal7-a", "8": "soal8-c", "9": "soal9-b", "10": "soal10-d"}
 
     total_soal  = len(kunci)
     total_benar = sum(1 for k, v in kunci.items() if jawaban_user.get(k) == v)

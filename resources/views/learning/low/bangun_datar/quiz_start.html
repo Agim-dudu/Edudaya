@@ -285,6 +285,24 @@
         const totalSoal = 10;
         const userLevel = parseInt("{{ user_level }}") || 0;
         const jawabanUser = {};
+        const questionBank = [
+          ["Bagian atap Rumah Banjar pada gambar berbentuk segitiga dengan titik sudut A, B, dan C. Berapa banyak titik sudut pada atap tersebut dan apa saja namanya?", ["2 titik sudut, yaitu A dan B", "3 titik sudut, yaitu A, B, dan C", "4 titik sudut, yaitu A, B, C, dan D", "3 titik sudut, yaitu A, B, dan D"]],
+          ["Bagian depan keramba ikan berbentuk segiempat dengan titik sudut A, B, C, dan D yang tersusun berurutan. Berapa banyak sisi pada bagian depan keramba ikan tersebut dan apa saja namanya?", ["3 sisi, yaitu AB, BC, dan CA", "4 sisi, yaitu AB, AC, BC, dan CD", "4 sisi, yaitu AB, BC, CD, dan DA", "3 sisi, yaitu AB, BC, dan CD"]],
+          ["Bagian tiang jembatan berbentuk segitiga sama kaki dengan titik sudut A, B, dan C. Sisi AB dan CA memiliki panjang yang sama. Berapa banyak sisi yang sama panjang pada segitiga tersebut dan apa saja namanya?", ["2 sisi, yaitu AB dan CA", "2 sisi, yaitu AB dan BC", "3 sisi, yaitu AB, BC, dan CA", "1 sisi, yaitu BC"]],
+          ["Sebuah potongan wadai lam berbentuk persegi. Potongan tersebut dapat dilipat melalui beberapa garis sehingga kedua bagiannya tepat saling menutupi. Berapa banyak simetri lipat yang dimiliki persegi tersebut?", ["1 simetri lipat", "2 simetri lipat", "3 simetri lipat", "4 simetri lipat"]],
+          ["Ibu membuat wadai lupis berbentuk segitiga sama sisi. Panjang setiap sisinya adalah 6 cm. Berapa keliling wadai lupis tersebut?", ["12 cm", "18 cm", "24 cm", "36 cm"]],
+          ["Sebuah potongan wadai lam berbentuk persegi mempunyai panjang sisi 4 cm. Berapa keliling wadai lam tersebut?", ["8 cm", "12 cm", "16 cm", "20 cm"]],
+          ["Sebuah motif kain sasirangan berbentuk persegi panjang mempunyai panjang 8 cm dan lebar 3 cm. Berapa luas motif kain sasirangan tersebut?", ["11 cm²", "16 cm²", "22 cm²", "24 cm²"]],
+          ["Sebuah potongan wadai berbentuk segitiga mempunyai panjang alas 6 cm dan tinggi 4 cm. Berapa luas potongan wadai tersebut?", ["12 cm²", "10 cm²", "24 cm²", "20 cm²"]],
+          ["Sebuah layang-layang mempunyai dua sisi masing-masing 5 cm dan dua sisi lainnya masing-masing 7 cm. Berapa keliling layang-layang tersebut?", ["12 cm", "19 cm", "24 cm", "35 cm"]],
+          ["Sebuah wadai gagatas berbentuk jajar genjang mempunyai panjang alas 8 cm dan tinggi 4 cm. Berapa luas permukaan wadai gagatas tersebut?", ["12 cm²", "32 cm²", "24 cm²", "16 cm²"]]
+        ];
+        questionBank.forEach((item, index) => {
+            const card = document.querySelector(`#soal-${index + 1} .bg-blue-50`);
+            if (card) card.innerHTML = `<p class="font-semibold text-base leading-relaxed">${item[0]}</p>`;
+            const buttons = document.querySelectorAll(`#soal-${index + 1} button[id^="soal${index + 1}-"]`);
+            item[1].forEach((answer, option) => { if (buttons[option]) buttons[option].textContent = `${String.fromCharCode(65 + option)}. ${answer}`; });
+        });
 
         // Tailwind classes for answer button states — applied via JS
         const CLASS_DEFAULT  = 'border-slate-200 bg-white text-slate-800';
@@ -397,7 +415,7 @@
             // --- GURU: preview mode (hitung lokal hanya untuk preview) ---
             if (userLevel !== 0) {
                 {% if user_level != 0 %}
-                const kunciPreview = {1:"soal1-b",2:"soal2-a",3:"soal3-c",4:"soal4-b",5:"soal5-d",6:"soal6-a",7:"soal7-c",8:"soal8-b",9:"soal9-d",10:"soal10-c"};
+                const kunciPreview = {1:"soal1-b",2:"soal2-c",3:"soal3-a",4:"soal4-d",5:"soal5-b",6:"soal6-c",7:"soal7-d",8:"soal8-a",9:"soal9-c",10:"soal10-b"};
                 {% endif %}
                 let benar = 0;
                 for (let i = 1; i <= totalSoal; i++) {

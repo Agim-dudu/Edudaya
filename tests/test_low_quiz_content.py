@@ -23,8 +23,8 @@ class LowQuizContentTests(unittest.TestCase):
         preview_keys = ast.literal_eval(preview_source)
 
         expected = {
-            1: 'soal1-b', 2: 'soal2-a', 3: 'soal3-c', 4: 'soal4-b', 5: 'soal5-d',
-            6: 'soal6-a', 7: 'soal7-c', 8: 'soal8-b', 9: 'soal9-d', 10: 'soal10-c',
+            1: 'soal1-b', 2: 'soal2-c', 3: 'soal3-a', 4: 'soal4-d', 5: 'soal5-b',
+            6: 'soal6-c', 7: 'soal7-d', 8: 'soal8-a', 9: 'soal9-c', 10: 'soal10-b',
         }
         self.assertEqual(server_keys, {str(k): v for k, v in expected.items()})
         self.assertEqual(preview_keys, expected)
