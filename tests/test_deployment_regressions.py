@@ -17,7 +17,7 @@ VIEWS = ROOT / 'resources' / 'views'
 class DeploymentRegressionTests(unittest.TestCase):
     def test_learning_assets_are_served_but_template_sources_are_blocked(self):
         with app.test_request_context(
-            '/resources/views/learning/low/bangun_datar/img/rumah%20banjar.jpg'
+            '/resources/views/learning/low/bangun_datar/img/rumah_banjar.jpg'
         ):
             self.assertIsNone(routes._hide_template_sources())
         with app.test_request_context(
