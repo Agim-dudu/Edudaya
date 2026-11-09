@@ -19,7 +19,7 @@ document.getElementById('sidebarOverlay').addEventListener('click', toggleSideba
 
 
 // ── TIMER COUNTDOWN ──
-const DURATION = 20 * 60;
+const DURATION = window.APP_CONFIG.duration || 20 * 60;
 let timeLeft   = DURATION;
 
 function formatTime(s) {

@@ -110,9 +110,10 @@
                                     class="w-full flex items-center justify-center gap-2 bg-biru-light text-biru-general hover:bg-blue-100 font-medium py-2.5 px-4 rounded-xl transition-colors duration-200 text-sm">
                                     <span>📊</span> Hasil Analisis Pretest
                                 </a>
-                                <button class="w-full flex items-center justify-center gap-2 bg-hijau-light text-hijau-general hover:bg-emerald-100 font-medium py-2.5 px-4 rounded-xl transition-colors duration-200 text-sm opacity-50 cursor-not-allowed" disabled>
-                                    <span>📋</span> Evaluasi (Segera)
-                                </button>
+                                <a href="{{ url_for('dashboard_result_final_analysis', user_id=user_id, class_id=kelas.id) }}"
+                                    class="w-full flex items-center justify-center gap-2 bg-hijau-light text-hijau-general hover:bg-emerald-100 font-medium py-2.5 px-4 rounded-xl transition-colors duration-200 text-sm">
+                                    <span>📋</span> Hasil Evaluasi
+                                </a>
                             </div>
                         </div>
                         {% endfor %}

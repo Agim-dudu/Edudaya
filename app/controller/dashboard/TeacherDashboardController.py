@@ -274,6 +274,18 @@ def get_students_by_teacher(teacher_id):
     return classes_data
 
 
+def _evaluation_score(pretest_result, final_result):
+    if not pretest_result or pretest_result.score is None or not final_result or not final_result.ai_analysis:
+        return None
+    try:
+        improvement = json.loads(final_result.ai_analysis).get('peningkatan_skor')
+    except (ValueError, TypeError, AttributeError):
+        return None
+    if isinstance(improvement, (int, float)) and not isinstance(improvement, bool):
+        return round(pretest_result.score + improvement)
+    return None
+
+
 def get_grades_recap(teacher_id):
     teacher = User.query.get(teacher_id)
     if not teacher or teacher.level != 1:
@@ -293,7 +305,8 @@ def get_grades_recap(teacher_id):
 
     chapters = db.session.query(Score.chapter).filter(
         Score.user_id.in_(all_student_ids),
-        Score.chapter.isnot(None)
+        Score.chapter.isnot(None),
+        Score.score_type == 'quiz',
     ).distinct().order_by(Score.chapter).all()
     chapter_list = [row.chapter for row in chapters]
     material_keys = chapter_list
@@ -302,6 +315,7 @@ def get_grades_recap(teacher_id):
     all_scores = Score.query.filter(
         Score.user_id.in_(all_student_ids),
         Score.chapter.isnot(None),
+        Score.score_type == 'quiz',
     ).all()
 
     scores_by_user = {}
@@ -320,6 +334,8 @@ def get_grades_recap(teacher_id):
         student_grades = []
         for s in students:
             user_scores = scores_by_user.get(s.id, {})
+            pretest_score = s.pretest_result.score if s.pretest_result else None
+            evaluation_score = _evaluation_score(s.pretest_result, s.final_result)
             scores_dict = {}
             total = 0
             count = 0
@@ -329,11 +345,18 @@ def get_grades_recap(teacher_id):
                 if val is not None:
                     total += val
                     count += 1
+            for val in (pretest_score, evaluation_score):
+                if val is not None:
+                    total += val
+                    count += 1
             avg = round(total / count) if count > 0 else 0
             student_grades.append({
                 'id': s.id,
                 'full_name': s.full_name,
                 'pretest_done': s.pretest_result is not None,
+                'pretest_score': pretest_score,
+                'evaluation_done': s.evaluation_result is not None,
+                'evaluation_score': evaluation_score,
                 'scores': scores_dict,
                 'total': total,
                 'avg': avg,

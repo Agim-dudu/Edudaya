@@ -15,6 +15,11 @@ VIEWS = ROOT / 'resources' / 'views'
 
 
 class DeploymentRegressionTests(unittest.TestCase):
+    def test_my_classes_evaluation_link_is_active(self):
+        markup = (VIEWS / 'dashboard' / 'teacher' / 'my_classes.html').read_text()
+        self.assertIn("url_for('dashboard_result_final_analysis', user_id=user_id, class_id=kelas.id)", markup)
+        self.assertNotIn('Evaluasi (Segera)', markup)
+
     def test_learning_assets_are_served_but_template_sources_are_blocked(self):
         with app.test_request_context(
             '/resources/views/learning/low/bangun_datar/img/rumah_banjar.jpg'

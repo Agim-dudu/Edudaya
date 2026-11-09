@@ -231,7 +231,7 @@ class AdminDashboardTests(unittest.TestCase):
         self.assertEqual(ok.status_code, 302)
         self.assertEqual(calls, [(9, 'Admin Baru', 'admin.baru', None, '')])
 
-    def test_admin_score_export_role_and_csv_formula_guard(self):
+    def test_admin_score_export_role_and_excel_formula_guard(self):
         from flask import Response
         app = Flask(__name__)
         app.config.update(TESTING=True, SECRET_KEY=secrets.token_hex(32))
@@ -247,30 +247,35 @@ class AdminDashboardTests(unittest.TestCase):
         namespace = {
             'app': app, 'current_user': current_user, 'login_required': login_required,
             'level_required': test_level_required, 'io': __import__('io'),
-            'csv': __import__('csv'), 'Response': Response,
+            'Response': Response,
+            'workbook_bytes': __import__('app.excel_export', fromlist=['workbook_bytes']).workbook_bytes,
             'get_admin_scores': lambda: [(score, student, kelas)],
         }
         tree = ast.parse((ROOT / 'app/routes.py').read_text())
         nodes = [node for node in tree.body if isinstance(node, ast.FunctionDef)
-                 and node.name in ('admin_scores_export', '_csv_safe')]
+                 and node.name in ('admin_scores_export', '_excel_safe', '_excel_response')]
         exec(compile(ast.Module(body=nodes, type_ignores=[]), 'routes.py', 'exec'), namespace)
-        app.add_url_rule('/admin/scores/export.csv', 'admin_scores_export',
+        app.add_url_rule('/admin/scores/export.xlsx', 'admin_scores_export',
                          namespace['admin_scores_export'], methods=['GET'])
         client = app.test_client()
-        guest = client.get('/admin/scores/export.csv')
+        guest = client.get('/admin/scores/export.xlsx')
         self.assertEqual(guest.status_code, 302)
         with client.session_transaction() as session:
             session['_user_id'] = '4'
             session['_fresh'] = True
-        self.assertEqual(client.get('/admin/scores/export.csv').status_code, 403)
+        self.assertEqual(client.get('/admin/scores/export.xlsx').status_code, 403)
         with client.session_transaction() as session:
             session['_user_id'] = '9'
             session['_fresh'] = True
-        response = client.get('/admin/scores/export.csv')
+        response = client.get('/admin/scores/export.xlsx')
         self.assertEqual(response.status_code, 200)
-        self.assertIn("'=2+2", response.get_data(as_text=True))
-        self.assertIn("'@student", response.get_data(as_text=True))
-        self.assertIn("' =1+1", response.get_data(as_text=True))
+        from zipfile import ZipFile
+        import io
+        with ZipFile(io.BytesIO(response.get_data())) as archive:
+            sheet = archive.read('xl/worksheets/sheet1.xml').decode()
+        self.assertIn("'=2+2", sheet)
+        self.assertIn("'@student", sheet)
+        self.assertIn("' =1+1", sheet)
 
 
 if __name__ == '__main__':

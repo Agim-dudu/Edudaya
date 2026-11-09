@@ -169,7 +169,9 @@ function checkAllAnswered() {
 }
 
 // ── SUBMIT ──
+let submitting = false;
 function handleSubmit() {
+  if (submitting) return;
   const allDone = questions.every(isAnswered);
   if (!allDone) {
     const belum = questions.filter(q => !isAnswered(q)).length;
@@ -179,6 +181,7 @@ function handleSubmit() {
     return;
   }
 
+  submitting = true;
   fetch(pretestApiUrl, {
     method: 'POST',
     headers: {
@@ -195,7 +198,14 @@ function handleSubmit() {
   .then(data => {
       if (data.redirect_url) {
           window.location.href = data.redirect_url;
+      } else {
+          submitting = false;
+          alert(data.error || 'Jawaban gagal dikirim. Silakan coba lagi.');
       }
   })
-  .catch(err => console.error('Error:', err));
+  .catch(err => {
+      submitting = false;
+      console.error('Error:', err);
+      alert('Jawaban gagal dikirim. Silakan coba lagi.');
+  });
 }

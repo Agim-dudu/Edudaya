@@ -74,6 +74,10 @@
                                 <h2 class="font-fredoka text-2xl text-cokelat-general">👧 Data Siswa</h2>
                                 <p class="text-xs text-gray-400 mt-0.5">Pilih kelas untuk melihat daftar siswa</p>
                             </div>
+                            <a href="{{ url_for('teacher_students_export', user_id=user_id) }}"
+                                class="bg-green-600 hover:bg-green-700 text-white font-700 py-2 px-4 rounded-xl text-sm">
+                                Unduh Semua Data Siswa (Excel)
+                            </a>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -117,6 +121,10 @@
                                     <h3 class="font-fredoka text-lg text-cokelat-general">{{ kelas.class_name }}</h3>
                                     <p class="text-xs text-gray-400">{{ kelas.school }} · {{ kelas.students|length }} siswa</p>
                                 </div>
+                                <a href="{{ url_for('teacher_students_export', user_id=user_id, class_id=kelas.class_id) }}"
+                                    class="ml-auto bg-green-600 hover:bg-green-700 text-white font-700 py-2 px-3 rounded-xl text-sm">
+                                    Unduh Data Kelas (Excel)
+                                </a>
                             </div>
 
                             <div class="bg-white rounded-2xl shadow overflow-hidden">

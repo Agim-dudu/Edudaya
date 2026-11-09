@@ -1,14 +1,15 @@
 from app import app
+from app.excel_export import workbook_bytes
+from app.pdf_export import final_analysis_pdf, pretest_analysis_pdf
 from app.controller import *
 from app.decorator.utils import level_required
 from flask_login import current_user, login_required
-from app.model import Classes
+from app.model import Classes, User, EvaluationResult, PretestResult, Score, FinalResult
 from app.controller.PretestController import QUESTIONS_PRETEST
 from flask import Flask, render_template, request, redirect, url_for, Response
 from flask import session
 from datetime import datetime, timezone
-import csv
-import io
+import json
 
 
 QUIZ_ATTEMPT_DURATION_SECONDS = 15 * 60
@@ -217,6 +218,8 @@ def evaluation_start(user_id, klasifikasi):
 def submit_evaluation(user_id):
     if user_id != current_user.id:
         return render_template("403.html"), 403
+    if current_user.level == 0 and current_user.evaluation_result is not None:
+        return jsonify({'error': 'Evaluasi sudah dikirim.'}), 409
 
     data = request.get_json(silent=True)
     if not isinstance(data, dict) or not isinstance(data.get('answers'), dict):
@@ -712,6 +715,38 @@ def dashboard_result_pretest_analysis(user_id, class_id):
         pretest_analysis=pretest_analysis
     )
 
+
+@app.route('/teacher/result/pretest/analysis/<int:user_id>/<int:class_id>/export.pdf', methods=['GET'])
+@login_required
+@level_required(1)
+def teacher_pretest_analysis_pdf(user_id, class_id):
+    if user_id != current_user.id or not any(
+        assignment.class_id == class_id for assignment in current_user.teacher_classes
+    ):
+        return render_template('403.html'), 403
+
+    kelas = Classes.query.get_or_404(class_id)
+    rows = (db.session.query(PretestResult, User)
+            .join(User, PretestResult.user_id == User.id)
+            .filter(User.class_id == class_id, User.level == 0, PretestResult.ai_analysis.isnot(None))
+            .order_by(User.full_name.asc()).all())
+    students = [
+        {
+            'name': student.full_name,
+            'pretest_score': result.score,
+            'correct': result.correct,
+            'analysis': json.loads(result.ai_analysis),
+            'answers': json.loads(result.answer_details or '[]'),
+        }
+        for result, student in rows
+    ]
+    pdf = pretest_analysis_pdf(kelas.name, kelas.school, students)
+    return Response(
+        pdf,
+        mimetype='application/pdf',
+        headers={'Content-Disposition': f'attachment; filename="edudaya-analisis-pretest-kelas-{class_id}.pdf"'},
+    )
+
 @app.route("/teacher/result/pretest/analysis/<int:teacher_id>/student/<int:user_id>", methods=["GET"])
 @login_required
 @level_required(1)
@@ -760,7 +795,148 @@ def dashboard_result_final_analysis(user_id, class_id):
         user_id=user_id,
         final_analysis=final_analysis
     )
-    
+
+
+@app.route('/teacher/result/final/analysis/<int:user_id>/<int:class_id>/export.pdf', methods=['GET'])
+@login_required
+@level_required(1)
+def teacher_final_analysis_pdf(user_id, class_id):
+    if user_id != current_user.id or not any(
+        assignment.class_id == class_id for assignment in current_user.teacher_classes
+    ):
+        return render_template('403.html'), 403
+
+    kelas = Classes.query.get_or_404(class_id)
+    rows = (db.session.query(FinalResult, User, PretestResult, EvaluationResult)
+            .join(User, FinalResult.user_id == User.id)
+            .outerjoin(PretestResult, PretestResult.user_id == User.id)
+            .outerjoin(EvaluationResult, EvaluationResult.user_id == User.id)
+            .filter(User.class_id == class_id, User.level == 0)
+            .order_by(User.full_name.asc()).all())
+    students = []
+    for result, student, pretest, evaluation in rows:
+        students.append({
+            'name': student.full_name,
+            'pretest_score': pretest.score if pretest else None,
+            'analysis': json.loads(result.ai_analysis or '{}'),
+            'answers': json.loads(evaluation.answer_details or '[]') if evaluation else [],
+        })
+    pdf = final_analysis_pdf(kelas.name, kelas.school, students)
+    return Response(
+        pdf,
+        mimetype='application/pdf',
+        headers={'Content-Disposition': f'attachment; filename="edudaya-analisis-akhir-kelas-{class_id}.pdf"'},
+    )
+
+
+@app.route('/teacher/evaluation/export.xlsx/<int:user_id>/<int:class_id>', methods=['GET'])
+@login_required
+@level_required(1)
+def teacher_evaluation_export(user_id, class_id):
+    if user_id != current_user.id or not any(
+        assignment.class_id == class_id for assignment in current_user.teacher_classes
+    ):
+        return render_template('403.html'), 403
+
+    sheet_rows = []
+    sheet_rows.append(['Siswa', 'Nomor', 'Topik', 'Pertanyaan', 'Jawaban Siswa', 'Kunci Jawaban', 'Tanggal Kirim'])
+    results = (
+        db.session.query(EvaluationResult, User)
+        .join(User, EvaluationResult.user_id == User.id)
+        .filter(User.class_id == class_id, User.level == 0)
+        .order_by(User.full_name.asc(), EvaluationResult.created_at.asc())
+        .all()
+    )
+    for result, student in results:
+        for detail in json.loads(result.answer_details or '[]'):
+            sheet_rows.append([
+                _excel_safe(student.full_name),
+                detail.get('nomor', ''),
+                _excel_safe(detail.get('topik')),
+                _excel_safe(detail.get('pertanyaan')),
+                _excel_safe(detail.get('jawaban_siswa')),
+                _excel_safe(detail.get('jawaban_benar')),
+                result.created_at.strftime('%Y-%m-%d %H:%M:%S') if result.created_at else '',
+            ])
+    return _excel_response(sheet_rows, f'edudaya-evaluasi-kelas-{class_id}.xlsx', 'Evaluasi')
+
+
+@app.route('/teacher/results/export.xlsx/<int:user_id>/<int:class_id>/<kind>', methods=['GET'])
+@login_required
+@level_required(1)
+def teacher_results_export(user_id, class_id, kind):
+    if user_id != current_user.id or not any(
+        assignment.class_id == class_id for assignment in current_user.teacher_classes
+    ):
+        return render_template('403.html'), 403
+    if kind not in {'pretest', 'quiz', 'final', 'recap'}:
+        return 'Not Found', 404
+
+    sheet_rows = []
+    if kind == 'recap':
+        recap, material_labels, material_keys = get_grades_recap(user_id)
+        sheet_rows.append(['Siswa', 'Status Pretest', 'Nilai Pretest', *material_labels, 'Status Evaluasi', 'Nilai Evaluasi', 'Total', 'Rata-rata'])
+        for kelas in recap:
+            if kelas['class_id'] != class_id:
+                continue
+            for student in kelas['students']:
+                sheet_rows.append([
+                    _excel_safe(student['full_name']),
+                    'Selesai' if student['pretest_done'] else 'Belum',
+                    student['pretest_score'] if student['pretest_score'] is not None else '',
+                    *(student['scores'].get(key) if student['scores'].get(key) is not None else '' for key in material_keys),
+                    'Selesai' if student['evaluation_done'] else 'Belum',
+                    student['evaluation_score'] if student['evaluation_score'] is not None else '',
+                    student['total'], student['avg'],
+                ])
+    elif kind == 'pretest':
+        sheet_rows.append(['Siswa', 'Nilai Pretest', 'Nomor', 'Topik', 'Pertanyaan', 'Jawaban Siswa', 'Kunci Jawaban', 'Tanggal Kirim'])
+        rows = (db.session.query(PretestResult, User)
+                .join(User, PretestResult.user_id == User.id)
+                .filter(User.class_id == class_id, User.level == 0)
+                .order_by(User.full_name.asc()).all())
+        for result, student in rows:
+            for detail in json.loads(result.answer_details or '[]'):
+                sheet_rows.append([
+                    _excel_safe(student.full_name), result.score if result.score is not None else '',
+                    detail.get('nomor', ''), _excel_safe(detail.get('topik')),
+                    _excel_safe(detail.get('pertanyaan')), _excel_safe(detail.get('jawaban_siswa')),
+                    _excel_safe(detail.get('jawaban_benar')),
+                    result.created_at.strftime('%Y-%m-%d %H:%M:%S') if result.created_at else '',
+                ])
+    elif kind == 'quiz':
+        sheet_rows.append(['Siswa', 'Materi', 'Benar', 'Salah', 'Nilai', 'Tanggal'])
+        rows = (db.session.query(Score, User)
+                .join(User, Score.user_id == User.id)
+                .filter(User.class_id == class_id, User.level == 0, Score.score_type == 'quiz')
+                .order_by(User.full_name.asc(), Score.created_at.asc()).all())
+        for score, student in rows:
+            sheet_rows.append([
+                _excel_safe(student.full_name), _excel_safe(score.chapter), score.correct,
+                score.incorrect, score.value,
+                score.created_at.strftime('%Y-%m-%d %H:%M:%S') if score.created_at else '',
+            ])
+    else:
+        sheet_rows.append(['Siswa', 'Nilai Pretest', 'Peningkatan Skor', 'Level Akhir', 'Perkembangan', 'Analisis Perkembangan', 'Tanggal Analisis'])
+        rows = (db.session.query(FinalResult, User, PretestResult)
+                .join(User, FinalResult.user_id == User.id)
+                .outerjoin(PretestResult, PretestResult.user_id == User.id)
+                .filter(User.class_id == class_id, User.level == 0)
+                .order_by(User.full_name.asc()).all())
+        for result, student, pretest in rows:
+            analysis = json.loads(result.ai_analysis or '{}')
+            sheet_rows.append([
+                _excel_safe(student.full_name), pretest.score if pretest and pretest.score is not None else '',
+                analysis.get('peningkatan_skor', ''),
+                _excel_safe((analysis.get('level_akhir') or {}).get('level')),
+                _excel_safe(analysis.get('perkembangan')),
+                _excel_safe(analysis.get('analisis_perkembangan')),
+                result.created_at.strftime('%Y-%m-%d %H:%M:%S') if result.created_at else '',
+            ])
+
+    return _excel_response(sheet_rows, f'edudaya-{kind}-kelas-{class_id}.xlsx', kind.title())
+
+
 @app.route("/teacher/batch/analyze/final/<int:teacher_id>/<int:class_id>", methods=["POST"])
 @login_required
 @level_required(1)
@@ -818,6 +994,38 @@ def teacher_students(user_id):
         user_id=user_id,
         students_data=students_data
     )
+
+
+@app.route('/teacher/students/export.xlsx/<int:user_id>', methods=['GET'])
+@app.route('/teacher/students/export.xlsx/<int:user_id>/<int:class_id>', methods=['GET'])
+@login_required
+@level_required(1)
+def teacher_students_export(user_id, class_id=None):
+    if user_id != current_user.id:
+        return render_template('403.html'), 403
+    if class_id is not None and not any(
+        assignment.class_id == class_id for assignment in current_user.teacher_classes
+    ):
+        return render_template('403.html'), 403
+
+    sheet_rows = [[
+        'Kelas', 'Sekolah', 'No', 'Nama', 'L/P', 'Status Pretest',
+        'Nilai Kuis', 'Materi Selesai', 'Total Materi', 'Total Nilai',
+    ]]
+    for kelas in get_students_by_teacher(user_id):
+        if class_id is not None and kelas['class_id'] != class_id:
+            continue
+        for number, student in enumerate(kelas['students'], 1):
+            sheet_rows.append([
+                _excel_safe(kelas['class_name']), _excel_safe(kelas['school']), number,
+                _excel_safe(student['full_name']), _excel_safe(student['gender']),
+                'Selesai' if student['pretest_done'] else 'Belum',
+                student['quiz_score'] if student['quiz_score'] is not None else '',
+                student['materi_selesai'], student['total_bab'], student['total_score'],
+            ])
+
+    suffix = f'kelas-{class_id}' if class_id is not None else 'semua-kelas'
+    return _excel_response(sheet_rows, f'edudaya-data-siswa-{suffix}.xlsx', 'Data Siswa')
 
 @app.route("/teacher/classes/<int:user_id>", methods=["GET"])
 @login_required
@@ -930,35 +1138,38 @@ def dashboard_admin(user_id):
     )
 
 
-@app.route('/admin/scores/export.csv', methods=['GET'])
+@app.route('/admin/scores/export.xlsx', methods=['GET'])
 @login_required
 @level_required(2)
 def admin_scores_export():
-    output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerow(['Siswa', 'Username', 'Kelas', 'Sekolah', 'Materi', 'Jenis', 'Benar', 'Salah', 'Nilai', 'Tanggal'])
+    sheet_rows = []
+    sheet_rows.append(['Siswa', 'Username', 'Kelas', 'Sekolah', 'Materi', 'Jenis', 'Benar', 'Salah', 'Nilai', 'Tanggal'])
     for score, student, kelas in get_admin_scores():
-        writer.writerow([
-            _csv_safe(student.full_name),
-            _csv_safe(student.username),
-            _csv_safe(kelas.name if kelas else ''),
-            _csv_safe(kelas.school if kelas else ''),
-            _csv_safe(score.chapter or ''),
-            _csv_safe(score.score_type),
+        sheet_rows.append([
+            _excel_safe(student.full_name),
+            _excel_safe(student.username),
+            _excel_safe(kelas.name if kelas else ''),
+            _excel_safe(kelas.school if kelas else ''),
+            _excel_safe(score.chapter or ''),
+            _excel_safe(score.score_type),
             score.correct,
             score.incorrect,
             score.value,
             score.created_at.strftime('%Y-%m-%d %H:%M:%S') if score.created_at else '',
         ])
 
+    return _excel_response(sheet_rows, 'edudaya-nilai-siswa.xlsx', 'Nilai Siswa')
+
+
+def _excel_response(rows, filename, sheet_name):
     return Response(
-        '\ufeff' + output.getvalue(),
-        mimetype='text/csv; charset=utf-8',
-        headers={'Content-Disposition': 'attachment; filename="edudaya-nilai-siswa.csv"'},
+        workbook_bytes(rows, sheet_name),
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers={'Content-Disposition': f'attachment; filename="{filename}"'},
     )
 
 
-def _csv_safe(value):
+def _excel_safe(value):
     value = '' if value is None else str(value)
     formula_candidate = value.lstrip(' \t\r\n')
     return "'" + value if formula_candidate.startswith(('=', '+', '-', '@')) else value

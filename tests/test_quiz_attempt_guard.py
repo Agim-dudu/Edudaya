@@ -81,6 +81,15 @@ class QuizAttemptGuardTests(unittest.TestCase):
                 self.assertEqual(status, 409)
                 save.assert_not_called()
 
+    def test_evaluation_cannot_be_submitted_twice(self):
+        user = SimpleNamespace(id=12, level=0, evaluation_result=object())
+        with app.app_context(), patch.object(routes, 'current_user', user):
+            with patch.object(routes, 'save_evaluation') as save:
+                with app.test_request_context('/evaluation/submit/12', method='POST', json={'answers': {}}):
+                    response, status = routes.submit_evaluation.__wrapped__(12)
+                self.assertEqual(status, 409)
+                save.assert_not_called()
+
     def test_teacher_evaluation_preview_does_not_require_student_attempt(self):
         user = SimpleNamespace(id=12, level=1)
         with app.app_context(), patch.object(routes, 'current_user', user), \

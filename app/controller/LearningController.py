@@ -159,34 +159,15 @@ def can_access_evaluation_start(user_id: int, klasifikasi: int, bab_key: str):
         return block
 
     if current_user.level == 0:
+        if current_user.evaluation_result is not None:
+            flash("Evaluasi hanya dapat dikerjakan satu kali.", "info")
+            return redirect(url_for(quiz_route, user_id=user_id, klasifikasi=klasifikasi))
         block = get_first_incomplete_route(user_id, klasifikasi, cfg["flow"][:-1])
         if block:
             return block
 
         if not has_activity(user_id, f"{bab_key}"):
             return redirect(url_for(quiz_route, user_id=user_id, klasifikasi=klasifikasi))
-
-        last_score = _get_last_score(user_id, "evaluation", cfg["score_chapter"])
-
-        if last_score:
-            kkm = _get_kkm(current_user)
-
-            if last_score.value >= kkm:
-                flash(
-                    f"Kamu sudah mencapai nilai KKM ({kkm}). "
-                    f"Tidak perlu mengulang quiz ini lagi! 🎉",
-                    "success",
-                )
-                return redirect(url_for(quiz_route, user_id=user_id, klasifikasi=klasifikasi))
-
-            sisa_cooldown = _compute_cooldown(last_score)
-            if sisa_cooldown > 0:
-                flash(
-                    f"Kamu baru saja mengerjakan quiz. "
-                    f"Tunggu {sisa_cooldown // 60} menit {sisa_cooldown % 60} detik lagi.",
-                    "warning",
-                )
-                return redirect(url_for(quiz_route, user_id=user_id, klasifikasi=klasifikasi))
 
         session_key = f"quiz_start_time_{bab_key}"
         if session_key not in session:

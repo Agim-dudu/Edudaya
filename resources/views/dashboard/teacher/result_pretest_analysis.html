@@ -96,6 +96,11 @@
                         <div>
                             <h2 class="font-fredoka text-2xl text-cokelat-general">🤖 Hasil Pretest Analisis AI Kelas</h2>
                         </div>
+                        <div class="flex items-center gap-3">
+                        <a href="{{ url_for('teacher_pretest_analysis_pdf', user_id=user_id, class_id=class_id) }}"
+                            class="bg-green-600 hover:bg-green-700 text-white font-800 py-2 px-4 rounded-xl text-sm shadow-md">
+                            Unduh Analisis Pretest (PDF)
+                        </a>
                         <form id="form-batch-analysis"
                             action="{{ url_for('dashboard_teacher_batch_analyze_pretest', teacher_id=user_id, class_id=class_id) }}"
                             method="post">
@@ -105,6 +110,7 @@
                                 🔍 Mulai Analisis Pretest
                             </button>
                         </form>
+                        </div>
                     </div>
 
                     <div class="bg-white rounded-2xl shadow overflow-hidden">

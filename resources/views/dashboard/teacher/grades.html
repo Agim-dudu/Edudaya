@@ -119,6 +119,10 @@
                                     <h3 class="font-fredoka text-lg text-cokelat-general">{{ r.class_name }}</h3>
                                     <p class="text-xs text-gray-400">{{ r.school }} · {{ r.students|length }} siswa</p>
                                 </div>
+                                <a href="{{ url_for('teacher_results_export', user_id=current_user.id, class_id=r.class_id, kind='recap') }}"
+                                    class="ml-auto bg-green-600 hover:bg-green-700 text-white font-700 py-2 px-3 rounded-xl text-sm">
+                                    Unduh Rekap Nilai (Excel)
+                                </a>
                             </div>
 
                             <div class="bg-white rounded-2xl shadow overflow-hidden">
@@ -127,10 +131,13 @@
                                         <thead class="bg-gray-50 border-b border-gray-200">
                                             <tr>
                                                 <th class="text-left px-3 py-3 font-700 text-cokelat-general text-xs sticky-col-head bg-gray-50">Nama</th>
-                                                <th class="text-center px-2 py-3 font-700 text-cokelat-general text-xs">Pretest</th>
+                                                <th class="text-center px-2 py-3 font-700 text-cokelat-general text-xs">Status Pretest</th>
+                                                <th class="text-center px-2 py-3 font-700 text-cokelat-general text-xs">Nilai Pretest</th>
                                                 {% for label in material_labels %}
                                                 <th class="text-center px-2 py-3 font-700 text-cokelat-general text-xs">{{ label }}</th>
                                                 {% endfor %}
+                                                <th class="text-center px-2 py-3 font-700 text-cokelat-general text-xs">Status Evaluasi</th>
+                                                <th class="text-center px-2 py-3 font-700 text-cokelat-general text-xs">Nilai Evaluasi</th>
                                                 <th class="text-center px-3 py-3 font-700 text-cokelat-general text-xs">Total</th>
                                                 <th class="text-center px-3 py-3 font-700 text-cokelat-general text-xs">Rata²</th>
                                             </tr>
@@ -143,7 +150,14 @@
                                                 </td>
                                                 <td class="px-2 py-3 text-center">
                                                     {% if s.pretest_done %}
-                                                    <span class="text-hijau-general font-bold text-xs">✓</span>
+                                                    <span class="text-hijau-general font-bold text-xs">Selesai</span>
+                                                    {% else %}
+                                                    <span class="text-gray-400 text-xs">Belum</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="px-2 py-3 text-center">
+                                                    {% if s.pretest_score is not none %}
+                                                    <span class="font-fredoka text-xs {% if s.pretest_score >= 80 %}text-hijau-general{% elif s.pretest_score >= 60 %}text-kuning-general{% else %}text-merah-general{% endif %}">{{ s.pretest_score }}</span>
                                                     {% else %}
                                                     <span class="text-gray-300 text-xs">—</span>
                                                     {% endif %}
@@ -159,6 +173,20 @@
                                                     {% endif %}
                                                 </td>
                                                 {% endfor %}
+                                                <td class="px-2 py-3 text-center">
+                                                    {% if s.evaluation_done %}
+                                                    <span class="text-hijau-general font-bold text-xs">Selesai</span>
+                                                    {% else %}
+                                                    <span class="text-gray-400 text-xs">Belum</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="px-2 py-3 text-center">
+                                                    {% if s.evaluation_score is not none %}
+                                                    <span class="font-fredoka text-xs {% if s.evaluation_score >= 80 %}text-hijau-general{% elif s.evaluation_score >= 60 %}text-kuning-general{% else %}text-merah-general{% endif %}">{{ s.evaluation_score }}</span>
+                                                    {% else %}
+                                                    <span class="text-gray-300 text-xs">—</span>
+                                                    {% endif %}
+                                                </td>
                                                 <td class="px-3 py-3 text-center">
                                                     <span class="font-fredoka text-sm font-bold text-kuning-general">{{ s.total }}</span>
                                                 </td>

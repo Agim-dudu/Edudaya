@@ -88,6 +88,11 @@
                             <h2 class="font-fredoka text-2xl text-cokelat-general">🤖 Hasil Final Analisis AI Kelas
                             </h2>
                         </div>
+                        <div class="flex items-center gap-3">
+                        <a href="{{ url_for('teacher_final_analysis_pdf', user_id=user_id, class_id=class_id) }}"
+                            class="bg-green-600 hover:bg-green-700 text-white font-800 py-2 px-3 rounded-xl text-sm shadow-md">
+                            Unduh Analisis Akhir (PDF)
+                        </a>
                         <form
                             action="{{ url_for('dashboard_teacher_batch_analyze_final', teacher_id=user_id, class_id=class_id) }}"
                             method="post">
@@ -97,6 +102,7 @@
                                 🔍 Mulai Analisis Final
                             </button>
                         </form>
+                        </div>
                     </div>
 
                     <div class="bg-white rounded-2xl shadow overflow-hidden">
