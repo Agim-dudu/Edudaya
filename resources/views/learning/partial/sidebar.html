@@ -111,3 +111,88 @@
         {% endif %}
     </div>
 </aside>
+<style>
+    #mainArea img.img-loading,
+    main img.img-loading {
+        min-height: 180px;
+        background: linear-gradient(100deg, #e2e8f0 25%, #f8fafc 50%, #e2e8f0 75%) !important;
+        background-size: 220% 100% !important;
+        animation: edudayaImgSkeleton 1.25s ease-in-out infinite;
+        color: transparent;
+    }
+
+    #mainArea img.img-loaded,
+    main img.img-loaded {
+        animation: edudayaImgFadeIn .35s ease;
+    }
+
+    @keyframes edudayaImgSkeleton {
+        0% { background-position: 100% 0; }
+        100% { background-position: -100% 0; }
+    }
+
+    @keyframes edudayaImgFadeIn {
+        from { opacity: .35; }
+        to { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        #mainArea img.img-loading,
+        main img.img-loading {
+            animation: none;
+        }
+        #mainArea img.img-loaded,
+        main img.img-loaded {
+            animation: none;
+        }
+    }
+</style>
+<script>
+(function () {
+    var SKELETON_CLASS = 'img-loading';
+    var LOADED_CLASS = 'img-loaded';
+    var EXCLUDED = '#imgLightboxImg, #sidebar img, nav img, .no-skeleton';
+
+    function reveal(img) {
+        img.classList.remove(SKELETON_CLASS);
+        img.classList.add(LOADED_CLASS);
+        img.removeAttribute('aria-busy');
+    }
+
+    function watch(img) {
+        if (img.dataset.skeletonWatched === '1' || img.matches(EXCLUDED)) return;
+        img.dataset.skeletonWatched = '1';
+
+        var width = parseInt(img.getAttribute('width') || '0', 10);
+        var height = parseInt(img.getAttribute('height') || '0', 10);
+        if ((width && width < 80) || (height && height < 80)) return;
+
+        var deferred = Boolean(img.dataset.src);
+        if (!deferred && img.complete && img.naturalWidth > 0) return;
+
+        img.classList.add(SKELETON_CLASS);
+        img.setAttribute('aria-busy', 'true');
+
+        img.addEventListener('load', function () {
+            if (img.dataset.src) return;
+            if (img.complete && img.naturalWidth > 0) reveal(img);
+        });
+
+        img.addEventListener('error', function () {
+            reveal(img);
+        });
+
+        if (!img.dataset.src && img.complete && img.naturalWidth > 0) reveal(img);
+    }
+
+    function init() {
+        document.querySelectorAll('#mainArea img, main img').forEach(watch);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>

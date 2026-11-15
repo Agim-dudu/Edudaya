@@ -1,5 +1,6 @@
 from app import app
 from app.excel_export import workbook_bytes
+from app.excel_import import SpreadsheetError
 from app.pdf_export import final_analysis_pdf, pretest_analysis_pdf
 from app.controller import *
 from app.decorator.utils import level_required
@@ -1053,6 +1054,67 @@ def create_class_route(teacher_id):
 @level_required(1)
 def edit_class_route(teacher_id, class_id):
     return edit_class(teacher_id, class_id)
+
+@app.route("/teacher/classes/<int:teacher_id>/<int:class_id>/import/template", methods=["GET"])
+@login_required
+@level_required(1)
+def teacher_students_import_template(teacher_id, class_id):
+    if teacher_id != current_user.id or not any(
+        rel.class_id == class_id for rel in current_user.teacher_classes
+    ):
+        return render_template("403.html"), 403
+
+    rows = [
+        ["Nama", "Username", "Password", "Jenis Kelamin (L/P)"],
+    ]
+    return _excel_response(
+        rows,
+        f"template-import-siswa-kelas-{class_id}.xlsx",
+        "Template Import Siswa",
+    )
+
+@app.route("/teacher/classes/<int:teacher_id>/<int:class_id>/import", methods=["POST"])
+@login_required
+@level_required(1)
+def teacher_students_import(teacher_id, class_id):
+    if teacher_id != current_user.id or not any(
+        rel.class_id == class_id for rel in current_user.teacher_classes
+    ):
+        return render_template("403.html"), 403
+
+    endpoint = "teacher_students" if request.form.get("return_to") == "students" else "my_classes"
+    back_to = url_for(endpoint, user_id=teacher_id)
+
+    upload = request.files.get("file")
+    if upload is None or not upload.filename:
+        flash("Pilih file Excel terlebih dahulu.", "danger")
+        return redirect(back_to)
+    if not upload.filename.lower().endswith(".xlsx"):
+        flash("Format file harus .xlsx. Gunakan template yang disediakan.", "danger")
+        return redirect(back_to)
+
+    try:
+        created, errors = import_students_from_excel(teacher_id, class_id, upload.stream)
+    except PermissionError:
+        return render_template("403.html"), 403
+    except (SpreadsheetError, LookupError) as exc:
+        flash(str(exc), "danger")
+        return redirect(back_to)
+    except Exception:
+        flash("Terjadi kesalahan saat mengimpor data siswa. Coba lagi.", "danger")
+        return redirect(back_to)
+
+    if created:
+        flash(f"{created} siswa berhasil ditambahkan ke kelas.", "success")
+    if errors:
+        preview = "; ".join(errors[:5])
+        if len(errors) > 5:
+            preview += f"; dan {len(errors) - 5} baris lainnya"
+        flash(f"{len(errors)} baris dilewati. {preview}", "danger")
+    if not created and not errors:
+        flash("Tidak ada data siswa yang diimpor.", "danger")
+
+    return redirect(back_to)
 
 @app.route("/profile/teacher/<int:user_id>", methods=["GET"])
 @login_required

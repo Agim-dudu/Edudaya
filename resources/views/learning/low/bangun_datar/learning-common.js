@@ -1,14 +1,32 @@
 window.JAWABAN_SOAL = window.JAWABAN_SOAL || {};
-function periksaSoal(id){
-    const input=document.getElementById('ans-'+id), fb=document.getElementById('fb-'+id), sol=document.getElementById('sol-'+id);
-    if(!input||!fb)return;
-    let val=input.value.trim().replace(/\s+/g,'');
+function periksaSoal(id) {
+    const fb=document.getElementById('fb-'+id), sol=document.getElementById('sol-'+id);
+    if(!fb)return;
+    const inputs=Array.from(document.querySelectorAll('[data-soal-inputs="'+id+'"]'));
+    if(inputs.length){
+        const missing=inputs.filter(input=>!input.value.trim());
+        if(missing.length){
+            const labels=missing.map(input=>input.dataset.label||'isian').join(', ');
+            fb.innerHTML='<div class="bg-yellow-100 border-2 border-yellow-400 rounded-xl p-3 text-sm font-bold text-yellow-700">✏️ Lengkapi '+labels+' dulu ya!</div>';
+            return;
+        }
+        const allCorrect=inputs.every(input=>{
+            const expected=parseFloat((input.dataset.jawaban||'').replace(',','.'));
+            const actual=parseFloat(input.value.trim().replace(/\s+/g,'').replace(',','.'));
+            return !isNaN(expected)&&!isNaN(actual)&&Math.abs(actual-expected)<0.01;
+        });
+        if(allCorrect){fb.innerHTML='<div class="bg-green-100 border-2 border-green-400 rounded-xl p-3 text-sm font-bold text-green-700">🎉 BENAR! Hebat!</div>';if(sol)sol.classList.remove('hidden');}
+        else{fb.innerHTML='<div class="bg-red-100 border-2 border-red-400 rounded-xl p-3 text-sm font-bold text-red-600">😊 BELUM TEPAT! Periksa lagi isian diketahui dan jawabannya ya!</div>';if(sol)sol.classList.remove('hidden');}
+        return;
+    }
+    const input=document.getElementById('ans-'+id);
+    if(!input)return;
+    const val=input.value.trim().replace(/\s+/g,'');
     if(val===''){fb.innerHTML='<div class="bg-yellow-100 border-2 border-yellow-400 rounded-xl p-3 text-sm font-bold text-yellow-700">✏️ Tulis jawabanmu dulu ya!</div>';return;}
     const num=parseFloat(val.replace(',','.'));
-    const map=window.JAWABAN_SOAL||{};
-    const ben=map[id];
-    if(ben!==undefined && !isNaN(num)&&Math.abs(num-ben)<0.01){fb.innerHTML='<div class="bg-green-100 border-2 border-green-400 rounded-xl p-3 text-sm font-bold text-green-700">🎉 BENAR! Hebat!</div>'; if(sol)sol.classList.remove('hidden');}
-    else{fb.innerHTML='<div class="bg-red-100 border-2 border-red-400 rounded-xl p-3 text-sm font-bold text-red-600">😊 BELUM TEPAT! Coba perhatikan lagi ya!</div>'; if(sol)sol.classList.remove('hidden');}
+    const ben=(window.JAWABAN_SOAL||{})[id];
+    if(ben!==undefined&&!isNaN(num)&&Math.abs(num-ben)<0.01){fb.innerHTML='<div class="bg-green-100 border-2 border-green-400 rounded-xl p-3 text-sm font-bold text-green-700">🎉 BENAR! Hebat!</div>';if(sol)sol.classList.remove('hidden');}
+    else{fb.innerHTML='<div class="bg-red-100 border-2 border-red-400 rounded-xl p-3 text-sm font-bold text-red-600">😊 BELUM TEPAT! Coba perhatikan lagi ya!</div>';if(sol)sol.classList.remove('hidden');}
 }
 let sidebarOpen=true;
 function toggleSidebar(){const s=document.getElementById('sidebar'),m=document.getElementById('mainArea'),o=document.getElementById('sidebarOverlay'),mob=window.innerWidth<=768;if(mob){const h=s.classList.contains('-translate-x-full');if(h){s.classList.remove('-translate-x-full');o.classList.remove('hidden');o.classList.add('flex');}else{s.classList.add('-translate-x-full');o.classList.add('hidden');o.classList.remove('flex');}}else{sidebarOpen=!sidebarOpen;if(sidebarOpen){s.classList.remove('-translate-x-full');m.classList.remove('ml-0');m.classList.add('ml-[280px]');}else{s.classList.add('-translate-x-full');m.classList.remove('ml-[280px]');m.classList.add('ml-0');}}}

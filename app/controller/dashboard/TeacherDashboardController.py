@@ -9,6 +9,7 @@ from flask_login import current_user
 from flask import abort, current_app, flash, redirect, url_for, request
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
+from app.excel_import import SpreadsheetError, read_student_rows
 
 def _generate_token():
     suffix = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(6))
@@ -212,6 +213,82 @@ def edit_class(teacher_id, class_id):
     return redirect(url_for('my_classes', user_id=teacher_id))
 
 
+def _teacher_owns_class(teacher_id, class_id):
+    if teacher_id != current_user.id:
+        return False
+    return any(rel.class_id == class_id for rel in current_user.teacher_classes)
+
+
+def _normalize_gender(value):
+    value = (value or '').strip().upper()
+    if not value:
+        return 'L'
+    if value in {'L', 'LAKI-LAKI', 'LAKI LAKI', 'PRIA', 'MALE'}:
+        return 'L'
+    if value in {'P', 'PEREMPUAN', 'WANITA', 'FEMALE'}:
+        return 'P'
+    return None
+
+
+def import_students_from_excel(teacher_id, class_id, file_stream):
+    if not _teacher_owns_class(teacher_id, class_id):
+        raise PermissionError('Kelas bukan wewenang Anda.')
+    if Classes.query.get(class_id) is None:
+        raise LookupError('Kelas tidak ditemukan.')
+
+    rows = read_student_rows(file_stream)
+    created = 0
+    errors = []
+    seen_usernames = set()
+
+    for row in rows:
+        number = row['row']
+        full_name = row['full_name']
+        username = row['username']
+        password = row['password']
+        gender = _normalize_gender(row['gender'])
+
+        if not full_name or not username or not password:
+            errors.append(f'Baris {number}: nama, username, dan password wajib diisi.')
+            continue
+        if len(full_name) > 50:
+            errors.append(f'Baris {number}: nama maksimal 50 karakter.')
+            continue
+        if len(username) > 50:
+            errors.append(f'Baris {number}: username maksimal 50 karakter.')
+            continue
+        if gender is None:
+            errors.append(f'Baris {number}: jenis kelamin harus L atau P.')
+            continue
+        username_key = username.lower()
+        if username_key in seen_usernames:
+            errors.append(f'Baris {number}: username "{username}" duplikat di file.')
+            continue
+        if User.query.filter_by(username=username).first() is not None:
+            errors.append(f'Baris {number}: username "{username}" sudah digunakan.')
+            continue
+
+        user = User(
+            username=username,
+            full_name=full_name,
+            level=0,
+            gender=gender,
+            class_id=class_id,
+        )
+        user.set_password(password)
+        db.session.add(user)
+        seen_usernames.add(username_key)
+        created += 1
+
+    try:
+        db.session.commit()
+    except Exception as exc:
+        db.session.rollback()
+        raise SpreadsheetError('Data gagal disimpan. Pastikan username unik dan coba lagi.') from exc
+
+    return created, errors
+
+
 def get_students_by_teacher(teacher_id):
     teacher = User.query.get(teacher_id)
     if not teacher or teacher.level != 1:
@@ -259,6 +336,7 @@ def get_students_by_teacher(teacher_id):
                 'full_name': s.full_name,
                 'gender': s.gender,
                 'pretest_done': s.pretest_result is not None,
+                'kualifikasi': {0: 'Rendah', 1: 'Sedang', 2: 'Tinggi'}.get(s.klasifikasi),
                 'quiz_score': quiz_val,
                 'materi_selesai': len(chapters_done),
                 'total_bab': total_bab,
