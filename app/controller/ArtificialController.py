@@ -108,6 +108,9 @@ def _call_deepseek(api_key: str, chunk: list) -> list:
         raise Exception(f"DeepSeek error: {err}")
  
     ai_text = resp_data["choices"][0]["message"]["content"].strip()
+    finish_reason = resp_data["choices"][0].get("finish_reason")
+    if finish_reason == "length":
+        raise ValueError("Respons AI terpotong karena batas token output.")
  
     # Strip markdown fence kalau ada
     ai_text = re.sub(r'^```(?:json)?\s*', '', ai_text)
@@ -129,7 +132,7 @@ def _call_deepseek(api_key: str, chunk: list) -> list:
                 ai_results = list_values[0]
  
     if not isinstance(ai_results, list) or len(ai_results) != len(chunk):
-        raise Exception(
+        raise ValueError(
             f"Jumlah response tidak cocok: ekspektasi {len(chunk)}, "
             f"diterima {len(ai_results) if isinstance(ai_results, list) else type(ai_results).__name__}"
         )
@@ -210,6 +213,27 @@ def _validate_pretest_results(results: list, chunk: list):
 
     if returned_ids != expected_ids:
         raise ValueError("Hasil AI pretest tidak mencakup setiap siswa dalam batch.")
+
+
+def _analyze_pretest_chunk(api_key: str, chunk: list) -> list:
+    """Retry malformed pretest output with progressively smaller chunks."""
+    try:
+        results = _call_deepseek(api_key, chunk)
+        _validate_pretest_results(results, chunk)
+        return results
+    except (json.JSONDecodeError, ValueError):
+        if len(chunk) == 1:
+            raise
+
+        midpoint = len(chunk) // 2
+        logging.warning(
+            "Respons analisis pretest tidak valid untuk %s siswa; mencoba ulang sebagai %s + %s siswa.",
+            len(chunk), midpoint, len(chunk) - midpoint,
+        )
+        return (
+            _analyze_pretest_chunk(api_key, chunk[:midpoint])
+            + _analyze_pretest_chunk(api_key, chunk[midpoint:])
+        )
 
 
 def _validate_final_results(results: list, chunk: list):
@@ -339,8 +363,7 @@ def batch_analyze_pretest_logic(teacher_id, class_id, user_ids=None):
         logging.info(f"Memproses batch {batch_num}: siswa {i+1}–{i+len(chunk)}")
  
         try:
-            ai_results = _call_deepseek(api_key, chunk)
-            _validate_pretest_results(ai_results, chunk)
+            ai_results = _analyze_pretest_chunk(api_key, chunk)
  
         except json.JSONDecodeError as e:
             failed_batches.append(f"Batch {batch_num}: gagal parse JSON ({e})")
@@ -450,7 +473,7 @@ def _call_deepseek_final(api_key: str, chunk: list) -> list:
         json={
             "model":           MODEL,
             "messages":        [{"role": "user", "content": prompt}],
-            "max_tokens":      8000,
+            "max_tokens":      12000,
             "temperature":     0.3,
             "response_format": {"type": "json_object"},
         },
@@ -464,6 +487,9 @@ def _call_deepseek_final(api_key: str, chunk: list) -> list:
         raise Exception(f"DeepSeek error: {err}")
  
     ai_text = resp_data["choices"][0]["message"]["content"].strip()
+    finish_reason = resp_data["choices"][0].get("finish_reason")
+    if finish_reason == "length":
+        raise ValueError("Respons AI terpotong karena batas token output.")
     ai_text = re.sub(r'^```(?:json)?\s*', '', ai_text)
     ai_text = re.sub(r'\s*```$',          '', ai_text).strip()
  
@@ -480,12 +506,33 @@ def _call_deepseek_final(api_key: str, chunk: list) -> list:
                 ai_results = list_values[0]
  
     if not isinstance(ai_results, list) or len(ai_results) != len(chunk):
-        raise Exception(
+        raise ValueError(
             f"Jumlah response tidak cocok: ekspektasi {len(chunk)}, "
             f"diterima {len(ai_results) if isinstance(ai_results, list) else type(ai_results).__name__}"
         )
  
     return ai_results
+
+
+def _analyze_final_chunk(api_key: str, chunk: list) -> list:
+    """Retry malformed final-analysis output with progressively smaller chunks."""
+    try:
+        results = _call_deepseek_final(api_key, chunk)
+        _validate_final_results(results, chunk)
+        return results
+    except (json.JSONDecodeError, ValueError):
+        if len(chunk) == 1:
+            raise
+
+        midpoint = len(chunk) // 2
+        logging.warning(
+            "Respons analisis final tidak valid untuk %s siswa; mencoba ulang sebagai %s + %s siswa.",
+            len(chunk), midpoint, len(chunk) - midpoint,
+        )
+        return (
+            _analyze_final_chunk(api_key, chunk[:midpoint])
+            + _analyze_final_chunk(api_key, chunk[midpoint:])
+        )
  
  
 def batch_analyze_final_logic(teacher_id, class_id, user_ids=None):
@@ -604,8 +651,7 @@ def batch_analyze_final_logic(teacher_id, class_id, user_ids=None):
         logging.info(f"Memproses final batch {batch_num}: siswa {i+1}–{i+len(chunk)}")
  
         try:
-            ai_results = _call_deepseek_final(api_key, chunk)
-            _validate_final_results(ai_results, chunk)
+            ai_results = _analyze_final_chunk(api_key, chunk)
  
         except json.JSONDecodeError as e:
             failed_batches.append(f"Batch {batch_num}: gagal parse JSON ({e})")

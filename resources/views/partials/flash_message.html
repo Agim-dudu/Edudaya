@@ -1,12 +1,22 @@
-                        {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                        <div id="flash-messages" class="mb-4 space-y-2 transition duration-300">
-                            {% for category, message in messages %}
-                            <div
-                                class="text-white px-4 py-2 rounded-lg shadow-md animate-pulse {% if category == 'success' %}bg-green-500{% elif category == 'danger' %}bg-merah-general{% else %}bg-gray-500{% endif %}">
-                                {{ message }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                        {% endwith %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div id="flash-messages" class="mx-auto mb-5 w-full max-w-3xl space-y-3 px-4 sm:px-6" aria-live="polite">
+    {% for category, message in messages %}
+    <div data-flash-item class="flex items-start gap-3 rounded-xl border px-4 py-3 shadow-sm
+        {% if category == 'success' %}border-green-200 bg-green-50 text-green-900
+        {% elif category == 'danger' %}border-red-200 bg-red-50 text-red-900
+        {% elif category == 'warning' %}border-amber-200 bg-amber-50 text-amber-900
+        {% else %}border-blue-200 bg-blue-50 text-blue-900{% endif %}">
+        <span class="mt-0.5 shrink-0 text-lg" aria-hidden="true">
+            {% if category == 'success' %}✓{% elif category == 'danger' %}⚠{% elif category == 'warning' %}⚠{% else %}ℹ{% endif %}
+        </span>
+        <p class="min-w-0 flex-1 whitespace-pre-line break-words text-sm font-semibold leading-relaxed">{{ message }}</p>
+        <button type="button" class="shrink-0 rounded-lg px-2 py-1 text-lg leading-none opacity-60 transition hover:bg-black/5 hover:opacity-100"
+            aria-label="Tutup pesan" onclick="this.closest('[data-flash-item]').remove()" data-flash-dismiss>
+            &times;
+        </button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}

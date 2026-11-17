@@ -34,7 +34,7 @@
     </script>
 </head>
 
-<body class="sasirangan-bg dashboard-page">
+<body class="sasirangan-bg dashboard-page" data-flash-duration="3000">
 
     <div id="dash-guru" class="page flex">
 
@@ -120,6 +120,10 @@
                                     class="w-full flex items-center justify-center gap-2 bg-ungu-light text-ungu-general hover:bg-purple-100 font-medium py-2.5 px-4 rounded-xl transition-colors duration-200 text-sm">
                                     <span>📥</span> Import Siswa
                                 </button>
+                                <a href="{{ url_for('teacher_students_export', user_id=user_id, class_id=kelas.id) }}"
+                                    class="w-full flex items-center justify-center gap-2 bg-kuning-light text-kuning-dark hover:bg-amber-100 font-medium py-2.5 px-4 rounded-xl transition-colors duration-200 text-sm">
+                                    <span>📤</span> Export Siswa
+                                </a>
                             </div>
                         </div>
                         {% endfor %}
