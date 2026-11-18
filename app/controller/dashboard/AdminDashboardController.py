@@ -1,7 +1,16 @@
 import secrets
 import string
 from app import db
-from app.model import User, Classes, ClassTeachers, Score
+from app.model import (
+    User,
+    Classes,
+    ClassTeachers,
+    Score,
+    PretestResult,
+    EvaluationResult,
+    FinalResult,
+    ActivityLog,
+)
 from flask import flash
 from werkzeug.security import generate_password_hash
 
@@ -313,3 +322,29 @@ def deactivate_token(kelas_id):
     c = Classes.query.get_or_404(kelas_id)
     c.is_active = False
     db.session.commit()
+
+
+def reset_system():
+    student_count = User.query.filter(User.level == 0).count()
+    teacher_count = User.query.filter(User.level == 1).count()
+    class_count = Classes.query.count()
+
+    try:
+        ActivityLog.query.delete(synchronize_session=False)
+        Score.query.delete(synchronize_session=False)
+        PretestResult.query.delete(synchronize_session=False)
+        EvaluationResult.query.delete(synchronize_session=False)
+        FinalResult.query.delete(synchronize_session=False)
+        ClassTeachers.query.delete(synchronize_session=False)
+        Classes.query.delete(synchronize_session=False)
+        User.query.filter(User.level != 2).delete(synchronize_session=False)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return False, 'Reset sistem gagal. Perubahan dibatalkan.'
+
+    return True, (
+        'Reset sistem berhasil. '
+        f'{student_count} siswa, {teacher_count} guru, dan {class_count} kelas dihapus. '
+        'Akun admin tetap disimpan.'
+    )

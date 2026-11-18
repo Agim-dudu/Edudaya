@@ -146,6 +146,28 @@
             animation: none;
         }
     }
+
+    :root { --sidebar-w: 280px; }
+    #sidebar { will-change: transform; }
+    #mainArea { min-width: 0; overflow-x: hidden; transition: margin-left .3s ease; }
+
+    @media (min-width: 768px) {
+        #sidebar { transform: translateX(0) !important; }
+        body.sidebar-collapsed #sidebar { transform: translateX(-100%) !important; }
+        #mainArea { margin-left: var(--sidebar-w) !important; }
+        body.sidebar-collapsed #mainArea { margin-left: 0 !important; }
+        #sidebarOverlay { display: none !important; }
+    }
+
+    @media (max-width: 767.98px) {
+        #sidebar { transform: translateX(-100%) !important; }
+        body.sidebar-mobile-open #sidebar { transform: translateX(0) !important; }
+        #mainArea { margin-left: 0 !important; }
+        #sidebarOverlay { display: none; }
+        body.sidebar-mobile-open #sidebarOverlay { display: flex !important; }
+        #mainArea > div.flex-1 { padding-left: 1rem !important; padding-right: 1rem !important; }
+        #mainArea .max-w-5xl { max-width: 100% !important; }
+    }
 </style>
 <script>
 (function () {
@@ -193,6 +215,81 @@
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
+    }
+})();
+</script>
+<script>
+(function () {
+    var mq = window.matchMedia('(min-width: 768px)');
+    var desktopCollapsed = false;
+    var mobileOpen = false;
+
+    function apply() {
+        var desktop = mq.matches;
+        var expanded = desktop ? !desktopCollapsed : mobileOpen;
+        document.body.classList.toggle('sidebar-collapsed', desktop && desktopCollapsed);
+        document.body.classList.toggle('sidebar-mobile-open', !desktop && mobileOpen);
+
+        var sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.classList.toggle('-translate-x-full', !expanded);
+            sidebar.classList.toggle('md:translate-x-0', !desktopCollapsed);
+            sidebar.setAttribute('aria-hidden', String(!expanded));
+        }
+
+        var main = document.getElementById('mainArea');
+        if (main) {
+            main.classList.toggle('ml-[280px]', desktop && expanded);
+            main.classList.toggle('ml-0', !desktop || !expanded);
+        }
+
+        var overlay = document.getElementById('sidebarOverlay');
+        if (overlay) {
+            overlay.classList.toggle('hidden', !mobileOpen || desktop);
+            overlay.classList.toggle('flex', mobileOpen && !desktop);
+        }
+
+        document.querySelectorAll('#menuToggleBtn').forEach(function (btn) {
+            btn.setAttribute('aria-expanded', String(expanded));
+        });
+    }
+
+    function onChange() {
+        desktopCollapsed = false;
+        mobileOpen = false;
+        apply();
+    }
+
+    function install() {
+        window.toggleSidebar = function () {
+            if (mq.matches) {
+                desktopCollapsed = !desktopCollapsed;
+            } else {
+                mobileOpen = !mobileOpen;
+            }
+            apply();
+        };
+        window.closeSidebar = function () {
+            if (mq.matches) {
+                desktopCollapsed = true;
+            } else {
+                mobileOpen = false;
+            }
+            apply();
+        };
+        apply();
+    }
+
+    if (mq.addEventListener) {
+        mq.addEventListener('change', onChange);
+    } else {
+        mq.addListener(onChange);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', install);
+    } else {
+        install();
     }
 })();
 </script>

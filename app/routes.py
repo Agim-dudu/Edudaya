@@ -1237,6 +1237,74 @@ def _excel_safe(value):
     return "'" + value if formula_candidate.startswith(('=', '+', '-', '@')) else value
 
 
+@app.route('/admin/guru/export.xlsx', methods=['GET'])
+@login_required
+@level_required(2)
+def admin_guru_export():
+    rows = [['No', 'Username', 'Nama', 'Gender']]
+    for index, teacher in enumerate(get_all_teachers(), 1):
+        rows.append([
+            index,
+            _excel_safe(teacher.username),
+            _excel_safe(teacher.full_name),
+            _excel_safe(teacher.gender),
+        ])
+    return _excel_response(rows, 'edudaya-data-guru.xlsx', 'Data Guru')
+
+
+@app.route('/admin/siswa/export.xlsx', methods=['GET'])
+@login_required
+@level_required(2)
+def admin_siswa_export():
+    rows = [['No', 'Username', 'Nama', 'Gender', 'Kelas', 'Sekolah', 'Nilai Rata-rata', 'Progress']]
+    for index, student in enumerate(get_all_siswa(), 1):
+        rows.append([
+            index,
+            _excel_safe(student['username']),
+            _excel_safe(student['full_name']),
+            _excel_safe(student['gender']),
+            _excel_safe(student['kelas']),
+            _excel_safe(student['school']),
+            student['avg_score'],
+            student['progress'],
+        ])
+    return _excel_response(rows, 'edudaya-data-siswa-admin.xlsx', 'Data Siswa')
+
+
+@app.route('/admin/kelas/export.xlsx', methods=['GET'])
+@login_required
+@level_required(2)
+def admin_kelas_export():
+    rows = [['No', 'Nama Kelas', 'Sekolah', 'Guru', 'Token', 'KKM', 'Jml Siswa']]
+    for index, kelas in enumerate(get_all_classes(), 1):
+        rows.append([
+            index,
+            _excel_safe(kelas['name']),
+            _excel_safe(kelas['school']),
+            _excel_safe(kelas['teachers']),
+            _excel_safe(kelas['token']),
+            kelas['kkm'],
+            kelas['student_count'],
+        ])
+    return _excel_response(rows, 'edudaya-data-kelas.xlsx', 'Data Kelas')
+
+
+@app.route('/admin/token/export.xlsx', methods=['GET'])
+@login_required
+@level_required(2)
+def admin_token_export():
+    rows = [['Token', 'Kelas', 'Sekolah', 'Guru', 'Status']]
+    for token in get_all_tokens():
+        rows.append([
+            _excel_safe(token['token']),
+            _excel_safe(token['kelas']),
+            _excel_safe(token['school']),
+            _excel_safe(token['teachers']),
+            'Aktif' if token['is_active'] else 'Nonaktif',
+        ])
+    return _excel_response(rows, 'edudaya-data-token.xlsx', 'Data Token')
+
+
 @app.route('/admin/profile/update/<int:user_id>', methods=['POST'])
 @login_required
 @level_required(2)
@@ -1251,6 +1319,20 @@ def admin_profile_update(user_id):
     success, message = update_admin_profile(user_id, full_name, username, password, password_confirm)
     flash(message, 'success' if success else 'danger')
     return redirect(url_for('dashboard_admin', user_id=user_id) + '#admin-profile')
+
+
+@app.route('/admin/system/reset', methods=['POST'])
+@login_required
+@level_required(2)
+def admin_system_reset():
+    confirmation = request.form.get('confirmation', '').strip()
+    if confirmation != 'HAPUS SEMUA':
+        flash('Konfirmasi tidak sesuai. Reset sistem dibatalkan.', 'danger')
+        return redirect(url_for('dashboard_admin', user_id=current_user.id) + '#admin-system')
+
+    success, message = reset_system()
+    flash(message, 'success' if success else 'danger')
+    return redirect(url_for('dashboard_admin', user_id=current_user.id) + '#admin-system')
 
 # Admin CRUD Kelas =============================================================================
 

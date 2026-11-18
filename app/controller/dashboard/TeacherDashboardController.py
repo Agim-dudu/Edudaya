@@ -85,8 +85,8 @@ def get_final_analysis(class_id: int) -> list[dict]:
         db.session.query(
             User.id.label('user_id'),
             User.full_name,
-            PretestResult.answer_details.label('pretest_details'),
-            EvaluationResult.answer_details.label('eval_details'),
+            PretestResult.id.label('pretest_id'),
+            EvaluationResult.id.label('evaluation_id'),
             FinalResult.ai_analysis.label('final_analysis')
         )
         # Join ke tabel PretestResult
@@ -111,11 +111,8 @@ def get_final_analysis(class_id: int) -> list[dict]:
         {
             'user_id'             : row.user_id,
             'full_name'           : row.full_name,
-            # True jika kolom answer_detail di PretestResult tidak None / tidak kosong
-            'pretest_done'        : row.pretest_details is not None,
-            # True jika kolom answer_detail di EvaluationResult tidak None / tidak kosong
-            'evaluation_done'     : row.eval_details is not None,
-            # True jika kolom ai_analysis di FinalResult tidak None / tidak kosong
+            'pretest_done'        : row.pretest_id is not None,
+            'evaluation_done'     : row.evaluation_id is not None,
             'final_analysis_done' : row.final_analysis is not None,
         }
         for row in results
