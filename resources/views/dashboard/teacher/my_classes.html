@@ -77,16 +77,26 @@
                                         <span>🏫</span> {{ kelas.school }}
                                     </div>
                                 </div>
-                                <button onclick="openEditModal(this)"
-                                    data-id="{{ kelas.id }}"
-                                    data-name="{{ kelas.name }}"
-                                    data-school="{{ kelas.school }}"
-                                    data-kkm="{{ kelas.kkm }}"
-                                    class="text-gray-400 hover:text-kuning-general transition-colors p-1" title="Edit kelas">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                    </svg>
-                                </button>
+                                <div class="flex items-center gap-1">
+                                    <button onclick="openEditModal(this)"
+                                        data-id="{{ kelas.id }}"
+                                        data-name="{{ kelas.name }}"
+                                        data-school="{{ kelas.school }}"
+                                        data-kkm="{{ kelas.kkm }}"
+                                        class="text-gray-400 hover:text-kuning-general transition-colors p-1" title="Edit kelas">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                        </svg>
+                                    </button>
+                                    <button type="button" onclick="openDeleteModal(this)"
+                                        data-id="{{ kelas.id }}"
+                                        data-name="{{ kelas.name }}"
+                                        class="text-gray-400 hover:text-merah-general transition-colors p-1" title="Hapus kelas">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="grid grid-cols-2 gap-3 mb-4 text-sm">
@@ -114,16 +124,18 @@
                                     class="w-full flex items-center justify-center gap-2 bg-hijau-light text-hijau-general hover:bg-emerald-100 font-medium py-2.5 px-4 rounded-xl transition-colors duration-200 text-sm">
                                     <span>📋</span> Hasil Evaluasi
                                 </a>
-                                <button type="button" onclick="openImportModal(this)"
-                                    data-class-id="{{ kelas.id }}"
-                                    data-class-name="{{ kelas.name }}"
-                                    class="w-full flex items-center justify-center gap-2 bg-ungu-light text-ungu-general hover:bg-purple-100 font-medium py-2.5 px-4 rounded-xl transition-colors duration-200 text-sm">
-                                    <span>📥</span> Import Siswa
-                                </button>
-                                <a href="{{ url_for('teacher_students_export', user_id=user_id, class_id=kelas.id) }}"
-                                    class="w-full flex items-center justify-center gap-2 bg-kuning-light text-kuning-dark hover:bg-amber-100 font-medium py-2.5 px-4 rounded-xl transition-colors duration-200 text-sm">
-                                    <span>📤</span> Export Siswa
-                                </a>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button type="button" onclick="openImportModal(this)"
+                                        data-class-id="{{ kelas.id }}"
+                                        data-class-name="{{ kelas.name }}"
+                                        class="w-full flex items-center justify-center gap-2 bg-ungu-light text-ungu-general hover:bg-purple-100 font-medium py-2.5 px-3 rounded-xl transition-colors duration-200 text-sm">
+                                        <span>📥</span> Import Siswa
+                                    </button>
+                                    <a href="{{ url_for('teacher_students_export', user_id=user_id, class_id=kelas.id) }}"
+                                        class="w-full flex items-center justify-center gap-2 bg-kuning-light text-kuning-dark hover:bg-amber-100 font-medium py-2.5 px-3 rounded-xl transition-colors duration-200 text-sm">
+                                        <span>📤</span> Export Siswa
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         {% endfor %}
@@ -279,6 +291,33 @@
         </div>
     </div>
 
+    <!-- MODAL: Hapus Kelas -->
+    <div id="deleteModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6">
+            <div class="flex items-center justify-between mb-5">
+                <h3 class="font-fredoka text-lg text-cokelat-general">🗑️ Hapus Kelas</h3>
+                <button onclick="closeModal('deleteModal')" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+            </div>
+            <p class="text-sm text-gray-600 mb-4">
+                Yakin ingin menghapus kelas <strong id="deleteClassName" class="text-cokelat-general"></strong>?
+                Siswa tidak ikut terhapus, tetapi akan menjadi tidak terikat kelas.
+            </p>
+            <form id="deleteForm" method="POST" action="">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeModal('deleteModal')"
+                        class="flex-1 py-2.5 px-4 border border-gray-300 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="flex-1 py-2.5 px-4 bg-merah-general hover:bg-merah-dark text-white font-semibold rounded-xl text-sm transition-colors shadow-sm">
+                        Hapus Kelas
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         function openCreateModal() {
             document.getElementById('createModal').classList.remove('hidden');
@@ -307,6 +346,15 @@
             document.getElementById('editKkm').value = kkm;
             document.getElementById('editModal').classList.remove('hidden');
             document.getElementById('editModal').classList.add('flex');
+        }
+
+        function openDeleteModal(btn) {
+            var id = btn.dataset.id;
+            var name = btn.dataset.name;
+            document.getElementById('deleteForm').action = '/teacher/classes/delete/{{ user_id }}/' + id;
+            document.getElementById('deleteClassName').textContent = name;
+            document.getElementById('deleteModal').classList.remove('hidden');
+            document.getElementById('deleteModal').classList.add('flex');
         }
 
         function closeModal(modalId) {

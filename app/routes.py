@@ -674,11 +674,13 @@ def dashboard_teacher(user_id):
     # Ambil jumlah siswa
     amount_student = get_amount_student_by_teacher(user_id)
     amount_class = get_amount_class_by_teacher(user_id)
+    overview = get_teacher_dashboard_overview(user_id)
 
     return render_template(
         'dashboard/teacher/dashboard.html',
         amount_student=amount_student,
         amount_class=amount_class,
+        overview=overview,
         user_id=user_id
     )
     
@@ -1054,6 +1056,12 @@ def create_class_route(teacher_id):
 @level_required(1)
 def edit_class_route(teacher_id, class_id):
     return edit_class(teacher_id, class_id)
+
+@app.route("/teacher/classes/delete/<int:teacher_id>/<int:class_id>", methods=["POST"])
+@login_required
+@level_required(1)
+def delete_class_route(teacher_id, class_id):
+    return delete_class(teacher_id, class_id)
 
 @app.route("/teacher/classes/<int:teacher_id>/<int:class_id>/import/template", methods=["GET"])
 @login_required

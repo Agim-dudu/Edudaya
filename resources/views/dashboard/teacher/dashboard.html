@@ -59,31 +59,161 @@
                 </div>
             </div>
 
-            <div class="p-4 md:p-6 max-w-7xl mx-auto w-full">
-                <div>
-                    <div class="grid grid-cols-2 gap-4 mb-8 max-w-2xl">
-                        <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-green-500">
-                            <div class="text-2xl mb-2">🏫</div>
-                            <div class="font-fredoka text-3xl text-amber-500">{{ amount_class }}</div>
-                            <div class="text-sm text-gray-500">Kelas Saya</div>
-                        </div>
-                        <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-blue-500">
-                            <div class="text-2xl mb-2">👧</div>
-                            <div class="font-fredoka text-3xl text-amber-500">
-                                {{ amount_student if amount_student else 0 }}</div>
-                            <div class="text-sm text-gray-500">Total Siswa</div>
+            <div class="p-4 md:p-6 max-w-7xl mx-auto w-full space-y-6">
+
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-green-500">
+                        <div class="text-2xl mb-2">🏫</div>
+                        <div class="font-fredoka text-3xl text-amber-500">{{ amount_class }}</div>
+                        <div class="text-sm text-gray-500">Kelas Saya</div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-blue-500">
+                        <div class="text-2xl mb-2">👧</div>
+                        <div class="font-fredoka text-3xl text-amber-500">{{ overview.total_students }}</div>
+                        <div class="text-sm text-gray-500">Total Siswa</div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-purple-500">
+                        <div class="text-2xl mb-2">✅</div>
+                        <div class="font-fredoka text-3xl text-amber-500">{{ overview.pretest_done }}</div>
+                        <div class="text-sm text-gray-500">Sudah Pretest</div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-4 shadow card-hover border-l-4 border-orange-500">
+                        <div class="text-2xl mb-2">📊</div>
+                        <div class="font-fredoka text-3xl text-amber-500">{{ overview.average_score }}</div>
+                        <div class="text-sm text-gray-500">Rata-rata Nilai</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-2xl shadow p-6 lg:col-span-2">
+                        <h3 class="font-fredoka text-lg text-cokelat-general mb-1">Progres Pembelajaran Siswa</h3>
+                        <p class="text-xs text-gray-400 mb-6">Capaian siswa di seluruh kelas yang Anda ampu.</p>
+                        <div class="space-y-5">
+                            <div>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="font-700 text-gray-600">Pretest selesai</span>
+                                    <span class="text-gray-400">{{ overview.pretest_done }}/{{ overview.total_students }}</span>
+                                </div>
+                                <div class="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-2.5 bg-hijau-general rounded-full transition-all" style="width: {{ overview.pretest_percent }}%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="font-700 text-gray-600">Evaluasi selesai</span>
+                                    <span class="text-gray-400">{{ overview.evaluation_done }}/{{ overview.total_students }}</span>
+                                </div>
+                                <div class="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-2.5 bg-biru-general rounded-full transition-all" style="width: {{ overview.evaluation_percent }}%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="font-700 text-gray-600">Analisis final selesai</span>
+                                    <span class="text-gray-400">{{ overview.final_analysis_done }}/{{ overview.total_students }}</span>
+                                </div>
+                                <div class="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-2.5 bg-ungu-general rounded-full transition-all" style="width: {{ overview.final_percent }}%"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl shadow p-6 max-w-2xl">
-                        <h3 class="font-fredoka text-lg text-cokelat-general mb-2">Kelola pembelajaran kelas</h3>
-                        <p class="text-sm text-gray-600 mb-5">Lihat data siswa, rekap nilai, atau tinjau hasil analisis dari kelas yang Anda ampu.</p>
-                        <div class="flex flex-wrap gap-3">
-                            <a href="{{ url_for('my_classes', user_id=user_id) }}" class="bg-hijau-general hover:bg-hijau-dark text-white font-bold px-4 py-2 rounded-xl transition">🏫 Kelas Saya</a>
-                            <a href="{{ url_for('teacher_students', user_id=user_id) }}" class="bg-biru-general hover:bg-biru-dark text-white font-bold px-4 py-2 rounded-xl transition">👧 Data Siswa</a>
-                            <a href="{{ url_for('teacher_grades', user_id=user_id) }}" class="bg-kuning-general hover:bg-kuning-dark text-white font-bold px-4 py-2 rounded-xl transition">📋 Rekap Nilai</a>
-                            <a href="{{ url_for('dashboard_analysis', user_id=user_id) }}" class="bg-ungu-general hover:bg-ungu-dark text-white font-bold px-4 py-2 rounded-xl transition">✨ AI Analisis</a>
+                    <div class="bg-white rounded-2xl shadow p-6">
+                        <h3 class="font-fredoka text-lg text-cokelat-general mb-1">Distribusi Kualifikasi</h3>
+                        <p class="text-xs text-gray-400 mb-4">Berdasarkan hasil analisis terbaru.</p>
+                        <div class="flex items-center gap-5">
+                            <div class="w-32 h-32 rounded-full flex items-center justify-center shrink-0"
+                                style="background: conic-gradient(#C0392B 0 {{ overview.classification_percent.Rendah }}%, #F5A623 {{ overview.classification_percent.Rendah }}% {{ overview.classification_percent.Rendah + overview.classification_percent.Sedang }}%, #27AE60 {{ overview.classification_percent.Rendah + overview.classification_percent.Sedang }}% {{ overview.classification_percent.Rendah + overview.classification_percent.Sedang + overview.classification_percent.Tinggi }}%, #E5E7EB {{ overview.classification_percent.Rendah + overview.classification_percent.Sedang + overview.classification_percent.Tinggi }}% 100%);">
+                                <div class="w-20 h-20 bg-white rounded-full flex flex-col items-center justify-center">
+                                    <div class="font-fredoka text-xl text-cokelat-general">{{ overview.total_students }}</div>
+                                    <div class="text-[9px] text-gray-400">Siswa</div>
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-xs flex-1">
+                                <div class="flex items-center justify-between"><span class="flex items-center gap-2"><i class="w-2.5 h-2.5 rounded-full bg-merah-general inline-block"></i>Rendah</span><b>{{ overview.classification.Rendah }}</b></div>
+                                <div class="flex items-center justify-between"><span class="flex items-center gap-2"><i class="w-2.5 h-2.5 rounded-full bg-kuning-general inline-block"></i>Sedang</span><b>{{ overview.classification.Sedang }}</b></div>
+                                <div class="flex items-center justify-between"><span class="flex items-center gap-2"><i class="w-2.5 h-2.5 rounded-full bg-hijau-general inline-block"></i>Tinggi</span><b>{{ overview.classification.Tinggi }}</b></div>
+                                <div class="flex items-center justify-between"><span class="flex items-center gap-2"><i class="w-2.5 h-2.5 rounded-full bg-gray-300 inline-block"></i>Belum</span><b>{{ overview.classification.Belum }}</b></div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-2xl shadow p-6 lg:col-span-2">
+                        <h3 class="font-fredoka text-lg text-cokelat-general mb-4">Ringkasan Kelas</h3>
+                        {% if overview.classes %}
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead class="text-xs text-gray-400 uppercase">
+                                    <tr>
+                                        <th class="text-left py-2">Kelas</th>
+                                        <th class="text-center py-2">Siswa</th>
+                                        <th class="text-left py-2">Pretest</th>
+                                        <th class="text-center py-2">Rata-rata</th>
+                                        <th class="text-right py-2">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    {% for kelas in overview.classes %}
+                                    <tr>
+                                        <td class="py-3">
+                                            <div class="font-700 text-cokelat-general">{{ kelas.name }}</div>
+                                            <div class="text-xs text-gray-400">{{ kelas.school }}</div>
+                                        </td>
+                                        <td class="text-center py-3">{{ kelas.total_students }}</td>
+                                        <td class="py-3">
+                                            <div class="flex items-center gap-2">
+                                                <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                                    <div class="h-2 bg-hijau-general rounded-full" style="width: {{ kelas.pretest_percent }}%"></div>
+                                                </div>
+                                                <span class="text-xs text-gray-500 w-8 text-right">{{ kelas.pretest_percent }}%</span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center py-3 font-700 text-biru-general">{{ kelas.average_score }}</td>
+                                        <td class="text-right py-3">
+                                            <a href="{{ url_for('dashboard_result_pretest_analysis', user_id=user_id, class_id=kelas.id) }}" class="text-xs font-700 text-ungu-general hover:underline">Lihat →</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <p class="text-sm text-gray-400">Belum ada kelas yang diampu.</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow p-6">
+                        <h3 class="font-fredoka text-lg text-cokelat-general mb-4">Siswa Berprestasi</h3>
+                        {% if overview.top_students %}
+                        <div class="space-y-3">
+                            {% for student in overview.top_students %}
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-kuning-light text-kuning-dark flex items-center justify-center font-fredoka text-sm shrink-0">{{ loop.index }}</div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="text-sm font-700 text-gray-700 truncate">{{ student.name }}</div>
+                                    <div class="text-[11px] text-gray-400 truncate">{{ student.class_name }}</div>
+                                </div>
+                                <div class="font-fredoka text-lg text-hijau-general">{{ student.average }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-sm text-gray-400">Belum ada nilai siswa.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow p-6">
+                    <h3 class="font-fredoka text-lg text-cokelat-general mb-2">Kelola pembelajaran kelas</h3>
+                    <p class="text-sm text-gray-600 mb-5">Lihat data siswa, rekap nilai, atau tinjau hasil analisis dari kelas yang Anda ampu.</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="{{ url_for('my_classes', user_id=user_id) }}" class="bg-hijau-general hover:bg-hijau-dark text-white font-bold px-4 py-2 rounded-xl transition">🏫 Kelas Saya</a>
+                        <a href="{{ url_for('teacher_students', user_id=user_id) }}" class="bg-biru-general hover:bg-biru-dark text-white font-bold px-4 py-2 rounded-xl transition">👧 Data Siswa</a>
+                        <a href="{{ url_for('teacher_grades', user_id=user_id) }}" class="bg-kuning-general hover:bg-kuning-dark text-white font-bold px-4 py-2 rounded-xl transition">📋 Rekap Nilai</a>
+                        <a href="{{ url_for('dashboard_analysis', user_id=user_id) }}" class="bg-ungu-general hover:bg-ungu-dark text-white font-bold px-4 py-2 rounded-xl transition">✨ AI Analisis</a>
                     </div>
                 </div>
             </div>

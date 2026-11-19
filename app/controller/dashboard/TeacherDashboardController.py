@@ -80,6 +80,113 @@ def get_my_classes(user_id):
 
     return classes
 
+
+def get_teacher_dashboard_overview(teacher_id):
+    teacher = User.query.get(teacher_id)
+    if not teacher or teacher.level != 1:
+        return {
+            'total_students': 0,
+            'pretest_done': 0,
+            'evaluation_done': 0,
+            'final_analysis_done': 0,
+            'pretest_percent': 0,
+            'evaluation_percent': 0,
+            'final_percent': 0,
+            'average_score': 0,
+            'classification': {'Rendah': 0, 'Sedang': 0, 'Tinggi': 0, 'Belum': 0},
+            'classification_percent': {'Rendah': 0, 'Sedang': 0, 'Tinggi': 0, 'Belum': 0},
+            'classes': [],
+            'top_students': [],
+        }
+
+    class_ids = [rel.class_id for rel in teacher.teacher_classes if rel.class_obj]
+    students = (
+        User.query.filter(User.level == 0, User.class_id.in_(class_ids)).all()
+        if class_ids else []
+    )
+    student_ids = [student.id for student in students]
+    total_students = len(student_ids)
+
+    def count_results(model):
+        if not student_ids:
+            return 0
+        return model.query.filter(model.user_id.in_(student_ids)).count()
+
+    pretest_done = count_results(PretestResult)
+    evaluation_done = count_results(EvaluationResult)
+    final_analysis_done = count_results(FinalResult)
+
+    def percent(value):
+        return round(value * 100 / total_students) if total_students else 0
+
+    all_scores = [
+        score.value for student in students for score in student.scores
+        if score.value is not None
+    ]
+    average_score = round(sum(all_scores) / len(all_scores)) if all_scores else 0
+
+    classification = {'Rendah': 0, 'Sedang': 0, 'Tinggi': 0, 'Belum': 0}
+    class_labels = {0: 'Rendah', 1: 'Sedang', 2: 'Tinggi'}
+    for student in students:
+        classification[class_labels.get(student.klasifikasi, 'Belum')] += 1
+    classification_percent = {
+        label: percent(value) for label, value in classification.items()
+    }
+
+    class_summaries = []
+    for rel in teacher.teacher_classes:
+        kelas = rel.class_obj
+        if not kelas:
+            continue
+        class_students = [s for s in students if s.class_id == kelas.id]
+        class_ids_here = [s.id for s in class_students]
+        class_pretest = (
+            PretestResult.query.filter(PretestResult.user_id.in_(class_ids_here)).count()
+            if class_ids_here else 0
+        )
+        class_scores = [
+            score.value for student in class_students for score in student.scores
+            if score.value is not None
+        ]
+        class_summaries.append({
+            'id': kelas.id,
+            'name': kelas.name,
+            'school': kelas.school,
+            'total_students': len(class_students),
+            'pretest_done': class_pretest,
+            'pretest_percent': round(class_pretest * 100 / len(class_students)) if class_students else 0,
+            'average_score': round(sum(class_scores) / len(class_scores)) if class_scores else 0,
+        })
+
+    top_students = []
+    for student in students:
+        scores = [score.value for score in student.scores if score.value is not None]
+        if not scores:
+            continue
+        top_students.append({
+            'id': student.id,
+            'name': student.full_name,
+            'class_name': student.student_class_obj.name if student.student_class_obj else '-',
+            'average': round(sum(scores) / len(scores)),
+        })
+    top_students.sort(key=lambda item: item['average'], reverse=True)
+
+    return {
+        'total_students': total_students,
+        'pretest_done': pretest_done,
+        'evaluation_done': evaluation_done,
+        'final_analysis_done': final_analysis_done,
+        'pretest_percent': percent(pretest_done),
+        'evaluation_percent': percent(evaluation_done),
+        'final_percent': percent(final_analysis_done),
+        'average_score': average_score,
+        'classification': classification,
+        'classification_percent': classification_percent,
+        'classes': class_summaries,
+        'top_students': top_students[:5],
+    }
+
+
 def get_final_analysis(class_id: int) -> list[dict]:
     results = (
         db.session.query(
@@ -207,6 +314,31 @@ def edit_class(teacher_id, class_id):
     db.session.commit()
 
     flash(f"Kelas '{name}' berhasil diperbarui.", "success")
+    return redirect(url_for('my_classes', user_id=teacher_id))
+
+
+def delete_class(teacher_id, class_id):
+    if not _teacher_owns_class(teacher_id, class_id):
+        flash("Kelas bukan wewenang Anda.", "danger")
+        return redirect(url_for('my_classes', user_id=teacher_id))
+
+    kelas = Classes.query.get(class_id)
+    if not kelas:
+        flash("Kelas tidak ditemukan.", "danger")
+        return redirect(url_for('my_classes', user_id=teacher_id))
+
+    class_name = kelas.name
+    User.query.filter_by(class_id=class_id).update(
+        {'class_id': None}, synchronize_session=False
+    )
+    Score.query.filter_by(class_id=class_id).update(
+        {'class_id': None}, synchronize_session=False
+    )
+    ClassTeachers.query.filter_by(class_id=class_id).delete(synchronize_session=False)
+    db.session.delete(kelas)
+    db.session.commit()
+
+    flash(f"Kelas '{class_name}' berhasil dihapus.", "success")
     return redirect(url_for('my_classes', user_id=teacher_id))
 
 
