@@ -202,7 +202,7 @@
     <script>
         function toggleSidebar(){const s=document.getElementById('sidebar');const o=document.getElementById('sidebarOverlay');const m=document.getElementById('mainArea');if(s.classList.contains('-translate-x-full')){s.classList.remove('-translate-x-full');o.classList.remove('hidden');m.classList.add('ml-0');}else{s.classList.add('-translate-x-full');o.classList.add('hidden');m.classList.remove('ml-0');}}
         function closeSidebar(){document.getElementById('sidebar').classList.add('-translate-x-full');document.getElementById('sidebarOverlay').classList.add('hidden');document.getElementById('mainArea').classList.remove('ml-0');}
-        const kunci = {m1:'A', m2:'B', m3:'A', m4:'B', m5:'B', m6:'A', s1:'B', sl1:'B', sp1:'C'};
+        const kunci = {m1:'A', m2:'B', m3:'A', m4:'A', m5:'B', m6:'A', s1:'B', sl1:'B', sp1:'C'};
         function cekMed(k, val, btn){
             const fb = document.getElementById('fb-'+k);
             if(!fb) return;
