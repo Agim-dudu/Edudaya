@@ -194,20 +194,36 @@ def get_student_overview_stats(user_id):
     if user.class_id:
         classmates = User.query.filter_by(level=0, class_id=user.class_id).all()
         total_kelas = len(classmates)
+        classmate_ids = [classmate.id for classmate in classmates]
+        score_averages = {}
+        if classmate_ids:
+            score_rows = (
+                db.session.query(
+                    Score.user_id,
+                    db.func.avg(Score.value).label("average_score"),
+                )
+                .filter(Score.user_id.in_(classmate_ids))
+                .group_by(Score.user_id)
+                .all()
+            )
+            score_averages = {row.user_id: row.average_score for row in score_rows}
 
-        def _rank_key(m):
-            avg = _avg(m.scores)
-            return (avg if avg is not None else -1, m.star or 0)
+        def _rank_key(classmate):
+            average = score_averages.get(classmate.id)
+            return (average if average is not None else -1, classmate.star or 0)
 
         ranked = sorted(classmates, key=_rank_key, reverse=True)
-        peringkat = ranked.index(user) + 1
+        peringkat = next(
+            (index for index, classmate in enumerate(ranked, start=1) if classmate.id == user.id),
+            None,
+        )
 
-        for m in ranked[:3]:
-            avg = _avg(m.scores)  # murni nilai kuis
+        for classmate in ranked[:3]:
+            average = score_averages.get(classmate.id)
             leaderboard.append({
-                "full_name": m.full_name,
-                "is_me": m.id == user.id,
-                "score": avg,  # None -> template tampil '–'
+                "full_name": classmate.full_name,
+                "is_me": classmate.id == user.id,
+                "score": round(average) if average is not None else None,
             })
 
     # 📋 Detail nilai per materi (dari tabel Score, terbaru dulu)

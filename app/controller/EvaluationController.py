@@ -36,8 +36,18 @@ def save_evaluation(data, user_id):
         
         # Simpan jawaban isian untuk penilaian akhir, seperti pada pretest.
         # Jawaban bebas tidak dinilai dengan perbandingan string literal.
-        if EvaluationResult.query.filter_by(user_id=user_id).first():
-            return jsonify({"error": "Evaluasi sudah dikirim."}), 409
+        existing = EvaluationResult.query.filter_by(user_id=user_id).first()
+        if existing:
+            # The first response may be lost after commit. Treat a retry as a
+            # successful delivery so the student can reach the saved result.
+            return jsonify({
+                "status": "success",
+                "redirect_url": url_for(
+                    "learning_evaluation",
+                    user_id=user_id,
+                    klasifikasi=user.klasifikasi,
+                ),
+            })
 
         db.session.add(EvaluationResult(
             user_id=user_id,
@@ -46,7 +56,11 @@ def save_evaluation(data, user_id):
             answer_details=json.dumps(answer_details, ensure_ascii=False),
         ))
         user.evaluation = 1
-        db.session.commit()
+        try:
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+            raise
 
     # ── JIKA GURU / ADMIN (BUKAN LEVEL 0) ──
     # Database tidak akan diubah, tapi mereka tetap diarahkan ke halaman hasil evaluasi (bisa untuk simulasi/testing)

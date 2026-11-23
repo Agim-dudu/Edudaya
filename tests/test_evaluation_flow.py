@@ -16,7 +16,7 @@ class EvaluationFlowTests(unittest.TestCase):
         self.assertIs(evaluation.QUESTIONS_EVALUATION, QUESTIONS_PRETEST)
         self.assertEqual(len(evaluation.QUESTIONS_EVALUATION), 10)
 
-    def test_evaluation_saves_free_text_once_without_literal_string_scoring(self):
+    def test_evaluation_saves_free_text_and_retry_returns_saved_result(self):
         user = Mock(level=0, class_id=12, evaluation=0, klasifikasi=1)
         user.id = 7
         answers = {str(q["id"]): q["correct"] for q in evaluation.QUESTIONS_EVALUATION}
@@ -29,11 +29,11 @@ class EvaluationFlowTests(unittest.TestCase):
                 user_query.get.return_value = user
                 result_query.filter_by.return_value.first.side_effect = [None, object()]
                 first = evaluation.save_evaluation({"answers": answers, "time_taken": 120}, user.id)
-                second, status = evaluation.save_evaluation({"answers": answers}, user.id)
+                second = evaluation.save_evaluation({"answers": answers}, user.id)
 
         self.assertEqual(first.json["status"], "success")
-        self.assertEqual(status, 409)
-        self.assertEqual(second.json["error"], "Evaluasi sudah dikirim.")
+        self.assertEqual(second.json["status"], "success")
+        self.assertIn('/learning/evaluation/7/1', second.json['redirect_url'])
         self.assertEqual(add.call_count, 1)
         commit.assert_called_once()
 
@@ -42,6 +42,14 @@ class EvaluationFlowTests(unittest.TestCase):
             markup = path.read_text()
             self.assertIn('id="answerIsianBox"', markup)
             self.assertIn('duration: {{ sisa_detik | default(1200) }}', markup)
+            self.assertIn('id="answerSaveStatus"', markup)
+
+    def test_evaluation_script_persists_draft_and_handles_retry(self):
+        script = (ROOT / 'resources/js/pretest_question_handle.js').read_text()
+        self.assertIn('localStorage.setItem(draftKey', script)
+        self.assertIn('localStorage.getItem(draftKey', script)
+        self.assertIn('localStorage.removeItem(draftKey)', script)
+        self.assertIn('res.ok', script)
 
 
 

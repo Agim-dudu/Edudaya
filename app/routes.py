@@ -220,7 +220,15 @@ def submit_evaluation(user_id):
     if user_id != current_user.id:
         return render_template("403.html"), 403
     if current_user.level == 0 and current_user.evaluation_result is not None:
-        return jsonify({'error': 'Evaluasi sudah dikirim.'}), 409
+        # Idempotent response for a browser retry after a lost success response.
+        return jsonify({
+            'status': 'success',
+            'redirect_url': url_for(
+                'learning_evaluation',
+                user_id=user_id,
+                klasifikasi=current_user.klasifikasi,
+            ),
+        })
 
     data = request.get_json(silent=True)
     if not isinstance(data, dict) or not isinstance(data.get('answers'), dict):
@@ -228,10 +236,33 @@ def submit_evaluation(user_id):
     time_taken = data.get('time_taken', 0)
     if not isinstance(time_taken, int) or isinstance(time_taken, bool) or not 0 <= time_taken <= EVALUATION_ATTEMPT_DURATION_SECONDS:
         return jsonify({'error': 'Durasi evaluasi tidak valid.'}), 400
-    if current_user.level == 0 and not _consume_quiz_attempt('quiz_start_time_evaluation'):
-        return jsonify({'error': 'Percobaan evaluasi tidak aktif, kedaluwarsa, atau sudah dikirim.'}), 409
+    if current_user.level == 0:
+        # Validate the attempt without consuming it before the DB commit. If the
+        # write fails, the student must be able to retry with the same session.
+        started_at = session.get('quiz_start_time_evaluation')
+        if not isinstance(started_at, str):
+            return jsonify({'error': 'Sesi evaluasi tidak aktif. Jawaban belum terkirim.'}), 409
+        try:
+            parsed_start = datetime.fromisoformat(started_at)
+            if parsed_start.tzinfo is None:
+                parsed_start = parsed_start.replace(tzinfo=timezone.utc)
+            elapsed = (datetime.now(timezone.utc) - parsed_start).total_seconds()
+        except (TypeError, ValueError):
+            elapsed = -1
+        if not 0 <= elapsed <= EVALUATION_ATTEMPT_DURATION_SECONDS + AUTO_SUBMIT_GRACE_SECONDS:
+            return jsonify({'error': 'Waktu evaluasi habis atau sesi pengerjaan tidak aktif. Jawaban belum terkirim.'}), 409
 
-    return save_evaluation(data, user_id)
+    response = save_evaluation(data, user_id)
+    if current_user.level == 0:
+        # Consume the one-time token only after the controller confirms a saved
+        # result; retain it after transient database errors so retry can work.
+        try:
+            response_body = response.get_json()
+        except (AttributeError, RuntimeError):
+            response_body = None
+        if isinstance(response_body, dict) and response_body.get('status') == 'success':
+            session.pop('quiz_start_time_evaluation', None)
+    return response
 
 # Evaluation Handle ==================================================================================
 

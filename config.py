@@ -6,6 +6,7 @@ load_dotenv()
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
+    DATABASE_URL = os.environ.get("DATABASE_URL")
     HOST = os.environ.get("DB_HOST")
     PORT = os.environ.get("DB_PORT")
     DATABASE = os.environ.get("DB_DATABASE")
@@ -17,7 +18,7 @@ class Config(object):
     # Secret Key for session management
     SECRET_KEY = os.environ.get('SECRET_KEY')
     
-    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}'
+    SQLALCHEMY_DATABASE_URI = DATABASE_URL or f'mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_ENGINE_OPTIONS = {
@@ -31,13 +32,17 @@ class Config(object):
 
     @classmethod
     def validate(cls):
-        missing = [name for name, value in {
+        required = {
             'SECRET_KEY': cls.SECRET_KEY,
             'JWT_SECRET': cls.JWT_SECRET_KEY,
-            'DB_HOST': cls.HOST,
-            'DB_PORT': cls.PORT,
-            'DB_DATABASE': cls.DATABASE,
-            'DB_USERNAME': cls.USERNAME,
-        }.items() if not value]
+        }
+        if not cls.DATABASE_URL:
+            required.update({
+                'DB_HOST': cls.HOST,
+                'DB_PORT': cls.PORT,
+                'DB_DATABASE': cls.DATABASE,
+                'DB_USERNAME': cls.USERNAME,
+            })
+        missing = [name for name, value in required.items() if not value]
         if missing:
             raise RuntimeError(f"Konfigurasi wajib belum diisi: {', '.join(missing)}")

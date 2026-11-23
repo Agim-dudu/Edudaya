@@ -3,6 +3,31 @@ const { userId, csrfToken, questions, pretestApiUrl } = window.APP_CONFIG;
 const totalQ = questions.length;
 let currentQ = 0;
 let answers = {}; // { [questionId]: "jawaban isian siswa" }
+const draftKey = `edudaya:evaluation:${userId}`;
+
+function setSaveStatus(message, state = '') {
+  const status = document.getElementById('answerSaveStatus');
+  if (!status) return;
+  status.textContent = message;
+  status.dataset.state = state;
+}
+
+function saveDraft() {
+  try {
+    localStorage.setItem(draftKey, JSON.stringify(answers));
+    setSaveStatus('Draft tersimpan di perangkat ini · belum dikirim ke server', 'local');
+  } catch (error) {
+    setSaveStatus('Draft lokal tidak dapat disimpan', 'error');
+    console.warn('Draft evaluasi lokal tidak dapat disimpan.', error);
+  }
+}
+
+try {
+  const saved = JSON.parse(localStorage.getItem(draftKey) || '{}');
+  if (saved && typeof saved === 'object' && !Array.isArray(saved)) answers = saved;
+} catch (error) {
+  console.warn('Draft evaluasi lokal tidak dapat dibaca.', error);
+}
 
 // ── INIT ──
 document.getElementById('qOf').textContent = totalQ;
@@ -13,6 +38,7 @@ window.onIsianAnswerChange = function (value) {
   const q = questions[currentQ];
   if (!q) return;
   answers[q.id] = value;
+  saveDraft();
 
   updateNavGrid();
   updateSidebarProgress();
@@ -48,6 +74,7 @@ function renderOptions(q) {
 
     label.addEventListener('click', () => {
       answers[q.id] = opt.id;
+      saveDraft();
       list.querySelectorAll('.opt-label').forEach(el => {
         el.classList.toggle('selected', el.dataset.optionId === opt.id);
       });
@@ -157,6 +184,7 @@ function updateSidebarProgress() {
   const answered = questions.filter(isAnswered).length;
   document.getElementById('sbProgressText').textContent = `${answered} / ${totalQ}`;
   document.getElementById('sbProgressFill').style.width = (answered / totalQ * 100) + '%';
+  setSaveStatus(`${answered} dari ${totalQ} jawaban · tersimpan lokal, belum dikirim`, 'local');
 }
 
 // ── CEK SEMUA TERJAWAB ──
@@ -182,6 +210,7 @@ function handleSubmit() {
   }
 
   submitting = true;
+  setSaveStatus('Mengirim jawaban ke server…', 'sending');
   fetch(pretestApiUrl, {
     method: 'POST',
     headers: {
@@ -194,18 +223,22 @@ function handleSubmit() {
       time_taken: DURATION - timeLeft
     })
   })
-  .then(res => res.json())
-  .then(data => {
+  .then(async res => ({ ok: res.ok, data: await res.json() }))
+  .then(({ ok, data }) => {
       if (data.redirect_url) {
-          window.location.href = data.redirect_url;
+          try { localStorage.removeItem(draftKey); } catch (error) { console.warn(error); }
+          setSaveStatus('Jawaban berhasil disimpan ke server', 'saved');
+          window.location.assign(data.redirect_url);
       } else {
           submitting = false;
-          alert(data.error || 'Jawaban gagal dikirim. Silakan coba lagi.');
+          setSaveStatus(ok ? 'Jawaban belum dikonfirmasi tersimpan' : 'Server menolak pengiriman · draft tetap tersimpan lokal', 'error');
+          alert(data.error || 'Jawaban belum dikonfirmasi tersimpan. Draft masih tersimpan di perangkat ini, periksa koneksi lalu kirim lagi.');
       }
   })
   .catch(err => {
       submitting = false;
       console.error('Error:', err);
-      alert('Jawaban gagal dikirim. Silakan coba lagi.');
+      setSaveStatus('Koneksi gagal · draft masih tersimpan di perangkat ini', 'error');
+      alert('Koneksi gagal. Jawabanmu masih tersimpan sebagai draft di perangkat ini. Periksa koneksi lalu kirim lagi.');
   });
 }

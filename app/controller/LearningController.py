@@ -160,7 +160,7 @@ def can_access_evaluation_start(user_id: int, klasifikasi: int, bab_key: str):
 
     if current_user.level == 0:
         if current_user.evaluation_result is not None:
-            flash("Evaluasi hanya dapat dikerjakan satu kali.", "info")
+            flash("Evaluasi sudah tersimpan dan hanya dapat dikerjakan satu kali.", "info")
             return redirect(url_for(quiz_route, user_id=user_id, klasifikasi=klasifikasi))
         block = get_first_incomplete_route(user_id, klasifikasi, cfg["flow"][:-1])
         if block:

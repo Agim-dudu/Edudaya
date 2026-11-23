@@ -81,14 +81,33 @@ class QuizAttemptGuardTests(unittest.TestCase):
                 self.assertEqual(status, 409)
                 save.assert_not_called()
 
-    def test_evaluation_cannot_be_submitted_twice(self):
-        user = SimpleNamespace(id=12, level=0, evaluation_result=object())
+    def test_evaluation_retry_returns_saved_result(self):
+        user = SimpleNamespace(id=12, level=0, evaluation_result=object(), klasifikasi=1)
         with app.app_context(), patch.object(routes, 'current_user', user):
             with patch.object(routes, 'save_evaluation') as save:
                 with app.test_request_context('/evaluation/submit/12', method='POST', json={'answers': {}}):
-                    response, status = routes.submit_evaluation.__wrapped__(12)
-                self.assertEqual(status, 409)
+                    response = routes.submit_evaluation.__wrapped__(12)
+                self.assertEqual(response.json['status'], 'success')
+                self.assertIn('/learning/evaluation/12/1', response.json['redirect_url'])
                 save.assert_not_called()
+
+    def test_evaluation_submit_consumes_attempt_only_after_success(self):
+        user = SimpleNamespace(id=12, level=0, evaluation_result=None, klasifikasi=1)
+        with app.app_context(), patch.object(routes, 'current_user', user):
+            with patch.object(routes, 'save_evaluation') as save:
+                save.return_value = routes.jsonify({'status': 'success', 'redirect_url': '/done'})
+                with app.test_request_context('/evaluation/submit/12', method='POST', json={'answers': {}}):
+                    session['quiz_start_time_evaluation'] = datetime.now(timezone.utc).isoformat()
+                    response = routes.submit_evaluation.__wrapped__(12)
+                    self.assertEqual(response.json['status'], 'success')
+                    self.assertNotIn('quiz_start_time_evaluation', session)
+
+                save.side_effect = RuntimeError('simulated database outage')
+                with app.test_request_context('/evaluation/submit/12', method='POST', json={'answers': {}}):
+                    session['quiz_start_time_evaluation'] = datetime.now(timezone.utc).isoformat()
+                    with self.assertRaises(RuntimeError):
+                        routes.submit_evaluation.__wrapped__(12)
+                    self.assertIn('quiz_start_time_evaluation', session)
 
     def test_teacher_evaluation_preview_does_not_require_student_attempt(self):
         user = SimpleNamespace(id=12, level=1)
