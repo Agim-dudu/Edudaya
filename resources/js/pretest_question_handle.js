@@ -3,7 +3,8 @@ const { userId, csrfToken, questions, pretestApiUrl } = window.APP_CONFIG;
 const totalQ = questions.length;
 let currentQ = 0;
 let answers = {}; // { [questionId]: "jawaban isian siswa" }
-const draftKey = `edudaya:evaluation:${userId}`;
+const draftScope = pretestApiUrl.includes('/pretest/submit/') ? 'pretest' : 'evaluation';
+const draftKey = `edudaya:${draftScope}:${userId}`;
 
 function setSaveStatus(message, state = '') {
   const status = document.getElementById('answerSaveStatus');
@@ -15,10 +16,10 @@ function setSaveStatus(message, state = '') {
 function saveDraft() {
   try {
     localStorage.setItem(draftKey, JSON.stringify(answers));
-    setSaveStatus('Draft tersimpan di perangkat ini · belum dikirim ke server', 'local');
+    setSaveStatus(`Draft ${draftScope} tersimpan di perangkat ini · belum dikirim ke server`, 'local');
   } catch (error) {
     setSaveStatus('Draft lokal tidak dapat disimpan', 'error');
-    console.warn('Draft evaluasi lokal tidak dapat disimpan.', error);
+    console.warn(`Draft ${draftScope} lokal tidak dapat disimpan.`, error);
   }
 }
 
@@ -26,7 +27,7 @@ try {
   const saved = JSON.parse(localStorage.getItem(draftKey) || '{}');
   if (saved && typeof saved === 'object' && !Array.isArray(saved)) answers = saved;
 } catch (error) {
-  console.warn('Draft evaluasi lokal tidak dapat dibaca.', error);
+  console.warn(`Draft ${draftScope} lokal tidak dapat dibaca.`, error);
 }
 
 // ── INIT ──

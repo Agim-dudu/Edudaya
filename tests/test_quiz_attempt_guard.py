@@ -72,13 +72,14 @@ class QuizAttemptGuardTests(unittest.TestCase):
                 response, status = routes._block_student_if_waiting_analysis()
                 self.assertEqual(status, 403)
 
-    def test_pretest_cannot_overwrite_analyzed_result(self):
+    def test_pretest_retry_after_saved_result_returns_success(self):
         user = SimpleNamespace(id=12, level=0, pretest_result=object())
         with app.app_context(), patch.object(routes, 'current_user', user):
             with patch.object(routes, 'save_pretest') as save:
                 with app.test_request_context('/pretest/submit/12', method='POST', json={'answers': {}}):
-                    response, status = routes.submit_pretest.__wrapped__(12)
-                self.assertEqual(status, 409)
+                    response = routes.submit_pretest.__wrapped__(12)
+                self.assertEqual(response.json['status'], 'success')
+                self.assertIn('/dashboard/student/12', response.json['redirect_url'])
                 save.assert_not_called()
 
     def test_evaluation_retry_returns_saved_result(self):

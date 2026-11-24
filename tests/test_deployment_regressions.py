@@ -77,6 +77,13 @@ class DeploymentRegressionTests(unittest.TestCase):
             self.assertIn('id="answerIsianBox"', markup)
             self.assertIn('id="optionsList"', markup)
 
+    def test_pretest_uses_its_own_local_draft_and_fifteen_minute_timer(self):
+        script = (ROOT / 'resources' / 'js' / 'pretest_question_handle.js').read_text()
+        markup = (VIEWS / 'pretest' / 'pretest_start.html').read_text()
+        self.assertIn("pretestApiUrl.includes('/pretest/submit/') ? 'pretest' : 'evaluation'", script)
+        self.assertIn('duration: {{ duration | default(1800) }}', markup)
+        self.assertIn('id="answerSaveStatus"', markup)
+
     def test_unclassified_student_is_redirected_not_forbidden(self):
         user = SimpleNamespace(
             is_authenticated=True,

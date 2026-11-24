@@ -162,11 +162,16 @@ def save_pretest(data, user_id):
         # waktu saat submit), dikirim dari frontend sebagai DURATION - timeLeft.
         existing = PretestResult.query.filter_by(user_id=user_id).first()
         if existing:
-            existing.score          = None
-            existing.correct        = None
+            # A retry after a lost response must not reset an existing score or
+            # teacher analysis. The route normally handles this as a success;
+            # keep the controller safe for any other caller too.
+            if existing.ai_analysis is not None:
+                return jsonify({
+                    "status": "success",
+                    "redirect_url": url_for("dashboard_student", user_id=user_id),
+                })
             existing.time_taken     = time_taken
             existing.answer_details = json.dumps(answer_details, ensure_ascii=False)
-            existing.ai_analysis    = None
         else:
             result = PretestResult(
                 user_id        = user_id,
@@ -180,7 +185,11 @@ def save_pretest(data, user_id):
 
         # Update status pretest user
         user.pretest = 1
-        db.session.commit()
+        try:
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+            raise
 
     # ── JIKA GURU / ADMIN (BUKAN LEVEL 0) ──
     else:

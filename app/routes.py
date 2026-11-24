@@ -159,7 +159,13 @@ def submit_pretest(user_id):
     if user_id != current_user.id:
         return render_template("403.html"), 403
     if current_user.level == 0 and current_user.pretest_result is not None:
-        return jsonify({'error': 'Pretest sudah dikirim.'}), 409
+        # The save may have committed even if the browser lost its response.
+        # A retry should continue to the student's dashboard, not ask for a
+        # second attempt or overwrite the analyzed result.
+        return jsonify({
+            'status': 'success',
+            'redirect_url': url_for('dashboard_student', user_id=user_id),
+        })
 
     data = request.get_json(silent=True)
     if not isinstance(data, dict) or not isinstance(data.get('answers'), dict):
