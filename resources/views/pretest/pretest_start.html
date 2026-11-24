@@ -582,6 +582,7 @@
         userId:    "{{ user_id }}",
         csrfToken: "{{ csrf_token() }}",
         questions: {{ questions | tojson }},
+        duration: {{ duration | default(1800) }},
         pretestApiUrl: "/pretest/submit/{{ user_id }}"
     };
   </script>

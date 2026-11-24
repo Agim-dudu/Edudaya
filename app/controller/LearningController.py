@@ -25,7 +25,7 @@ BAB_CONFIG = {
 FOLDERS = ["low", "medium", "high"]
 QUIZ_COOLDOWN_SECONDS = 180
 QUIZ_DURATION_SECONDS = 900
-EVALUATION_DURATION_SECONDS = 20 * 60
+EVALUATION_DURATION_SECONDS = 30 * 60
 DEFAULT_KKM = 75
 
 # ---------------------------------------------------------------------------

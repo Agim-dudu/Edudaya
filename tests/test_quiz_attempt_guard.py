@@ -19,15 +19,15 @@ class QuizAttemptGuardTests(unittest.TestCase):
     def test_expired_attempt_is_rejected_and_consumed(self):
         with app.test_request_context('/'):
             session['quiz_start_time_evaluation'] = (
-                datetime.now(timezone.utc) - timedelta(minutes=21)
+                datetime.now(timezone.utc) - timedelta(minutes=31)
             ).isoformat()
             self.assertFalse(_consume_quiz_attempt('quiz_start_time_evaluation'))
             self.assertNotIn('quiz_start_time_evaluation', session)
 
-    def test_evaluation_attempt_matches_its_twenty_minute_timer(self):
+    def test_evaluation_attempt_matches_its_thirty_minute_timer(self):
         with app.test_request_context('/'):
             session['quiz_start_time_evaluation'] = (
-                datetime.now(timezone.utc) - timedelta(minutes=16)
+                datetime.now(timezone.utc) - timedelta(minutes=26)
             ).isoformat()
             self.assertTrue(_consume_quiz_attempt('quiz_start_time_evaluation'))
 

@@ -41,7 +41,7 @@ class EvaluationFlowTests(unittest.TestCase):
         for path in (ROOT / "resources/views/learning").glob("*/evaluation/evaluation_start.html"):
             markup = path.read_text()
             self.assertIn('id="answerIsianBox"', markup)
-            self.assertIn('duration: {{ sisa_detik | default(1200) }}', markup)
+            self.assertIn('duration: {{ sisa_detik | default(1800) }}', markup)
             self.assertIn('id="answerSaveStatus"', markup)
 
     def test_evaluation_script_persists_draft_and_handles_retry(self):
@@ -50,6 +50,17 @@ class EvaluationFlowTests(unittest.TestCase):
         self.assertIn('localStorage.getItem(draftKey', script)
         self.assertIn('localStorage.removeItem(draftKey)', script)
         self.assertIn('res.ok', script)
+
+    def test_pretest_and_evaluation_durations_are_thirty_minutes(self):
+        from app.controller.LearningController import EVALUATION_DURATION_SECONDS
+        from app.controller.PretestController import PRETEST_DURATION_SECONDS
+        from app.routes import EVALUATION_ATTEMPT_DURATION_SECONDS
+
+        self.assertEqual(PRETEST_DURATION_SECONDS, 30 * 60)
+        self.assertEqual(EVALUATION_DURATION_SECONDS, 30 * 60)
+        self.assertEqual(EVALUATION_ATTEMPT_DURATION_SECONDS, 30 * 60)
+        self.assertIn('duration: {{ duration | default(1800) }}',
+                      (ROOT / "resources/views/pretest/pretest_start.html").read_text())
 
 
 

@@ -6,7 +6,7 @@ from app.controller import *
 from app.decorator.utils import level_required
 from flask_login import current_user, login_required
 from app.model import Classes, User, EvaluationResult, PretestResult, Score, FinalResult
-from app.controller.PretestController import QUESTIONS_PRETEST
+from app.controller.PretestController import QUESTIONS_PRETEST, PRETEST_DURATION_SECONDS
 from flask import Flask, render_template, request, redirect, url_for, Response
 from flask import session
 from datetime import datetime, timezone
@@ -14,7 +14,7 @@ import json
 
 
 QUIZ_ATTEMPT_DURATION_SECONDS = 15 * 60
-EVALUATION_ATTEMPT_DURATION_SECONDS = 20 * 60
+EVALUATION_ATTEMPT_DURATION_SECONDS = 30 * 60
 AUTO_SUBMIT_GRACE_SECONDS = 5
 
 
@@ -146,7 +146,12 @@ def pretest_start(user_id):
         {k: v for k, v in q.items() if k != "correct"}
         for q in QUESTIONS_PRETEST
     ]
-    return render_template("pretest/pretest_start.html", questions=safe_questions, user_id=user_id)
+    return render_template(
+        "pretest/pretest_start.html",
+        questions=safe_questions,
+        user_id=user_id,
+        duration=PRETEST_DURATION_SECONDS,
+    )
 
 @app.route("/pretest/submit/<int:user_id>", methods=["POST"])
 @login_required
@@ -161,7 +166,7 @@ def submit_pretest(user_id):
         return jsonify({'error': 'Format jawaban pretest tidak valid.'}), 400
 
     time_taken = data.get('time_taken', 0)
-    if not isinstance(time_taken, int) or isinstance(time_taken, bool) or not 0 <= time_taken <= 60 * 60:
+    if not isinstance(time_taken, int) or isinstance(time_taken, bool) or not 0 <= time_taken <= PRETEST_DURATION_SECONDS + AUTO_SUBMIT_GRACE_SECONDS:
         return jsonify({'error': 'Durasi pretest tidak valid.'}), 400
     return save_pretest(data, user_id)
 
@@ -234,7 +239,7 @@ def submit_evaluation(user_id):
     if not isinstance(data, dict) or not isinstance(data.get('answers'), dict):
         return jsonify({'error': 'Format jawaban evaluasi tidak valid.'}), 400
     time_taken = data.get('time_taken', 0)
-    if not isinstance(time_taken, int) or isinstance(time_taken, bool) or not 0 <= time_taken <= EVALUATION_ATTEMPT_DURATION_SECONDS:
+    if not isinstance(time_taken, int) or isinstance(time_taken, bool) or not 0 <= time_taken <= EVALUATION_ATTEMPT_DURATION_SECONDS + AUTO_SUBMIT_GRACE_SECONDS:
         return jsonify({'error': 'Durasi evaluasi tidak valid.'}), 400
     if current_user.level == 0:
         # Validate the attempt without consuming it before the DB commit. If the

@@ -6,6 +6,8 @@ from flask_login import current_user
 from flask import abort, flash, request, jsonify, redirect, url_for
 from app.model import User, Classes, PretestResult, ClassTeachers
 
+PRETEST_DURATION_SECONDS = 30 * 60
+
 QUESTIONS_PRETEST = [
   {
     "id": 1,

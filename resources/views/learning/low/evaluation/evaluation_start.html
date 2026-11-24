@@ -588,7 +588,7 @@
         userId:    "{{ user_id }}",
         csrfToken: "{{ csrf_token() }}",
         questions: {{ questions | tojson }},
-        duration: {{ sisa_detik | default(1200) }},
+        duration: {{ sisa_detik | default(1800) }},
         pretestApiUrl: "/evaluation/submit/{{ user_id }}"
     };
   </script>
