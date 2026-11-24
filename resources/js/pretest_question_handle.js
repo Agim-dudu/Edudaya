@@ -199,10 +199,10 @@ function checkAllAnswered() {
 
 // ── SUBMIT ──
 let submitting = false;
-function handleSubmit() {
+function handleSubmit(force = false) {
   if (submitting) return;
   const allDone = questions.every(isAnswered);
-  if (!allDone) {
+  if (!allDone && !force) {
     const belum = questions.filter(q => !isAnswered(q)).length;
     document.getElementById('warnStrip').style.display = 'flex';
     document.getElementById('warnText').textContent =
@@ -211,7 +211,12 @@ function handleSubmit() {
   }
 
   submitting = true;
-  setSaveStatus('Mengirim jawaban ke server…', 'sending');
+  if (!allDone) {
+    const sudah = questions.filter(isAnswered).length;
+    setSaveStatus(`Waktu habis · mengirim ${sudah} dari ${totalQ} jawaban`, 'sending');
+  } else {
+    setSaveStatus('Mengirim jawaban ke server…', 'sending');
+  }
   fetch(pretestApiUrl, {
     method: 'POST',
     headers: {

@@ -5,6 +5,7 @@ from unittest.mock import Mock, patch
 
 from app import app, db
 import app.controller.EvaluationController as evaluation
+import app.controller.PretestController as pretest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -62,6 +63,32 @@ class EvaluationFlowTests(unittest.TestCase):
         self.assertIn('duration: {{ duration | default(1800) }}',
                       (ROOT / "resources/views/pretest/pretest_start.html").read_text())
 
+    def test_timer_submits_partial_answers(self):
+        script = (ROOT / 'resources/js/pretest_question_handle.js').read_text()
+        timer = (ROOT / 'resources/js/pretest.js').read_text()
+        self.assertIn('function handleSubmit(force = false)', script)
+        self.assertIn('if (!allDone && !force)', script)
+        self.assertIn('handleSubmit(true)', timer)
+
+    def test_pretest_save_failure_rolls_back_and_returns_json_error(self):
+        user = Mock(level=0)
+        user.id = 7
+        with app.app_context(), app.test_request_context('/'):
+            with patch.object(pretest.User, 'query') as user_query, \
+                    patch.object(pretest.PretestResult, 'query') as result_query, \
+                    patch.object(db.session, 'add') as add, \
+                    patch.object(db.session, 'commit') as commit, \
+                    patch.object(db.session, 'rollback') as rollback:
+                user_query.get.return_value = user
+                result_query.filter_by.return_value.first.return_value = None
+                commit.side_effect = RuntimeError('simulated database outage')
+                response, status = pretest.save_pretest({'answers': {}, 'time_taken': 10}, user.id)
+
+        self.assertEqual(status, 500)
+        self.assertIn('Pretest gagal disimpan', response.json['error'])
+        add.assert_called_once()
+        commit.assert_called_once()
+        rollback.assert_called_once()
 
 
 if __name__ == "__main__":

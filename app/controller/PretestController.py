@@ -160,36 +160,35 @@ def save_pretest(data, user_id):
         # dari panjang answer_details saat dibutuhkan.
         # time_taken = detik yang dipakai siswa mengerjakan (durasi total - sisa
         # waktu saat submit), dikirim dari frontend sebagai DURATION - timeLeft.
-        existing = PretestResult.query.filter_by(user_id=user_id).first()
-        if existing:
-            # A retry after a lost response must not reset an existing score or
-            # teacher analysis. The route normally handles this as a success;
-            # keep the controller safe for any other caller too.
-            if existing.ai_analysis is not None:
-                return jsonify({
-                    "status": "success",
-                    "redirect_url": url_for("dashboard_student", user_id=user_id),
-                })
-            existing.time_taken     = time_taken
-            existing.answer_details = json.dumps(answer_details, ensure_ascii=False)
-        else:
-            result = PretestResult(
-                user_id        = user_id,
-                score          = None,
-                correct        = None,
-                time_taken     = time_taken,
-                answer_details = json.dumps(answer_details, ensure_ascii=False),
-                ai_analysis    = None
-            )
-            db.session.add(result)
-
-        # Update status pretest user
-        user.pretest = 1
         try:
+            existing = PretestResult.query.filter_by(user_id=user_id).first()
+            if existing:
+                # A retry after a lost response must not reset an existing score or
+                # teacher analysis. The route normally handles this as a success;
+                # keep the controller safe for any other caller too.
+                if existing.ai_analysis is not None:
+                    return jsonify({
+                        "status": "success",
+                        "redirect_url": url_for("dashboard_student", user_id=user_id),
+                    })
+                existing.time_taken     = time_taken
+                existing.answer_details = json.dumps(answer_details, ensure_ascii=False)
+            else:
+                result = PretestResult(
+                    user_id        = user_id,
+                    score          = None,
+                    correct        = None,
+                    time_taken     = time_taken,
+                    answer_details = json.dumps(answer_details, ensure_ascii=False),
+                    ai_analysis    = None
+                )
+                db.session.add(result)
+
+            user.pretest = 1
             db.session.commit()
         except Exception:
             db.session.rollback()
-            raise
+            return jsonify({"error": "Pretest gagal disimpan. Silakan coba lagi."}), 500
 
     # ── JIKA GURU / ADMIN (BUKAN LEVEL 0) ──
     else:

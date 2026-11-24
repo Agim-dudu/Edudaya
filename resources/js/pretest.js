@@ -34,7 +34,7 @@ function updateTimer() {
 
   if (timeLeft === 0) {
     clearInterval(timerInterval);
-    handleSubmit();
+    handleSubmit(true);
     return;
   }
   timeLeft--;
