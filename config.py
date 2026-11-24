@@ -20,10 +20,13 @@ class Config(object):
     
     SQLALCHEMY_DATABASE_URI = DATABASE_URL or f'mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_RECORD_QUERIES = True
+    SQLALCHEMY_RECORD_QUERIES = os.environ.get('SQLALCHEMY_RECORD_QUERIES', 'false').lower() == 'true'
     SQLALCHEMY_ENGINE_OPTIONS = {
         'pool_pre_ping': True,
-        'pool_recycle': 280,
+        'pool_recycle': int(os.environ.get('DB_POOL_RECYCLE', '280')),
+        'pool_size': int(os.environ.get('DB_POOL_SIZE', '10')),
+        'max_overflow': int(os.environ.get('DB_MAX_OVERFLOW', '20')),
+        'pool_timeout': int(os.environ.get('DB_POOL_TIMEOUT', '15')),
     }
     MAX_CONTENT_LENGTH = 2 * 1024 * 1024
     SESSION_COOKIE_HTTPONLY = True

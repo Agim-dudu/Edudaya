@@ -6,9 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Persegi — Edudaya</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="/resources/vendor/tailwind-3.4.17.js"></script>
+    <script src="/resources/vendor/sweetalert2-11.16.1.min.js"></script>
+    <script src="/resources/vendor/ionicons/ionicons.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
     <script>tailwind.config = { theme: { extend: { fontFamily: { nunito: ['Nunito', 'sans-serif'], fredoka: ['Fredoka One', 'cursive'] } } } }</script>
 </head>
@@ -36,7 +36,7 @@
                             <h3 class="font-fredoka text-xl text-sky-700 mb-2">1. Persegi</h3>
                             <p class="text-sm text-gray-700 mb-3">Persegi adalah segiempat yang mempunyai empat sisi sama panjang dan empat sudut siku-siku.<br>Contoh: permukaan wadai lam.</p>
                             <figure class="bg-white rounded-xl overflow-hidden border-2 border-sky-200 shadow-sm max-w-xs mx-auto">
-                                <img src="/resources/views/learning/low/bangun_datar/persegi_asset/img/21.jpg" alt="Wadai lam" class="w-full h-40 object-contain bg-white">
+                                <img loading="lazy" src="/resources/views/learning/low/bangun_datar/persegi_asset/img/21.jpg" alt="Wadai lam" class="w-full h-40 object-contain bg-white">
                                 <figcaption class="px-3 py-2 text-xs font-bold text-gray-600 text-center">Wadai Lam</figcaption>
                             </figure>
                         </div>
@@ -46,23 +46,23 @@
                             <div class="grid gap-3">
                                 <div class="bg-white rounded-xl p-3 border border-sky-200">
                                     <p class="text-sm font-bold text-sky-700 mb-2">• 4 titik sudut</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/wadai_lam_empat_titik_sudut.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/wadai_lam_empat_titik_sudut.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-sky-200">
                                     <p class="text-sm font-bold text-sky-700 mb-2">• 4 sisi</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/wadai_lam_empat_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/wadai_lam_empat_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-sky-200">
                                     <p class="text-sm font-bold text-sky-700 mb-2">• 4 sudut</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/empat_sudut_lam.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/empat_sudut_lam.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-sky-200">
                                     <p class="text-sm font-bold text-sky-700 mb-2">• Simetri lipat (ada 4 simetri lipat)</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/simetri_lipat_lam.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/simetri_lipat_lam.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-sky-200">
                                     <p class="text-sm font-bold text-sky-700 mb-2">• Simetri putar (ada 4 simetri putar)</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/simetri_putar_lam.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/simetri_putar_lam.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                             </div>
                         </div>
@@ -70,14 +70,14 @@
                         <div>
                             <h3 class="font-fredoka text-xl text-sky-700 mb-2">Keliling Persegi</h3>
                             <p class="text-sm text-gray-700 mb-3">Rumus: <strong>K = s + s + s + s</strong> atau <strong>K = 4 × sisi</strong></p>
-                            <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/keliling_lam.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-sky-200">
+                            <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/keliling_lam.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-sky-200">
                         </div>
 
                         <div class="bg-white rounded-2xl border-2 border-sky-200 overflow-hidden">
                             <div class="bg-sky-50 px-4 py-2"><p class="font-fredoka text-sky-700">🎮 Coba Jawab! - Keliling Persegi</p></div>
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Ibu membuat wadai lam berbentuk persegi. Setiap sisi panjangnya 5 cm. Berapakah keliling wadai lam tersebut?</p>
-                                <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/sisi_sama_lam.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/sisi_sama_lam.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-sky-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-sky-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-1 gap-2"><label class="block"><span class="text-xs font-bold text-sky-700">Sisi</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p1" data-jawaban="5" data-label="Sisi" onkeydown="if(event.key==='Enter')periksaSoal('p1')" class="w-full rounded-xl border-2 border-sky-200 px-4 py-2.5 text-sm text-gray-700 focus:border-sky-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-sky-700">Ditanya: Keliling</span><div class="flex items-center gap-2"><input id="ans-p1" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p1" data-jawaban="20" data-label="Keliling" onkeydown="if(event.key==='Enter')periksaSoal('p1')" class="w-full rounded-xl border-2 border-sky-200 px-4 py-2.5 text-sm text-gray-700 focus:border-sky-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><button onclick="periksaSoal('p1')" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-p1"></div>
                                 <div id="sol-p1" class="hidden bg-sky-50/60 rounded-xl p-3">
@@ -92,10 +92,10 @@
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Sebuah papan rambu-rambu perahu mempunyai keliling 20 cm. Berapakah panjang satu sisinya?</p>
                                 <figure class="bg-white rounded-xl overflow-hidden border-2 border-sky-200 shadow-sm max-w-xs mx-auto">
-                                    <img src="/resources/views/learning/low/bangun_datar/persegi_asset/img/22.jpg" alt="Papan rambu-rambu perahu" class="w-full h-40 object-contain bg-white">
+                                    <img loading="lazy" src="/resources/views/learning/low/bangun_datar/persegi_asset/img/22.jpg" alt="Papan rambu-rambu perahu" class="w-full h-40 object-contain bg-white">
                                     <figcaption class="px-3 py-2 text-xs font-bold text-gray-600 text-center">Papan Rambu-Rambu Perahu</figcaption>
                                 </figure>
-                                <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/keliling_rambu.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Mencari sisi dari keliling rambu perahu" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/keliling_rambu.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Mencari sisi dari keliling rambu perahu" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-sky-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-sky-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-1 gap-2"><label class="block"><span class="text-xs font-bold text-sky-700">Keliling</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p2" data-jawaban="20" data-label="Keliling" onkeydown="if(event.key==='Enter')periksaSoal('p2')" class="w-full rounded-xl border-2 border-sky-200 px-4 py-2.5 text-sm text-gray-700 focus:border-sky-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-sky-700">Ditanya: Sisi</span><div class="flex items-center gap-2"><input id="ans-p2" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p2" data-jawaban="5" data-label="Sisi" onkeydown="if(event.key==='Enter')periksaSoal('p2')" class="w-full rounded-xl border-2 border-sky-200 px-4 py-2.5 text-sm text-gray-700 focus:border-sky-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><button onclick="periksaSoal('p2')" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-p2"></div>
                                 <div id="sol-p2" class="hidden bg-sky-50/60 rounded-xl p-3">
@@ -108,14 +108,14 @@
                         <div>
                             <h3 class="font-fredoka text-xl text-sky-700 mb-2">Luas Persegi</h3>
                             <p class="text-sm text-gray-700 mb-3">Rumus: <strong>L = sisi × sisi</strong></p>
-                            <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/luas_lam.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-sky-200">
+                            <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/luas_lam.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-sky-200">
                         </div>
 
                         <div class="bg-white rounded-2xl border-2 border-sky-200 overflow-hidden">
                             <div class="bg-sky-50 px-4 py-2"><p class="font-fredoka text-sky-700">🎮 Coba Jawab! - Luas Persegi</p></div>
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Ibu membuat wadai lam berbentuk persegi dengan panjang sisi 5 cm. Berapakah luasnya?</p>
-                                <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/luas_lam_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/luas_lam_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-sky-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-sky-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-1 gap-2"><label class="block"><span class="text-xs font-bold text-sky-700">Sisi</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p3" data-jawaban="5" data-label="Sisi" onkeydown="if(event.key==='Enter')periksaSoal('p3')" class="w-full rounded-xl border-2 border-sky-200 px-4 py-2.5 text-sm text-gray-700 focus:border-sky-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-sky-700">Ditanya: Luas</span><div class="flex items-center gap-2"><input id="ans-p3" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p3" data-jawaban="25" data-label="Luas" onkeydown="if(event.key==='Enter')periksaSoal('p3')" class="w-full rounded-xl border-2 border-sky-200 px-4 py-2.5 text-sm text-gray-700 focus:border-sky-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm²</span></div></label><button onclick="periksaSoal('p3')" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-p3"></div>
                                 <div id="sol-p3" class="hidden bg-sky-50/60 rounded-xl p-3">
@@ -129,7 +129,7 @@
                             <div class="bg-sky-50 px-4 py-2"><p class="font-fredoka text-sky-700">🎮 Coba Jawab! - Mencari Sisi Luas Persegi</p></div>
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Sebuah papan rambu-rambu perahu mempunyai luas 9 m². Berapakah panjang sisinya?</p>
-                                <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/cari_sisi_luas9.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Mencari sisi persegi dari luas 9 m²" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/cari_sisi_luas9.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Mencari sisi persegi dari luas 9 m²" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-sky-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-sky-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-1 gap-2"><label class="block"><span class="text-xs font-bold text-sky-700">Luas</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p4" data-jawaban="9" data-label="Luas" onkeydown="if(event.key==='Enter')periksaSoal('p4')" class="w-full rounded-xl border-2 border-sky-200 px-4 py-2.5 text-sm text-gray-700 focus:border-sky-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">m²</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-sky-700">Ditanya: Sisi</span><div class="flex items-center gap-2"><input id="ans-p4" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p4" data-jawaban="3" data-label="Sisi" onkeydown="if(event.key==='Enter')periksaSoal('p4')" class="w-full rounded-xl border-2 border-sky-200 px-4 py-2.5 text-sm text-gray-700 focus:border-sky-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">m</span></div></label><button onclick="periksaSoal('p4')" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-p4"></div>
                                 <div id="sol-p4" class="hidden bg-sky-50/60 rounded-xl p-3">

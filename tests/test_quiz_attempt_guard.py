@@ -119,6 +119,27 @@ class QuizAttemptGuardTests(unittest.TestCase):
             self.assertEqual(response, 'preview')
             save.assert_called_once()
 
+    def test_failed_evaluation_save_keeps_attempt_available(self):
+        user = SimpleNamespace(id=12, level=0, evaluation_result=None)
+        with app.app_context(), patch.object(routes, 'current_user', user), \
+                patch.object(routes, 'save_evaluation', return_value=('error', 500)):
+            with app.test_request_context('/evaluation/submit/12', method='POST', json={'answers': {}}):
+                session['quiz_start_time_evaluation'] = datetime.now(timezone.utc).isoformat()
+                _, status = routes.submit_evaluation.__wrapped__(12)
+                self.assertEqual(status, 500)
+                self.assertIn('quiz_start_time_evaluation', session)
+
+    def test_successful_evaluation_save_consumes_attempt(self):
+        user = SimpleNamespace(id=12, level=0, evaluation_result=None)
+        with app.app_context(), patch.object(routes, 'current_user', user), \
+                patch.object(routes, 'save_evaluation') as save:
+            with app.test_request_context('/evaluation/submit/12', method='POST', json={'answers': {}}):
+                save.return_value = routes.jsonify({'status': 'success', 'redirect_url': '/done'})
+                session['quiz_start_time_evaluation'] = datetime.now(timezone.utc).isoformat()
+                response = routes.submit_evaluation.__wrapped__(12)
+                self.assertEqual(response.json['status'], 'success')
+                self.assertNotIn('quiz_start_time_evaluation', session)
+
 
 if __name__ == '__main__':
     unittest.main()

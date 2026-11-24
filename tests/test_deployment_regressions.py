@@ -17,7 +17,7 @@ VIEWS = ROOT / 'resources' / 'views'
 class DeploymentRegressionTests(unittest.TestCase):
     def test_final_analysis_requires_confirmation_before_submit(self):
         markup = (VIEWS / 'dashboard' / 'teacher' / 'result_final_analysis.html').read_text()
-        self.assertIn('sweetalert2@11', markup)
+        self.assertIn('/resources/vendor/sweetalert2-', markup)
         self.assertIn('type="button" onclick="confirmAndStartFinalAnalysis()"', markup)
         self.assertIn("if (result.isConfirmed)", markup)
         self.assertIn("document.getElementById('form-batch-final-analysis').submit()", markup)

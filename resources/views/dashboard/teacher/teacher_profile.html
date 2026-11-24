@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Setting Profil - Portal Guru</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/resources/vendor/tailwind-3.4.17.js"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap"
         rel="stylesheet">
@@ -74,9 +74,9 @@
                                 <div class="md:col-span-2 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 pb-6 md:pb-0 md:pr-6">
                                     <div class="w-24 h-24 bg-hijau-light rounded-xl flex items-center justify-center text-3xl shadow-sm mb-3 overflow-hidden">
                                         {% if current_user.image and current_user.image != 'default.jpg' %}
-                                        <img src="/resources/images/avatars/{{ current_user.image }}" class="w-full h-full object-cover">
+                                        <img loading="lazy" src="/resources/images/avatars/{{ current_user.image }}" class="w-full h-full object-cover">
                                         {% else %}
-                                        <img src="/resources/images/avatars/default.jpg" class="w-full h-full object-cover">
+                                        <img loading="lazy" src="/resources/images/avatars/default.jpg" class="w-full h-full object-cover">
                                         {% endif %}
                                     </div>
 

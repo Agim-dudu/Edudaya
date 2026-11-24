@@ -18,24 +18,35 @@ EVALUATION_ATTEMPT_DURATION_SECONDS = 30 * 60
 AUTO_SUBMIT_GRACE_SECONDS = 5
 
 
-def _consume_quiz_attempt(session_key):
-    started_at = session.pop(session_key, None)
+def _quiz_attempt_elapsed(session_key):
+    started_at = session.get(session_key)
     if not isinstance(started_at, str):
-        return False
+        return None
     try:
         parsed_start = datetime.fromisoformat(started_at)
         if parsed_start.tzinfo is None:
             parsed_start = parsed_start.replace(tzinfo=timezone.utc)
-        elapsed = (datetime.now(timezone.utc) - parsed_start).total_seconds()
+        return (datetime.now(timezone.utc) - parsed_start).total_seconds()
     except (TypeError, ValueError):
+        return None
+
+
+def _quiz_attempt_is_valid(session_key):
+    elapsed = _quiz_attempt_elapsed(session_key)
+    if elapsed is None:
         return False
     max_duration = (
         EVALUATION_ATTEMPT_DURATION_SECONDS
         if session_key == 'quiz_start_time_evaluation'
         else QUIZ_ATTEMPT_DURATION_SECONDS
     )
-    # Browser waits two seconds after its timer reaches zero before auto-submit.
     return 0 <= elapsed <= max_duration + AUTO_SUBMIT_GRACE_SECONDS
+
+
+def _consume_quiz_attempt(session_key):
+    valid = _quiz_attempt_is_valid(session_key)
+    session.pop(session_key, None)
+    return valid
 
 
 TEMPLATE_SOURCE_EXTENSIONS = ('.html', '.htm', '.jinja', '.j2', '.bak', '.py', '.txt', '.md')

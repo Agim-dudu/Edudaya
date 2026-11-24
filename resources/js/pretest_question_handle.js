@@ -226,20 +226,25 @@ function handleSubmit(force = false) {
     body: JSON.stringify({
       user_id: userId,
       answers: answers,
-      time_taken: DURATION - timeLeft
+      time_taken: Math.max(0, DURATION - timeLeft)
     })
   })
-  .then(async res => ({ ok: res.ok, data: await res.json() }))
-  .then(({ ok, data }) => {
-      if (data.redirect_url) {
-          try { localStorage.removeItem(draftKey); } catch (error) { console.warn(error); }
-          setSaveStatus('Jawaban berhasil disimpan ke server', 'saved');
-          window.location.assign(data.redirect_url);
-      } else {
-          submitting = false;
-          setSaveStatus(ok ? 'Jawaban belum dikonfirmasi tersimpan' : 'Server menolak pengiriman · draft tetap tersimpan lokal', 'error');
-          alert(data.error || 'Jawaban belum dikonfirmasi tersimpan. Draft masih tersimpan di perangkat ini, periksa koneksi lalu kirim lagi.');
-      }
+  .then(async res => {
+    let data = {};
+    try {
+      data = await res.json();
+    } catch (err) {
+      throw new Error(`Respons server tidak valid (${res.status})`);
+    }
+    if (res.ok && data.status === 'success' && data.redirect_url) {
+      try { localStorage.removeItem(draftKey); } catch (error) { console.warn(error); }
+      setSaveStatus('Jawaban berhasil disimpan ke server', 'saved');
+      window.location.assign(data.redirect_url);
+      return;
+    }
+    submitting = false;
+    setSaveStatus(!res.ok ? 'Server menolak pengiriman · draft tetap tersimpan lokal' : 'Jawaban belum dikonfirmasi tersimpan', 'error');
+    alert(data.error || `Jawaban gagal dikirim (${res.status}). Draft masih tersimpan di perangkat ini.`);
   })
   .catch(err => {
       submitting = false;

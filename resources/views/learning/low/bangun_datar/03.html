@@ -6,9 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Segitiga Sama Kaki — Edudaya</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="/resources/vendor/tailwind-3.4.17.js"></script>
+    <script src="/resources/vendor/sweetalert2-11.16.1.min.js"></script>
+    <script src="/resources/vendor/ionicons/ionicons.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -39,7 +39,7 @@
                     <div class="p-6 flex flex-col gap-5">
                         <p class="text-sm text-gray-700">Segitiga sama kaki mempunyai <strong>dua sisi yang sama panjang</strong>.<br>Contoh: bentuk segitiga pada bagian tiang jembatan.</p>
                         <figure class="bg-white rounded-xl overflow-hidden border-2 border-emerald-200 shadow-sm max-w-xs mx-auto">
-                            <img src="/resources/views/learning/low/bangun_datar/segitiga_asset/16.jpg" alt="Tiang jembatan" class="w-full h-40 object-contain bg-white">
+                            <img loading="lazy" src="/resources/views/learning/low/bangun_datar/segitiga_asset/16.jpg" alt="Tiang jembatan" class="w-full h-40 object-contain bg-white">
                             <figcaption class="px-3 py-2 text-xs font-bold text-gray-600 text-center">Tiang Jembatan</figcaption>
                         </figure>
 
@@ -48,24 +48,24 @@
                             <div class="grid gap-3">
                                 <div class="bg-white rounded-xl p-3 border border-emerald-200">
                                     <p class="text-sm font-bold text-emerald-700 mb-2">• 3 titik sudut</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/titik_sudut_foto_jembatan.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Titik sudut jembatan" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/titik_sudut_foto_jembatan.webp" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Titik sudut jembatan" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-emerald-200">
                                     <p class="text-sm font-bold text-emerald-700 mb-2">• 3 sisi (2 sisi sama panjang, 1 sisi berbeda)</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/sisi_foto_jembatan.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Sisi jembatan" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
-                                    <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/dua_sisi_sama_jembatan.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Dua sisi sama" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg mt-2">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/sisi_foto_jembatan.webp" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Sisi jembatan" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/dua_sisi_sama_jembatan.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Dua sisi sama" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg mt-2">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-emerald-200">
                                     <p class="text-sm font-bold text-emerald-700 mb-2">• 3 sudut</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_tiga_sudut_fokus.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Sudut segitiga" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_tiga_sudut_fokus.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Sudut segitiga" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-emerald-200">
                                     <p class="text-sm font-bold text-emerald-700 mb-2">• Simetri lipat (ada 1 simetri lipat)</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_simetri_lipat_jembatan.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Simetri lipat" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_simetri_lipat_jembatan.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Simetri lipat" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-emerald-200">
                                     <p class="text-sm font-bold text-emerald-700 mb-2">• Tidak mempunyai simetri putar</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_tanpa_simetri_putar.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Tanpa simetri putar" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_tanpa_simetri_putar.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Tanpa simetri putar" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                         <div>
                             <h3 class="font-fredoka text-xl text-emerald-700 mb-2">Keliling Segitiga Sama Kaki</h3>
                             <p class="text-sm text-gray-700 mb-3">Rumus: <strong>K = sisi + sisi + alas</strong> atau <strong>K = 2 × sisi yang sama + alas</strong></p>
-                            <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_keliling.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Keliling segitiga sama kaki" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-emerald-200">
+                            <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_keliling.webp" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Keliling segitiga sama kaki" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-emerald-200">
                         </div>
 
                         <div class="bg-white rounded-2xl border-2 border-emerald-200 overflow-hidden">
@@ -81,10 +81,10 @@
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Ibu membuat wadai amparan tatak. Dua sisi kue lapis yang sama panjang masing-masing berukuran 6 cm, sedangkan panjang alasnya 5 cm. Berapakah keliling kue lapis tersebut?</p>
                                 <figure class="bg-white rounded-xl overflow-hidden border-2 border-emerald-200 shadow-sm max-w-xs mx-auto">
-                                    <img src="/resources/views/learning/low/bangun_datar/segitiga_asset/17.jpg" alt="Wadai amparan tatak" class="w-full h-40 object-contain bg-white">
+                                    <img loading="lazy" src="/resources/views/learning/low/bangun_datar/segitiga_asset/17.jpg" alt="Wadai amparan tatak" class="w-full h-40 object-contain bg-white">
                                     <figcaption class="px-3 py-2 text-xs font-bold text-gray-600 text-center">Wadai Amparan Tatak</figcaption>
                                 </figure>
-                                <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/wadai_amparan_tatak_segitiga.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Keliling wadai amparan tatak" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/wadai_amparan_tatak_segitiga.webp" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Keliling wadai amparan tatak" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-emerald-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-emerald-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><label class="block"><span class="text-xs font-bold text-emerald-700">Sisi sama</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s3a" data-jawaban="6" data-label="Sisi sama" onkeydown="if(event.key==='Enter')periksaSoal('s3a')" class="w-full rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><label class="block"><span class="text-xs font-bold text-emerald-700">Alas</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s3a" data-jawaban="5" data-label="Alas" onkeydown="if(event.key==='Enter')periksaSoal('s3a')" class="w-full rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-emerald-700">Ditanya: Keliling</span><div class="flex items-center gap-2"><input id="ans-s3a" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s3a" data-jawaban="17" data-label="Keliling" onkeydown="if(event.key==='Enter')periksaSoal('s3a')" class="w-full rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><button onclick="periksaSoal('s3a')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-s3a"></div>
                                 <div id="sol-s3a" class="hidden bg-emerald-50/60 rounded-xl p-3">
@@ -98,7 +98,7 @@
                             <div class="bg-emerald-50 px-4 py-2"><p class="font-fredoka text-emerald-700">🎮 Coba Jawab! - Mencari Alas</p></div>
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Sebuah tiang jembatan mempunyai keliling 16 cm. Dua sisi yang sama panjang masing-masing berukuran 5 cm. Berapakah panjang sisi alasnya?</p>
-                                <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_keliling_soal.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Mencari alas dari keliling tiang jembatan" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_keliling_soal.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Mencari alas dari keliling tiang jembatan" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-emerald-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-emerald-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><label class="block"><span class="text-xs font-bold text-emerald-700">Keliling</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s3b" data-jawaban="16" data-label="Keliling" onkeydown="if(event.key==='Enter')periksaSoal('s3b')" class="w-full rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><label class="block"><span class="text-xs font-bold text-emerald-700">Sisi sama</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s3b" data-jawaban="5" data-label="Sisi sama" onkeydown="if(event.key==='Enter')periksaSoal('s3b')" class="w-full rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-emerald-700">Ditanya: Alas</span><div class="flex items-center gap-2"><input id="ans-s3b" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s3b" data-jawaban="6" data-label="Alas" onkeydown="if(event.key==='Enter')periksaSoal('s3b')" class="w-full rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><button onclick="periksaSoal('s3b')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-s3b"></div>
                                 <div id="sol-s3b" class="hidden bg-emerald-50/60 rounded-xl p-3">
@@ -111,14 +111,14 @@
                         <div>
                             <h3 class="font-fredoka text-xl text-emerald-700 mb-2">Luas Segitiga Sama Kaki</h3>
                             <p class="text-sm text-gray-700 mb-3">Rumus: <strong>L = ½ × alas × tinggi</strong></p>
-                            <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_luas.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Luas segitiga sama kaki" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-emerald-200">
+                            <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_luas.webp" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Luas segitiga sama kaki" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-emerald-200">
                         </div>
 
                         <div class="bg-white rounded-2xl border-2 border-emerald-200 overflow-hidden">
                             <div class="bg-emerald-50 px-4 py-2"><p class="font-fredoka text-emerald-700">🎮 Coba Jawab! - Luas Segitiga Sama Kaki</p></div>
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Ibu membuat wadai amparan tatak berbentuk segitiga sama kaki. Alas 8 cm dan tinggi 10 cm. Berapakah luasnya?</p>
-                                <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_luas.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Luas segitiga sama kaki" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/segitiga_luas.webp" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Luas segitiga sama kaki" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-emerald-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-emerald-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><label class="block"><span class="text-xs font-bold text-emerald-700">Alas</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s3c" data-jawaban="8" data-label="Alas" onkeydown="if(event.key==='Enter')periksaSoal('s3c')" class="w-full rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><label class="block"><span class="text-xs font-bold text-emerald-700">Tinggi</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s3c" data-jawaban="10" data-label="Tinggi" onkeydown="if(event.key==='Enter')periksaSoal('s3c')" class="w-full rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-emerald-700">Ditanya: Luas</span><div class="flex items-center gap-2"><input id="ans-s3c" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s3c" data-jawaban="40" data-label="Luas" onkeydown="if(event.key==='Enter')periksaSoal('s3c')" class="w-full rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm²</span></div></label><button onclick="periksaSoal('s3c')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-s3c"></div>
                                 <div id="sol-s3c" class="hidden bg-emerald-50/60 rounded-xl p-3">
@@ -133,10 +133,10 @@
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Sebuah wadai ipau mempunyai luas 12 cm² dan tinggi 4 cm. Berapakah panjang alas segitiga tersebut?</p>
                                 <figure class="bg-white rounded-xl overflow-hidden border-2 border-emerald-200 shadow-sm max-w-xs mx-auto">
-                                    <img src="/resources/views/learning/low/bangun_datar/segitiga_asset/18.jpg" alt="Wadai ipau" class="w-full h-40 object-contain bg-white">
+                                    <img loading="lazy" src="/resources/views/learning/low/bangun_datar/segitiga_asset/18.jpg" alt="Wadai ipau" class="w-full h-40 object-contain bg-white">
                                     <figcaption class="px-3 py-2 text-xs font-bold text-gray-600 text-center">Wadai Ipau</figcaption>
                                 </figure>
-                                <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/wadai_ipau_luas.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Luas wadai ipau" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/wadai_ipau_luas.webp" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Luas wadai ipau" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-emerald-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-emerald-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><label class="block"><span class="text-xs font-bold text-emerald-700">Luas</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s3d" data-jawaban="12" data-label="Luas" onkeydown="if(event.key==='Enter')periksaSoal('s3d')" class="w-full rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm²</span></div></label><label class="block"><span class="text-xs font-bold text-emerald-700">Tinggi</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s3d" data-jawaban="4" data-label="Tinggi" onkeydown="if(event.key==='Enter')periksaSoal('s3d')" class="w-full rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-emerald-700">Ditanya: Alas</span><div class="flex items-center gap-2"><input id="ans-s3d" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s3d" data-jawaban="6" data-label="Alas" onkeydown="if(event.key==='Enter')periksaSoal('s3d')" class="w-full rounded-xl border-2 border-emerald-200 px-4 py-2.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><button onclick="periksaSoal('s3d')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-s3d"></div>
                                 <div id="sol-s3d" class="hidden bg-emerald-50/60 rounded-xl p-3">

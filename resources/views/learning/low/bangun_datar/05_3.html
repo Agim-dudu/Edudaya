@@ -6,9 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Jajar Genjang — Edudaya</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="/resources/vendor/tailwind-3.4.17.js"></script>
+    <script src="/resources/vendor/sweetalert2-11.16.1.min.js"></script>
+    <script src="/resources/vendor/ionicons/ionicons.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
     <script>tailwind.config = { theme: { extend: { fontFamily: { nunito: ['Nunito', 'sans-serif'], fredoka: ['Fredoka One', 'cursive'] } } } }</script>
 </head>
@@ -36,7 +36,7 @@
                             <h3 class="font-fredoka text-xl text-rose-700 mb-2">3. Jajar Genjang</h3>
                             <p class="text-sm text-gray-700 mb-3">Jajar genjang adalah segiempat yang mempunyai dua pasang sisi berhadapan sama panjang dan sejajar.<br>Contoh: permukaan wadai gagatas</p>
                             <figure class="bg-white rounded-xl overflow-hidden border-2 border-rose-200 shadow-sm max-w-xs mx-auto">
-                                <img src="/resources/views/learning/low/bangun_datar/persegi_asset/img/26.jpg" alt="Wadai gagatas" class="w-full h-40 object-contain bg-white">
+                                <img loading="lazy" src="/resources/views/learning/low/bangun_datar/persegi_asset/img/26.jpg" alt="Wadai gagatas" class="w-full h-40 object-contain bg-white">
                                 <figcaption class="px-3 py-2 text-xs font-bold text-gray-600 text-center">Wadai Gagatas</figcaption>
                             </figure>
                         </div>
@@ -46,23 +46,23 @@
                             <div class="grid gap-3">
                                 <div class="bg-white rounded-xl p-3 border border-rose-200">
                                     <p class="text-sm font-bold text-rose-700 mb-2">• 4 titik sudut</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_4_titik_sudut.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_4_titik_sudut.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-rose-200">
                                     <p class="text-sm font-bold text-rose-700 mb-2">• 4 sisi</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_4_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_4_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-rose-200">
                                     <p class="text-sm font-bold text-rose-700 mb-2">• 4 sudut</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_4_sudut.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_4_sudut.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-rose-200">
                                     <p class="text-sm font-bold text-rose-700 mb-2">• Simetri lipat (tidak ada)</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_4_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_4_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-rose-200">
                                     <p class="text-sm font-bold text-rose-700 mb-2">• Simetri putar (ada 2)</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_simetri_putar.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_simetri_putar.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                             </div>
                         </div>
@@ -70,14 +70,14 @@
                         <div>
                             <h3 class="font-fredoka text-xl text-rose-700 mb-2">Keliling Jajar Genjang</h3>
                             <p class="text-sm text-gray-700 mb-3">Rumus: <strong>K = 2 × (sisi 1 + sisi 2)</strong></p>
-                            <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_keliling.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-rose-200">
+                            <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_keliling.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-rose-200">
                         </div>
 
                         <div class="bg-white rounded-2xl border-2 border-rose-200 overflow-hidden">
                             <div class="bg-rose-50 px-4 py-2"><p class="font-fredoka text-rose-700">🎮 Coba Jawab! - Keliling Jajar Genjang</p></div>
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Motif kain sasirangan berbentuk jajar genjang dengan sisi 3 cm dan 2 cm. Berapakah kelilingnya?</p>
-                                <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/motif_sasirangan_jajar_genjang_keliling.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/motif_sasirangan_jajar_genjang_keliling.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-rose-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-rose-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><label class="block"><span class="text-xs font-bold text-rose-700">Sisi</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p9" data-jawaban="3" data-label="Sisi" onkeydown="if(event.key==='Enter')periksaSoal('p9')" class="w-full rounded-xl border-2 border-rose-200 px-4 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><label class="block"><span class="text-xs font-bold text-rose-700">Sisi lainnya</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p9" data-jawaban="2" data-label="Sisi lainnya" onkeydown="if(event.key==='Enter')periksaSoal('p9')" class="w-full rounded-xl border-2 border-rose-200 px-4 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-rose-700">Ditanya: Keliling</span><div class="flex items-center gap-2"><input id="ans-p9" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p9" data-jawaban="10" data-label="Keliling" onkeydown="if(event.key==='Enter')periksaSoal('p9')" class="w-full rounded-xl border-2 border-rose-200 px-4 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><button onclick="periksaSoal('p9')" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-p9"></div>
                                 <div id="sol-p9" class="hidden bg-rose-50/60 rounded-xl p-3">
@@ -91,7 +91,7 @@
                             <div class="bg-rose-50 px-4 py-2"><p class="font-fredoka text-rose-700">🎮 Coba Jawab! - Mencari Sisi Jajar Genjang</p></div>
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Wadai gagatas berbentuk jajar genjang keliling 26 cm, salah satu sisi 8 cm. Berapakah sisi lainnya?</p>
-                                <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_cari_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Mencari sisi jajar genjang" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_cari_sisi.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Mencari sisi jajar genjang" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-rose-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-rose-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><label class="block"><span class="text-xs font-bold text-rose-700">Keliling</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p10" data-jawaban="26" data-label="Keliling" onkeydown="if(event.key==='Enter')periksaSoal('p10')" class="w-full rounded-xl border-2 border-rose-200 px-4 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><label class="block"><span class="text-xs font-bold text-rose-700">Sisi</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p10" data-jawaban="8" data-label="Sisi" onkeydown="if(event.key==='Enter')periksaSoal('p10')" class="w-full rounded-xl border-2 border-rose-200 px-4 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-rose-700">Ditanya: Sisi lainnya</span><div class="flex items-center gap-2"><input id="ans-p10" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p10" data-jawaban="5" data-label="Sisi lainnya" onkeydown="if(event.key==='Enter')periksaSoal('p10')" class="w-full rounded-xl border-2 border-rose-200 px-4 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><button onclick="periksaSoal('p10')" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-p10"></div>
                                 <div id="sol-p10" class="hidden bg-rose-50/60 rounded-xl p-3">
@@ -104,14 +104,14 @@
                         <div>
                             <h3 class="font-fredoka text-xl text-rose-700 mb-2">Luas Jajar Genjang</h3>
                             <p class="text-sm text-gray-700 mb-3">Rumus: <strong>L = alas × tinggi</strong></p>
-                            <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_luas.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-rose-200">
+                            <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_luas.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-rose-200">
                         </div>
 
                         <div class="bg-white rounded-2xl border-2 border-rose-200 overflow-hidden">
                             <div class="bg-rose-50 px-4 py-2"><p class="font-fredoka text-rose-700">🎮 Coba Jawab! - Luas Jajar Genjang</p></div>
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Wadai gagatas berbentuk jajar genjang, alas 8 cm, tinggi 4 cm. Berapakah luasnya?</p>
-                                <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_luas_warna.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/gagatas_jajar_genjang_luas_warna.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-rose-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-rose-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><label class="block"><span class="text-xs font-bold text-rose-700">Alas</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p11" data-jawaban="8" data-label="Alas" onkeydown="if(event.key==='Enter')periksaSoal('p11')" class="w-full rounded-xl border-2 border-rose-200 px-4 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><label class="block"><span class="text-xs font-bold text-rose-700">Tinggi</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p11" data-jawaban="4" data-label="Tinggi" onkeydown="if(event.key==='Enter')periksaSoal('p11')" class="w-full rounded-xl border-2 border-rose-200 px-4 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-rose-700">Ditanya: Luas</span><div class="flex items-center gap-2"><input id="ans-p11" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p11" data-jawaban="32" data-label="Luas" onkeydown="if(event.key==='Enter')periksaSoal('p11')" class="w-full rounded-xl border-2 border-rose-200 px-4 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm²</span></div></label><button onclick="periksaSoal('p11')" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-p11"></div>
                                 <div id="sol-p11" class="hidden bg-rose-50/60 rounded-xl p-3">
@@ -125,7 +125,7 @@
                             <div class="bg-rose-50 px-4 py-2"><p class="font-fredoka text-rose-700">🎮 Coba Jawab! - Mencari Alas Jajar Genjang</p></div>
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Motif sasirangan berbentuk jajar genjang luas 24 cm², tinggi 4 cm. Berapakah alasnya?</p>
-                                <img data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/motif_sasirangan_jajar_genjang_luas.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/persegi_asset/gif/motif_sasirangan_jajar_genjang_luas.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-rose-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-rose-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><label class="block"><span class="text-xs font-bold text-rose-700">Luas</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p12" data-jawaban="24" data-label="Luas" onkeydown="if(event.key==='Enter')periksaSoal('p12')" class="w-full rounded-xl border-2 border-rose-200 px-4 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm²</span></div></label><label class="block"><span class="text-xs font-bold text-rose-700">Tinggi</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p12" data-jawaban="4" data-label="Tinggi" onkeydown="if(event.key==='Enter')periksaSoal('p12')" class="w-full rounded-xl border-2 border-rose-200 px-4 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-rose-700">Ditanya: Alas</span><div class="flex items-center gap-2"><input id="ans-p12" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="p12" data-jawaban="6" data-label="Alas" onkeydown="if(event.key==='Enter')periksaSoal('p12')" class="w-full rounded-xl border-2 border-rose-200 px-4 py-2.5 text-sm text-gray-700 focus:border-rose-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><button onclick="periksaSoal('p12')" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-p12"></div>
                                 <div id="sol-p12" class="hidden bg-rose-50/60 rounded-xl p-3">
