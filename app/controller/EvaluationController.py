@@ -39,14 +39,18 @@ def save_evaluation(data, user_id):
         if EvaluationResult.query.filter_by(user_id=user_id).first():
             return jsonify({"error": "Evaluasi sudah dikirim."}), 409
 
-        db.session.add(EvaluationResult(
-            user_id=user_id,
-            time_taken=time_taken,
-            topic_scores=json.dumps({}, ensure_ascii=False),
-            answer_details=json.dumps(answer_details, ensure_ascii=False),
-        ))
-        user.evaluation = 1
-        db.session.commit()
+        try:
+            db.session.add(EvaluationResult(
+                user_id=user_id,
+                time_taken=time_taken,
+                topic_scores=json.dumps({}, ensure_ascii=False),
+                answer_details=json.dumps(answer_details, ensure_ascii=False),
+            ))
+            user.evaluation = 1
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+            return jsonify({"error": "Evaluasi gagal disimpan. Silakan coba lagi."}), 500
 
     # ── JIKA GURU / ADMIN (BUKAN LEVEL 0) ──
     # Database tidak akan diubah, tapi mereka tetap diarahkan ke halaman hasil evaluasi (bisa untuk simulasi/testing)

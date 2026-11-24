@@ -191,17 +191,22 @@ function handleSubmit() {
     body: JSON.stringify({
       user_id: userId,
       answers: answers,
-      time_taken: DURATION - timeLeft
+      time_taken: Math.max(0, DURATION - timeLeft)
     })
   })
-  .then(res => res.json())
-  .then(data => {
-      if (data.redirect_url) {
-          window.location.href = data.redirect_url;
-      } else {
-          submitting = false;
-          alert(data.error || 'Jawaban gagal dikirim. Silakan coba lagi.');
-      }
+  .then(async res => {
+    let data = {};
+    try {
+      data = await res.json();
+    } catch (err) {
+      throw new Error(`Respons server tidak valid (${res.status})`);
+    }
+    if (res.ok && data.status === 'success' && data.redirect_url) {
+      window.location.href = data.redirect_url;
+      return;
+    }
+    submitting = false;
+    alert(data.error || `Jawaban gagal dikirim (${res.status}). Silakan coba lagi.`);
   })
   .catch(err => {
       submitting = false;

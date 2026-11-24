@@ -16,6 +16,7 @@ app = Flask(__name__,
 application = app
 
 app.config.from_object(Config)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 31536000
 Config.validate()
 db = SQLAlchemy(app)
 csrf = CSRFProtect(app)

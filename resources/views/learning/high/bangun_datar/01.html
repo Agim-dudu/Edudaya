@@ -6,9 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Bangun Datar - Kemampuan Tingkat Tinggi — Edudaya</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="/resources/vendor/tailwind-3.4.17.js"></script>
+    <script src="/resources/vendor/sweetalert2-11.16.1.min.js"></script>
+    <script src="/resources/vendor/ionicons/ionicons.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
     <script>tailwind.config = { theme: { extend: { fontFamily: { nunito: ['Nunito', 'sans-serif'], fredoka: ['Fredoka One', 'cursive'] } } } }</script>
 </head>
@@ -42,7 +42,7 @@
                                 <div class="bg-white border border-orange-200 rounded-2xl p-5 shadow-sm">
                                     <p class="font-fredoka text-lg text-orange-700 mb-2">Aktivitas 1 — Temukan Bentuknya!</p>
                                     <p class="text-sm text-gray-700 leading-relaxed mb-4">Di sekitar kita terdapat berbagai benda yang mempunyai bentuk berbeda. Atap Rumah panggung, motif kain sasirangan, tas purun, ketupat, dan wadai lupis dapat digunakan untuk mengenal bangun datar.</p>
-                                    <img src="/resources/views/learning/high/bangun_datar/img/media/image1.jpeg" class="w-full max-w-3xl mx-auto rounded-xl mb-5" alt="Benda budaya Kalimantan Selatan">
+                                    <img loading="lazy" src="/resources/views/learning/high/bangun_datar/img/media/image1.jpeg" class="w-full max-w-3xl mx-auto rounded-xl mb-5" alt="Benda budaya Kalimantan Selatan">
                                     <div class="bg-orange-50/60 border border-orange-200 rounded-2xl p-4">
                                         <p class="font-fredoka text-orange-700 mb-2">Ayo Amati!</p>
                                         <p class="text-sm text-gray-700 mb-3">Apa ciri bentuk yang ditandai pada gambar?</p>
@@ -64,7 +64,7 @@
                                 <div class="bg-white border border-orange-200 rounded-2xl p-5 shadow-sm">
                                     <p class="font-fredoka text-lg text-orange-700 mb-2">Aktivitas 2 — Kelompokkan Bangunnya!</p>
                                     <p class="text-sm text-gray-700 leading-relaxed mb-4">Perhatikan gambar berbagai bentuk pada benda budaya Kalimantan Selatan.</p>
-                                    <img src="/resources/views/learning/high/bangun_datar/img/media/image2.jpeg" class="w-full max-w-3xl mx-auto rounded-xl mb-5" alt="Berbagai bentuk benda budaya Kalimantan Selatan">
+                                    <img loading="lazy" src="/resources/views/learning/high/bangun_datar/img/media/image2.jpeg" class="w-full max-w-3xl mx-auto rounded-xl mb-5" alt="Berbagai bentuk benda budaya Kalimantan Selatan">
                                     <div class="bg-orange-50/60 border border-orange-200 rounded-2xl p-4">
                                         <p class="font-fredoka text-orange-700 mb-2">Ayo Berpikir!</p>
                                         <div class="space-y-4">
@@ -107,7 +107,7 @@
                                 <div class="bg-white border border-orange-200 rounded-2xl p-5 shadow-sm">
                                     <p class="font-fredoka text-lg text-orange-700 mb-2">Aktivitas 3 — Temukan Titik Sudutnya!</p>
                                     <p class="text-sm text-gray-700 leading-relaxed mb-4">Perhatikan gambar wadai lupis berbentuk segitiga dengan titik A, B, dan C.</p>
-                                    <img src="/resources/views/learning/high/bangun_datar/img/media/image3.png" class="w-full max-w-sm mx-auto rounded-xl mb-5" alt="Segitiga ABC">
+                                    <img loading="lazy" src="/resources/views/learning/high/bangun_datar/img/media/image3.png" class="w-full max-w-sm mx-auto rounded-xl mb-5" alt="Segitiga ABC">
                                     <div class="bg-orange-50/60 border border-orange-200 rounded-2xl p-4">
                                         <p class="font-fredoka text-orange-700 mb-2">Ayo Amati!</p>
                                         <p class="text-sm text-gray-700 mb-3">Apa persamaan bagian yang ditunjukkan oleh A, B, dan C?</p>
@@ -130,7 +130,7 @@
                                 <div class="bg-white border border-orange-200 rounded-2xl p-5 shadow-sm">
                                     <p class="font-fredoka text-lg text-orange-700 mb-2">Aktivitas 4 — Temukan Sisinya!</p>
                                     <p class="text-sm text-gray-700 leading-relaxed mb-4">Perhatikan gambar keramba ikan berbentuk persegi panjang dengan titik A, B, C, dan D.</p>
-                                    <img src="/resources/views/learning/high/bangun_datar/img/media/image4.jpeg" class="w-full max-w-md mx-auto rounded-xl mb-5" alt="Persegi panjang ABCD">
+                                    <img loading="lazy" src="/resources/views/learning/high/bangun_datar/img/media/image4.jpeg" class="w-full max-w-md mx-auto rounded-xl mb-5" alt="Persegi panjang ABCD">
                                     <div class="bg-orange-50/60 border border-orange-200 rounded-2xl p-4">
                                         <p class="font-fredoka text-orange-700 mb-2">Ayo Amati!</p>
                                         <p class="text-sm text-gray-700 mb-3">Apa fungsi garis AB, BC, CD, dan DA?</p>
@@ -153,7 +153,7 @@
                                 <div class="bg-white border border-orange-200 rounded-2xl p-5 shadow-sm">
                                     <p class="font-fredoka text-lg text-orange-700 mb-2">Aktivitas 5 — Temukan Sudutnya!</p>
                                     <p class="text-sm text-gray-700 leading-relaxed mb-4">Perhatikan gambar atap Rumah panggung berbentuk segitiga.</p>
-                                    <img src="/resources/views/learning/high/bangun_datar/img/media/image5.jpeg" class="w-full max-w-md mx-auto rounded-xl mb-5" alt="Atap Rumah Panggung berbentuk segitiga">
+                                    <img loading="lazy" src="/resources/views/learning/high/bangun_datar/img/media/image5.jpeg" class="w-full max-w-md mx-auto rounded-xl mb-5" alt="Atap Rumah Panggung berbentuk segitiga">
                                     <div class="bg-orange-50/60 border border-orange-200 rounded-2xl p-4">
                                         <p class="font-fredoka text-orange-700 mb-2">Ayo Amati!</p>
                                         <p class="text-sm text-gray-700 mb-3">Apa yang terbentuk ketika dua sisi bertemu pada satu titik sudut?</p>
@@ -176,7 +176,7 @@
                                 <div class="bg-white border border-orange-200 rounded-2xl p-5 shadow-sm">
                                     <p class="font-fredoka text-lg text-orange-700 mb-2">Aktivitas 6 — Temukan Simetri Lipatnya!</p>
                                     <p class="text-sm text-gray-700 leading-relaxed mb-4">Perhatikan tiga gambar motif belah ketupat pada kain sasirangan.</p>
-                                    <img src="/resources/views/learning/high/bangun_datar/img/media/image6.png" class="w-full max-w-3xl mx-auto rounded-xl mb-5" alt="Simetri lipat motif belah ketupat pada kain sasirangan">
+                                    <img loading="lazy" src="/resources/views/learning/high/bangun_datar/img/media/image6.webp" class="w-full max-w-3xl mx-auto rounded-xl mb-5" alt="Simetri lipat motif belah ketupat pada kain sasirangan">
                                     <div class="bg-orange-50/60 border border-orange-200 rounded-2xl p-4">
                                         <p class="font-fredoka text-orange-700 mb-2">Ayo Amati!</p>
                                         <p class="text-sm text-gray-700 mb-3">Kapan sebuah garis dapat disebut garis simetri lipat?</p>
@@ -211,7 +211,7 @@
                                 <div class="bg-white border border-orange-200 rounded-2xl p-5 shadow-sm">
                                     <p class="font-fredoka text-lg text-orange-700 mb-2">Aktivitas 7 — Temukan Simetri Putarnya!</p>
                                     <p class="text-sm text-gray-700 leading-relaxed mb-4">Perhatikan empat gambar wadai lupis berbentuk segitiga sama sisi pada posisi awal hingga putaran ketiga.</p>
-                                    <img src="/resources/views/learning/high/bangun_datar/img/media/image7.png" class="w-full max-w-3xl mx-auto rounded-xl mb-5" alt="Simetri putar segitiga sama sisi">
+                                    <img loading="lazy" src="/resources/views/learning/high/bangun_datar/img/media/image7.webp" class="w-full max-w-3xl mx-auto rounded-xl mb-5" alt="Simetri putar segitiga sama sisi">
                                     <div class="bg-orange-50/60 border border-orange-200 rounded-2xl p-4">
                                         <p class="font-fredoka text-orange-700 mb-2">Ayo Amati!</p>
                                         <p class="text-sm text-gray-700 mb-3">Apa yang dimaksud dengan simetri putar?</p>

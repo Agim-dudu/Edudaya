@@ -6,9 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Segitiga — Edudaya</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="/resources/vendor/tailwind-3.4.17.js"></script>
+    <script src="/resources/vendor/sweetalert2-11.16.1.min.js"></script>
+    <script src="/resources/vendor/ionicons/ionicons.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
     <style>
         .muncul { opacity: 0; animation: muncul .45s ease forwards; animation-delay: var(--d, 0s); }
@@ -80,7 +80,7 @@
                             <h3 class="font-fredoka text-xl text-blue-700 mb-2">1. Segitiga Sama Sisi</h3>
                             <p class="text-sm text-gray-700 mb-3">Segitiga sama sisi mempunyai <strong>tiga sisi yang sama panjang</strong>.<br>Contoh: bentuk segitiga sama sisi pada wadai lupis.</p>
                             <figure class="bg-white rounded-xl overflow-hidden border-2 border-blue-200 shadow-sm max-w-xs mx-auto">
-                                <img src="/resources/views/learning/low/bangun_datar/img/lupis.jpg" alt="Wadai lupis" class="w-full h-40 object-contain bg-white">
+                                <img loading="lazy" src="/resources/views/learning/low/bangun_datar/img/lupis.jpg" alt="Wadai lupis" class="w-full h-40 object-contain bg-white">
                                 <figcaption class="px-3 py-2 text-xs font-bold text-gray-600 text-center">Wadai Lupis</figcaption>
                             </figure>
                         </div>
@@ -91,24 +91,24 @@
                             <div class="grid gap-3">
                                 <div class="bg-white rounded-xl p-3 border border-blue-200">
                                     <p class="text-sm font-bold text-blue-700 mb-2">• 3 titik sudut</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/titik_sudut_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Titik sudut lupis" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/titik_sudut_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Titik sudut lupis" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-blue-200">
                                     <p class="text-sm font-bold text-blue-700 mb-2">• 3 sisi</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/tiga_sisi_lupis(1).gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Tiga sisi lupis" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
-                                    <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/sisi_sama_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Sisi lupis sama panjang" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg mt-2">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/tiga_sisi_lupis(1).gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Tiga sisi lupis" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/sisi_sama_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Sisi lupis sama panjang" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg mt-2">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-blue-200">
                                     <p class="text-sm font-bold text-blue-700 mb-2">• 3 sudut</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/sisi_sudut_lupis(1).gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Sudut lupis" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/sisi_sudut_lupis(1).webp" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Sudut lupis" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-blue-200">
                                     <p class="text-sm font-bold text-blue-700 mb-2">• Simetri lipat (ada 3 simetri lipat)</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/simetri_lipat_lupis(1).gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Simetri lipat lupis" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/simetri_lipat_lupis(1).webp" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Simetri lipat lupis" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                                 <div class="bg-white rounded-xl p-3 border border-blue-200">
                                     <p class="text-sm font-bold text-blue-700 mb-2">• Simetri putar (ada 3 simetri putar)</p>
-                                    <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/simetri_putar_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Simetri putar lupis" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
+                                    <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/simetri_putar_lupis.webp" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Simetri putar lupis" class="gif-lazy w-full max-w-[260px] mx-auto h-auto rounded-lg">
                                 </div>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                         <div>
                             <h3 class="font-fredoka text-xl text-blue-700 mb-2">Keliling Segitiga Sama Sisi</h3>
                             <p class="text-sm text-gray-700 mb-3">Keliling adalah panjang seluruh sisi yang mengelilingi bangun.<br>Rumus: <strong>K = sisi + sisi + sisi</strong> atau <strong>K = 3 × sisi</strong></p>
-                            <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/keliling_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Keliling segitiga sama sisi" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-blue-200">
+                            <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/keliling_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Keliling segitiga sama sisi" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-blue-200">
                         </div>
 
                         <!-- Contoh soal 1 -->
@@ -125,7 +125,7 @@
                             <div class="bg-blue-50 px-4 py-2"><p class="font-fredoka text-blue-700">🎮 Coba Jawab! - Keliling Segitiga Sama Sisi</p></div>
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Ibu membuat wadai lupis berbentuk segitiga sama sisi untuk acara keluarga. Setiap sisi wadai lupis tersebut memiliki panjang 5 cm. Berapakah keliling wadai lupis tersebut?</p>
-                                <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/sisi_sama_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Keliling wadai lupis dengan sisi 5 cm" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/sisi_sama_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Keliling wadai lupis dengan sisi 5 cm" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-blue-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-blue-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-3 gap-2"><label class="block"><span class="text-xs font-bold text-blue-700">Sisi AB</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s2a" data-jawaban="5" data-label="Sisi AB" onkeydown="if(event.key==='Enter')periksaSoal('s2a')" class="w-full rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><label class="block"><span class="text-xs font-bold text-blue-700">Sisi BC</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s2a" data-jawaban="5" data-label="Sisi BC" onkeydown="if(event.key==='Enter')periksaSoal('s2a')" class="w-full rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><label class="block"><span class="text-xs font-bold text-blue-700">Sisi CA</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s2a" data-jawaban="5" data-label="Sisi CA" onkeydown="if(event.key==='Enter')periksaSoal('s2a')" class="w-full rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-blue-700">Ditanya: Keliling</span><div class="flex items-center gap-2"><input id="ans-s2a" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s2a" data-jawaban="15" data-label="Keliling" onkeydown="if(event.key==='Enter')periksaSoal('s2a')" class="w-full rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><button onclick="periksaSoal('s2a')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-s2a"></div>
                                 <div id="sol-s2a" class="hidden bg-blue-50/60 rounded-xl p-3">
@@ -141,7 +141,7 @@
                             <div class="bg-blue-50 px-4 py-2"><p class="font-fredoka text-blue-700">🎮 Coba Jawab! - Mencari Panjang Sisi</p></div>
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Sebuah wadai lupis berbentuk segitiga sama sisi mempunyai keliling 24 cm. Berapakah panjang setiap sisinya?</p>
-                                <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/keliling_24_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Mencari sisi dari keliling 24 cm" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/keliling_24_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Mencari sisi dari keliling 24 cm" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-blue-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-blue-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-1 gap-2"><label class="block"><span class="text-xs font-bold text-blue-700">Keliling</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s2b" data-jawaban="24" data-label="Keliling" onkeydown="if(event.key==='Enter')periksaSoal('s2b')" class="w-full rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-blue-700">Ditanya: Sisi</span><div class="flex items-center gap-2"><input id="ans-s2b" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s2b" data-jawaban="8" data-label="Sisi" onkeydown="if(event.key==='Enter')periksaSoal('s2b')" class="w-full rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><button onclick="periksaSoal('s2b')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-s2b"></div>
                                 <div id="sol-s2b" class="hidden bg-blue-50/60 rounded-xl p-3">
@@ -156,7 +156,7 @@
                         <div>
                             <h3 class="font-fredoka text-xl text-blue-700 mb-2">Luas Segitiga Sama Sisi</h3>
                             <p class="text-sm text-gray-700 mb-3">Luas adalah besar daerah yang berada di dalam bangun.<br>Rumus: <strong>L = ½ × alas × tinggi</strong></p>
-                            <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/luas_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Luas segitiga sama sisi" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-blue-200">
+                            <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/luas_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Luas segitiga sama sisi" class="gif-lazy w-full max-w-[320px] mx-auto h-auto rounded-lg border border-blue-200">
                         </div>
 
                         <!-- Contoh soal luas 1 -->
@@ -164,7 +164,7 @@
                             <div class="bg-blue-50 px-4 py-2"><p class="font-fredoka text-blue-700">🎮 Coba Jawab! - Luas Segitiga</p></div>
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Ibu membuat wadai lapis berbentuk segitiga untuk acara keluarga. Wadai lapis tersebut mempunyai alas 6 cm dan tinggi 4 cm. Berapakah luas wadai lapis tersebut?</p>
-                                <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/alas_tinggi_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Alas tinggi lupis" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/alas_tinggi_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Alas tinggi lupis" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-blue-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-blue-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><label class="block"><span class="text-xs font-bold text-blue-700">Alas</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s2c" data-jawaban="6" data-label="Alas" onkeydown="if(event.key==='Enter')periksaSoal('s2c')" class="w-full rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><label class="block"><span class="text-xs font-bold text-blue-700">Tinggi</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s2c" data-jawaban="4" data-label="Tinggi" onkeydown="if(event.key==='Enter')periksaSoal('s2c')" class="w-full rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-blue-700">Ditanya: Luas</span><div class="flex items-center gap-2"><input id="ans-s2c" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s2c" data-jawaban="12" data-label="Luas" onkeydown="if(event.key==='Enter')periksaSoal('s2c')" class="w-full rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm²</span></div></label><button onclick="periksaSoal('s2c')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-s2c"></div>
                                 <div id="sol-s2c" class="hidden bg-blue-50/60 rounded-xl p-3">
@@ -180,7 +180,7 @@
                             <div class="bg-blue-50 px-4 py-2"><p class="font-fredoka text-blue-700">🎮 Coba Jawab! - Mencari Tinggi</p></div>
                             <div class="p-4 space-y-3 text-sm text-gray-700">
                                 <p>Sebuah wadai lupis mempunyai luas 12 cm². Jika alasnya 6 cm, berapakah tinggi wadai tersebut?</p>
-                                <img data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/cari_tinggi_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Cari tinggi lupis" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
+                                <img loading="lazy" data-src="/resources/views/learning/low/bangun_datar/segitiga_asset/cari_tinggi_lupis.gif" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Cari tinggi lupis" class="gif-lazy w-full max-w-[280px] mx-auto h-auto rounded-lg">
                                 <div class="bg-blue-50/60 rounded-xl p-3 space-y-2"><p class="font-bold text-blue-700">Diketahui:</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><label class="block"><span class="text-xs font-bold text-blue-700">Luas</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s2d" data-jawaban="12" data-label="Luas" onkeydown="if(event.key==='Enter')periksaSoal('s2d')" class="w-full rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm²</span></div></label><label class="block"><span class="text-xs font-bold text-blue-700">Alas</span><div class="flex items-center gap-2"><input type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s2d" data-jawaban="6" data-label="Alas" onkeydown="if(event.key==='Enter')periksaSoal('s2d')" class="w-full rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label></div></div><div class="flex flex-col sm:flex-row gap-2 sm:items-end"><label class="flex-1 block"><span class="text-xs font-bold text-blue-700">Ditanya: Tinggi</span><div class="flex items-center gap-2"><input id="ans-s2d" type="text" placeholder="Tulis jawabanmu" data-soal-inputs="s2d" data-jawaban="4" data-label="Tinggi" onkeydown="if(event.key==='Enter')periksaSoal('s2d')" class="w-full rounded-xl border-2 border-blue-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:outline-none"><span class="text-xs font-bold text-gray-500">cm</span></div></label><button onclick="periksaSoal('s2d')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Periksa Jawaban</button></div>
                                 <div id="fb-s2d"></div>
                                 <div id="sol-s2d" class="hidden bg-blue-50/60 rounded-xl p-3">
